@@ -1,0 +1,23 @@
+{
+  "name": "ddos-pcap-decoder-POC",
+  "version": "1.0.0",
+  "description": "POC showing feature extraction from pcap files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvdassen/ddos-pcap-decoder-POC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jvdassen/ddos-pcap-decoder-POC/issues"
+  },
+  "homepage": "https://github.com/jvdassen/ddos-pcap-decoder-POC#readme",
+  "dependencies": {
+    "pcap": "^2.1.0"
+  }
+}
