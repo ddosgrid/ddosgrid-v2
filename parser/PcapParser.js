@@ -1,4 +1,5 @@
 var pcap = require('pcap')
+var fs = require('fs')
 
 class PcapParser {
   constructor () {
@@ -13,15 +14,21 @@ class PcapParser {
       }
     }
   }
-  parseToJSON (filePath, title, outPath) {
+  parseToJSON (filePath, title, outPath, summaryOutPath) {
     var pcap_session = pcap.createOfflineSession(filePath, '')
     pcap_session.on('packet', this.inspectPcapPacket.bind(this))
-    pcap_session.on('end', () => { this.writeToFile(outPath) })
+    pcap_session.on('complete', () => {
+      this.writeToFile(outPath, summaryOutPath)
+    })
   }
-  writeToFile(outPath) {
+  writeToFile(outPath, summaryOutPath) {
     console.log(`Writing the following analysis to ${outPath}`)
-    console.table(this.result.packets)
-    console.log(this.result.summary)
+    fs.writeFile(outPath, JSON.stringify(this.result.packets), function () {
+      console.log('Written parsed network to ', outPath)
+    })
+    fs.writeFile(summaryOutPath, JSON.stringify(this.result.summary), function () {
+      console.log('Written capture summary to ', summaryOutPath)
+    })
   }
   inspectPcapPacket (rawPcapPacket) {
     var parsedPacket = pcap.decode(rawPcapPacket)
@@ -91,7 +98,7 @@ class PcapParser {
       windowSize: tcpPacket.windowSize
     }
 
-    console.log(this.result)
+   // console.log(this.result)
   }
   inspectUDPPacket (udpPacket, potato) {}
   inspectApplicationLayerPacket (appPacket, potato) {}
