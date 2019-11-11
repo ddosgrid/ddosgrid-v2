@@ -1,16 +1,18 @@
 var pcap = require('pcap')
 var fs = require('fs')
+var ipToAsn = require('ip-to-asn')
 
 class PcapParser {
   constructor () {
+    this.whois = new ipToAsn()
     this.result = {
       packets: [],
       summary: {
         errors: [],
-        srcIps: [],
-        dstIps: [],
-        srcPorts : [],
-        dstPorts: [],
+        srcIps: {},
+        dstIps: {},
+        srcPorts : {},
+        dstPorts: {},
       }
     }
   }
@@ -22,12 +24,33 @@ class PcapParser {
     })
   }
   writeToFile(outPath, summaryOutPath) {
-    console.log(`Writing the following analysis to ${outPath}`)
-    fs.writeFile(outPath, JSON.stringify(this.result.packets), function () {
+    fs.writeFile(outPath, JSON.stringify(this.result.packets), function (err) {
+      if(err) {
+        console.log(`Packet trace not able to write to ${outPath}`)
+      }
       console.log('Written parsed network to ', outPath)
     })
-    fs.writeFile(summaryOutPath, JSON.stringify(this.result.summary), function () {
+    fs.writeFile(summaryOutPath, JSON.stringify(this.result.summary), function (err) {
+      if(err) {
+        console.log(`Summary not able to write to ${summaryOutPath}`)
+      }
       console.log('Written capture summary to ', summaryOutPath)
+    })
+  }
+  addOrIncrement (targetObject, property) {
+    if (targetObject.hasOwnProperty(property)) {
+      targetObject[property].count += 1
+    } else {
+      targetObject[property] = { count: 0 }
+      //this.analyseAndAdd(property, targetObject)
+    }
+  }
+  analyseAndAdd (ip, targetObject) {
+    console.log('analysing:', ip)
+    this.whois.query(ip, function (res) {
+      console.log(res)
+      targetObject[ip] = res
+      targetObject[ip].count = 1
     })
   }
   inspectPcapPacket (rawPcapPacket) {
@@ -63,7 +86,7 @@ class PcapParser {
     console.log(`Packet from ${ipv4Packet.saddr.addr} to ${ipv4Packet.daddr.addr}`)
     potato.ip = {
       source: ipv4Packet.saddr.addr.join('.'),
-      destination: ipv4Packet.saddr.addr.join('.'),
+      destination: ipv4Packet.daddr.addr.join('.'),
       diffserv: ipv4Packet.diffserv,
       fragmentOffset: ipv4Packet.fragmentOffset,
       doNotFragment: ipv4Packet.flags.doNotFragment,
@@ -71,6 +94,10 @@ class PcapParser {
       // TODO resolve
       protocol: ipv4Packet.protocol
     }
+
+    this.addOrIncrement(this.result.summary.srcIps, potato.ip.source)
+    this.addOrIncrement(this.result.summary.dstIps, potato.ip.destination)
+
     var protocol = ipv4Packet.protocol
     this.inspectTransportPacket(ipv4Packet, protocol, potato)
   }
@@ -98,7 +125,8 @@ class PcapParser {
       windowSize: tcpPacket.windowSize
     }
 
-   // console.log(this.result)
+    this.addOrIncrement(this.result.summary.srcPorts, potato.transport.sourcePort)
+    this.addOrIncrement(this.result.summary.dstPorts, potato.transport.destinationPort)
   }
   inspectUDPPacket (udpPacket, potato) {}
   inspectApplicationLayerPacket (appPacket, potato) {}
