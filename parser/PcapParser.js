@@ -85,6 +85,7 @@ class PcapParser {
   inspectIPv4Packet (ipv4Packet, potato) {
     console.log(`Packet from ${ipv4Packet.saddr.addr} to ${ipv4Packet.daddr.addr}`)
     potato.ip = {
+      protocol: 'IPv4',
       source: ipv4Packet.saddr.addr.join('.'),
       destination: ipv4Packet.daddr.addr.join('.'),
       diffserv: ipv4Packet.diffserv,
@@ -109,11 +110,12 @@ class PcapParser {
     if (protocol === 6) {
       this.inspectTCPPacket(ipPacket.payload, potato)
     } else if (protocol === 17) {
-      this.inspectTCPPacket(ipPacket.payload, potato)
+      this.inspectUDPPacket(ipPacket.payload, potato)
     }
   }
   inspectTCPPacket (tcpPacket, potato) {
     potato.transport = {
+      protocol: 'TCP',
       ackno: tcpPacket.ackno,
       //data: tcpPacket.data,
       flags: tcpPacket.flags,
@@ -128,7 +130,17 @@ class PcapParser {
     this.addOrIncrement(this.result.summary.srcPorts, potato.transport.sourcePort)
     this.addOrIncrement(this.result.summary.dstPorts, potato.transport.destinationPort)
   }
-  inspectUDPPacket (udpPacket, potato) {}
+  inspectUDPPacket (udpPacket, potato) {
+    potato.transport = {
+      protocol: 'UDP',
+      dataLength: udpPacket.length,
+      sourcePort: udpPacket.sport,
+      destinationPort: udpPacket.dport,
+    }
+
+    this.addOrIncrement(this.result.summary.srcPorts, potato.transport.sourcePort)
+    this.addOrIncrement(this.result.summary.dstPorts, potato.transport.destinationPort)
+  }
   inspectApplicationLayerPacket (appPacket, potato) {}
 }
 
