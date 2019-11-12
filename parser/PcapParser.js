@@ -115,7 +115,7 @@ class PcapParser {
   inspectTCPPacket (tcpPacket, potato) {
     potato.transport = {
       ackno: tcpPacket.ackno,
-      data: tcpPacket.data,
+      //data: tcpPacket.data,
       flags: tcpPacket.flags,
       dataLength: tcpPacket.dataLength,
       sourcePort: tcpPacket.sport,
