@@ -25,7 +25,7 @@ function parseAndCheckArguments (argv) {
       settings.pcapPath = filePath
       settings.pcapFile = path.basename(filePath)
     } else {
-      console.error('Provided pcap file doesnt exist!')
+      throw new Error('Provided pcap file doesnt exist!')
     }
   }
 
