@@ -8,12 +8,24 @@ const maxNrOfIpsForWHOIS = 5000
 class PcapParser {
   constructor () {
     this.whois = new ipToAsn()
+    this.scratch = {
+      firstPcap: undefined,
+      lastPcap: undefined,
+      nrOfPacketsSeen: 0,
+      nrOfBytesSeen: 0
+    }
     this.result = {
       packets: [],
       summary: {
         generic: {
           errors: [],
-          computed: {},
+          computed: {
+            start_time: '',
+            end_time: '',
+            duration: 0,
+            avg_pps: 0,
+            avg_bps: 0
+          },
           access: {},
           internet: {
             srcPrefixes: {},
@@ -43,6 +55,7 @@ class PcapParser {
     pcap_session.on('packet', this.inspectPcapPacket.bind(this))
     pcap_session.on('complete', () => {
       this.analyseSrcIps()
+      this.analyseComputedValues()
       this.writeToFile(outPath, summaryOutPath)
     })
   }
@@ -58,7 +71,6 @@ class PcapParser {
     if (whoisError) {
       console.error('WHOIS query failed!')
     } else {
-      console.log(whoisResult)
       for (var ip in whoisResult) {
         try {
           var result = whoisResult[ip]
@@ -101,6 +113,12 @@ class PcapParser {
   }
   inspectPcapPacket (rawPcapPacket) {
     var parsedPacket = pcap.decode(rawPcapPacket)
+    if(!this.scratch.firstPcap) {
+      this.scratch.firstPcap = parsedPacket
+    }
+    this.scratch.lastPcap = parsedPacket
+    this.scratch.nrOfPacketsSeen++
+
     var etherPacket = parsedPacket.payload
     var potato = {
       id: parsedPacket.id,
@@ -141,6 +159,8 @@ class PcapParser {
       // TODO resolve
       protocol: ipv4Packet.protocol
     }
+
+    this.scratch.nrOfBytesSeen += ipv4Packet.ttl
 
     this.addOrIncrement(this.result.summary.generic.internet.srcIps, potato.ip.source)
     this.addOrIncrement(this.result.summary.generic.internet.dstIps, potato.ip.destination)
