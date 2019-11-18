@@ -1,6 +1,7 @@
-var pcap = require('pcap')
-var fs = require('fs')
-var ipToAsn = require('ip-to-asn')
+const pcap = require('pcap')
+const fs = require('fs')
+const ipToAsn = require('ip-to-asn')
+const portNumbers = require('port-numbers')
 
 const maxNrOfIpsForWHOIS = 5000
 
@@ -25,7 +26,10 @@ class PcapParser {
             dstPorts: {},
           },
           application: {
-            protocols: {}
+            protocols: {
+              srcProtocols: {},
+              dstProtocols: {}
+            }
           }
         },
         visitors: {
@@ -183,10 +187,29 @@ class PcapParser {
 
     this.addOrIncrement(this.result.summary.generic.transport.srcPorts, potato.transport.sourcePort)
     this.addOrIncrement(this.result.summary.generic.transport.dstPorts, potato.transport.destinationPort)
-    this.inspectApplicationLayerPacket(udpPacket.payload, potato, udpPacket.dport)
+    this.inspectApplicationLayerPacket(udpPacket.payload, potato, udpPacket.sport, udpPacket.dport)
   }
-  inspectApplicationLayerPacket (appPacket, potato, protocol) {
-    this.addOrIncrement(this.result.summary.generic.application.protocols, protocol)
+  inspectApplicationLayerPacket (appPacket, potato, sPort, dPort) {
+    var srcProtocol = portNumbers.getService(sPort).name
+    var dstProtocol = portNumbers.getService(dPort).name
+    this.addOrIncrement(this.result.summary.generic.application.protocols.srcProtocols, srcProtocol)
+    this.addOrIncrement(this.result.summary.generic.application.protocols.dstProtocols, dstProtocol)
+  }
+
+  analyseComputedValues() {
+    console.log(this.scratch.firstPcap)
+    var firstPcapPacket = this.scratch.firstPcap
+    var lastPcapPacket = this.scratch.lastPcap
+    this.result.summary.generic.computed.start_time = firstPcapPacket.pcap_header.tv_sec
+    this.result.summary.generic.computed.end_time = lastPcapPacket.pcap_header.tv_sec
+    this.result.summary.generic.computed.duration = lastPcapPacket.pcap_header.tv_sec - firstPcapPacket.pcap_header.tv_sec
+
+    var nrOfHosts = Object.keys(this.result.summary.generic.internet.srcIps).length
+    var nrOfPackets = this.scratch.nrOfPacketsSeen
+    this.result.summary.generic.computed.avg_pps = nrOfPackets / nrOfHosts
+
+    var nrOfBytes = this.scratch.nrOfBytesSeen
+    this.result.summary.generic.computed.avg_bps = nrOfBytes / nrOfHosts
   }
 }
 
