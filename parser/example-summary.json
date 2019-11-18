@@ -1,0 +1,66 @@
+{
+  "errors": {},
+  "general": {
+    "computed": {
+      "duration": 300,
+      "start_time": "12-23-4568-99:00",
+      "end_time": "123123123",
+      "avg_pps": 50,
+      "avg_bps": 230
+    },
+    "access": {
+    },
+    "internet": {
+      "srcPrefixes": {
+        "10.1.0.0/16": {
+          "count": 200,
+          "AS": "123456"
+        }
+      },
+      "dstPrefixes": {
+        "192.1.0.0/16": {
+          "count": 1,
+          "AS": "456789"
+        }
+      },
+      "srcIps": {
+        "10.1.2.3": { "count": 100 },
+        "10.1.2.4": { "count": 100 }
+      },
+      "dstIps": {
+        "192.1.2.3": { "count": 1 }
+      }
+    },
+    "transport": {
+      "srcPorts": {
+        "23456": 50,
+        "34567": 50,
+        "45678": 50,
+        "56789": 50
+      },
+      "dstPorts": {
+        "53": 200
+      }
+    },
+    "application": {
+      "protocols": {
+        "dns": 200
+      }
+    }
+  },
+  "visitors": {
+    "example-visitor-xy": {
+      "tcp-conn-state": [
+        "SYN",
+        "SYN",
+        "SYN",
+        "ACK",
+        "SYN",
+        "SYN",
+        "SYN/aCK",
+        "SYN",
+        "SYN"
+      ]
+    }
+  }
+}

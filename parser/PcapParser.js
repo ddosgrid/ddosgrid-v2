@@ -2,17 +2,35 @@ var pcap = require('pcap')
 var fs = require('fs')
 var ipToAsn = require('ip-to-asn')
 
+const maxNrOfIpsForWHOIS = 5000
+
 class PcapParser {
   constructor () {
     this.whois = new ipToAsn()
     this.result = {
       packets: [],
       summary: {
-        errors: [],
-        srcIps: {},
-        dstIps: {},
-        srcPorts : {},
-        dstPorts: {},
+        generic: {
+          errors: [],
+          computed: {},
+          access: {},
+          internet: {
+            srcPrefixes: {},
+            dstPrefixes: {},
+            srcIps: {},
+            dstIps: {},
+          },
+          transport: {
+            srcPorts: {},
+            dstPorts: {},
+          },
+          application: {
+            protocols: {}
+          }
+        },
+        visitors: {
+
+        }
       }
     }
   }
@@ -20,38 +38,62 @@ class PcapParser {
     var pcap_session = pcap.createOfflineSession(filePath, '')
     pcap_session.on('packet', this.inspectPcapPacket.bind(this))
     pcap_session.on('complete', () => {
+      this.analyseSrcIps()
       this.writeToFile(outPath, summaryOutPath)
     })
   }
+  analyseSrcIps () {
+    var nrOfSrcIps = Object.keys(this.result.summary.generic.internet.srcIps).length
+    if (nrOfSrcIps < maxNrOfIpsForWHOIS) {
+      this.whois.query(Object.keys(this.result.summary.generic.internet.srcIps), this.parseWhoisResult.bind(this))
+    } else {
+      console.warn(`Skipping src ip analysis since ${nrOfSrcIps} IPv4 addresses are too many for WHOIS`)
+    }
+  }
+  parseWhoisResult (whoisError, whoisResult) {
+    if (whoisError) {
+      console.error('WHOIS query failed!')
+    } else {
+      console.log(whoisResult)
+      for (var ip in whoisResult) {
+        try {
+          var result = whoisResult[ip]
+          result.count = this.result.summary.generic.internet.srcIps[ip].count
+          //this.result.summary.srcIps[ip] = whoisResult[ip]
+          var allSrcPrefixes = this.result.summary.generic.internet.srcPrefixes
+          if(allSrcPrefixes[result.range]) {
+            allSrcPrefixes[result.range].count += result.count
+          } else {
+            allSrcPrefixes[result.range] = result
+          }
+        } catch(e) {
+          console.log('Failed to update ', ip)
+        }
+      }
+    }
+  }
   writeToFile(outPath, summaryOutPath) {
-    fs.writeFile(outPath, JSON.stringify(this.result.packets), function (err) {
-      if(err) {
-        console.log(`Packet trace not able to write to ${outPath}`)
-      }
-      console.log('Written parsed network to ', outPath)
-    })
-    fs.writeFile(summaryOutPath, JSON.stringify(this.result.summary), function (err) {
-      if(err) {
-        console.log(`Summary not able to write to ${summaryOutPath}`)
-      }
-      console.log('Written capture summary to ', summaryOutPath)
-    })
+    setTimeout(() => {
+      fs.writeFile(outPath, JSON.stringify(this.result.packets), function (err) {
+        if (err) {
+          console.log(`Packet trace not able to write to ${outPath}`)
+        }
+        console.log('Written parsed network to ', outPath)
+      })
+      fs.writeFile(summaryOutPath, JSON.stringify(this.result.summary), function (err) {
+        if (err) {
+          console.log(`Summary not able to write to ${summaryOutPath}`)
+        }
+        console.log('Written capture summary to ', summaryOutPath)
+      })
+    }, 4000)
   }
   addOrIncrement (targetObject, property) {
     if (targetObject.hasOwnProperty(property)) {
       targetObject[property].count += 1
     } else {
       targetObject[property] = { count: 0 }
-      //this.analyseAndAdd(property, targetObject)
     }
-  }
-  analyseAndAdd (ip, targetObject) {
-    console.log('analysing:', ip)
-    this.whois.query(ip, function (res) {
-      console.log(res)
-      targetObject[ip] = res
-      targetObject[ip].count = 1
-    })
   }
   inspectPcapPacket (rawPcapPacket) {
     var parsedPacket = pcap.decode(rawPcapPacket)
@@ -96,8 +138,8 @@ class PcapParser {
       protocol: ipv4Packet.protocol
     }
 
-    this.addOrIncrement(this.result.summary.srcIps, potato.ip.source)
-    this.addOrIncrement(this.result.summary.dstIps, potato.ip.destination)
+    this.addOrIncrement(this.result.summary.generic.internet.srcIps, potato.ip.source)
+    this.addOrIncrement(this.result.summary.generic.internet.dstIps, potato.ip.destination)
 
     var protocol = ipv4Packet.protocol
     this.inspectTransportPacket(ipv4Packet, protocol, potato)
@@ -127,8 +169,9 @@ class PcapParser {
       windowSize: tcpPacket.windowSize
     }
 
-    this.addOrIncrement(this.result.summary.srcPorts, potato.transport.sourcePort)
-    this.addOrIncrement(this.result.summary.dstPorts, potato.transport.destinationPort)
+    this.addOrIncrement(this.result.summary.generic.transport.srcPorts, potato.transport.sourcePort)
+    this.addOrIncrement(this.result.summary.generic.transport.dstPorts, potato.transport.destinationPort)
+    this.inspectApplicationLayerPacket(udpPacket.payload, udpPacket.dport)
   }
   inspectUDPPacket (udpPacket, potato) {
     potato.transport = {
@@ -138,10 +181,13 @@ class PcapParser {
       destinationPort: udpPacket.dport,
     }
 
-    this.addOrIncrement(this.result.summary.srcPorts, potato.transport.sourcePort)
-    this.addOrIncrement(this.result.summary.dstPorts, potato.transport.destinationPort)
+    this.addOrIncrement(this.result.summary.generic.transport.srcPorts, potato.transport.sourcePort)
+    this.addOrIncrement(this.result.summary.generic.transport.dstPorts, potato.transport.destinationPort)
+    this.inspectApplicationLayerPacket(udpPacket.payload, potato, udpPacket.dport)
   }
-  inspectApplicationLayerPacket (appPacket, potato) {}
+  inspectApplicationLayerPacket (appPacket, potato, protocol) {
+    this.addOrIncrement(this.result.summary.generic.application.protocols, protocol)
+  }
 }
 
 module.exports = { PcapParser }
