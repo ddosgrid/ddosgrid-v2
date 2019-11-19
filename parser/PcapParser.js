@@ -195,7 +195,7 @@ class PcapParser {
 
     this.addOrIncrement(this.result.summary.generic.transport.srcPorts, potato.transport.sourcePort)
     this.addOrIncrement(this.result.summary.generic.transport.dstPorts, potato.transport.destinationPort)
-    this.inspectApplicationLayerPacket(udpPacket.payload, udpPacket.dport)
+    this.inspectApplicationLayerPacket(tcpPacket.payload, potato, tcpPacket.sport, tcpPacket.sport)
   }
   inspectUDPPacket (udpPacket, potato) {
     potato.transport = {
@@ -210,8 +210,16 @@ class PcapParser {
     this.inspectApplicationLayerPacket(udpPacket.payload, potato, udpPacket.sport, udpPacket.dport)
   }
   inspectApplicationLayerPacket (appPacket, potato, sPort, dPort) {
-    var srcProtocol = portNumbers.getService(sPort).name
-    var dstProtocol = portNumbers.getService(dPort).name
+    try {
+      var srcProtocol = portNumbers.getService(sPort).name
+    } catch (e) {
+      var srcProtocol = sPort
+    }
+    try {
+      var dstProtocol = portNumbers.getService(dPort).name
+    } catch (e) {
+      var dstProtocol = dPort
+    }
     this.addOrIncrement(this.result.summary.generic.application.protocols.srcProtocols, srcProtocol)
     this.addOrIncrement(this.result.summary.generic.application.protocols.dstProtocols, dstProtocol)
   }
