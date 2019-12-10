@@ -1,6 +1,6 @@
 const { parseAndCheckArguments } = require('./cli/CLI')
-const { PcapParser } = require('./parser/PcapParser')
-const parser = new PcapParser()
+var PacketEmitter = require('./parser/PcapParser')
+var PortAnalyser = require('./parser/PortScanAnalyser')
 
 try {
     var settings = parseAndCheckArguments(process.argv)
@@ -9,5 +9,17 @@ try {
     process.exit(1)
 }
 console.log('Configured:', settings)
-parser.parseToJSON(settings.pcapPath, settings.pcapFile, `${settings.pcapPath}.network.json`, `${settings.pcapPath}.summary.json`)
+var outFileBaseName = `${settings.pcapPath}-analysed-${new Date().toJSON()}-`
 
+var emitter = new PacketEmitter()
+var portAnalyser = new PortAnalyser(emitter, outFileBaseName)
+
+setUpAndRun()
+
+async function setUpAndRun () {
+    await portAnalyser.setUp()
+    emitter.startPcapSession(settings.pcapFile)
+    emitter.on('complete', async () => {
+        await portAnalyser.postParsingAnalysis()
+    })
+}
