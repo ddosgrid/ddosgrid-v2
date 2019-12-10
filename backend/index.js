@@ -18,7 +18,7 @@ setUpAndRun()
 
 async function setUpAndRun () {
     await portAnalyser.setUp()
-    emitter.startPcapSession(settings.pcapFile)
+    emitter.startPcapSession(settings.pcapPath)
     emitter.on('complete', async () => {
         await portAnalyser.postParsingAnalysis()
     })
