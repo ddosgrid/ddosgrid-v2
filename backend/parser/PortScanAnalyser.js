@@ -23,7 +23,7 @@ class PortScanAnalyser extends GenericPcapAnalyser {
                 this.results [port].count++
             } else {
                 this.results[port] = {
-                    count: 0,
+                    count: 1,
                     port: port,
                     servicename: 'TBD'
                 }
