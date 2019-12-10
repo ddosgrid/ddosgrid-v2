@@ -41,13 +41,19 @@ class PortScanAnalyser extends GenericPcapAnalyser {
 
     async postParsingAnalysis() {
         var ports = Object.values(this.results)
-        var sortedByCount = ports.sort((a, b) => { a.count < b.count })
-        var topTenServices = sortedByCount.slice(0, 10)
+        ports.sort((a, b) => {
+            if (a.count > b.count)
+                return -1;
+            if (a.count < b.count)
+                return 1;
+            return 0;
+        })
+        var topTenServices = ports.slice(0, 10)
 
         var totalNrOfDestinationPorts = ports.length
         this.output.topTen = topTenServices
         this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
-        this.output.countedPorts = sortedByCount
+        this.output.countedPorts = ports
         return new Promise((resolve, reject) => {
             const fs = require('fs')
             var fileName = `${this.baseOutPath}-portscan.json`
