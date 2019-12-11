@@ -21,8 +21,8 @@ jobs:
       run: |
         cd frontend
         npm ci
-        npm run test:unit
         npm run build
+        npm run test:unit
       env:
         CI: true
     - name: Upload
