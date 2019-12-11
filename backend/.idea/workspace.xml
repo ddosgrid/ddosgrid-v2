@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1ef4674-0d1c-485e-aca1-16292312e84d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/src/views/DashBoard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/DashBoard.vue" afterDir="false" />
-    </list>
+    <list default="true" id="b1ef4674-0d1c-485e-aca1-16292312e84d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,9 +57,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Node.js.index.js" />
-      <item itemvalue="Node.js.PcapParserTest.js" />
       <item itemvalue="Node.js.PcapAnalyserTest.js" />
+      <item itemvalue="Node.js.PcapParserTest.js" />
+      <item itemvalue="Node.js.index.js" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -80,6 +78,7 @@
       <workItem from="1575900985835" duration="16062000" />
       <workItem from="1575988879279" duration="2757000" />
       <workItem from="1576060701010" duration="624000" />
+      <workItem from="1576068335198" duration="649000" />
     </task>
     <servers />
   </component>
