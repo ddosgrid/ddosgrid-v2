@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b1ef4674-0d1c-485e-aca1-16292312e84d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/views/LandingPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/LandingPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/DashBoard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/DashBoard.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -84,7 +79,7 @@
       <workItem from="1574071959574" duration="5662000" />
       <workItem from="1575900985835" duration="16062000" />
       <workItem from="1575988879279" duration="2757000" />
-      <workItem from="1576060701010" duration="623000" />
+      <workItem from="1576060701010" duration="624000" />
     </task>
     <servers />
   </component>
