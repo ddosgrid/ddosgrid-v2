@@ -37,7 +37,7 @@ jobs:
         name: site
         path: frontend/dist
         
-  build-frontend:
+  deploy-frontend:
     needs: [integrate-frontend]
     runs-on: ubuntu-latest
 
