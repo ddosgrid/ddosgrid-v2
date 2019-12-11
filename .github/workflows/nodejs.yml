@@ -1,9 +1,15 @@
-name: Node CI - Frontend
+name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  integrate:
+  integrate-frontend:
 
     runs-on: ubuntu-latest
 
@@ -30,8 +36,9 @@ jobs:
       with:
         name: site
         path: frontend/dist
-  build:
-    needs: [integrate]
+        
+  build-frontend:
+    needs: [integrate-frontend]
     runs-on: ubuntu-latest
 
     strategy:
@@ -53,3 +60,32 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: site
+
+
+  integrate-backend:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, build, and test
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+        npm run test:unit
+      env:
+        CI: true
+    - name: Upload
+      uses: actions/upload-artifact@v1
+      with:
+        name: site
+        path: frontend/dist
