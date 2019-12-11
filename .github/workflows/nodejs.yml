@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -24,21 +24,31 @@ jobs:
         npm run test:unit
       env:
         CI: true
+    - name: Upload
+      uses: actions/upload-artifact@v1
+      with:
+        name: site
+        path: dist
   build:
     needs: [integrate]
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Download
+        uses: actions/download-artifact@v1
+        with:
+          name: site
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: dist
+          FOLDER: site
