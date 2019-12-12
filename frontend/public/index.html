@@ -12,7 +12,47 @@
     <noscript>
       <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <div id="app">    
+      <!-- built files will be auto injected -->
+
+      <!-- This animation will be removed as soon as Vue.js is ready to render the main App.vue component-->
+      <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
+      <svg width="80" height="80" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#448AFF" style="position: fixed; top: calc(50% - 40px); left: calc(50% - 40px);">
+        <g fill="none" fill-rule="evenodd" stroke-width="2">
+          <circle cx="22" cy="22" r="1">
+            <animate attributeName="r"
+                     begin="0s" dur="1.8s"
+                     values="1; 20"
+                     calcMode="spline"
+                     keyTimes="0; 1"
+                     keySplines="0.165, 0.84, 0.44, 1"
+                     repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+                     begin="0s" dur="1.8s"
+                     values="1; 0"
+                     calcMode="spline"
+                     keyTimes="0; 1"
+                     keySplines="0.3, 0.61, 0.355, 1"
+                     repeatCount="indefinite" />
+          </circle>
+          <circle cx="22" cy="22" r="1">
+            <animate attributeName="r"
+                     begin="-0.9s" dur="1.8s"
+                     values="1; 20"
+                     calcMode="spline"
+                     keyTimes="0; 1"
+                     keySplines="0.165, 0.84, 0.44, 1"
+                     repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+                     begin="-0.9s" dur="1.8s"
+                     values="1; 0"
+                     calcMode="spline"
+                     keyTimes="0; 1"
+                     keySplines="0.3, 0.61, 0.355, 1"
+                    repeatCount="indefinite" />
+          </circle>
+        </g>
+      </svg>
+    </div>
   </body>
 </html>
