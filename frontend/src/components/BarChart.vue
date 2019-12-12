@@ -1,6 +1,5 @@
 <template>
   <div class="barchart">
-    This is a barchart
   </div>
 </template>
 
