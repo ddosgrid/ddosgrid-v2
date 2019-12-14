@@ -62,7 +62,7 @@ class PortScanAnalyser extends GenericPcapAnalyser {
                     console.err(`Error writing file ${fileName}.`)
                     reject(err)
                 }
-                resolve()
+                resolve(fileName)
                 }
             )
         })

@@ -3,19 +3,20 @@ const { PacketEmitter, PortAnalyser} = require('../../../miner')
 const path = require('path')
 
 
-function analyseFileInProjectFolder (projectPath) {
+function analyseFileInProjectFolder (projectPath, cb) {
     var emitter = new PacketEmitter()
     var analyser = new PortAnalyser(emitter, projectPath)
 
-    setUpAndRun(emitter, analyser, projectPath)
+    setUpAndRun(emitter, analyser, projectPath, cb)
 
 }
-async function setUpAndRun (emitter, analyser, target) {
+async function setUpAndRun (emitter, analyser, target, cb) {
     await analyser.setUp()
     emitter.startPcapSession(target)
     emitter.on('complete', async () => {
-       await analyser.postParsingAnalysis()
+       var analysisFile = await analyser.postParsingAnalysis()
         console.log('Port scan analysis done')
+        cb(analysisFile)
     })
 }
 

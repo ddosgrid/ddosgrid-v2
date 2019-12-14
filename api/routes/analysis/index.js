@@ -3,11 +3,30 @@ const { Router } = require('express')
 const router = Router()
 const fs = require('fs')
 const pcapAnalyser = require('./pcapAnalyser')
+const persistedAnalyses =  require('./persistence')
 
 const analysisBaseDir = path.resolve(__dirname, '../../data/public/analysis/')
+const analysesDB = path.resolve(__dirname, '../../data/anyleses.db')
+var analyses = new persistedAnalyses(analysesDB)
 
 router.post('/upload', handleFilePost)
 router.post('/:id/analyse', startAnalysis)
+router.get('', getAllAnalyses)
+router.get(':id', getAnalysisById)
+
+async function getAllAnalyses (req, res) {
+    try {
+      var all = await analyses.getAnalyses()
+      res.json(all)
+    } catch (e) {
+      res.send(500)
+    }
+}
+
+async function getAnalysisById (req, res) {
+  var analysis = await analyses.getAnalysis(req.id)
+  res.json(analysis)
+}
 
 function startAnalysis (req, res) {
   var id = req.params.id
@@ -26,10 +45,12 @@ function startAnalysis (req, res) {
   })
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var filename = `${id}.pcap`
-  pcapAnalyser.analyseFileInProjectFolder(projectPath, filename)
+  pcapAnalyser.analyseFileInProjectFolder(projectPath, (analysisPath) => {
+    analyses.changeAnalysisStatus(id, 'analysed')
+    var fileName = path.relative(analysisBaseDir, analysisPath)
+    analyses.addAnalysisFile(id, fileName)
+  })
 }
-
-
 
 
 function handleFilePost (req, res) {
@@ -51,6 +72,7 @@ function handleFilePost (req, res) {
     if (err) {
       return res.status(500).send('Error uploading/moving file')
     }
+    analyses.createAnalysis(fileHash)
     return res.status(200).json({
       id: fileHash,
       status: `You're file was uploaded with ID ${fileHash}`
