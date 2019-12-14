@@ -1,10 +1,36 @@
 const path = require('path')
 const { Router } = require('express')
 const router = Router()
+const fs = require('fs')
+const pcapAnalyser = require('./pcapAnalyser')
 
 const analysisBaseDir = path.resolve(__dirname, '../../public/analysis/')
 
 router.post('/upload', handleFilePost)
+router.post('/:id/analyse', startAnalysis)
+
+function startAnalysis (req, res) {
+  var id = req.params.id
+  if (!id) {
+    res.status(404).send('ID not supplied')
+  }
+  var filePath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
+  try {
+    fs.statSync(filePath)
+  } catch (e) {
+    res.status(404).send('ID unknown')
+  }
+  res.status(200).send({
+    id: id,
+    status: 'File was found, analysis should start'
+  })
+  var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
+  var filename = `${id}.pcap`
+  pcapAnalyser.analyseFileInProjectFolder(projectPath, filename)
+}
+
+
+
 
 function handleFilePost (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
