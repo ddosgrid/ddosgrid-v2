@@ -37,6 +37,8 @@ build/Release
 /miner/node_modules/
 /miner/examples/testdata/*json
 /api/node_modules
+/api/tmp
+/api/public
 jspm_packages/
 
 # TypeScript v1 declaration files
