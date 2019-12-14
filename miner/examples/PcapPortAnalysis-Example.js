@@ -4,7 +4,7 @@ var PacketAnalyser = require('../parser/PortScanAnalyser')
 var testfile = path.resolve(__dirname, 'testdata', 'ebfe0afeea7f5417f340782d8a4d6f83portscan.pcap')
 var outFile = path.resolve(__dirname, 'testdata', 'ebfe0afeea7f5417f340782d8a4d6f83portscan.pcap')
 
-var emitter = new PacketEmitter(testfile)
+var emitter = new PacketEmitter()
 var analyser = new PacketAnalyser(emitter, outFile)
 
 setUpAndRun()

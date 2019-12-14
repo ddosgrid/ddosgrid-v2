@@ -4,7 +4,7 @@ const router = Router()
 const fs = require('fs')
 const pcapAnalyser = require('./pcapAnalyser')
 
-const analysisBaseDir = path.resolve(__dirname, '../../public/analysis/')
+const analysisBaseDir = path.resolve(__dirname, '../../data/public/analysis/')
 
 router.post('/upload', handleFilePost)
 router.post('/:id/analyse', startAnalysis)

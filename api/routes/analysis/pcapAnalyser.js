@@ -1,4 +1,4 @@
-//const { PacketEmitter, PacketAnalyser} = require('ddosgrid-miner')
+//const { PacketEmitter, PortAnalyser} = require('ddosgrid-miner')
 const { PacketEmitter, PortAnalyser} = require('../../../miner')
 const path = require('path')
 
