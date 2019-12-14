@@ -1,8 +1,8 @@
 {
-  "name": "ddos-pcap-decoder-POC",
+  "name": "ddosgrid-miner",
   "version": "1.0.0",
   "description": "POC showing feature extraction from pcap files",
-  "main": "index.js",
+  "main": "exports.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
   },
