@@ -1,0 +1,14 @@
+{
+  "name": "ddosgrid-api",
+  "version": "1.0.0",
+  "description": "Web API around the ddosgrid-miner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
