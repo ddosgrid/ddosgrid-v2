@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.6"
+    "express-fileupload": "^1.1.6",
+    "nedb": "^1.8.0"
   }
 }
