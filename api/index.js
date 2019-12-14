@@ -9,6 +9,10 @@ const analysisRoutes = require('./routes/analysis/index')
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000
 const inDevMode = process.env.NODE_ENV === 'dev'
+const staticFileOptions = {
+  // Will advise user agents to nto download files during maxAge (defautl)
+  immutable: true
+}
 
 const uploadMiddleWare = fileUpload({
   createParentPath: true,
@@ -20,6 +24,7 @@ const uploadMiddleWare = fileUpload({
 app.use(uploadMiddleWare)
 app.use('/', rootRoutes)
 app.use('/analysis', analysisRoutes)
+app.use('/public', express.static('data/public/analysis', staticFileOptions))
 
 app.listen(port, logStart)
 
