@@ -1,23 +1,31 @@
 //const { PacketEmitter, PortAnalyser} = require('ddosgrid-miner')
-const { PacketEmitter, PortAnalyser} = require('../../../miner')
+const { PacketEmitter, PortAnalyser, MetricAnalyser} = require('../../../miner')
 const path = require('path')
 
 
 function analyseFileInProjectFolder (projectPath, cb) {
     var emitter = new PacketEmitter()
-    var analyser = new PortAnalyser(emitter, projectPath)
+    var portAnalyser = new PortAnalyser(emitter, projectPath)
+    var metricAnalyser = new MetricAnalyser(emitter, projectPath)
 
-    setUpAndRun(emitter, analyser, projectPath, cb)
+    setUpAndRun(emitter, portAnalyser, metricAnalyser, projectPath, cb)
 
 }
-async function setUpAndRun (emitter, analyser, target, cb) {
-    await analyser.setUp()
+async function setUpAndRun (emitter, portAnalyser, metricAnalyser, target, cb) {
+    await portAnalyser.setUp()
+    await metricAnalyser.setUp()
+
     emitter.startPcapSession(target)
+
     emitter.on('complete', async () => {
-       var analysisFile = await analyser.postParsingAnalysis()
+        var portAnalysisResult = await portAnalyser.postParsingAnalysis()
+        var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
         console.log('Port scan analysis done')
-        cb(analysisFile)
+        cb({
+          portanalysis: portAnalysisResult,
+          general: metricAnalysisResult
+        })
     })
 }
 
-module.exports = {analyseFileInProjectFolder}
+module.exports = { analyseFileInProjectFolder }
