@@ -6,7 +6,7 @@
     <div id="flex-container">
       <md-card>
         <md-card-header>
-          <div class="md-title">Top 10 Most Scanned Ports (You wnot believe!!!11!!)</div>
+          <div class="md-title">Most Scanned Ports</div>
         </md-card-header>
 
         <md-card-content>
@@ -25,7 +25,7 @@
         </md-card-header>
 
         <md-card-content>
-          <div>Lorem ipsum card content Free bobby shmurda</div>
+          <div>Lorem ipsum card content</div>
         </md-card-content>
 
         <md-card-actions>
@@ -40,7 +40,7 @@
         </md-card-header>
 
         <md-card-content>
-          <div>Lorem ipsum card content Free bobby shmurda</div>
+          <div>Lorem ipsum card content  </div>
         </md-card-content>
 
         <md-card-actions>
@@ -55,7 +55,7 @@
         </md-card-header>
 
         <md-card-content>
-          <div>Lorem ipsum card content Free bobby shmurda</div>
+          <div>Lorem ipsum card content  </div>
         </md-card-content>
 
         <md-card-actions>
@@ -81,9 +81,5 @@ export default {
 #flex-container {
   display: flex;
   justify-content: space-between;
-}
-
-md-card {
-  width: 20%;
 }
 </style>
