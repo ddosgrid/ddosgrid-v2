@@ -4,13 +4,14 @@
       This is a dashboard
     </h1>
     <div id="flex-container">
-      <md-card>
+
+      <md-card v-for='url in urls' v-bind:key="url">
         <md-card-header>
           <div class="md-title">Most Scanned Ports</div>
         </md-card-header>
 
         <md-card-content>
-          <barchart :url='this.portscanURL1'>
+          <barchart :url='url'>
           </barchart>
         </md-card-content>
 
@@ -19,50 +20,6 @@
         </md-card-actions>
       </md-card>
 
-      <md-card>
-        <md-card-header>
-          <div class="md-title">Card Thing</div>
-        </md-card-header>
-
-        <md-card-content>
-          <div>Lorem ipsum card content</div>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-
-      <md-card>
-        <md-card-header>
-          <div class="md-title">Most Scanned Ports</div>
-        </md-card-header>
-
-        <md-card-content>
-          <barchart :url='this.portscanURL2'>
-          </barchart>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-
-      <md-card>
-        <md-card-header>
-          <div class="md-title">Card Thing</div>
-        </md-card-header>
-
-        <md-card-content>
-          <div>Lorem ipsum card content  </div>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
     </div>
   </div>
 </template>
@@ -76,8 +33,10 @@ export default {
   },
   data: function () {
     return {
-      portscanURL1: 'https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json',
-      portscanURL2: 'https://api.ddosgrid.online/public/7783cc6dfb0dcd3d2a8202336cf4beb3/7783cc6dfb0dcd3d2a8202336cf4beb3.pcap-portscan.json'
+      urls: [
+        'https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json',
+        'https://api.ddosgrid.online/public/7783cc6dfb0dcd3d2a8202336cf4beb3/7783cc6dfb0dcd3d2a8202336cf4beb3.pcap-portscan.json'
+      ]
     }
   }
 }

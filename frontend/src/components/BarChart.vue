@@ -18,7 +18,7 @@ export default {
       labels: ports,
       datasets: [
         {
-          label: 'Data One',
+          label: 'Count',
           backgroundColor: '#f87979',
           data: count
         }
