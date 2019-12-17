@@ -10,7 +10,7 @@
         </md-card-header>
 
         <md-card-content>
-          <barchart>
+          <barchart :url='this.portscanURL1'>
           </barchart>
         </md-card-content>
 
@@ -36,15 +36,15 @@
 
       <md-card>
         <md-card-header>
-          <div class="md-title">Card Thing</div>
+          <div class="md-title">Most Scanned Ports</div>
         </md-card-header>
 
         <md-card-content>
-          <div>Lorem ipsum card content  </div>
+          <barchart :url='this.portscanURL2'>
+          </barchart>
         </md-card-content>
 
         <md-card-actions>
-          <md-button>Action</md-button>
           <md-button>Action</md-button>
         </md-card-actions>
       </md-card>
@@ -73,6 +73,12 @@ export default {
   name: 'DashBoard',
   components: {
     'barchart': BarChart
+  },
+  data: function () {
+    return {
+      portscanURL1: 'https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json',
+      portscanURL2: 'https://api.ddosgrid.online/public/7783cc6dfb0dcd3d2a8202336cf4beb3/7783cc6dfb0dcd3d2a8202336cf4beb3.pcap-portscan.json'
+    }
   }
 }
 </script>
@@ -81,5 +87,9 @@ export default {
 #flex-container {
   display: flex;
   justify-content: space-between;
+}
+
+md-card {
+  width: 10%;
 }
 </style>

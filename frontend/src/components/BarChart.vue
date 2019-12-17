@@ -4,9 +4,9 @@ import { Bar } from 'vue-chartjs'
 export default {
   extends: Bar,
   name: 'BarChart',
-  props: [ 'dataset' ],
+  props: [ 'url' ],
   mounted: async function () {
-    let response = await fetch('https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json')
+    let response = await fetch(this.url)
     let parsedResponse = await response.json()
     console.log(parsedResponse)
 
