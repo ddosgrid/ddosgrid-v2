@@ -1,13 +1,26 @@
 import { expect } from 'chai'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import HelloWorld from '@/components/BarChart.vue'
 
 describe('BarChart.vue', () => {
+  global.fetch = async () => {
+    return {
+      json: async () => {
+        return {
+          topTen: [
+            {
+              count: 1,
+              port: 1
+            }
+          ]
+        }
+      }
+    }
+  }
   it('Accepts a dataset as a property', () => {
-    const dataset = [{ port: 80, count: 100 }]
-    const wrapper = mount(HelloWorld, {
-      propsData: { dataset }
+    const wrapper = shallowMount(HelloWorld, {
+      propsData: { url: '123' }
     })
-    expect(wrapper.props().dataset).to.include(dataset[0])
+    expect(wrapper.props().url).to.equal('123')
   })
 })
