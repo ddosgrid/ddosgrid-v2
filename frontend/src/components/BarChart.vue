@@ -1,5 +1,6 @@
 <template>
   <div class="barchart">
+    Lorem ipdum blabla
   </div>
 </template>
 

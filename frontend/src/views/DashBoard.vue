@@ -5,11 +5,26 @@
     </h1>
     <md-card>
       <md-card-header>
-        <div class="md-title">Card without hover effect</div>
+        <div class="md-title">Top 10 Most Scanned Ports (You wnot believe!!!11!!)</div>
       </md-card-header>
 
       <md-card-content>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio itaque ea, nostrum odio. Dolores, sed accusantium quasi non.
+        <barchart>
+        </barchart>
+      </md-card-content>
+
+      <md-card-actions>
+        <md-button>Action</md-button>
+      </md-card-actions>
+    </md-card>
+
+    <md-card>
+      <md-card-header>
+        <div class="md-title">Card Thing</div>
+      </md-card-header>
+
+      <md-card-content>
+        <div>Lorem ipsum card content Free bobby shmurda</div>
       </md-card-content>
 
       <md-card-actions>
@@ -17,7 +32,6 @@
         <md-button>Action</md-button>
       </md-card-actions>
     </md-card>
-    <barchart></barchart>
   </div>
 </template>
 
