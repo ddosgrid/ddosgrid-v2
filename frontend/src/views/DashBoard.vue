@@ -5,7 +5,7 @@
     </h1>
     <div id="flex-container">
 
-      <md-card v-for='url in urls' v-bind:key="url">
+      <md-card v-for='url in urls' v-bind:key="url" class="card">
         <md-card-header>
           <div class="md-title">Most Scanned Ports</div>
         </md-card-header>
@@ -47,9 +47,21 @@ export default {
 #flex-container {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 md-card {
   width: 10%;
 }
+.card {
+  flex-basis: 700px;
+  flex-grow: 1;
+  margin: 10px 10px;
+}
+@media only screen and (max-device-width: 768px){
+  .card {
+    flex-basis: 100%;
+  }
+}
+
 </style>
