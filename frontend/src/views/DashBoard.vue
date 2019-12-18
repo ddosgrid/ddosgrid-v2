@@ -19,6 +19,26 @@
           <md-button>Action</md-button>
         </md-card-actions>
       </md-card>
+      <md-card class="card">
+        <md-card-header>
+          <div class="md-title">Available datasets</div>
+        </md-card-header>
+
+        <md-card-content>
+          <md-list>
+            <md-list-item class="listitem" v-bind:key="dataset.id" v-for='dataset in datasets' @click="add(dataset.analysisFiles)">
+              {{dataset.id}}
+              <md-button class="btn md-icon-button md-dense md-raised md-primary">
+                <md-icon @click="add(dataset.analysisFiles)">add</md-icon>
+              </md-button>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button>Action</md-button>
+        </md-card-actions>
+      </md-card>
 
     </div>
   </div>
@@ -31,13 +51,29 @@ export default {
   components: {
     'barchart': BarChart
   },
+  mounted: async function () {
+    var res = await fetch('https://api.ddosgrid.online/analysis')
+    var json = await res.json()
+    this.datasets = json
+  },
+  methods: {
+    add: function (file) {
+      console.log(file)
+      if (Array.isArray(file)) {
+        var urls = file.map(el => `https://api.ddosgrid.online/public/${file}`)
+        console.log(urls)
+        this.urls.push([...urls])
+      }
+    }
+  },
   data: function () {
     return {
       urls: [
         'https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json',
         'https://api.ddosgrid.online/public/7783cc6dfb0dcd3d2a8202336cf4beb3/7783cc6dfb0dcd3d2a8202336cf4beb3.pcap-portscan.json',
         'https://api.ddosgrid.online/public/50b3fcf30e5801f37e773c8c5ac92420/50b3fcf30e5801f37e773c8c5ac92420.pcap-portscan.json'
-      ]
+      ],
+      datasets: []
     }
   }
 }
