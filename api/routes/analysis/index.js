@@ -46,10 +46,13 @@ function startAnalysis (req, res) {
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var filename = `${id}.pcap`
   pcapAnalyser.analyseFileInProjectFolder(projectPath, (analysisResult) => {
-    var portScanFile = analysisResult.portanalysis
+    var portScanFileShort = analysisResult.portanalysis.summaryFile
+    var portScanFileLong = analysisResult.portanalysis.dumpFile
     var metricScanFile = analysisResult.general.fileName
     analyses.changeAnalysisStatus(id, 'analysed')
-    var fileName = path.relative(analysisBaseDir, portScanFile)
+    var fileName = path.relative(analysisBaseDir, portScanFileShort)
+    analyses.addAnalysisFile(id, fileName)
+    fileName = path.relative(analysisBaseDir, portScanFileLong)
     analyses.addAnalysisFile(id, fileName)
     fileName = path.relative(analysisBaseDir, metricScanFile)
     analyses.addAnalysisFile(id, fileName)
