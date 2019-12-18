@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <h1>
-      This is a dashboard
+    Visualization Dashboard
     </h1>
     <div id="flex-container">
 
