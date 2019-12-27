@@ -22,7 +22,10 @@ class MetricAnalyser extends GenericPcapAnalyser {
           nrOfSrcIps: 0,
           nrOfDstIps: 0,
           nrOfSrcPorts: 0,
-          nrOfDstPorts: 0
+          nrOfDstPorts: 0,
+          nrOfUDPPackets: 0,
+          nrOfTCPPackets:0,
+          udpToTcpRatio: 0
         }
     }
     async setUp() {
@@ -36,6 +39,8 @@ class MetricAnalyser extends GenericPcapAnalyser {
       this.pcapParser.on('ipv6Packet', this.countipv6.bind(this))
 
       this.pcapParser.on('transportPacket', this.countPorts.bind(this))
+      this.pcapParser.on('udpPacket', this.countUdpPackets.bind(this))
+      this.pcapParser.on('tcpPacket', this.counttcpPackets.bind(this))
     }
     noteStartTime (pcapPacket) {
       this.output.start = pcapPacket.pcap_header.tv_sec
@@ -46,6 +51,12 @@ class MetricAnalyser extends GenericPcapAnalyser {
     }
     countPacketSize (pcapPacket) {
       this.output.attackSizeInBytes += pcapPacket.pcap_header.len
+    }
+    countUdpPackets () {
+      this.output.nrOfUDPPackets++
+    }
+    counttcpPackets () {
+      this.output.nrOfTCPPackets++
     }
     countPorts (transportPacket) {
       var srcPort = transportPacket.sport
@@ -81,6 +92,7 @@ class MetricAnalyser extends GenericPcapAnalyser {
     async postParsingAnalysis() {
       this.output.attackBandwidthInBps = this.output.attackSizeInBytes / this.output.duration
       this.output.avgPacketSize = this.output.attackSizeInBytes / this.output.nrOfIPpackets
+      this.output.udpToTcpRatio = this.output.nrOfUDPPackets / this.output.nrOfTCPPackets
       return new Promise((resolve, reject) => {
         const fs = require('fs')
         var fileName = `${this.baseOutPath}-generic-metrics.json`
