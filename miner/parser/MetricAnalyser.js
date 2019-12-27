@@ -59,28 +59,36 @@ class MetricAnalyser extends GenericPcapAnalyser {
       this.output.nrOfTCPPackets++
     }
     countPorts (transportPacket) {
-      var srcPort = transportPacket.sport
-      var dstPort = transportPacket.dport
-      if(!this.results.dstPorts.has(dstPort)) {
-        this.results.dstPorts.add(dstPort)
-        this.output.nrOfDstPorts++
-      }
-      if(!this.results.srcPorts.has(srcPort)) {
-        this.results.srcPorts.add(srcPort)
-        this.output.nrOfSrcPorts++
+      try {
+        var srcPort = transportPacket.sport
+        var dstPort = transportPacket.dport
+        if(!this.results.dstPorts.has(dstPort)) {
+          this.results.dstPorts.add(dstPort)
+          this.output.nrOfDstPorts++
+        }
+        if(!this.results.srcPorts.has(srcPort)) {
+          this.results.srcPorts.add(srcPort)
+          this.output.nrOfSrcPorts++
+        }
+      } catch (e) {
+        console.log('Unable to process transport-level packet:', transportPacket)
       }
     }
     countIPPackets (ipPacket) {
       this.output.nrOfIPpackets++
-      var srcAddr = ipPacket.saddr.addr.join('.')
-      var dstAddr = ipPacket.daddr.addr.join('.')
-      if(!this.results.srcIps.has(srcAddr)) {
-        this.results.srcIps.add(srcAddr)
-        this.output.nrOfSrcIps++
-      }
-      if(!this.results.dstIps.has(dstAddr)) {
-        this.results.dstIps.add(dstAddr)
-        this.output.nrOfDstIps++
+      try {
+        var srcAddr = ipPacket.saddr.addr.join('.')
+        var dstAddr = ipPacket.daddr.addr.join('.')
+        if(!this.results.srcIps.has(srcAddr)) {
+          this.results.srcIps.add(srcAddr)
+          this.output.nrOfSrcIps++
+        }
+        if(!this.results.dstIps.has(dstAddr)) {
+          this.results.dstIps.add(dstAddr)
+          this.output.nrOfDstIps++
+        }
+      } catch(e) {
+        console.log('Unable to process IP packet:', ipPacket)
       }
     }
     countipv4 () {
