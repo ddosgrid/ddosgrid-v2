@@ -41,16 +41,15 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
                 return 1;
             return 0;
         })
-        var topTenServices = ports.slice(0, 20)
-        // TODO implement fetching service name
-        /*
-        var service = this.portNumbers.getService(port)
-        var serviceName = service.name
 
-         */
+        var topTwentyServices = ports.slice(0, 20)
+        topTwentyServices.map((port) => {
+          var service = this.portNumbers.getService(port.port)
+          port.servicename = service.name
+        })
 
         var totalNrOfDestinationPorts = ports.length
-        this.output.topTen = topTenServices
+        this.output.topTwenty = topTwentyServices
         this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
         this.output.countedPorts = ports
         return new Promise((resolve, reject) => {
