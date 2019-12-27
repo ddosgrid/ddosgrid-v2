@@ -45,16 +45,21 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
         var topTwentyServices = ports.slice(0, 20)
         topTwentyServices.map((port) => {
           var service = this.portNumbers.getService(port.port)
-          port.servicename = service.name
+          try {
+            port.servicename = service.name
+          } catch (e) {
+            port.servicename = port.port
+          }
         })
 
         var totalNrOfDestinationPorts = ports.length
         this.output.topTwenty = topTwentyServices
         this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
-        this.output.countedPorts = ports
+        
         return new Promise((resolve, reject) => {
             const fs = require('fs')
-            var fileName = `${this.baseOutPath}-top20.json`
+            var fileName = `${this.baseOutPath}-top20Services.json`
+            console.log(fileName);
             fs.writeFile(fileName, JSON.stringify(this.output), function (err) {
                 if(err) {
                     console.err(`Error writing file ${fileName}.`)
