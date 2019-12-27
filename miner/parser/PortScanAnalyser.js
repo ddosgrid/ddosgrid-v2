@@ -5,7 +5,6 @@ class PortScanAnalyser extends GenericPcapAnalyser {
         super(parser, outPath);
         this.results = {
         }
-        this.output = {}
     }
     async setUp() {
         this.portNumbers = require('port-numbers')
@@ -51,20 +50,33 @@ class PortScanAnalyser extends GenericPcapAnalyser {
         var topTenServices = ports.slice(0, 10)
 
         var totalNrOfDestinationPorts = ports.length
-        this.output.topTen = topTenServices
-        this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
-        this.output.countedPorts = ports
+        var shortResult = {
+          topTen: topTenServices,
+          total_dst_port: totalNrOfDestinationPorts 
+        }
+        var longResult = ports
+
         return new Promise((resolve, reject) => {
             const fs = require('fs')
             var fileName = `${this.baseOutPath}-portscan.json`
-            fs.writeFile(fileName, JSON.stringify(this.output), function (err) {
+            
+            var dumpfileName = `${this.baseOutPath}-portscan-dump.json`
+            fs.writeFile(fileName, JSON.stringify(shortResult), function (err) {
                 if(err) {
-                    console.err(`Error writing file ${fileName}.`)
+                    console.err(`Error writing summary file ${fileName}.`)
                     reject(err)
                 }
-                resolve(fileName)
-                }
-            )
+                fs.writeFile(dumpfileName, JSON.stringify(longResult), function (err) {
+                    if(err) {
+                        console.err(`Error writing dump file ${fileName}.`)
+                        reject(err)
+                    }
+                    resolve({
+                      summaryFile: fileName, 
+                      dumpFile: dumpfileName
+                    })
+               })
+           })
         })
     }
 

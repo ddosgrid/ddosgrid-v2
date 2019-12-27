@@ -39,7 +39,7 @@ build/Release
 /api/node_modules
 /api/tmp
 /api/data/public
-/api/data/*db
+/api/**/*db
 jspm_packages/
 
 # TypeScript v1 declaration files
