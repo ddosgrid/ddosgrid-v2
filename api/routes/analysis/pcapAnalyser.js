@@ -17,6 +17,7 @@ async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnal
     await portAnalyser.setUp()
     await metricAnalyser.setUp()
     await topTwentyAnalyser.setUp()
+    await clusteredAnalyser.setUp()
 
     emitter.startPcapSession(target)
 
