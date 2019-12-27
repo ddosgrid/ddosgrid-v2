@@ -16,20 +16,20 @@ function analyseFileInProjectFolder (projectPath, cb) {
 async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, target, cb) {
     await portAnalyser.setUp()
     await metricAnalyser.setUp()
-    await topTwentyAnalyser
+    await topTwentyAnalyser.setUp()
 
     emitter.startPcapSession(target)
 
     emitter.on('complete', async () => {
         var portAnalysisResult = await portAnalyser.postParsingAnalysis()
         var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
-        var topTwentryResult = await topTwentyAnalyser.postParsingAnalysis()
+        var topTwentyResult = await topTwentyAnalyser.postParsingAnalysis()
         var clusteredResult = await clusteredAnalyser.postParsingAnalysis()
         console.log('Port scan analysis done')
         cb({
           portanalysis: portAnalysisResult,
           general: metricAnalysisResult,
-          topTwenty: topTwentryResult,
+          topTwenty: topTwentyResult,
           clusteredPorts: clusteredResult
         })
     })
