@@ -41,7 +41,7 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
                 return 1;
             return 0;
         })
-        var topTenServices = ports.slice(0, 10)
+        var topTenServices = ports.slice(0, 20)
         // TODO implement fetching service name
         /*
         var service = this.portNumbers.getService(port)
