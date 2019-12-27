@@ -9,27 +9,27 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
     }
     async setUp() {
         this.portNumbers = require('port-numbers')
+        this.results.clusters = new Array(1024).fill(0)
         this.pcapParser.on('tcpPacket', this.countPort.bind(this))
         this.pcapParser.on('udpPacket', this.countPort.bind(this))
     }
     countPort (transportPacket) {
-        this.results.clusters = new Array(1024).fill(0)
-
         if(!transportPacket) {
             return
         }
         var port = transportPacket.dport
         try {
-            this.results.clusters[Math.floor((port - 1) / 64)]++
+            var index = Math.floor((port - 1) / 64)
+            console.log(index, port);
+            console.log(this.results.clusters);
+            this.results.clusters[index] += 1
         } catch (e) {
             console.error('Unable to analyse packet', transportPacket)
         }
     }
 
     async postParsingAnalysis() {
-        var ports = Object.values(this.results)
-
-        this.output.clusters = ports
+        this.output.clusters = this.results.clusters
 
         return new Promise((resolve, reject) => {
             const fs = require('fs')
