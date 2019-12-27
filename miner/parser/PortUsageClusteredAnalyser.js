@@ -13,20 +13,14 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
         this.pcapParser.on('udpPacket', this.countPort.bind(this))
     }
     countPort (transportPacket) {
+        this.results.clusters = new Array(1024).fill(0)
+
         if(!transportPacket) {
             return
         }
         var port = transportPacket.dport
         try {
-            if (this.results.hasOwnProperty(port)) {
-                this.results [port].count++
-            } else {
-                this.results[port] = {
-                    count: 1,
-                    port: port,
-                    servicename: 'TBD'
-                }
-            }
+            this.results.clusters[Math.floor((port - 1) / 64)]++
         } catch (e) {
             console.error('Unable to analyse packet', transportPacket)
         }
@@ -34,25 +28,9 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
 
     async postParsingAnalysis() {
         var ports = Object.values(this.results)
-        ports.sort((a, b) => {
-            if (a.count > b.count)
-                return -1;
-            if (a.count < b.count)
-                return 1;
-            return 0;
-        })
-        var topTenServices = ports.slice(0, 10)
-        // TODO implement fetching service name
-        /*
-        var service = this.portNumbers.getService(port)
-        var serviceName = service.name
 
-         */
+        this.output.clusters = ports
 
-        var totalNrOfDestinationPorts = ports.length
-        this.output.topTen = topTenServices
-        this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
-        this.output.countedPorts = ports
         return new Promise((resolve, reject) => {
             const fs = require('fs')
             var fileName = `${this.baseOutPath}-portscan-clustered.json`
