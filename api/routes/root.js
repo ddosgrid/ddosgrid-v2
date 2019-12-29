@@ -17,7 +17,7 @@ function getRoot (_, res) {
         </style>
       </head>
       <body>
-        <h1>ddosgrid API v1</h1>
+        <h1>ddosgrid API (v1)</h1>
         <blockquote>Please refer to the documentation in our <a href="https://github.com/ddosgrid/ddos-visualization">GitHub repository</a>.</blockquote>
       </body>
     </html>
