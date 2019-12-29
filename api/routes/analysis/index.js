@@ -56,6 +56,8 @@ function startAnalysis (req, res) {
     analyses.addAnalysisFile(id, fileName)
     fileName = path.relative(analysisBaseDir, metricScanFile)
     analyses.addAnalysisFile(id, fileName)
+
+    // TODO
     // Store general metrics directly
     // analyses.addMetricsToDataset(metrics)
   })
