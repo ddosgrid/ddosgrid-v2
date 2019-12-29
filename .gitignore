@@ -34,9 +34,8 @@ build/Release
 
 # Dependency directories
 /frontend/node_modules/
-/miner/node_modules/
+/**/node_modules/
 /miner/examples/testdata/*json
-/api/node_modules
 /api/tmp
 /api/data/public
 /api/**/*db
