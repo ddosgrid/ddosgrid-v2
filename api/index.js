@@ -21,6 +21,7 @@ const uploadMiddleWare = fileUpload({
   debug: inDevMode
 })
 
+app.use(allowCORS)
 app.use(uploadMiddleWare)
 app.use('/', rootRoutes)
 app.use('/analysis', analysisRoutes)
@@ -30,4 +31,10 @@ app.listen(port, logStart)
 
 function logStart () {
   console.log(`App is listening on port ${port}`)
+}
+
+function allowCORS () {
+  res.header("Access-Control-Allow-Origin", "https://ddosgrid.online")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next();
 }
