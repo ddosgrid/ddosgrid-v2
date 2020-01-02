@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7ceb240c-6977-4c81-b204-02f88387c296",
+		"_postman_id": "07e3bfe4-db98-4d86-a58a-dd7bf8aca303",
 		"name": "ddosgrid-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,7 +16,17 @@
 						{
 							"key": "captureFile",
 							"type": "file",
-							"src": "/home/jan/Downloads/dce5ef87684753c1c5588f1197ac59f6.pcap"
+							"src": []
+						},
+						{
+							"key": "name",
+							"value": "Attack XY",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "This describes the attack",
+							"type": "text"
 						}
 					]
 				},
@@ -41,7 +51,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/analysis/2107aa178c523f1b058e862467a0730e/analyse",
+					"raw": "http://{{host}}:{{port}}/analysis/9bcc581df61965d6aefda87f7beb690c/analyse",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -49,7 +59,7 @@
 					"port": "{{port}}",
 					"path": [
 						"analysis",
-						"2107aa178c523f1b058e862467a0730e",
+						"9bcc581df61965d6aefda87f7beb690c",
 						"analyse"
 					]
 				}
