@@ -3,8 +3,8 @@
     <h1>
       Uploaded Data Sets
     </h1>
-    <div v-for="dataset in datasets"  :key="dataset.md5" class="">
-
+    <div v-for="dataset in datasets"  :key="dataset.id" class="">
+      {{ dataset }}
     </div>
     <md-button class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
@@ -18,19 +18,15 @@ export default {
   components: {
   },
   mounted: async function () {
-    var res = await fetch('https://api.ddosgrid.online/analysis')
-    var json = await res.json()
-    this.datasets = json
+    try {
+      var res = await fetch('http://localhost:3000/analysis')
+      var json = await res.json()
+      this.datasets = json
+    } catch (e) {
+      console.log(e)
+    }
   },
   methods: {
-    add: function (file) {
-      console.log(file)
-      if (Array.isArray(file)) {
-        var urls = file.map(el => `https://api.ddosgrid.online/public/${file}`)
-        console.log(urls)
-        this.urls.push([...urls])
-      }
-    }
   },
   data: function () {
     return {
