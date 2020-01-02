@@ -3,6 +3,8 @@
     <h1>
       Uploaded Data Sets
     </h1>
+    <file-upload-form>
+    </file-upload-form>
     <div v-for="dataset in datasets"  :key="dataset.id" class="">
       {{ dataset }}
     </div>
@@ -13,9 +15,11 @@
 </template>
 
 <script>
+import FileUploadForm from '../components/FileUploadForm.vue'
 export default {
   name: 'DataSets',
   components: {
+    'file-upload-form': FileUploadForm
   },
   mounted: async function () {
     try {
