@@ -46,6 +46,18 @@ export default {
         .then((response) => response.json())
         .then((result) => {
           console.log('Success:', result)
+          // snackbar to let user know that file was uploaded and analysis has started
+
+          // start analysis
+          fetch('http://localhost:3000/analysis/' + result.id + '/analyse', {
+            method: 'POST'
+          })
+            .then((result) => {
+              console.log(result)
+            })
+        })
+        .then((result) => {
+          console.log(result)
         })
         .catch((error) => {
           console.error('Error:', error)
