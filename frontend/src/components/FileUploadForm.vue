@@ -17,7 +17,7 @@
         <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
       </md-field>
 
-    <md-button class="md-raised md-primary">Primary</md-button>
+    <md-button class="md-raised md-primary" @click="uploadFile">Primary</md-button>
     </div>
   </div>
 </template>
@@ -28,7 +28,30 @@ export default {
     file: null,
     fileName: null,
     fileDescription: null
-  })
+  }),
+  methods: {
+    uploadFile () {
+      console.log(this.file)
+      const formData = new FormData()
+      const fileField = document.querySelector('input[type="file"]')
+
+      formData.append('name', this.fileName)
+      formData.append('description', this.fileDescription)
+      formData.append('captureFile', fileField.files[0])
+
+      fetch('http://localhost:3000/analysis/upload', {
+        method: 'POST',
+        body: formData
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log('Success:', result)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+    }
+  }
 }
 </script>
 
