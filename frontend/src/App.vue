@@ -4,6 +4,7 @@
       <md-tabs md-sync-route>
         <md-tab id="tab-home" md-label="" to="/" md-icon="home" exact></md-tab>
         <md-tab id="tab-dashboard" md-label="" to="/dashboard" md-icon="dashboard" exact></md-tab>
+        <md-tab id="tab-data-sets" md-label="" to="/datasets" md-icon="view_list" exact></md-tab>
       </md-tabs>
     </div>
     <div>
