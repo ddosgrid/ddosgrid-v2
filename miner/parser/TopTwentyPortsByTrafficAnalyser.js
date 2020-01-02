@@ -65,8 +65,12 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
                     console.err(`Error writing file ${fileName}.`)
                     reject(err)
                 }
-                resolve(fileName)
-                }
+                resolve({
+                  fileName: fileName,
+                  attackCategory: 'Portscan',
+                  supportedDiagrams: ['BarChart']
+                })
+              }
             )
         })
     }

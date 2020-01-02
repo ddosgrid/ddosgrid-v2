@@ -20,8 +20,6 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
         var port = transportPacket.dport
         try {
             var index = Math.floor((port - 1) / 64)
-            console.log(index, port);
-            console.log(this.results.clusters);
             this.results.clusters[index] += 1
         } catch (e) {
             console.error('Unable to analyse packet', transportPacket)
@@ -39,8 +37,12 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
                     console.err(`Error writing file ${fileName}.`)
                     reject(err)
                 }
-                resolve(fileName)
-                }
+                resolve({
+                  fileName: fileName,
+                  attackCategory: 'Portscan',
+                  supportedDiagrams: ['Scatterplot']
+                })
+              }
             )
         })
     }

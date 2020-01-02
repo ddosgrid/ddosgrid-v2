@@ -111,6 +111,8 @@ class MetricAnalyser extends GenericPcapAnalyser {
             reject(err)
           }
           resolve({
+            attackCategory: 'Generic',
+            supportedDiagrams: [],
             fileName: fileName,
             metrics: outputToStore
           })

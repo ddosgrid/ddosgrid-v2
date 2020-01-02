@@ -72,6 +72,8 @@ class PortScanAnalyser extends GenericPcapAnalyser {
                         reject(err)
                     }
                     resolve({
+                      attackCategory: 'Portscan',
+                      supportedDiagrams: ['Barchart'],
                       summaryFile: fileName, 
                       dumpFile: dumpfileName
                     })
