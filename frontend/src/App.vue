@@ -9,9 +9,6 @@
     </div>
     <div>
     <router-view id="main" />
-    <md-button class="md-fab md-primary md-fab-bottom-right" >
-      <md-icon>add</md-icon>
-    </md-button>
     </div>
   </div>
 </template>
