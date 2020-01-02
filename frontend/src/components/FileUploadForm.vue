@@ -1,24 +1,21 @@
 <template lang="html">
-  <div class="">
-    <h1>Upload a File...</h1>
-    <div class="form">
-      <md-field>
-        <label>Upload files</label>
-        <md-file v-model="file" placeholder="Choose a PCAP File..." />
-      </md-field>
+  <div id="form">
+    <md-field>
+      <label>Upload files</label>
+      <md-file v-model="file" placeholder="Choose a PCAP File..." />
+    </md-field>
 
-      <md-field>
-        <label>Name</label>
-        <md-input v-model="fileName" placeholder="Give the file a name"></md-input>
-      </md-field>
+    <md-field>
+      <label>Name</label>
+      <md-input v-model="fileName" placeholder="Give the file a name"></md-input>
+    </md-field>
 
-      <md-field>
-        <label>Description</label>
-        <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
-      </md-field>
+    <md-field>
+      <label>Description</label>
+      <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
+    </md-field>
 
-    <md-button class="md-raised md-primary" @click="uploadFile">Primary</md-button>
-    </div>
+  <md-button class="md-raised md-primary" @click="uploadFile">Primary</md-button>
   </div>
 </template>
 
@@ -68,5 +65,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  #form {
+    width: 90%;
+    margin: auto;
+  }
 </style>
-r
