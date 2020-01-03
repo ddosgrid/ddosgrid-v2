@@ -68,6 +68,7 @@ async function startAnalysis (req, res) {
     var clusteredPort = analysisResult.clusteredPorts
     var metricsScan = analysisResult.general
     var metrics = analysisResult.general.metrics
+    var synflood = analysisResult.synResult
     analyses.changeAnalysisStatus(id, 'analysed')
     analyses.appendMetrics(id, metrics)
     analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
@@ -76,11 +77,13 @@ async function startAnalysis (req, res) {
     topTwenty.file = path.relative(analysisBaseDir, topTwenty.fileName)
     clusteredPort.file = path.relative(analysisBaseDir, clusteredPort.fileName)
     metricsScan.file = path.relative(analysisBaseDir, metricsScan.fileName)
+    synflood.file = path.relative(analysisBaseDir, synflood.fileName)
     var results = [
       portScanFileShort,
       topTwenty,
       clusteredPort,
-      metricsScan
+      metricsScan,
+      synflood
     ]
     var cleanedResults = results.map(keepRequiredAttributes)
     analyses.addAnalysisFiles(id, cleanedResults)
