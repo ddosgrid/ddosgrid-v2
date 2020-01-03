@@ -1,5 +1,5 @@
 const { parseAndCheckArguments } = require('./cli/CLI')
-const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser, TopTwentyPortsByTrafficAnalyser} = require('./exports')
+const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser, TopTwentyPortsByTrafficAnalyser, SynStateAnalyser } = require('./exports')
 try {
   var settings = parseAndCheckArguments(process.argv)
   analyseFileInProjectFolder(settings.pcapPath)  
@@ -14,15 +14,17 @@ function analyseFileInProjectFolder (projectPath, cb) {
     var metricAnalyser = new MetricAnalyser(emitter, projectPath)
     var topTwentyAnalyser = new TopTwentyPortsByTrafficAnalyser(emitter, projectPath)
     var clusteredAnalyser = new PortUsageClusteredAnalyser(emitter, projectPath)
+    var synStateAnalyser = new SynStateAnalyser(emitter, projectPath)
 
-    setUpAndRun(emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, projectPath, cb)
+    setUpAndRun(emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, synStateAnalyser, projectPath, cb)
 
 }
-async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, target, cb) {
+async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, synStateAnalyser, target, cb) {
     await portAnalyser.setUp()
     await metricAnalyser.setUp()
     await topTwentyAnalyser.setUp()
     await clusteredAnalyser.setUp()
+    await synStateAnalyser.setUp()
 
     try {
         emitter.startPcapSession(target)
@@ -36,12 +38,14 @@ async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnal
         var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
         var topTwentyResult = await topTwentyAnalyser.postParsingAnalysis()
         var clusteredResult = await clusteredAnalyser.postParsingAnalysis()
+        var synResult = await synStateAnalyser.postParsingAnalysis()
         console.log(`Miners for ${target} have finished\n`)
         var output = JSON.stringify({
           portanalysis: portAnalysisResult,
           general: metricAnalysisResult,
           topTwenty: topTwentyResult,
-          clusteredPorts: clusteredResult
+          clusteredPorts: clusteredResult,
+          synResult: synResult
         })
         if(process && process.send) {
             // If this function exists in scope we know that we are in a forked ChildProcess
