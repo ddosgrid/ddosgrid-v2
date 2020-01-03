@@ -28,7 +28,7 @@ async function getAnalysisById (req, res) {
   res.json(analysis)
 }
 
-function startAnalysis (req, res) {
+async function startAnalysis (req, res) {
   var id = req.params.id
   if (!id) {
     return res.status(404).send('ID not supplied')
@@ -58,7 +58,9 @@ function startAnalysis (req, res) {
   })
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var startTime = new Date()
-  pcapAnalyser.analyseFileInProjectFolder(projectPath, (analysisResult) => {
+  analyses.changeAnalysisStatus(id, 'pending')
+  try {
+    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
     var portScanFileShort = analysisResult.portanalysis
@@ -82,7 +84,9 @@ function startAnalysis (req, res) {
     ]
     var cleanedResults = results.map(keepRequiredAttributes)
     analyses.addAnalysisFiles(id, cleanedResults)
-  })
+  } catch (e) {
+    analyses.changeAnalysisStatus(id, 'failed')
+  }
 }
 
 
