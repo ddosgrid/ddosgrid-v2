@@ -5,13 +5,13 @@ const path = require('path')
 async function analyseFileInProjectFolder (pcapPath) {
   return new Promise(function (resolve, reject) {
     var program = path.resolve('../miner/index.js')
-    var args = [`pcap_path=${pcapPath}`]
-    var options = { stdio: ['ipc'] }
+    var args = [ `pcap_path=${pcapPath}` ]
+    var options = { stdio: [ 'ipc' ] }
 
     var childProcess = fork(program, args, options)
-    childProcess.on('message', function (msg) {
-      var result = JSON.parse(msg)
-      resolve(result)
+    childProcess.on('message', function (minerResults) {
+      var parsed = JSON.parse(minerResults)
+      resolve(parsed)
     })
     childProcess.on('exit', (code) => {
       console.log('Miner process has exited with: ', code)
