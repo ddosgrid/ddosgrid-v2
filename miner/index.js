@@ -37,7 +37,7 @@ async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnal
         var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
         var topTwentyResult = await topTwentyAnalyser.postParsingAnalysis()
         var clusteredResult = await clusteredAnalyser.postParsingAnalysis()
-        console.log('Port scan analysis done')
+        console.log(`Miners for ${target} have finished\n`)
         var output = JSON.stringify({
           portanalysis: portAnalysisResult,
           general: metricAnalysisResult,

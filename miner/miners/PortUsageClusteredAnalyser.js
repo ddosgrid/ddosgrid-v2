@@ -28,23 +28,14 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
 
     async postParsingAnalysis() {
         this.output.clusters = this.results.clusters
-
-        return new Promise((resolve, reject) => {
-            const fs = require('fs')
-            var fileName = `${this.baseOutPath}-portscan-clustered.json`
-            fs.writeFile(fileName, JSON.stringify(this.output), function (err) {
-                if(err) {
-                    console.err(`Error writing file ${fileName}.`)
-                    reject(err)
-                }
-                resolve({
-                  fileName: fileName,
-                  attackCategory: 'Portscan',
-                  supportedDiagrams: ['Scatterplot']
-                })
-              }
-            )
-        })
+        var fileName = `${this.baseOutPath}-portscan-clustered.json`
+        var fileContent = this.output
+        var summary = {
+            fileName: fileName,
+            attackCategory: 'Portscan',
+            supportedDiagrams: ['Scatterplot']
+        }
+        return await this.storeAndReturnResult(fileName, fileContent, summary)
     }
 }
 

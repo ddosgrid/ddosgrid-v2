@@ -1,6 +1,6 @@
 var path = require('path')
 var PacketEmitter = require('../parser/PcapParser')
-var PacketAnalyser = require('../parser/PortScanAnalyser')
+var PacketAnalyser = require('../miners/PortScanAnalyser')
 var testfile = path.resolve(__dirname, 'testdata', 'ebfe0afeea7f5417f340782d8a4d6f83portscan.pcap')
 var outFile = path.resolve(__dirname, 'testdata', 'ebfe0afeea7f5417f340782d8a4d6f83portscan.pcap')
 
