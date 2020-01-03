@@ -8,7 +8,6 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
         this.output = {}
     }
     async setUp() {
-        this.portNumbers = require('port-numbers')
         this.results.clusters = new Array(1024).fill(0)
         this.pcapParser.on('tcpPacket', this.countPort.bind(this))
         this.pcapParser.on('udpPacket', this.countPort.bind(this))

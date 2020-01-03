@@ -1,6 +1,5 @@
 const { parseAndCheckArguments } = require('./cli/CLI')
 const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser, TopTwentyPortsByTrafficAnalyser} = require('./exports')
-const path = require('path')
 try {
   var settings = parseAndCheckArguments(process.argv)
   analyseFileInProjectFolder(settings.pcapPath)  

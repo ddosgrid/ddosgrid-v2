@@ -10,7 +10,6 @@ class PortScanAnalyser extends GenericPcapAnalyser {
         this.portNumbers = require('port-numbers')
         this.pcapParser.on('tcpPacket', this.countPort.bind(this))
         this.pcapParser.on('udpPacket', this.countPort.bind(this))
-//        this.pcapParser.on('complete', this.writeToFile.bind(this))
     }
     countPort (transportPacket) {
         if(!transportPacket) {
@@ -30,12 +29,6 @@ class PortScanAnalyser extends GenericPcapAnalyser {
         } catch (e) {
             console.error('Unable to analyse packet', transportPacket)
         }
-        // TODO implement fetching service name
-        /*
-        var service = this.portNumbers.getService(port)
-        var serviceName = service.name
-
-         */
     }
 
     async postParsingAnalysis() {
@@ -80,17 +73,6 @@ class PortScanAnalyser extends GenericPcapAnalyser {
                })
            })
         })
-    }
-
-    writeToFile () {
-        const fs = require('fs')
-        var fileName = `${this.baseOutPath}-portscan.json`
-        fs.writeFile(fileName, JSON.stringify(this.results), function (err) {
-            if(err) {
-                console.err(`Error writing file ${fileName}.`)
-            }
-            }
-        )
     }
 }
 
