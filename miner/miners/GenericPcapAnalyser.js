@@ -12,6 +12,18 @@ class GenericPcapAnalyser {
     }
     async postParsingAnalysis() {
     }
+    async storeAndReturnResult (fileName, fileContent, resultSummary) {
+        return new Promise((resolve, reject) => {
+            const fs = require('fs')
+            fs.writeFile(fileName, JSON.stringify(fileContent), function (err) {
+                if(err) {
+                    console.err(`Error writing file ${fileName}.`)
+                    reject(err)
+                }
+                resolve(resultSummary)
+            })
+        })
+    }
 }
 
 
