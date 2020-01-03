@@ -31,14 +31,27 @@ async function getAnalysisById (req, res) {
 function startAnalysis (req, res) {
   var id = req.params.id
   if (!id) {
-    res.status(404).send('ID not supplied')
+    return res.status(404).send('ID not supplied')
   }
   var filePath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   try {
     fs.statSync(filePath)
   } catch (e) {
-    res.status(404).send('ID unknown')
+    return res.status(404).send('ID unknown')
   }
+  var analysis = await analyses.getAnalysis(id)
+  if(!analysis) {
+    return res.status(404).send('File was found but no corresponding database entry. Check upload?')
+  }
+  if(analysis.status !== 'uploaded' && analysis.status !== 'failed') {
+    if(analysis.status === 'analysed') {
+      return res.status(400).send('Analysis has already been performed')
+    }
+    if(analysis.status === 'pending') {
+      return res.status(400).send('Analysis is already running')
+    }
+  }
+
   res.status(200).send({
     id: id,
     status: 'File was found, analysis should start'
@@ -80,10 +93,10 @@ function handleFilePost (req, res) {
   if (req.files.length > 1) {
     return res.status(400).send('Only one file can be uploaded at a time');
   }
-  if(!req.body.name || req.body.name == "" ) {
+  if(!req.body.hasOwnProperty('name') || !req.body.name || req.body.name == "" ) {
     return res.status(400).send('No name was given to the dataset')
   }
-  if(!req.body.description || req.body.description == "") {
+  if(!req.body.hasOwnProperty('description') || !req.body.description || req.body.description == "") {
     return res.status(400).send('No description was given to the dataset')
   }
   var uploadedFile = req.files.captureFile
