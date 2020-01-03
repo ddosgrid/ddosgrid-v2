@@ -44,16 +44,13 @@ async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnal
           topTwenty: topTwentyResult,
           clusteredPorts: clusteredResult
         })
-      console.log(output)
-      process.send(output)
-        /*
-        cb({
-          portanalysis: portAnalysisResult,
-          general: metricAnalysisResult,
-          topTwenty: topTwentyResult,
-          clusteredPorts: clusteredResult
-        })
-        */
+        if(process && process.send) {
+            // If this function exists in scope we know that we are in a forked ChildProcess
+            // This will then send the output of the miners over IPC to the master process
+            process.send(output)
+        } else {
+            console.log(output)
+        }
     })
 }
 
