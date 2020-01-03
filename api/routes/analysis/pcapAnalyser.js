@@ -1,39 +1,25 @@
-//const { PacketEmitter, PortAnalyser} = require('ddosgrid-miner')
-const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser, TopTwentyPortsByTrafficAnalyser} = require('../../../miner')
+const child_process = require('child_process')
+const fork = child_process.fork
 const path = require('path')
 
+async function analyseFileInProjectFolder (pcapPath) {
+  return new Promise(function (resolve, reject) {
+    var program = path.resolve('../miner/index.js')
+    var args = [`pcap_path=${pcapPath}`]
+    var options = { stdio: ['ipc'] }
 
-function analyseFileInProjectFolder (projectPath, cb) {
-    var emitter = new PacketEmitter()
-    var portAnalyser = new PortAnalyser(emitter, projectPath)
-    var metricAnalyser = new MetricAnalyser(emitter, projectPath)
-    var topTwentyAnalyser = new TopTwentyPortsByTrafficAnalyser(emitter, projectPath)
-    var clusteredAnalyser = new PortUsageClusteredAnalyser(emitter, projectPath)
-
-    setUpAndRun(emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, projectPath, cb)
-
-}
-async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, target, cb) {
-    await portAnalyser.setUp()
-    await metricAnalyser.setUp()
-    await topTwentyAnalyser.setUp()
-    await clusteredAnalyser.setUp()
-
-    emitter.startPcapSession(target)
-
-    emitter.on('complete', async () => {
-        var portAnalysisResult = await portAnalyser.postParsingAnalysis()
-        var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
-        var topTwentyResult = await topTwentyAnalyser.postParsingAnalysis()
-        var clusteredResult = await clusteredAnalyser.postParsingAnalysis()
-        console.log('Port scan analysis done')
-        cb({
-          portanalysis: portAnalysisResult,
-          general: metricAnalysisResult,
-          topTwenty: topTwentyResult,
-          clusteredPorts: clusteredResult
-        })
+    var childProcess = fork(program, args, options)
+    childProcess.on('message', function (msg) {
+      var result = JSON.parse(msg)
+      resolve(result)
     })
+    childProcess.on('exit', (code) => {
+      console.log('Miner process has exited with: ', code)
+      if(code !== 0) {
+        reject('Miner was unable to parse the file')
+      }
+    })
+  })
 }
 
 module.exports = { analyseFileInProjectFolder }

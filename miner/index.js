@@ -1,25 +1,59 @@
 const { parseAndCheckArguments } = require('./cli/CLI')
-var PacketEmitter = require('./parser/PcapParser')
-var PortAnalyser = require('./parser/PortScanAnalyser')
-
+const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser, TopTwentyPortsByTrafficAnalyser} = require('./exports')
+const path = require('path')
 try {
-    var settings = parseAndCheckArguments(process.argv)
+  var settings = parseAndCheckArguments(process.argv)
+  analyseFileInProjectFolder(settings.pcapPath)  
 } catch (e) {
     console.error(e.message)
     process.exit(1)
 }
-console.log('Configured:', settings)
-var outFileBaseName = `${settings.pcapPath}-analysed-${new Date().toJSON()}-`
 
-var emitter = new PacketEmitter()
-var portAnalyser = new PortAnalyser(emitter, outFileBaseName)
+function analyseFileInProjectFolder (projectPath, cb) {
+    var emitter = new PacketEmitter()
+    var portAnalyser = new PortAnalyser(emitter, projectPath)
+    var metricAnalyser = new MetricAnalyser(emitter, projectPath)
+    var topTwentyAnalyser = new TopTwentyPortsByTrafficAnalyser(emitter, projectPath)
+    var clusteredAnalyser = new PortUsageClusteredAnalyser(emitter, projectPath)
 
-setUpAndRun()
+    setUpAndRun(emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, projectPath, cb)
 
-async function setUpAndRun () {
+}
+async function setUpAndRun (emitter, portAnalyser, metricAnalyser, topTwentyAnalyser, clusteredAnalyser, target, cb) {
     await portAnalyser.setUp()
-    emitter.startPcapSession(settings.pcapPath)
+    await metricAnalyser.setUp()
+    await topTwentyAnalyser.setUp()
+    await clusteredAnalyser.setUp()
+
+    try {
+        emitter.startPcapSession(target)
+    } catch (e) {
+        console.error(e)
+        process.exit(1)
+    }
+
     emitter.on('complete', async () => {
-        await portAnalyser.postParsingAnalysis()
+        var portAnalysisResult = await portAnalyser.postParsingAnalysis()
+        var metricAnalysisResult = await metricAnalyser.postParsingAnalysis()
+        var topTwentyResult = await topTwentyAnalyser.postParsingAnalysis()
+        var clusteredResult = await clusteredAnalyser.postParsingAnalysis()
+        console.log('Port scan analysis done')
+        var output = JSON.stringify({
+          portanalysis: portAnalysisResult,
+          general: metricAnalysisResult,
+          topTwenty: topTwentyResult,
+          clusteredPorts: clusteredResult
+        })
+      console.log(output)
+      process.send(output)
+        /*
+        cb({
+          portanalysis: portAnalysisResult,
+          general: metricAnalysisResult,
+          topTwenty: topTwentyResult,
+          clusteredPorts: clusteredResult
+        })
+        */
     })
 }
+
