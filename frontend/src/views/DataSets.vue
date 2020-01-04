@@ -16,7 +16,7 @@
       <data-set-list-item :dataset="dataset">
       </data-set-list-item>
     </div>
-    <md-button @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right" >
+    <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
     </md-button>
   </div>
@@ -75,6 +75,10 @@ export default {
 .md-dialog {
   width: 50%;
   max-width: 768px;
+}
+
+#fab {
+  position: fixed;
 }
 
 </style>
