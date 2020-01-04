@@ -20,13 +20,14 @@
         </md-card-actions>
       </md-card>
 
+      <!-- Example of Scatterplot -->
       <md-card class="card">
         <md-card-header>
           <div class="md-title">Overall traffic distribution (TCP/UDP ports)</div>
         </md-card-header>
 
         <md-card-content>
-          <scatterplot :url='"http://localhost:3000/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-portscan-clustered.json"'>
+          <scatterplot :url="`${url}/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-portscan-clustered.json`">
           </scatterplot>
         </md-card-content>
 
@@ -34,6 +35,7 @@
           <md-button>Action</md-button>
         </md-card-actions>
       </md-card>
+      <!-- End Example of Scatterplot -->
 
       <md-card class="card">
         <md-card-header>
@@ -93,7 +95,8 @@ export default {
     return {
       urls: [
       ],
-      datasets: []
+      datasets: [],
+      url: apibaseurl
     }
   }
 }
