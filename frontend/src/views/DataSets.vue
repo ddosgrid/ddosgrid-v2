@@ -48,7 +48,7 @@ export default {
       if (!newVal) {
         // refresh list
         try {
-          var res = await fetch('http://localhost:3000/analysis')
+          var res = await fetch(`${apibaseurl}/analysis`)
           var json = await res.json()
           this.datasets = json
         } catch (e) {

@@ -47,7 +47,7 @@ export default {
           // snackbar to let user know that file was uploaded and analysis has started
 
           // start analysis
-          fetch('http://localhost:3000/analysis/' + result.id + '/analyse', {
+          fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
             method: 'POST'
           })
             .then((result) => {
