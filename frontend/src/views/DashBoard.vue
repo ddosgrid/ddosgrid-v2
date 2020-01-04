@@ -19,6 +19,24 @@
           <md-button>Action</md-button>
         </md-card-actions>
       </md-card>
+
+      <!-- Example of Scatterplot -->
+      <md-card class="card">
+        <md-card-header>
+          <div class="md-title">Overall traffic distribution (TCP/UDP ports)</div>
+        </md-card-header>
+
+        <md-card-content>
+          <scatterplot :url="`${url}/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-portscan-clustered.json`">
+          </scatterplot>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button>Action</md-button>
+        </md-card-actions>
+      </md-card>
+      <!-- End Example of Scatterplot -->
+
       <md-card class="card">
         <md-card-header>
           <div class="md-title">Available datasets</div>
@@ -50,10 +68,13 @@
 <script>
 import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart.vue'
+import ScatterPlot from '../components/ScatterPlot'
+
 export default {
   name: 'DashBoard',
   components: {
-    'barchart': BarChart
+    'barchart': BarChart,
+    'scatterplot': ScatterPlot
   },
   mounted: async function () {
     var res = await fetch(`${apibaseurl}/analysis`)
@@ -74,7 +95,8 @@ export default {
     return {
       urls: [
       ],
-      datasets: []
+      datasets: [],
+      url: apibaseurl
     }
   }
 }
