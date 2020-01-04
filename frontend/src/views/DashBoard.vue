@@ -37,6 +37,23 @@
       </md-card>
       <!-- End Example of Scatterplot -->
 
+      <!-- Example of PieChart -->
+      <md-card class="card">
+        <md-card-header>
+          <div class="md-title">TCP states</div>
+        </md-card-header>
+
+        <md-card-content>
+          <piechart :url="`${url}/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-synfloodanalysis.json`">
+          </piechart>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button>Action</md-button>
+        </md-card-actions>
+      </md-card>
+      <!-- End Example of PieChart -->
+
       <md-card class="card">
         <md-card-header>
           <div class="md-title">Available datasets</div>
@@ -69,12 +86,14 @@
 import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart.vue'
 import ScatterPlot from '../components/ScatterPlot'
+import PieChart from '../components/PieChart'
 
 export default {
   name: 'DashBoard',
   components: {
     'barchart': BarChart,
-    'scatterplot': ScatterPlot
+    'scatterplot': ScatterPlot,
+    'piechart': PieChart
   },
   mounted: async function () {
     var res = await fetch(`${apibaseurl}/analysis`)
