@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart.vue'
 export default {
   name: 'DashBoard',
@@ -55,7 +56,7 @@ export default {
     'barchart': BarChart
   },
   mounted: async function () {
-    var res = await fetch('https://api.ddosgrid.online/analysis')
+    var res = await fetch(`${apibaseurl}/analysis`)
     var json = await res.json()
     this.datasets = json
   },
@@ -63,7 +64,7 @@ export default {
     add: function (file) {
       console.log(file)
       if (Array.isArray(file)) {
-        var urls = file.map(el => `https://api.ddosgrid.online/public/${file}`)
+        var urls = file.map(el => `${apibaseurl}/public/${file}`)
         console.log(urls)
         this.urls.push([...urls])
       }
@@ -72,9 +73,6 @@ export default {
   data: function () {
     return {
       urls: [
-        'https://api.ddosgrid.online/public/61aa5e77c9bdef137fd00376c9891c31/61aa5e77c9bdef137fd00376c9891c31.pcap-portscan.json',
-        'https://api.ddosgrid.online/public/7783cc6dfb0dcd3d2a8202336cf4beb3/7783cc6dfb0dcd3d2a8202336cf4beb3.pcap-portscan.json',
-        'https://api.ddosgrid.online/public/50b3fcf30e5801f37e773c8c5ac92420/50b3fcf30e5801f37e773c8c5ac92420.pcap-portscan.json'
       ],
       datasets: []
     }
