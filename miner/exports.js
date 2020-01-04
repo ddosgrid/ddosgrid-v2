@@ -1,13 +1,15 @@
 var PacketEmitter = require('./parser/PcapParser')
-var PortAnalyser = require('./parser/PortScanAnalyser')
-var MetricAnalyser = require('./parser/MetricAnalyser')
-var TopTwentyPortsByTrafficAnalyser = require('./parser/TopTwentyPortsByTrafficAnalyser')
-var PortUsageClusteredAnalyser = require('./parser/PortUsageClusteredAnalyser')
+var PortAnalyser = require('./miners/PortScanAnalyser')
+var MetricAnalyser = require('./miners/MetricAnalyser')
+var TopTwentyPortsByTrafficAnalyser = require('./miners/TopTwentyPortsByTrafficAnalyser')
+var PortUsageClusteredAnalyser = require('./miners/PortUsageClusteredAnalyser')
+var SynStateAnalyser = require('./miners/SynStateAnalyser')
 
 module.exports = {
   PacketEmitter,
   PortAnalyser,
   MetricAnalyser,
   TopTwentyPortsByTrafficAnalyser,
-  PortUsageClusteredAnalyser
+  PortUsageClusteredAnalyser,
+  SynStateAnalyser
 }

@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
 export default {
   data: () => ({
     file: null,
@@ -39,7 +40,7 @@ export default {
       formData.append('description', this.fileDescription)
       formData.append('captureFile', fileField.files[0])
 
-      fetch('http://localhost:3000/analysis/upload', {
+      fetch(`${apibaseurl}/analysis/upload`, {
         method: 'POST',
         body: formData
       })

@@ -101,23 +101,15 @@ class MetricAnalyser extends GenericPcapAnalyser {
       this.output.attackBandwidthInBps = this.output.attackSizeInBytes / this.output.duration
       this.output.avgPacketSize = this.output.attackSizeInBytes / this.output.nrOfIPpackets
       this.output.udpToTcpRatio = this.output.nrOfUDPPackets / this.output.nrOfTCPPackets
-      return new Promise((resolve, reject) => {
-        const fs = require('fs')
-        var fileName = `${this.baseOutPath}-generic-metrics.json`
-        var outputToStore = this.output
-        fs.writeFile(fileName, JSON.stringify(outputToStore), function (err) {
-          if(err) {
-            console.err(`Error writing file ${fileName}.`)
-            reject(err)
-          }
-          resolve({
-            attackCategory: 'Generic',
-            supportedDiagrams: [],
-            fileName: fileName,
-            metrics: outputToStore
-          })
-        })
-      })
+      var fileName = `${this.baseOutPath}-generic-metrics.json`
+      var outputToStore = this.output
+      var resultSummary = {
+        attackCategory: 'Generic',
+        supportedDiagrams: [],
+        fileName: fileName,
+        metrics: outputToStore
+      }
+      return await this.storeAndReturnResult(fileName, outputToStore, resultSummary)
     }
 }
 

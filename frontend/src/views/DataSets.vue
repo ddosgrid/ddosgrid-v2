@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
 export default {
   name: 'DataSets',
@@ -23,7 +24,7 @@ export default {
   },
   mounted: async function () {
     try {
-      var res = await fetch('http://localhost:3000/analysis')
+      var res = await fetch(`${apibaseurl}/analysis`)
       var json = await res.json()
       this.datasets = json
     } catch (e) {

@@ -22,7 +22,7 @@ class Analyses {
   }
   async getAnalysis (md5) {
     return new Promise((resolve, reject) => {
-      instance.find({md5: md5}, (err, analyses) => {
+      instance.findOne({md5: md5}, (err, analyses) => {
         if (err) {
           reject(err)
         }
