@@ -26,7 +26,7 @@
         </md-card-header>
 
         <md-card-content>
-          <scatterplot :url='"http://localhost:3000/public/9bcc581df61965d6aefda87f7beb690c/9bcc581df61965d6aefda87f7beb690c.pcap-portscan-clustered.json"'>
+          <scatterplot :url='"http://localhost:3000/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-portscan-clustered.json"'>
           </scatterplot>
         </md-card-content>
 
