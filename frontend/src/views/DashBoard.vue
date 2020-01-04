@@ -19,6 +19,22 @@
           <md-button>Action</md-button>
         </md-card-actions>
       </md-card>
+
+      <md-card class="card">
+        <md-card-header>
+          <div class="md-title">Overall traffic distribution (TCP/UDP ports)</div>
+        </md-card-header>
+
+        <md-card-content>
+          <scatterplot :url='"http://localhost:3000/public/9bcc581df61965d6aefda87f7beb690c/9bcc581df61965d6aefda87f7beb690c.pcap-portscan-clustered.json"'>
+          </scatterplot>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button>Action</md-button>
+        </md-card-actions>
+      </md-card>
+
       <md-card class="card">
         <md-card-header>
           <div class="md-title">Available datasets</div>
@@ -49,13 +65,16 @@
 
 <script>
 import BarChart from '@/components/BarChart.vue'
+import ScatterPlot from '../components/ScatterPlot'
+
 export default {
   name: 'DashBoard',
   components: {
-    'barchart': BarChart
+    'barchart': BarChart,
+    'scatterplot': ScatterPlot
   },
   mounted: async function () {
-    var res = await fetch('https://api.ddosgrid.online/analysis')
+    var res = await fetch('http://localhost:3000/analysis')
     var json = await res.json()
     this.datasets = json
   },
