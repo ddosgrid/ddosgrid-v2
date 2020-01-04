@@ -23,7 +23,7 @@ export default {
   },
   mounted: async function () {
     try {
-      var res = await fetch('http://localhost:3000/analysis')
+      var res = await fetch('https://api.ddosgrid.online/analysis')
       var json = await res.json()
       this.datasets = json
     } catch (e) {
