@@ -14,9 +14,6 @@ class PacketEmitter extends EventEmitter {
             this.inspectPcapPacket(packet)
         })
         this.pcap_session.on('complete', () => {
-/*          this.analyseSrcIps()
-            this.analyseComputedValues()
-            this.writeToFile(outPath, outPath)*/
             this.emit('lastPcapPacket', this.currentPcapPacket)
             this.emit('complete')
         })
