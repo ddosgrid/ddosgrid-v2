@@ -5,8 +5,9 @@
     </h1>
     <div id="flex-container">
 
-      <datasettile>
+      <datasettile v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
       </datasettile>
+
       <visualizationtile>
       </visualizationtile>
 
@@ -32,7 +33,7 @@
         </md-card-header>
 
         <md-card-content>
-          <scatterplot :url="`${url}/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-portscan-clustered.json`">
+          <scatterplot :url="`${url}/public/50b3fcf30e5801f37e773c8c5ac92420/50b3fcf30e5801f37e773c8c5ac92420.pcap-portscan-clustered.json`">
           </scatterplot>
         </md-card-content>
 
@@ -49,7 +50,7 @@
         </md-card-header>
 
         <md-card-content>
-          <piechart :url="`${url}/public/51e721199b326d1d2a79a509f1519658/51e721199b326d1d2a79a509f1519658.pcap-synfloodanalysis.json`">
+          <piechart :url="`${url}/public/eaf0f7e1e010648bb1556485d1c4280a/eaf0f7e1e010648bb1556485d1c4280a.pcap-synfloodanalysis.json`">
           </piechart>
         </md-card-content>
 
@@ -86,6 +87,7 @@ export default {
     var res = await fetch(`${apibaseurl}/analysis`)
     var json = await res.json()
     this.datasets = json
+    console.log(this.datasets)
   },
   methods: {
     add: function (file) {
@@ -116,15 +118,16 @@ export default {
 }
 
 md-card {
-  width: 10%;
+  /*width: 30%;*/
 }
-.card {
+datasettile, visualizationtile {
+  width: 30%;
   flex-basis: 700px;
   flex-grow: 1;
   margin: 10px 10px;
 }
 @media only screen and (max-device-width: 768px){
-  .card {
+  datasettile, visualizationtile {
     flex-basis: 100%;
   }
 }

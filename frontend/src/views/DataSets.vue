@@ -19,11 +19,6 @@
   <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
     <md-icon>add</md-icon>
   </md-button>
-
-  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
-    <span>Upload was Successful, starting analysis now.</span>
-    <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
-  </md-snackbar>
 </div>
 </template>
 

@@ -63,7 +63,7 @@
               <md-card-header>
                 <div class="md-subhead">Analysis Files</div>
               </md-card-header>
-                <div v-for="analysis in dataset.analysisFiles" :key="analysis" class="analysisFile">
+                <div v-for="analysis in dataset.analysisFiles" :key="analysis.file" class="analysisFile">
                   <div class="">
                     {{ analysis }}
                   </div>
