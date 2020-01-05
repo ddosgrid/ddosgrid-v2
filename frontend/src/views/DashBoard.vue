@@ -5,6 +5,11 @@
     </h1>
     <div id="flex-container">
 
+      <datasettile>
+      </datasettile>
+      <visualizationtile>
+      </visualizationtile>
+
       <md-card v-for='url in urls' v-bind:key="url" class="card">
         <md-card-header>
           <div class="md-title">Most Scanned Ports</div>
@@ -53,28 +58,6 @@
         </md-card-actions>
       </md-card>
       <!-- End Example of PieChart -->
-
-      <md-card class="card">
-        <md-card-header>
-          <div class="md-title">Available datasets</div>
-        </md-card-header>
-
-        <md-card-content>
-          <md-list>
-            <md-list-item class="listitem" v-bind:key="dataset.id" v-for='dataset in datasets' @click="add(dataset.analysisFiles)">
-              {{dataset.id}}
-              <md-button class="btn md-icon-button md-dense md-raised md-primary">
-                <md-icon @click="add(dataset.analysisFiles)">add</md-icon>
-              </md-button>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-
     </div>
     <md-button class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
@@ -84,16 +67,20 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
-import BarChart from '@/components/BarChart.vue'
+import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
+import DataSetTile from '../components/DataSetTile'
+import VisualizationTile from '../components/VisualizationTile'
 
 export default {
   name: 'DashBoard',
   components: {
     'barchart': BarChart,
     'scatterplot': ScatterPlot,
-    'piechart': PieChart
+    'piechart': PieChart,
+    'datasettile': DataSetTile,
+    'visualizationtile': VisualizationTile
   },
   mounted: async function () {
     var res = await fetch(`${apibaseurl}/analysis`)
