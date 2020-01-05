@@ -13,7 +13,7 @@
        <div class="">
          {{ analysisFile.file.slice(66, -5) }}
        </div>
-       <md-button v-for="diagram in analysisFile.supportedDiagrams" :key="diagram" @click="openDiagram(analysisFile)" class="md-raised md-primary">Open in {{ diagram }} Diagram</md-button>
+       <md-button v-for="diagram in analysisFile.supportedDiagrams" :key="diagram" @click="openDiagram(analysisFile, diagram)" class="md-raised md-primary">Open in {{ diagram }} Diagram</md-button>
        <md-divider></md-divider>
       </div>
     </md-card-content>
@@ -26,8 +26,9 @@ export default {
     'dataset'
   ],
   methods: {
-    openDiagram: function (analysisFile) {
-      // add this file to stack in store
+    openDiagram: function (analysisFile, chart) {
+      analysisFile.chart = chart
+      this.$store.commit('addVisualization', analysisFile)
     },
     closeDataSet: function (dataset) {
       this.$store.commit('removeDataSet', dataset)

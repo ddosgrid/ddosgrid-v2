@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    datasets: []
+    datasets: [],
+    visualizations: []
   },
   mutations: {
     addDataSet (state, newDataSet) {
@@ -14,7 +15,13 @@ export default new Vuex.Store({
     },
     removeDataSet (state, toBeRemoved) {
       state.datasets = state.datasets.filter(dataset => dataset._id !== toBeRemoved._id)
-      console.log(state.datasets)
+    },
+    addVisualization (state, newVisualization) {
+      // TODO: check if duplicate
+      state.visualizations.push(newVisualization)
+    },
+    removeVisualization (state, toBeRemoved) {
+      state.visualizations = state.visualizations.filter(visualization => visualization._id !== toBeRemoved._id)
     }
   },
   actions: {

@@ -6,12 +6,21 @@ export default {
   name: 'BarChart',
   props: [ 'url' ],
   mounted: async function () {
+    console.log(this.url)
     let response = await fetch(this.url)
+    console.log(response)
     let parsedResponse = await response.json()
     console.log(parsedResponse)
 
-    let ports = parsedResponse.topTen.map(item => item.port)
-    let count = parsedResponse.topTen.map(item => item.count)
+    let ports
+    let count
+    try {
+      ports = parsedResponse.topTen.map(item => item.port)
+      count = parsedResponse.topTen.map(item => item.count)
+    } catch (e) {
+      ports = parsedResponse.topTwenty.map(item => item.port)
+      count = parsedResponse.topTwenty.map(item => item.count)
+    }
 
     // make fetch, get labels, and pass data
     this.renderChart({

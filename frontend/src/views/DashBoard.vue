@@ -11,54 +11,6 @@
       <visualizationtile v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
       </visualizationtile>
 
-      <md-card v-for='url in urls' v-bind:key="url" class="card">
-        <md-card-header>
-          <div class="md-title">Most Scanned Ports</div>
-        </md-card-header>
-
-        <md-card-content>
-          <barchart :url='url'>
-          </barchart>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-
-      <!-- Example of Scatterplot -->
-      <md-card class="card">
-        <md-card-header>
-          <div class="md-title">Overall traffic distribution (TCP/UDP ports)</div>
-        </md-card-header>
-
-        <md-card-content>
-          <scatterplot :url="`${url}/public/50b3fcf30e5801f37e773c8c5ac92420/50b3fcf30e5801f37e773c8c5ac92420.pcap-portscan-clustered.json`">
-          </scatterplot>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-      <!-- End Example of Scatterplot -->
-
-      <!-- Example of PieChart -->
-      <md-card class="card">
-        <md-card-header>
-          <div class="md-title">TCP states</div>
-        </md-card-header>
-
-        <md-card-content>
-          <piechart :url="`${url}/public/eaf0f7e1e010648bb1556485d1c4280a/eaf0f7e1e010648bb1556485d1c4280a.pcap-synfloodanalysis.json`">
-          </piechart>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button>Action</md-button>
-        </md-card-actions>
-      </md-card>
-      <!-- End Example of PieChart -->
     </div>
     <md-button class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
@@ -68,24 +20,21 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
-import BarChart from '@/components/BarChart'
-import ScatterPlot from '../components/ScatterPlot'
-import PieChart from '../components/PieChart'
 import DataSetTile from '../components/DataSetTile'
 import VisualizationTile from '../components/VisualizationTile'
 
 export default {
   name: 'DashBoard',
   components: {
-    'barchart': BarChart,
-    'scatterplot': ScatterPlot,
-    'piechart': PieChart,
     'datasettile': DataSetTile,
     'visualizationtile': VisualizationTile
   },
   computed: {
     datasets () {
       return this.$store.state.datasets
+    },
+    analysisfiles () {
+      return this.$store.state.visualizations
     }
   },
   mounted: async function () {
@@ -107,7 +56,6 @@ export default {
   data: function () {
     return {
       urls: [],
-      analysisfiles: [],
       url: apibaseurl
     }
   }
