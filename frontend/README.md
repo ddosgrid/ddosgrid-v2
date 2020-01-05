@@ -1,4 +1,4 @@
-# frontend
+# ddosgrid.online
 
 ## Project setup
 ```

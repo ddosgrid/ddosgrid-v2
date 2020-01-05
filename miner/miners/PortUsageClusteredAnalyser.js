@@ -25,8 +25,10 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
         }
     }
 
-    async postParsingAnalysis() {
+    async postParsingAnalysis () {
         this.output.clusters = this.results.clusters
+        this.output.scatterplot = this.formatForScatterplot(this.results.clusters)
+
         var fileName = `${this.baseOutPath}-portscan-clustered.json`
         var fileContent = this.output
         var summary = {
@@ -35,6 +37,18 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
             supportedDiagrams: ['Scatterplot']
         }
         return await this.storeAndReturnResult(fileName, fileContent, summary)
+    }
+
+    formatForScatterplot (buckets) {
+        var scatterplotPoints = buckets.map((count, index) => {
+          return { x: index * 64, y: count }
+        })
+
+        var filteredPorts = scatterplotPoints.filter((bucket) => {
+          return bucket.y > 0
+        })
+
+        return filteredPorts
     }
 }
 
