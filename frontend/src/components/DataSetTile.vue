@@ -5,12 +5,19 @@
     </md-card-header>
 
     <md-card-content>
-      a
+      <div class="" v-for="analysisFile in dataset.analysisFiles" :key="analysisFile.file">
+       <div class="">
+         {{ analysisFile.attackCategory }}
+       </div>
+       <div class="">
+         {{ analysisFile.file.slice(66, -5) }}
+       </div>
+       <div class="">
+         {{ analysisFile.supportedDiagrams }}
+       </div>
+       <md-divider></md-divider>
+      </div>
     </md-card-content>
-
-    <md-card-actions>
-      <md-button>Action</md-button>
-    </md-card-actions>
   </md-card>
 </template>
 
@@ -23,4 +30,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.card {
+  width: 30%;
+}
 </style>

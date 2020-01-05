@@ -8,7 +8,7 @@
       <datasettile v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
       </datasettile>
 
-      <visualizationtile>
+      <visualizationtile v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
       </visualizationtile>
 
       <md-card v-for='url in urls' v-bind:key="url" class="card">
@@ -101,9 +101,9 @@ export default {
   },
   data: function () {
     return {
-      urls: [
-      ],
+      urls: [],
       datasets: [],
+      analysisfiles: [],
       url: apibaseurl
     }
   }
@@ -121,8 +121,7 @@ md-card {
   /*width: 30%;*/
 }
 datasettile, visualizationtile {
-  width: 30%;
-  flex-basis: 700px;
+  flex-basis: auto;
   flex-grow: 1;
   margin: 10px 10px;
 }
