@@ -40,11 +40,11 @@ class PortUsageClusteredAnalyser extends GenericPcapAnalyser {
     }
 
     formatForScatterplot (buckets) {
-        var scatterplotPoint = buckets.map((count, index) => {
+        var scatterplotPoints = buckets.map((count, index) => {
           return { x: index * 64, y: count }
         })
 
-        var filteredPorts = clusteredPortsCounted.filter((bucket) => {
+        var filteredPorts = scatterplotPoints.filter((bucket) => {
           return bucket.y > 0
         })
 

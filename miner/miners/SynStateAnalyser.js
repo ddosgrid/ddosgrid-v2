@@ -59,12 +59,22 @@ class SynStateAnalyser extends GenericPcapAnalyser {
             },
             labels: [ 'SYN', 'SYN/ACK', 'FIN', 'FIN/ACK', 'Other' ]
         }
+        fileContent.piechart = this.formatForPiechart(fileContent)
         var summary = {
             fileName: fileName,
             attackCategory: 'SYN-Flood',
             supportedDiagrams: ['PieChart']
         }
         return await  this.storeAndReturnResult(fileName, fileContent, summary)
+    }
+    formatForPiechart (results) {
+      return {
+        datasets: [{
+          backgroundColor: ['#DB0071',  '#005FD0', '#b967ff', '#fffb96', '#05ffa1'],
+          vals: Object.values(results.data)
+        }],
+        labels: results.labels
+      }
     }
 }
 

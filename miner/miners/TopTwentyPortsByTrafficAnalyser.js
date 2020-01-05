@@ -55,6 +55,7 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
         var totalNrOfDestinationPorts = ports.length
         this.output.topTwenty = topTwentyServices
         this.output.metrics = { total_dst_port: totalNrOfDestinationPorts }
+        this.output.barchart = this.formatForBarchart(this.output)
 
         var fileName = `${this.baseOutPath}-top20Services.json`
         var fileContent = this.output
@@ -65,6 +66,16 @@ class TopTwentyPortsAnalyser extends GenericPcapAnalyser {
         }
         return await  this.storeAndReturnResult(fileName, fileContent, summary)
     }
+    formatForBarchart (output) {
+      return {
+        labels: output.topTwenty.map(item => item.port),
+        datasets: [{
+           label: 'Count',
+           backgroundColor: '#f87979',
+           data: output.topTwenty.map(item => item.count)
+        }]
+      }
+   }
 }
 
 module.exports = TopTwentyPortsAnalyser
