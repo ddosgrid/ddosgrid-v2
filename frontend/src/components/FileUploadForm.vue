@@ -2,7 +2,7 @@
   <div id="form">
     <md-field>
       <label>Upload files</label>
-      <md-file v-model="file" placeholder="Choose a PCAP File..." />
+      <md-file v-model="file" accept=".pcap" placeholder="Choose a PCAP File..." />
     </md-field>
 
     <md-field>
