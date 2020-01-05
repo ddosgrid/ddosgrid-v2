@@ -22,7 +22,7 @@
       <md-card-expand>
         <md-card-actions md-alignment="space-between">
           <div>
-            <md-button>Open</md-button>
+            <md-button @click="addDataSet(dataset)">Open</md-button>
             <md-button>Delete</md-button>
           </div>
 
@@ -76,7 +76,12 @@
 
 <script>
 export default {
-  props: ['dataset']
+  props: ['dataset'],
+  methods: {
+    addDataSet: function (dataset) {
+      this.$store.commit('addDataSet', dataset)
+    }
+  }
 }
 </script>
 

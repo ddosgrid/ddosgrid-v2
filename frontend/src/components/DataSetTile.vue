@@ -30,7 +30,7 @@ export default {
       // add this file to stack in store
     },
     closeDataSet: function (dataset) {
-      // remove this data set from the stack in store
+      this.$store.commit('removeDataSet', dataset)
     }
   }
 }

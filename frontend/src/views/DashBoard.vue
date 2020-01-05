@@ -83,6 +83,11 @@ export default {
     'datasettile': DataSetTile,
     'visualizationtile': VisualizationTile
   },
+  computed: {
+    datasets () {
+      return this.$store.state.datasets
+    }
+  },
   mounted: async function () {
     var res = await fetch(`${apibaseurl}/analysis`)
     var json = await res.json()
@@ -102,7 +107,6 @@ export default {
   data: function () {
     return {
       urls: [],
-      datasets: [],
       analysisfiles: [],
       url: apibaseurl
     }
