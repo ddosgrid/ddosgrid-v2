@@ -12,9 +12,7 @@
        <div class="">
          {{ analysisFile.file.slice(66, -5) }}
        </div>
-       <div class="">
-         {{ analysisFile.supportedDiagrams }}
-       </div>
+       <md-button v-for="diagram in analysisFile.supportedDiagrams" :key="diagram" class="md-raised md-primary">Open in {{ diagram }} Diagram</md-button>
        <md-divider></md-divider>
       </div>
     </md-card-content>
