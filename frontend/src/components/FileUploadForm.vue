@@ -15,7 +15,9 @@
       <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary" @click="uploadFile">Upload</md-button>
+  <md-button class="md-raised md-primary md-icon-button" @click="uploadFile">
+    <md-icon>cloud_upload</md-icon>
+  </md-button>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
     <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>

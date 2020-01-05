@@ -8,8 +8,9 @@
     <file-upload-form>
     </file-upload-form>
     <md-dialog-actions>
-      <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-      <md-button class="md-primary" @click="showDialog = false">Save</md-button>
+      <md-button class="md-primary" @click="showFileUpload = false">
+        <md-icon>close</md-icon>
+      </md-button>
     </md-dialog-actions>
   </md-dialog>
   <div v-for="dataset in datasets" :key="dataset._id" class="">
