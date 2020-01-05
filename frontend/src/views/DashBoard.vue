@@ -12,6 +12,7 @@
       </visualizationtile>
 
     </div>
+
     <md-button class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
     </md-button>
@@ -35,28 +36,6 @@ export default {
     },
     analysisfiles () {
       return this.$store.state.visualizations
-    }
-  },
-  mounted: async function () {
-    var res = await fetch(`${apibaseurl}/analysis`)
-    var json = await res.json()
-    this.datasets = json
-    console.log(this.datasets)
-  },
-  methods: {
-    add: function (file) {
-      console.log(file)
-      if (Array.isArray(file)) {
-        var urls = file.map(el => `${apibaseurl}/public/${file}`)
-        console.log(urls)
-        this.urls.push([...urls])
-      }
-    }
-  },
-  data: function () {
-    return {
-      urls: [],
-      url: apibaseurl
     }
   }
 }

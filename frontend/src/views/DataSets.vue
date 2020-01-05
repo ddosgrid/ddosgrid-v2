@@ -3,19 +3,21 @@
   <h1>
     Uploaded Data Sets
   </h1>
+
   <md-dialog :md-active.sync="showFileUpload">
     <md-dialog-title>Upload a Data Set</md-dialog-title>
     <file-upload-form>
     </file-upload-form>
     <md-dialog-actions>
-      <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-      <md-button class="md-primary" @click="showDialog = false">Save</md-button>
+      <md-button class="md-primary" @click="showFileUpload = false">Close</md-button>
     </md-dialog-actions>
   </md-dialog>
+
   <div v-for="dataset in datasets" :key="dataset._id" class="">
     <data-set-list-item :dataset="dataset">
     </data-set-list-item>
   </div>
+  
   <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
     <md-icon>add</md-icon>
   </md-button>
@@ -23,9 +25,7 @@
 </template>
 
 <script>
-import {
-  apibaseurl
-} from '@/config/variables.js'
+import { apibaseurl } from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import DataSetListItem from '../components/DataSetListItem.vue'
 
@@ -45,7 +45,6 @@ export default {
     }
   },
   watch: {
-    // whenever question changes, this function will run
     showFileUpload: async function (newVal, oldVal) {
       if (!newVal) {
         // refresh list

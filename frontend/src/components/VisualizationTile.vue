@@ -1,7 +1,8 @@
 <template lang="html">
   <md-card class="card">
+
     <md-card-header>
-      <div class="md-title">vis tile</div>
+      <div class="md-title">{{ analysisfile.chart }}</div>
     </md-card-header>
 
     <md-card-content>
@@ -11,6 +12,7 @@
     <md-card-actions>
       <md-button>Action</md-button>
     </md-card-actions>
+
   </md-card>
 </template>
 
@@ -34,10 +36,6 @@ export default {
     },
     fileUrl: function () {
       return `${apibaseurl}/public/${this.analysisfile.file}`
-    }
-  },
-  data: function () {
-    return {
     }
   }
 }
