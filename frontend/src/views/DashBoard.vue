@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { apibaseurl } from '@/config/variables.js'
 import DataSetTile from '../components/DataSetTile'
 import VisualizationTile from '../components/VisualizationTile'
 

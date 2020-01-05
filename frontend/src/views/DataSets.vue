@@ -17,7 +17,7 @@
     <data-set-list-item :dataset="dataset">
     </data-set-list-item>
   </div>
-  
+
   <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
     <md-icon>add</md-icon>
   </md-button>
