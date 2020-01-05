@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -10,10 +9,12 @@ export default new Vuex.Store({
   },
   mutations: {
     addDataSet (state, newDataSet) {
+      // TODO: check if duplicate
       state.datasets.push(newDataSet)
     },
     removeDataSet (state, toBeRemoved) {
-      state.datasets = state.datasets.filter((dataset) => { toBeRemoved._id !== dataset._id })
+      state.datasets = state.datasets.filter(dataset => dataset._id !== toBeRemoved._id)
+      console.log(state.datasets)
     }
   },
   actions: {
