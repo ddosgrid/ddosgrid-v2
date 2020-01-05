@@ -15,7 +15,11 @@
       <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary" @click="uploadFile">Primary</md-button>
+  <md-button class="md-raised md-primary" @click="uploadFile">Upload</md-button>
+  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+    <span>{{ snackbarMsg}}</span>
+    <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
+  </md-snackbar>
   </div>
 </template>
 
@@ -25,11 +29,15 @@ export default {
   data: () => ({
     file: null,
     fileName: null,
-    fileDescription: null
+    fileDescription: null,
+    showSnackbar: false,
+    position: 'center',
+    duration: 4000,
+    isInfinity: false,
+    snackbarMsg: null
   }),
   methods: {
     uploadFile () {
-      console.log(this.file)
       const formData = new FormData()
       const fileField = document.querySelector('input[type="file"]')
 
@@ -45,7 +53,8 @@ export default {
         .then((result) => {
           console.log('Success:', result)
           // snackbar to let user know that file was uploaded and analysis has started
-
+          this.snackbarMsg = 'Upload was Successful, starting analysis now.'
+          this.showSnackbar = true
           // start analysis
           fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
             method: 'POST'
@@ -59,6 +68,9 @@ export default {
         })
         .catch((error) => {
           console.error('Error:', error)
+          // snackbar to let user know an error has occurred
+          this.snackbarMsg = error
+          this.showSnackbar = true
         })
     }
   }

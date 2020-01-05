@@ -1,29 +1,36 @@
 <template>
-  <div class="data-sets">
-    <h1>
-      Uploaded Data Sets
-    </h1>
-    <md-dialog :md-active.sync="showFileUpload">
-      <md-dialog-title>Upload a Data Set</md-dialog-title>
-      <file-upload-form>
-      </file-upload-form>
-      <md-dialog-actions>
-        <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-        <md-button class="md-primary" @click="showDialog = false">Save</md-button>
-      </md-dialog-actions>
-    </md-dialog>
-    <div v-for="dataset in datasets"  :key="dataset._id" class="">
-      <data-set-list-item :dataset="dataset">
-      </data-set-list-item>
-    </div>
-    <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right" >
-      <md-icon>add</md-icon>
-    </md-button>
+<div class="data-sets">
+  <h1>
+    Uploaded Data Sets
+  </h1>
+  <md-dialog :md-active.sync="showFileUpload">
+    <md-dialog-title>Upload a Data Set</md-dialog-title>
+    <file-upload-form>
+    </file-upload-form>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+      <md-button class="md-primary" @click="showDialog = false">Save</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+  <div v-for="dataset in datasets" :key="dataset._id" class="">
+    <data-set-list-item :dataset="dataset">
+    </data-set-list-item>
   </div>
+  <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
+    <md-icon>add</md-icon>
+  </md-button>
+
+  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+    <span>Upload was Successful, starting analysis now.</span>
+    <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
+  </md-snackbar>
+</div>
 </template>
 
 <script>
-import { apibaseurl } from '@/config/variables.js'
+import {
+  apibaseurl
+} from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import DataSetListItem from '../components/DataSetListItem.vue'
 
@@ -67,7 +74,7 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (max-device-width: 768px){
+@media only screen and (max-device-width: 768px) {
   .card {
     flex-basis: 100%;
   }
@@ -81,5 +88,4 @@ export default {
 #fab {
   position: fixed;
 }
-
 </style>

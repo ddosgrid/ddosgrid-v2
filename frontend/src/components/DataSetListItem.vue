@@ -44,10 +44,10 @@
                   <div class="">End: {{ dataset.metrics.end }}</div>
                   <div class="">Duration: {{ dataset.metrics.duration }}</div>
                   <div class="">Number of IP Packets: {{ dataset.metrics.nrOfIPpackets }}</div>
-                  <div class="">Attack Size in Bytes{{ dataset.metrics.attackSizeInBytes }}</div>
+                  <div class="">Attack Size in Bytes: {{ dataset.metrics.attackSizeInBytes }}</div>
                   <div class="">Attack Bandwith in Bytes Per Second: {{ dataset.metrics.attackBandwidthInBps }}</div>
-                  <div class="">Average Packet Size:{{ dataset.metrics.avgPacketSize }}</div>
-                  <div class="">Number of IPv4 Packets{{ dataset.metrics.nrOfIPv4Packets }}</div>
+                  <div class="">Average Packet Size: {{ dataset.metrics.avgPacketSize }}</div>
+                  <div class="">Number of IPv4 Packets: {{ dataset.metrics.nrOfIPv4Packets }}</div>
                 </div>
                 <div class="card-content-half">
                   <div class="">Number of IPv6 Packets: {{ dataset.metrics.nrOfIPv6Packets }}</div>
