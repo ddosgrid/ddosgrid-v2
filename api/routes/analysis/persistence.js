@@ -20,6 +20,16 @@ class Analyses {
       })
     })
   }
+  async deleteAnalysis (md5) {
+    return new Promise ((resolve, reject) => {
+      instance.remove({ md5: md5 }, (err) => {
+        if(err) {
+          reject(err)
+        }
+        resolve()
+      })
+    })
+  }
   async getAnalysis (md5) {
     return new Promise((resolve, reject) => {
       instance.findOne({md5: md5}, (err, analyses) => {

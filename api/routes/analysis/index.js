@@ -9,10 +9,11 @@ const analysisBaseDir = path.resolve(__dirname, '../../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../../data/anyleses.db')
 var analyses = new persistedAnalyses(analysesDB)
 
+router.get('', getAllAnalyses)
+router.get('/:id', getAnalysisById)
+router.delete('/:id', deleteAnalysisById)
 router.post('/upload', handleFilePost)
 router.post('/:id/analyse', startAnalysis)
-router.get('', getAllAnalyses)
-router.get(':id', getAnalysisById)
 
 async function getAllAnalyses (req, res) {
     try {
@@ -24,8 +25,26 @@ async function getAllAnalyses (req, res) {
 }
 
 async function getAnalysisById (req, res) {
-  var analysis = await analyses.getAnalysis(req.id)
+  var analysis = await analyses.getAnalysis(req.params.id)
   res.json(analysis)
+}
+
+async function deleteAnalysisById (req, res) {
+  try {
+    var analysis = await analyses.getAnalysis(req.params.id)
+    if(!analysis) {
+      return res.status(404).send('Not found')
+    }
+    // We need to derive the directory from the database md5 hash
+    // since reading it from parameter would be dangerous
+    var pathToDel = path.resolve(analysisBaseDir, analysis.md5)
+    deleteFilesInDir(pathToDel)
+    await analyses.deleteAnalysis(req.params.id)
+    res.status(200).send(`Deleted ${analysis.md5}`)
+  } catch (e) {
+    console.log(e)
+    res.status(400).send('Unable to delete analysis')
+  }
 }
 
 async function startAnalysis (req, res) {
@@ -137,4 +156,19 @@ function keepRequiredAttributes(element) {
   }
 }
 
+function deleteFilesInDir (directory, cb) {
+  fs.readdir(directory, (err, files) => {
+    if (err) {
+      console.log(err)
+    }
+
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), err => {
+        if (err) {
+          console.log(err)
+        }
+      });
+    }
+  });
+}
 module.exports = router
