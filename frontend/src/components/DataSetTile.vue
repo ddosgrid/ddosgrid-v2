@@ -38,7 +38,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.card {
-  width: 30%;
-}
+
 </style>

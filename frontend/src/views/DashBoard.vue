@@ -47,10 +47,8 @@ export default {
   flex-wrap: wrap;
 }
 
-md-card {
-  /*width: 30%;*/
-}
 datasettile, visualizationtile {
+  width: 20%;
   flex-basis: auto;
   flex-grow: 1;
   margin: 10px 10px;
