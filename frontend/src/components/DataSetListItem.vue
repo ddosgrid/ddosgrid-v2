@@ -23,7 +23,8 @@
       <md-card-expand>
         <md-card-actions md-alignment="space-between">
           <div>
-            <md-button @click="addDataSet(dataset)">Open</md-button>
+            <md-button v-if="dataset.status === 'analysed'" @click="addDataSet(dataset)">Open</md-button>
+            <md-button class="md-accent" v-else @click="notifyNotAnalysed">Open</md-button>
             <md-button>Delete</md-button>
           </div>
 
@@ -89,6 +90,10 @@ export default {
       this.snackbarMsg = 'Added ' + dataset.name + ' to the Dashboard'
       this.showSnackbar = true
       this.$store.commit('addDataSet', dataset)
+    },
+    notifyNotAnalysed: function () {
+      this.snackbarMsg = 'This data set has not been analysed, probably due to an error while parsing.'
+      this.showSnackbar = true
     }
   },
   data: function () {
