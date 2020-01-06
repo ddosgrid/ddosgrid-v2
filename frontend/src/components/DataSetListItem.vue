@@ -85,7 +85,6 @@
 export default {
   props: ['dataset'],
   methods: {
-    // TODO: show snackbar when dataset was added to dashboard
     addDataSet: function (dataset) {
       this.snackbarMsg = 'Added ' + dataset.name + ' to the Dashboard'
       this.showSnackbar = true
