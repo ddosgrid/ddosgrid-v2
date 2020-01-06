@@ -21,7 +21,7 @@ export default new Vuex.Store({
       state.visualizations.push(newVisualization)
     },
     removeVisualization (state, toBeRemoved) {
-      state.visualizations = state.visualizations.filter(visualization => visualization._id !== toBeRemoved._id)
+      state.visualizations = state.visualizations.filter(visualization => visualization.file !== toBeRemoved.file)
     }
   },
   actions: {

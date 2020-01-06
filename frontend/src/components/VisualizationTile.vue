@@ -10,7 +10,7 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button>Action</md-button>
+      <md-button @click="clearVisualization(analysisfile)">Clear</md-button>
     </md-card-actions>
 
   </md-card>
@@ -36,6 +36,11 @@ export default {
     },
     fileUrl: function () {
       return `${apibaseurl}/public/${this.analysisfile.file}`
+    }
+  },
+  methods: {
+    clearVisualization: function (analysisfile) {
+      this.$store.commit('removeVisualization', analysisfile)
     }
   }
 }
