@@ -13,7 +13,7 @@
 
     </div>
 
-    <md-button class="md-fab md-primary md-fab-bottom-right" >
+    <md-button id="fab" class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
     </md-button>
   </div>
@@ -61,4 +61,7 @@ datasettile, visualizationtile {
   }
 }
 
+#fab {
+  position: fixed;
+}
 </style>
