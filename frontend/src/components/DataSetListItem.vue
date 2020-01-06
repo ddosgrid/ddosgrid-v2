@@ -1,4 +1,5 @@
 <template lang="html">
+  <div class="">
     <md-card md-with-hover>
       <md-card-header>
         <div class="md-title">{{ dataset.name }}</div>
@@ -72,6 +73,12 @@
         </md-card-expand-content>
       </md-card-expand>
     </md-card>
+
+    <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+      <span>{{ snackbarMsg }}</span>
+      <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
+    </md-snackbar>
+  </div>
 </template>
 
 <script>
@@ -80,7 +87,18 @@ export default {
   methods: {
     // TODO: show snackbar when dataset was added to dashboard
     addDataSet: function (dataset) {
+      this.snackbarMsg = 'Added ' + dataset.name + ' to the Dashboard'
+      this.showSnackbar = true
       this.$store.commit('addDataSet', dataset)
+    }
+  },
+  data: function () {
+    return {
+      showSnackbar: false,
+      position: 'center',
+      duration: 4000,
+      isInfinity: false,
+      snackbarMsg: null
     }
   }
 }
