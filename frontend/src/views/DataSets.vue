@@ -15,10 +15,12 @@
     </md-dialog-actions>
   </md-dialog>
 
-  <div v-for="dataset in datasets" :key="dataset._id" class="">
-    <data-set-list-item :dataset="dataset">
-    </data-set-list-item>
-  </div>
+  <md-content class="md-scrollbar">
+    <div v-for="dataset in datasets" :key="dataset._id" class="">
+      <data-set-list-item :dataset="dataset">
+      </data-set-list-item>
+    </div>
+  </md-content>
 
   <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
     <md-icon>add</md-icon>
@@ -84,5 +86,10 @@ export default {
 
 #fab {
   position: fixed;
+}
+
+.md-content {
+  max-height: 30em;
+  overflow: auto;
 }
 </style>
