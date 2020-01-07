@@ -4,13 +4,11 @@
     Visualization Dashboard
     </h1>
     <div id="flex-container">
-
-      <datasettile v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
-      </datasettile>
-
-      <visualizationtile v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
+      <visualizationtile class="tile" v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
       </visualizationtile>
 
+      <datasettile class="tile" v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
+      </datasettile>
     </div>
 
     <md-button id="fab" class="md-fab md-primary md-fab-bottom-right" >
@@ -47,14 +45,13 @@ export default {
   flex-wrap: wrap;
 }
 
-datasettile, visualizationtile {
-  width: 20%;
-  flex-basis: auto;
+.tile {
+  flex-basis: 600px;
   flex-grow: 1;
   margin: 10px 10px;
 }
 @media only screen and (max-device-width: 768px){
-  datasettile, visualizationtile {
+  .tile {
     flex-basis: 100%;
   }
 }

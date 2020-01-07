@@ -10,7 +10,9 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button @click="clearVisualization(analysisfile)">Clear</md-button>
+      <md-button @click="clearVisualization(analysisfile)">
+        <md-icon>close</md-icon>
+      </md-button>
     </md-card-actions>
 
   </md-card>

@@ -118,8 +118,6 @@ export default {
   }
 }
 .wrapper {
-  height: calc(100% - 220px);
-  overflow-y: scroll;
   scrollbar-width: none;
 }
 
