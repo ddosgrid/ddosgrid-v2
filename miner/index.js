@@ -3,6 +3,7 @@ const { PacketEmitter, PortAnalyser, MetricAnalyser, PortUsageClusteredAnalyser,
 try {
   var settings = parseAndCheckArguments(process.argv)
   analyseFileInProjectFolder(settings.pcapPath)  
+
 } catch (e) {
     console.error(e.message)
     process.exit(1)

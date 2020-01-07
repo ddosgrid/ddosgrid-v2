@@ -25,7 +25,8 @@
           <div>
             <md-button v-if="dataset.status === 'analysed'" @click="addDataSet(dataset)">Open</md-button>
             <md-button class="md-accent" v-else @click="notifyNotAnalysed">Open</md-button>
-            <md-button>Delete</md-button>
+            <md-button @click="deleteAnalysis(dataset)">Delete</md-button>
+            <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry</md-button>
           </div>
 
           <md-card-expand-trigger>
@@ -83,6 +84,7 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
 export default {
   props: ['dataset'],
   methods: {
@@ -94,6 +96,30 @@ export default {
     notifyNotAnalysed: function () {
       this.snackbarMsg = 'This data set has not been analysed, probably due to an error while parsing.'
       this.showSnackbar = true
+    },
+    deleteAnalysis: function deleteAnalysis (dataset) {
+      var app = this
+      console.log(dataset)
+      fetch(`${apibaseurl}/analysis/${dataset.md5}`, {
+        method: 'DELETE'
+      })
+        .then(() => {
+          app.$emit('deleted')
+        })
+        .catch(() => {
+          console.error('Unable to delete dataset')
+        })
+    },
+    retryAnalysis: function retryAnalysis (dataset) {
+      var id = dataset.md5
+      var app = this
+      fetch(`${apibaseurl}/analysis/${id}/analyse`, {
+        method: 'POST'
+      })
+        .then((result) => {
+          app.$emit('deleted')
+          console.log(result)
+        })
     }
   },
   data: function () {
