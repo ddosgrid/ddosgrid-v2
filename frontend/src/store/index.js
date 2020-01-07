@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersist from 'vuex-localstorage'
 
 Vue.use(Vuex)
 
@@ -27,5 +28,11 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-  }
+  },
+  plugins: [createPersist({
+    namespace: 'ddosgrid-state-storage',
+    initialState: {},
+    // State expires in 6 months
+    expires: 6 * 7 * 24 * 60 * 60 * 1e3
+  })]
 })

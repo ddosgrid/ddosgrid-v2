@@ -15,13 +15,14 @@
       <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary md-icon-button" @click="uploadFile">
+  <md-button class="md-raised md-primary md-icon-button" @click="uploadFile" v-if="!isLoading">
     <md-icon>cloud_upload</md-icon>
   </md-button>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
     <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
   </md-snackbar>
+  <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
   </div>
 </template>
 
@@ -36,7 +37,8 @@ export default {
     position: 'center',
     duration: 4000,
     isInfinity: false,
-    snackbarMsg: null
+    snackbarMsg: null,
+    isLoading: false
   }),
   methods: {
     uploadFile () {
@@ -47,12 +49,14 @@ export default {
       formData.append('description', this.fileDescription)
       formData.append('captureFile', fileField.files[0])
 
+      this.isLoading = true
       fetch(`${apibaseurl}/analysis/upload`, {
         method: 'POST',
         body: formData
       })
         .then((response) => response.json())
         .then((result) => {
+          this.isLoading = false
           console.log('Success:', result)
           // snackbar to let user know that file was uploaded and analysis has started
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
@@ -69,6 +73,7 @@ export default {
           console.log(result)
         })
         .catch((error) => {
+          this.isLoading = false
           console.error('Error:', error)
           // snackbar to let user know an error has occurred
           this.snackbarMsg = error

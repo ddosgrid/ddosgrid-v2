@@ -63,7 +63,7 @@ export default {
       }
     },
     sendNotification: function sendNotification (msg) {
-      var text = `Dataset ${msg} was successfully analysed`
+      var text = `Dataset "${msg}" was successfully analysed`
       if (!('Notification' in window)) {
         return null
       } else if (Notification.permission === 'granted') {
