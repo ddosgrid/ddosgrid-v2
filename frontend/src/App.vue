@@ -1,15 +1,11 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <md-tabs md-sync-route>
+      <md-tabs md-sync-route class="nav">
         <md-tab id="tab-home" md-label="" to="/" md-icon="home" exact></md-tab>
         <md-tab id="tab-dashboard" md-label="" to="/dashboard" md-icon="dashboard" exact></md-tab>
         <md-tab id="tab-data-sets" md-label="" to="/datasets" md-icon="view_list" exact></md-tab>
       </md-tabs>
-    </div>
-    <div>
     <router-view id="main" />
-    </div>
   </div>
 </template>
 
@@ -20,6 +16,10 @@ export default {
 
 <style>
   #app {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
     -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 0.5s; /* Firefox < 16 */
         -ms-animation: fadein 0.5s; /* Internet Explorer */
@@ -57,5 +57,6 @@ export default {
   #main {
     width: 80%;
     margin: auto;
+    height: calc(100% - 50px)
   }
 </style>

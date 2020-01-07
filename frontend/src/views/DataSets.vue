@@ -4,28 +4,28 @@
     Uploaded Data Sets
   </h1>
 
-  <md-dialog :md-active.sync="showFileUpload">
-    <md-dialog-title>Upload a Data Set</md-dialog-title>
-    <file-upload-form>
-    </file-upload-form>
-    <md-dialog-actions>
-      <md-button class="md-primary" @click="showFileUpload = false">
-        <md-icon>close</md-icon>
-      </md-button>
-    </md-dialog-actions>
-  </md-dialog>
+  <div class="wrapper">
+    <md-dialog :md-active.sync="showFileUpload">
+      <md-dialog-title>Upload a Data Set</md-dialog-title>
+      <file-upload-form>
+      </file-upload-form>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showFileUpload = false">
+          <md-icon>close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
 
-  <md-content class="md-scrollbar">
-    <div v-for="dataset in datasets" :key="dataset._id" class="">
+    <div v-for="dataset in datasets" :key="dataset._id" class="dataset">
       <data-set-list-item :dataset="dataset">
       </data-set-list-item>
     </div>
-  </md-content>
 
-  <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
-    <md-icon>add</md-icon>
-  </md-button>
+    <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
+      <md-icon>add</md-icon>
+    </md-button>
 
+  </div>
 </div>
 </template>
 
@@ -78,6 +78,19 @@ export default {
     flex-basis: 100%;
   }
 }
+.wrapper {
+  height: calc(100% - 220px);
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.dataset {
+  margin-bottom: 10px;
+}
 
 .md-dialog {
   width: 50%;
@@ -86,10 +99,5 @@ export default {
 
 #fab {
   position: fixed;
-}
-
-.md-content {
-  max-height: 30em;
-  overflow: auto;
 }
 </style>
