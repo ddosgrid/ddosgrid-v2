@@ -2,7 +2,12 @@
   <md-card class="card">
 
     <md-card-header>
-      <div class="md-title">{{ analysisfile.chart }}</div>
+        <md-card-header-text>
+          <div class="md-title">{{ analysisfile.chart }}</div>
+        </md-card-header-text>
+        <md-card-media class="icon-wrap">
+          <img :src="getIconForHash(analysisfile.file)" class="icon">
+        </md-card-media>
     </md-card-header>
 
     <md-card-content>
@@ -23,6 +28,7 @@ import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
+import hashicon from 'hashicon'
 export default {
   components: {
     'barchart': BarChart,
@@ -41,6 +47,14 @@ export default {
     }
   },
   methods: {
+    getIconForHash: function getIconForHash (file) {
+      try {
+        var hash = file.split('/')[0]
+        return hashicon(hash, { size: 80 }).toDataURL()
+      } catch (e) {
+        console.log(e)
+      }
+    },
     clearVisualization: function (analysisfile) {
       this.$store.commit('removeVisualization', analysisfile)
     }
@@ -49,4 +63,14 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.icon {
+  width: 30px;
+  height: 30px;
+  float: right;
+}
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

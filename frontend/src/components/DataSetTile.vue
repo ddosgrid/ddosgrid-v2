@@ -1,9 +1,16 @@
 <template lang="html">
   <md-card class="card">
     <md-card-header>
-      <div class="md-title">{{ dataset.name }}</div>
+        <md-card-header-text>
+          <div class="md-title">{{ dataset.name }}</div>
+          <div class="md-subhead">Dataset ({{dataset.md5.slice(0,5)}}..{{dataset.md5.slice(dataset.md5.length-5)}})</div>
+        </md-card-header-text>
+      <md-card-media class="icon-wrap">
+        <img :src="getIconForHash(dataset.md5)" class="icon">
+      </md-card-media>
     </md-card-header>
 
+    <md-divider></md-divider>
     <md-card-content>
        <md-list>
         <div class="" v-for="group in Object.keys(groupedByAttackType)" :key="group">
@@ -38,6 +45,8 @@
 </template>
 
 <script>
+import hashicon from 'hashicon'
+
 export default {
   props: [
     'dataset'
@@ -51,6 +60,9 @@ export default {
     }
   },
   methods: {
+    getIconForHash: function getIconForHash (hash) {
+      return hashicon(hash, { size: 80 }).toDataURL()
+    },
     openDiagram: function (analysisFile, chart) {
       analysisFile.chart = chart
       this.$store.commit('addVisualization', analysisFile)
@@ -76,6 +88,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.icon {
+  width: 30px;
+  height: 30px;
+  float: right;
+}
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .card {
   max-width: 25em;
 }

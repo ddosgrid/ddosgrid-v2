@@ -2,9 +2,16 @@
   <div class="">
     <md-card md-with-hover>
       <md-card-header>
+        <md-card-header-text>
         <div class="md-title">{{ dataset.name }}</div>
-        <div class="md-subhead">General Information</div>
+        <div class="md-subhead">Dataset ({{dataset.md5.slice(0,5)}}..{{dataset.md5.slice(dataset.md5.length-5)}})</div>
+        <!--div class="md-subhead">General Information</div-->
+        </md-card-header-text>
+        <md-card-media class="icon-wrap">
+          <img :src="getIconForHash(dataset.md5)" class="icon">
+        </md-card-media>
       </md-card-header>
+      <md-divider></md-divider>
 
       <md-card-content>
         <div class="card-content-container">
@@ -85,9 +92,14 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import hashicon from 'hashicon'
+
 export default {
   props: ['dataset'],
   methods: {
+    getIconForHash: function getIconForHash (hash) {
+      return hashicon(hash, { size: 80 }).toDataURL()
+    },
     addDataSet: function (dataset) {
       this.snackbarMsg = 'Added ' + dataset.name + ' to the Dashboard'
       this.showSnackbar = true
@@ -135,6 +147,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.icon {
+  width: 30px;
+  height: 30px;
+  float: right;
+}
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .card-content-container {
   display: flex;
   justify-content: space-between;
