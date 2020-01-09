@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "07e3bfe4-db98-4d86-a58a-dd7bf8aca303",
+		"_postman_id": "7ceb240c-6977-4c81-b204-02f88387c296",
 		"name": "ddosgrid-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -80,6 +80,46 @@
 					"port": "{{port}}",
 					"path": [
 						"analysis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific analysis",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/analysis/51e721199b326d1d2a79a509f1519658",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"analysis",
+						"51e721199b326d1d2a79a509f1519658"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete specific analysis",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/analysis/51e721199b326d1d2a79a509f1519658",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"analysis",
+						"51e721199b326d1d2a79a509f1519658"
 					]
 				}
 			},
