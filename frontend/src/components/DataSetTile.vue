@@ -36,7 +36,7 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button @click="closeDataSet(dataset)">
+      <md-button class="md-icon-button" @click="closeDataSet(dataset)">
         <md-icon>close</md-icon>
       </md-button>
     </md-card-actions>

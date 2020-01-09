@@ -15,11 +15,15 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button @click="clearVisualization(analysisfile)">
+      <md-button class="md-icon-button" @click="downloadChart">
+        <md-icon>arrow_downward</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" @click="clearVisualization(analysisfile)">
         <md-icon>close</md-icon>
       </md-button>
     </md-card-actions>
 
+    <a class="download" :href="exportUrl" target="_blank" :download="fileName">Download</a>
   </md-card>
 </template>
 
@@ -38,12 +42,20 @@ export default {
   props: [
     'analysisfile'
   ],
+  data: () => {
+    return {
+      exportUrl: ''
+    }
+  },
   computed: {
     currentTabComponent: function () {
       return this.analysisfile.chart.toLowerCase()
     },
     fileUrl: function () {
       return `${apibaseurl}/public/${this.analysisfile.file}`
+    },
+    fileName: function fileName () {
+      return `${this.analysisfile.file}.png`
     }
   },
   methods: {
@@ -57,12 +69,22 @@ export default {
     },
     clearVisualization: function (analysisfile) {
       this.$store.commit('removeVisualization', analysisfile)
+    },
+    downloadChart: function downloadChart () {
+      var b64image = this.$el.querySelector('canvas').toDataURL('image/png')
+      this.exportUrl = b64image
+      setTimeout(() => {
+        this.$el.querySelector('.download').click()
+      }, 300)
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+.download {
+  display: none;
+}
 .icon {
   width: 30px;
   height: 30px;
