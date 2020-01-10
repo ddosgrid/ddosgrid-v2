@@ -11,9 +11,24 @@
       </datasettile>
     </div>
 
-    <md-button id="fab" class="md-fab md-primary md-fab-bottom-right" >
+    <!--md-button id="fab" class="md-fab md-primary md-fab-bottom-right" >
       <md-icon>add</md-icon>
-    </md-button>
+    </md-button-->
+    <md-speed-dial md-event="hover" id="dial">
+      <md-speed-dial-target>
+        <md-icon>add</md-icon>
+      </md-speed-dial-target>
+
+      <md-speed-dial-content>
+        <md-button class="md-icon-button">
+          <md-icon>note</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button">
+          <md-icon>event</md-icon>
+        </md-button>
+      </md-speed-dial-content>
+    </md-speed-dial>
   </div>
 </template>
 
@@ -26,6 +41,9 @@ export default {
   components: {
     'datasettile': DataSetTile,
     'visualizationtile': VisualizationTile
+  },
+  mounted: function () {
+    window.gg = this.$store
   },
   computed: {
     datasets () {
@@ -56,7 +74,7 @@ export default {
   }
 }
 
-#fab {
+#dial {
   position: fixed;
 }
 </style>
