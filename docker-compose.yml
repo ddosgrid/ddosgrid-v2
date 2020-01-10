@@ -1,0 +1,10 @@
+version: '3'
+services:
+  ddosgrid-api:
+    ports:
+      - "127.0.0.1:3000:3000"
+    image: "ddosgrid/ddosgrid-api"
+    volumes:
+      - userdata:/usr/src/app/api/data/
+volumes:
+  userdata:
