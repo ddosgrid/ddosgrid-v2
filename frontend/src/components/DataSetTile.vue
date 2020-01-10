@@ -53,9 +53,7 @@ export default {
   ],
   computed: {
     groupedByAttackType: function () {
-      console.log(this.dataset.analysisFiles)
       var result = this.dataset.analysisFiles.reduce((h, obj) => Object.assign(h, { [obj.attackCategory]: (h[obj.attackCategory] || []).concat(obj) }), {})
-      console.log(result)
       return result
     }
   },
@@ -71,7 +69,6 @@ export default {
       this.$store.commit('removeDataSet', dataset)
     },
     translateDiagramToIcon: function translateDiagramToIcon (diagram) {
-      console.log(diagram)
       if (diagram.toLowerCase() === 'barchart') {
         return 'bar_chart'
       }

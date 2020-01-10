@@ -11,24 +11,59 @@
       </datasettile>
     </div>
 
-    <!--md-button id="fab" class="md-fab md-primary md-fab-bottom-right" >
-      <md-icon>add</md-icon>
-    </md-button-->
-    <md-speed-dial md-event="hover" id="dial">
-      <md-speed-dial-target>
-        <md-icon>add</md-icon>
+    <md-speed-dial class="md-bottom-right" md-event="hover" id="dial">
+      <md-speed-dial-target class="md-primary">
+        <md-icon>grid_on</md-icon>
+        <!--md-icon>storage</md-icon-->
       </md-speed-dial-target>
 
       <md-speed-dial-content>
-        <md-button class="md-icon-button">
-          <md-icon>note</md-icon>
+        <md-button class="md-icon-button" @click="showLoadSetups = !showLoadSetups">
+          <md-icon>restore</md-icon>
         </md-button>
 
-        <md-button class="md-icon-button">
-          <md-icon>event</md-icon>
+        <md-button class="md-icon-button" @click="showSaveSetups = !showSaveSetups">
+          <md-icon>save</md-icon>
         </md-button>
       </md-speed-dial-content>
     </md-speed-dial>
+
+    <md-dialog :md-active.sync="showLoadSetups">
+      <md-dialog-title>Load a saved dashboard</md-dialog-title>
+      <md-list>
+        <md-list-item v-for="setup in storedSetups" :key="setup.id">
+        <md-button class="md-raised md-primary md-icon-button" @click="loadSetup(setup.id)" v-if="!loading">
+          <md-icon>restore</md-icon>
+        </md-button>
+          <span class="md-list-item-text">{{setup.name}}</span>
+        </md-list-item>
+      </md-list>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showLoadSetups = false">
+          <md-icon>close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+    <md-dialog :md-active.sync="showSaveSetups">
+      <md-dialog-title>Save this dashboard</md-dialog-title>
+      <div class="form">
+        <md-field>
+          <label>Name</label>
+          <md-input v-model="setupName" placeholder="Give the setup a name"></md-input>
+        </md-field>
+        <md-button :disabled="!setupName" class="md-raised md-primary md-icon-button" @click="saveSetup" v-if="!loading">
+          <md-icon>save</md-icon>
+        </md-button>
+        <md-progress-spinner v-else :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
+      </div>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showSaveSetups = false">
+          <md-icon>close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 
@@ -38,6 +73,14 @@ import VisualizationTile from '../components/VisualizationTile'
 
 export default {
   name: 'DashBoard',
+  data: function () {
+    return {
+      showLoadSetups: false,
+      showSaveSetups: false,
+      setupName: '',
+      loading: false
+    }
+  },
   components: {
     'datasettile': DataSetTile,
     'visualizationtile': VisualizationTile
@@ -45,12 +88,33 @@ export default {
   mounted: function () {
     window.gg = this.$store
   },
+  methods: {
+    loadSetup: function saveSetup (id) {
+      this.loading = true
+      this.$store.commit('loadSetup', id)
+      setTimeout(() => {
+        this.loading = false
+        this.showLoadSetups = false
+      }, 300)
+    },
+    saveSetup: function saveSetup () {
+      this.loading = true
+      this.$store.commit('storeSetup', this.setupName)
+      setTimeout(() => {
+        this.loading = false
+        this.showSaveSetups = false
+      }, 300)
+    }
+  },
   computed: {
     datasets () {
       return this.$store.state.datasets
     },
     analysisfiles () {
       return this.$store.state.visualizations
+    },
+    storedSetups () {
+      return this.$store.state.setups
     }
   }
 }
@@ -76,5 +140,8 @@ export default {
 
 #dial {
   position: fixed;
+}
+.form {
+  padding: 24px 24px 0
 }
 </style>
