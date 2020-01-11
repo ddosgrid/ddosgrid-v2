@@ -5,8 +5,9 @@ router.get('', getRoot)
 
 function getRoot (_, res) {
   res.send(`
-    <html>
+    <!DOCTYPE html lang="english">
       <head>
+        <title>ddosgrid API</title>
         <style>
           blockquote {
             padding: 0 1em;
