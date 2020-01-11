@@ -13,16 +13,21 @@
 
     <md-speed-dial class="md-bottom-right" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
-        <md-icon>grid_on</md-icon>
+        <md-icon class="md-morph-initial">grid_on</md-icon>
+        <md-icon class="md-morph-final">close</md-icon>
         <!--md-icon>storage</md-icon-->
       </md-speed-dial-target>
 
       <md-speed-dial-content>
-        <md-button class="md-icon-button" @click="showLoadSetups = !showLoadSetups">
+        <md-button :disabled="!savedDashBoardsExist" class="md-icon-button" @click="showLoadSetups = !showLoadSetups">
+          <md-tooltip md-direction="top" v-if="savedDashBoardsExist">Load a previously stored setup</md-tooltip>
+          <md-tooltip md-direction="top" v-else>No setups saved</md-tooltip>
           <md-icon>restore</md-icon>
         </md-button>
 
-        <md-button class="md-icon-button" @click="showSaveSetups = !showSaveSetups">
+        <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="showSaveSetups = !showSaveSetups">
+          <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Please add some visualizations first</md-tooltip>
+          <md-tooltip md-direction="top" v-else>Save your current setup</md-tooltip>
           <md-icon>save</md-icon>
         </md-button>
       </md-speed-dial-content>
@@ -115,6 +120,21 @@ export default {
     },
     storedSetups () {
       return this.$store.state.setups
+    },
+    dashBoardIsEmpty () {
+      try {
+        var { datasets, visualizations } = this.$store.state
+        return datasets.length === 0 && visualizations.length === 0
+      } catch (e) {
+        return false
+      }
+    },
+    savedDashBoardsExist () {
+      try {
+        return this.$store.state.setups.length > 0
+      } catch (e) {
+        return false
+      }
     }
   }
 }
