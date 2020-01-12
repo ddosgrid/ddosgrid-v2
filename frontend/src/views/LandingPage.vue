@@ -1,6 +1,6 @@
 <template>
   <div>
-  <h1>Hello World</h1>
+  <h1>DDoSGrid</h1>
   <p>This is a DDoS-Attack visualization web application. The button below will take you to its GitHub page</p>
   <md-button class="md-raised md-primary" onclick="location.href='https://github.com/ddosgrid/ddos-visualization'">
     GitHub
