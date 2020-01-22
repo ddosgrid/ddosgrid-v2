@@ -58,9 +58,11 @@
               Ready to write and integrate your own feature miner? Head over to our GitHub repository!
               </p>
               <div style="clear: both"></div>
-              <md-button class="md-raised md-accent" href="https://github.com/ddosgrid/ddos-visualization">
-                GitHub
-              </md-button>
+              <div class="github-link-wrapper">
+                <md-button class="md-raised md-accent" href="https://github.com/ddosgrid/ddos-visualization">
+                  GitHub
+                </md-button>
+              </div>
           </md-card-content>
         </md-card>
       </section>
@@ -80,7 +82,10 @@ export default {
   margin: auto;
 }
 .about-item {
-  padding: 64px 24px;
+  padding: 32px 24px 0px 24px;
+}
+.howto:last-child {
+  padding-bottom: 32px;
 }
 section {
   display: block;
@@ -116,5 +121,8 @@ section {
 }
 .left {
   float: left !important;
+}
+.github-link-wrapper {
+  text-align: center;
 }
 </style>
