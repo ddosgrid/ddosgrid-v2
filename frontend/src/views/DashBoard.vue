@@ -5,10 +5,10 @@
     </h1>
     <div id="flex-container">
       <md-empty-state
-        md-rounded
         md-icon="grid_on"
         md-label="No analysis files were added"
         md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="datasets.length === 0" class="empty-notification">
+        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
       </md-empty-state>
       <visualizationtile class="tile" v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
       </visualizationtile>

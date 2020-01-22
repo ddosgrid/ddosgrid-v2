@@ -4,10 +4,11 @@
     Uploaded Data Sets
   </h1>
       <md-empty-state
-        md-rounded
-        md-icon="sync"
+        md-icon="layers_clear"
         md-label="No datasets uploaded"
         md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0" class="empty-notification">
+        <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
+
       </md-empty-state>
 
   <div class="wrapper">
@@ -27,7 +28,7 @@
       </data-set-list-item>
     </div>
 
-    <md-button id="fab" @click="showFileUpload=true" class="md-fab md-primary md-fab-bottom-right">
+    <md-button id="fab" @click="showFileUpload = true" class="md-fab md-primary md-fab-bottom-right">
       <md-icon>add</md-icon>
     </md-button>
 
