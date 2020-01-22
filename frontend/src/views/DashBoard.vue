@@ -4,6 +4,12 @@
     Visualization Dashboard
     </h1>
     <div id="flex-container">
+      <md-empty-state
+        md-rounded
+        md-icon="grid_on"
+        md-label="No analysis files were added"
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="datasets.length === 0" class="empty-notification">
+      </md-empty-state>
       <visualizationtile class="tile" v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
       </visualizationtile>
 
@@ -163,5 +169,11 @@ export default {
 }
 .form {
   padding: 24px 24px 0
+}
+.empty-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

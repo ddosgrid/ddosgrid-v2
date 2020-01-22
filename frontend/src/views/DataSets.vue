@@ -3,6 +3,12 @@
   <h1>
     Uploaded Data Sets
   </h1>
+      <md-empty-state
+        md-rounded
+        md-icon="sync"
+        md-label="No datasets uploaded"
+        md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0" class="empty-notification">
+      </md-empty-state>
 
   <div class="wrapper">
     <md-dialog :md-active.sync="showFileUpload">
@@ -136,5 +142,11 @@ export default {
 
 #fab {
   position: fixed;
+}
+.empty-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
