@@ -3,13 +3,17 @@
   <h1>
     Uploaded Data Sets
   </h1>
-      <md-empty-state
-        md-icon="layers_clear"
-        md-label="No datasets uploaded"
-        md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0" class="empty-notification">
-        <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
+  <div class="loader" v-if="!hasLoaded">
+    <md-progress-spinner :md-diameter="60" :md-stroke="3" md-mode="indeterminate" class="centered"></md-progress-spinner>
+  </div>
 
-      </md-empty-state>
+  <md-empty-state
+    md-icon="layers_clear"
+    md-label="No datasets uploaded"
+    md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0 && hasLoaded" class="centered">
+    <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
+
+  </md-empty-state>
 
   <div class="wrapper">
     <md-dialog :md-active.sync="showFileUpload">
@@ -45,6 +49,13 @@ var intervalId = null
 
 export default {
   name: 'DataSets',
+  data: function () {
+    return {
+      datasets: [],
+      showFileUpload: false,
+      hasLoaded: false
+    }
+  },
   components: {
     'file-upload-form': FileUploadForm,
     'data-set-list-item': DataSetListItem
@@ -65,6 +76,7 @@ export default {
         var res = await fetch(`${apibaseurl}/analysis`)
         var json = await res.json()
         this.datasets = json
+        this.hasLoaded = true
       } catch (e) {
         console.log(e)
       }
@@ -108,12 +120,6 @@ export default {
         this.fetchDataSets()
       }
     }
-  },
-  data: function () {
-    return {
-      datasets: [],
-      showFileUpload: false
-    }
   }
 }
 </script>
@@ -144,7 +150,7 @@ export default {
 #fab {
   position: fixed;
 }
-.empty-notification {
+.centered {
   position: absolute;
   top: 50%;
   left: 50%;
