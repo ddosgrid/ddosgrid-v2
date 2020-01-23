@@ -62,6 +62,7 @@ class TopTwentyPortsAnalyser extends AbstractPCAPAnalyser {
         var summary = {
             fileName: fileName,
             attackCategory: 'Portscan',
+            analysisName: 'Traffic by ports (top 20)',
             supportedDiagrams: ['BarChart']
         }
         return await  this.storeAndReturnResult(fileName, fileContent, summary)

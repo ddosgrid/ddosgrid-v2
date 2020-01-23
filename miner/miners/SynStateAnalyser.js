@@ -63,6 +63,7 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
         var summary = {
             fileName: fileName,
             attackCategory: 'SYN-Flood',
+            analysisName: 'State of TCP packets',
             supportedDiagrams: ['PieChart']
         }
         return await  this.storeAndReturnResult(fileName, fileContent, summary)

@@ -34,6 +34,7 @@ class PortUsageClusteredAnalyser extends AbstractPCAPAnalyser {
         var summary = {
             fileName: fileName,
             attackCategory: 'Portscan',
+            analysisName: 'Traffic by ports (clustered)',
             supportedDiagrams: ['Scatterplot']
         }
         return await this.storeAndReturnResult(fileName, fileContent, summary)

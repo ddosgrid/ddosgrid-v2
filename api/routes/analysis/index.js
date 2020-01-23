@@ -82,29 +82,37 @@ async function startAnalysis (req, res) {
     var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
-    var portScanFileShort = analysisResult.portanalysis
-    var topTwenty = analysisResult.topTwenty
-    var clusteredPort = analysisResult.clusteredPorts
+
     var metricsScan = analysisResult.general
     var metrics = analysisResult.general.metrics
+
+    var topTwenty = analysisResult.topTwenty
+    var clusteredPort = analysisResult.clusteredPorts
     var synflood = analysisResult.synResult
+
     analyses.changeAnalysisStatus(id, 'analysed')
     analyses.appendMetrics(id, metrics)
     analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
 
-    portScanFileShort.file = path.relative(analysisBaseDir, portScanFileShort.summaryFile)
-    topTwenty.file = path.relative(analysisBaseDir, topTwenty.fileName)
-    clusteredPort.file = path.relative(analysisBaseDir, clusteredPort.fileName)
-    metricsScan.file = path.relative(analysisBaseDir, metricsScan.fileName)
-    synflood.file = path.relative(analysisBaseDir, synflood.fileName)
-    var results = [
-      portScanFileShort,
-      topTwenty,
-      clusteredPort,
-      metricsScan,
-      synflood
-    ]
-    var cleanedResults = results.map(keepRequiredAttributes)
+    var results = Object.values(analysisResult)
+    results.forEach(result => {
+      try {
+        result.file = path.relative(analysisBaseDir, result.fileName)
+      } catch (e) {
+        console.warn('Unable to find analysisFile from fileName:', result.fileName)
+      }
+    })
+    var validResults = results.filter(result  => {
+      try {
+        return result.analysisName.length > 0
+            && result.file.length > 0
+            && result.attackCategory.length > 0
+            && Array.isArray(result.supportedDiagrams)
+      } catch (e) {
+        return false
+      }
+    })
+    var cleanedResults = validResults.map(keepRequiredAttributes)
     analyses.addAnalysisFiles(id, cleanedResults)
   } catch (e) {
     analyses.changeAnalysisStatus(id, 'failed')
@@ -151,6 +159,7 @@ function handleFilePost (req, res) {
 function keepRequiredAttributes(element) {
   return {
     attackCategory: element.attackCategory,
+    analysisName: element.analysisName,
     file: element.file,
     supportedDiagrams: element.supportedDiagrams
   }
