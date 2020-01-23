@@ -85,7 +85,7 @@
 
     <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
       <span>{{ snackbarMsg }}</span>
-      <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
+      <md-button class="md-primary" @click="handleSnackBarShow">Show</md-button>
     </md-snackbar>
   </div>
 </template>
@@ -97,6 +97,10 @@ import hashicon from 'hashicon'
 export default {
   props: ['dataset'],
   methods: {
+    handleSnackBarShow: function handleSnackBarShow () {
+      this.showSnackbar = false
+      this.$router.push('/dashboard')
+    },
     getIconForHash: function getIconForHash (hash) {
       return hashicon(hash, { size: 80 }).toDataURL()
     },
