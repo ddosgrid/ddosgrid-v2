@@ -83,18 +83,13 @@ async function startAnalysis (req, res) {
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
 
-    var metricsScan = analysisResult.general
-    var metrics = analysisResult.general.metrics
-
-    var topTwenty = analysisResult.topTwenty
-    var clusteredPort = analysisResult.clusteredPorts
-    var synflood = analysisResult.synResult
+    var metrics = analysisResult.find(el => el.analysisName === 'Network State Metrics').metrics
 
     analyses.changeAnalysisStatus(id, 'analysed')
     analyses.appendMetrics(id, metrics)
     analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
 
-    var results = Object.values(analysisResult)
+    var results = analysisResult
     results.forEach(result => {
       try {
         result.file = path.relative(analysisBaseDir, result.fileName)
