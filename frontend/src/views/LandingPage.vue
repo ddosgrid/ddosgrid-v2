@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .howto {
   max-width: 960px;
   margin: auto;
