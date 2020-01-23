@@ -25,7 +25,7 @@
                <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
              </md-button>
              <md-button v-if="analysisFile.supportedDiagrams.length === 0"
-                        class="md-icon-button md-raised md-primary" disabled>
+                        class="md-icon-button md-raised md-primary no-print" disabled>
                <md-icon>close</md-icon>
              </md-button>
             <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
@@ -36,7 +36,7 @@
     </md-card-content>
 
     <md-card-actions>
-      <md-button class="md-icon-button" @click="closeDataSet(dataset)">
+      <md-button class="md-icon-button no-print" @click="closeDataSet(dataset)">
         <md-icon>close</md-icon>
       </md-button>
     </md-card-actions>

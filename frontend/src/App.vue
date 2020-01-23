@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <md-tabs md-sync-route md-elevation="2" class="nav">
+    <md-tabs md-sync-route md-elevation="2" class="nav no-print">
       <md-tab id="tab-home" md-label="" to="/" md-icon="home" exact></md-tab>
       <md-tab id="tab-dashboard" md-label="" to="/dashboard" md-icon="dashboard" exact></md-tab>
       <md-tab id="tab-data-sets" md-label="" to="/datasets" md-icon="view_list" exact></md-tab>
@@ -69,5 +69,10 @@ export default {
   #main::webkit-scrollbar {
     display: none;
     width: 0 !important;
+  }
+  @media print {
+    .no-print, .no-print * {
+      display: none !important;
+    }
   }
 </style>

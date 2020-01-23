@@ -14,11 +14,11 @@
       <component :url="fileUrl" v-bind:is="currentTabComponent"></component>
     </md-card-content>
 
-    <md-card-actions>
+    <md-card-actions class="no-print">
       <md-button class="md-icon-button" @click="downloadChart">
         <md-icon>arrow_downward</md-icon>
       </md-button>
-      <md-button class="md-icon-button" @click="clearVisualization(analysisfile)">
+      <md-button class="md-icon-button no-print" @click="clearVisualization(analysisfile)">
         <md-icon>close</md-icon>
       </md-button>
     </md-card-actions>

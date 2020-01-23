@@ -17,14 +17,20 @@
       </datasettile>
     </div>
 
-    <md-speed-dial class="md-bottom-right" md-event="hover" id="dial">
+    <md-speed-dial class="md-bottom-right no-print" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
         <md-icon class="md-morph-initial">grid_on</md-icon>
-        <md-icon class="md-morph-final">close</md-icon>
+        <md-icon class="md-morph-final no-print">close</md-icon>
         <!--md-icon>storage</md-icon-->
       </md-speed-dial-target>
 
       <md-speed-dial-content>
+        <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="exportToPdf">
+          <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Please add some visualizations first</md-tooltip>
+          <md-tooltip md-direction="top" v-else>Export dashboard as PDF or print it</md-tooltip>
+          <md-icon>picture_as_pdf</md-icon>
+        </md-button>
+
         <md-button :disabled="!savedDashBoardsExist" class="md-icon-button" @click="showLoadSetups = !showLoadSetups">
           <md-tooltip md-direction="top" v-if="savedDashBoardsExist">Load a previously stored setup</md-tooltip>
           <md-tooltip md-direction="top" v-else>No setups saved</md-tooltip>
@@ -115,6 +121,9 @@ export default {
         this.loading = false
         this.showSaveSetups = false
       }, 300)
+    },
+    exportToPdf: function exportToPdf () {
+      window.print()
     }
   },
   computed: {
@@ -147,6 +156,11 @@ export default {
 </script>
 
 <style scoped>
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}
 #flex-container {
   display: flex;
   justify-content: space-between;
