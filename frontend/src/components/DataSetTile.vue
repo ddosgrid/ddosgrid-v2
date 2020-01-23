@@ -28,7 +28,7 @@
                         class="md-icon-button md-raised md-primary" disabled>
                <md-icon>close</md-icon>
              </md-button>
-            <span class="item md-list-item-text">{{ analysisFile.file.slice(71, -5) }}</span>
+            <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
           </md-list-item>
           </div>
         </div>

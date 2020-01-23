@@ -3,7 +3,7 @@
 
     <md-card-header>
         <md-card-header-text>
-          <div class="md-title">{{ analysisfile.chart }}</div>
+          <div class="md-title">{{ analysisfile.analysisName }}</div>
         </md-card-header-text>
         <md-card-media class="icon-wrap">
           <img :src="getIconForHash(analysisfile.file)" class="icon">
