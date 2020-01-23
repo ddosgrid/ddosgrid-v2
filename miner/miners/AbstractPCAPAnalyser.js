@@ -1,4 +1,4 @@
-class GenericPcapAnalyser {
+class AbstractPCAPAnalyser {
     constructor (pcapParser, baseOutPath) {
         this.pcapParser = pcapParser
         this.baseOutPath = baseOutPath
@@ -27,4 +27,4 @@ class GenericPcapAnalyser {
 }
 
 
-module.exports = GenericPcapAnalyser
+module.exports = AbstractPCAPAnalyser

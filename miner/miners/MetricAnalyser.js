@@ -1,6 +1,6 @@
-const GenericPcapAnalyser = require('./GenericPcapAnalyser')
+const AbstractPCAPAnalyser = require('./AbstractPCAPAnalyser')
 
-class MetricAnalyser extends GenericPcapAnalyser {
+class MetricAnalyser extends AbstractPCAPAnalyser {
     constructor(parser, outPath) {
         super(parser, outPath);
         this.results = {

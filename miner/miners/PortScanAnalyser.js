@@ -1,6 +1,6 @@
-const GenericPcapAnalyser = require('./GenericPcapAnalyser')
+const AbstractPCAPAnalyser = require('./AbstractPCAPAnalyser')
 
-class PortScanAnalyser extends GenericPcapAnalyser {
+class PortScanAnalyser extends AbstractPCAPAnalyser {
     constructor(parser, outPath) {
         super(parser, outPath);
         this.results = {
@@ -45,14 +45,14 @@ class PortScanAnalyser extends GenericPcapAnalyser {
         var totalNrOfDestinationPorts = ports.length
         var shortResult = {
           topTen: topTenServices,
-          total_dst_port: totalNrOfDestinationPorts 
+          total_dst_port: totalNrOfDestinationPorts
         }
         var longResult = ports
 
         return new Promise((resolve, reject) => {
             const fs = require('fs')
             var fileName = `${this.baseOutPath}-portscan.json`
-            
+
             var dumpfileName = `${this.baseOutPath}-portscan-dump.json`
             fs.writeFile(fileName, JSON.stringify(shortResult), function (err) {
                 if(err) {
@@ -67,7 +67,7 @@ class PortScanAnalyser extends GenericPcapAnalyser {
                     resolve({
                       attackCategory: 'Portscan',
                       supportedDiagrams: ['Barchart'],
-                      summaryFile: fileName, 
+                      summaryFile: fileName,
                       dumpFile: dumpfileName
                     })
                })
