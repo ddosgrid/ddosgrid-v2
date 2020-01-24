@@ -6,20 +6,24 @@ export default {
   name: 'Doughnut',
   props: [ 'url' ],
   mounted: async function () {
-    var response = await fetch(this.url)
-    var parsedResponse = await response.json()
-    var vals = Object.values(parsedResponse.data)
-    var labels = parsedResponse.labels
+    try {
+      var response = await fetch(this.url)
+      var parsedResponse = await response.json()
+      var vals = Object.values(parsedResponse.data)
+      var labels = parsedResponse.labels
 
-    this.renderChart({
-      datasets: [
-        {
-          backgroundColor: vals.map(getRandomHexColro),
-          data: vals
-        }
-      ],
-      labels: labels
-    })
+      this.renderChart({
+        datasets: [
+          {
+            backgroundColor: vals.map(getRandomHexColro),
+            data: vals
+          }
+        ],
+        labels: labels
+      })
+    } catch (e) {
+      this.$emit('unavailable')
+    }
   }
 }
 

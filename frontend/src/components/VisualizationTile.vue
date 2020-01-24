@@ -1,6 +1,5 @@
 <template lang="html">
   <md-card class="card">
-
     <md-card-header>
         <md-card-header-text>
           <div class="md-title">{{ analysisfile.analysisName }}</div>
@@ -11,19 +10,31 @@
     </md-card-header>
 
     <md-card-content>
-      <component :url="fileUrl" v-bind:is="currentTabComponent"></component>
+      <component v-if="!visualizationUnavailable"
+                 :url="fileUrl"
+                 v-bind:is="currentTabComponent"
+                 @unavailable="hideVisualization">
+      </component>
+      <no-visualization-possible
+                 v-else
+                 @removeVisualization="clearVisualization(analysisfile)">
+      </no-visualization-possible>
     </md-card-content>
 
     <md-card-actions class="no-print">
       <md-button class="md-icon-button" @click="downloadChart">
         <md-icon>arrow_downward</md-icon>
       </md-button>
-      <md-button class="md-icon-button no-print" @click="clearVisualization(analysisfile)">
+      <md-button class="md-icon-button no-print"
+                 @click="clearVisualization(analysisfile)">
         <md-icon>close</md-icon>
       </md-button>
     </md-card-actions>
 
-    <a class="download" :href="exportUrl" target="_blank" :download="fileName">Download</a>
+    <a class="download"
+       :href="exportUrl"
+       target="_blank"
+       :download="fileName">Download</a>
   </md-card>
 </template>
 
@@ -32,19 +43,23 @@ import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
+import VisualizationUnavailable from '../components/VisualizationUnavailable'
 import hashicon from 'hashicon'
+
 export default {
   components: {
     'barchart': BarChart,
     'scatterplot': ScatterPlot,
-    'piechart': PieChart
+    'piechart': PieChart,
+    'no-visualization-possible': VisualizationUnavailable
   },
   props: [
     'analysisfile'
   ],
   data: () => {
     return {
-      exportUrl: ''
+      exportUrl: '',
+      visualizationUnavailable: false
     }
   },
   computed: {
@@ -59,6 +74,9 @@ export default {
     }
   },
   methods: {
+    hideVisualization: function hideVisualization () {
+      this.visualizationUnavailable = true
+    },
     getIconForHash: function getIconForHash (file) {
       try {
         var hash = file.split('/')[0]

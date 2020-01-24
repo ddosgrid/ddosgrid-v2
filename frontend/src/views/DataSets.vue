@@ -86,8 +86,9 @@ export default {
       if (!('Notification' in window)) {
         return null
       } else if (Notification.permission === 'granted') {
-        var notification = new Notification(text)
-        console.log(notification)
+        // This will create an ESLint error since the Notification API only
+        // requires the constructor to be invoked (variable unused).
+        var notification = new Notification(text) // eslint-disable-line
       } else if (Notification.permission !== 'denied') {
         Notification.requestPermission().then(function (permission) {
           if (permission === 'granted') {

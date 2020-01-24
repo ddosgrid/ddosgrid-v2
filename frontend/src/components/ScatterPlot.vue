@@ -6,30 +6,37 @@ export default {
   name: 'ScatterChart',
   props: [ 'url' ],
   mounted: async function () {
-    let response = await fetch(this.url)
-    let parsedResponse = await response.json()
-    var clusteredPortsCounted = parsedResponse.clusters.map((count, index) => {
-      return { x: index * 64, y: count }
-    })
-    var filteredPorts = clusteredPortsCounted.filter((bucket) => {
-      return bucket.y > 0
-    })
-    // make fetch, get labels, and pass data
-    this.renderChart({
-      datasets: [
-        {
-          label: 'Count',
-          backgroundColor: '#f87979',
-          data: filteredPorts
+    try {
+      let response = await fetch(this.url)
+      let parsedResponse = await response.json()
+      var clusteredPortsCounted = parsedResponse.clusters.map((count, index) => {
+        return { x: index * 64, y: count }
+      })
+      var filteredPorts = clusteredPortsCounted.filter((bucket) => {
+        return bucket.y > 0
+      })
+      // make fetch, get labels, and pass data
+      this.renderChart({
+        datasets: [
+          {
+            label: 'Count',
+            backgroundColor: '#f87979',
+            data: filteredPorts
+          }
+        ]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          Axes: [{
+          }]
         }
-      ]
-    }, {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        Axes: [{
-        }]
-      } })
+      })
+    } catch (e) {
+      console.log('cant be rendnernd')
+      console.log(e)
+      this.$emit('unavailable')
+    }
   }
 }
 </script>
