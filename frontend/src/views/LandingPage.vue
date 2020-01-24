@@ -16,7 +16,7 @@
           </md-card-content>
         </md-card>
       </section>
-      <section class="uploading about-item">
+      <section class="uploading about-item slidefromleft">
         <md-card>
             <md-card-header>
               <div class="md-title">Upload and analyse PCAP files</div>
@@ -31,7 +31,7 @@
           </md-card-content>
         </md-card>
       </section>
-      <div class="dashboards about-item">
+      <div class="dashboards about-item slidefromright">
         <md-card>
           <md-card-header>
             <div class="md-title">Creating your dashboard</div>
@@ -46,7 +46,7 @@
           </md-card-content>
         </md-card>
       </div>
-      <section class="dev about-item">
+      <section class="dev about-item slidefromleft">
         <md-card>
             <md-card-header>
               <div class="md-title">Implement your own analysis</div>
@@ -124,5 +124,34 @@ section {
 }
 .github-link-wrapper {
   text-align: center;
+}
+.slidefromleft {
+  animation-duration: 1s;
+  animation-name: slideinfromleft;
+}
+.slidefromright {
+  animation-duration: 1s;
+  animation-name: slideinfromright;
+}
+@keyframes slideinfromright {
+  from {
+    transform: translate(-15%, 0);
+  }
+
+  to {
+    transform: translate(0, 0);
+    margin-left: 0%;
+  }
+}
+
+@keyframes slideinfromleft {
+  from {
+    transform: translate(15%, 0);
+  }
+
+  to {
+    transform: translate(0, 0);
+    margin-left: 0%;
+  }
 }
 </style>
