@@ -17,7 +17,7 @@
       </datasettile>
     </div>
 
-    <md-speed-dial class="md-bottom-right no-print" md-event="hover" id="dial">
+    <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
         <md-icon class="md-morph-initial">grid_on</md-icon>
         <md-icon class="md-morph-final no-print">close</md-icon>
@@ -189,5 +189,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.above {
+  z-index: 1;
 }
 </style>
