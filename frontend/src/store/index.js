@@ -29,15 +29,19 @@ export default new Vuex.Store({
       }
     },
     addDataSet (state, newDataSet) {
-      // TODO: check if duplicate
-      state.datasets.push(newDataSet)
+      var existing = state.datasets.find(dataset => dataset.md5 === newDataSet.md5)
+      if (!existing) {
+        state.datasets.push(newDataSet)
+      }
     },
     removeDataSet (state, toBeRemoved) {
       state.datasets = state.datasets.filter(dataset => dataset._id !== toBeRemoved._id)
     },
     addVisualization (state, newVisualization) {
-      // TODO: check if duplicate
-      state.visualizations.push(newVisualization)
+      var found = state.visualizations.find(existingVisualisation => newVisualization.file === existingVisualisation.file)
+      if (!found) {
+        state.visualizations.push(newVisualization)
+      }
     },
     removeVisualization (state, toBeRemoved) {
       state.visualizations = state.visualizations.filter(visualization => visualization.file !== toBeRemoved.file)
