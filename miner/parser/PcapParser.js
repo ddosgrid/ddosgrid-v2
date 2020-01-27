@@ -8,8 +8,9 @@ class PacketEmitter extends EventEmitter {
         this.firstPacket = true
         this.currentPcapPacket = undefined
     }
-    startPcapSession (pcapPath) {
-        this.pcap_session = pcap.createOfflineSession(pcapPath, '')
+    startPcapSession (pcapPath, filter='') {
+        console.log('Filter:', filter)
+        this.pcap_session = pcap.createOfflineSession(pcapPath, filter)
         this.pcap_session.on('packet', (packet) => {
             this.inspectPcapPacket(packet)
         })

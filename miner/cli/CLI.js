@@ -12,12 +12,18 @@ function parseAndCheckArguments (argv) {
   var settings = {
     pcapPath: '',
     pcapFile: '',
+    filter: '',
     aggregate: false,
     extractMetaInf: false
   }
 
   var pcap_file_param_pattern = /pcap_path=(.*)/
   var pcap_file_param = argv[2].match(pcap_file_param_pattern)
+
+  if(argv.length > 3) {
+    var filter_param_pattern = /capture_filter=(.*)/
+    var filter_param = argv[3].match(filter_param_pattern)
+  }
 
   if (pcap_file_param) {
     var filePath = pcap_file_param[1]
@@ -27,6 +33,12 @@ function parseAndCheckArguments (argv) {
     } else {
       throw new Error('Provided pcap file doesnt exist!')
     }
+  }
+  try {
+    if (filter_param[1]) {
+      settings.filter = filter_param[1]
+    }
+  } catch (e) {
   }
 
   return settings

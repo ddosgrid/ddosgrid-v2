@@ -49,6 +49,8 @@ async function deleteAnalysisById (req, res) {
 
 async function startAnalysis (req, res) {
   var id = req.params.id
+  var filter = req.query.filter || ''
+
   if (!id) {
     return res.status(404).send('ID not supplied')
   }
@@ -79,7 +81,7 @@ async function startAnalysis (req, res) {
   var startTime = new Date()
   analyses.changeAnalysisStatus(id, 'pending')
   try {
-    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
+    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath, filter)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
 
