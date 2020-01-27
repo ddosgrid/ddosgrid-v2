@@ -11,7 +11,7 @@
               <img src="/img/multiline_chart-24px.svg" class="main-icon">
             </div>
             <span class="section-text">
-             Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc hendrerit tempor metus. In hac habitasse platea dictumst. Morbi nulla nunc, tincidunt eu euismod maximus, placerat ut justo. Phasellus commodo ante dignissim felis commodo molestie. Nunc sit amet laoreet massa, at vehicula augue. Proin vehicula nibh sed diam sodales, non molestie elit dignissim.
+              DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
           </md-card-content>
         </md-card>
