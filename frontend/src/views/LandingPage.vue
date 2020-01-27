@@ -13,6 +13,14 @@
             <span class="section-text">
               DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
+            <div class="logo-wrapper">
+              <a href="https://csg.uzh.ch" target="_blank">
+                <img src="/img/logos/csg.png" class="logo">
+              </a>
+              <a href="https://uzh.ch" target="_blank">
+                <img src="/img/logos/uzh.png" class="logo">
+              </a>
+            </div>
           </md-card-content>
         </md-card>
       </section>
@@ -24,8 +32,23 @@
             <md-card-content>
             <img id="analysis-icon" src="/img/search-24px.svg">
           <span class="section-text">
-           Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc hendrerit tempor metus. In hac habitasse platea dictumst. Morbi nulla nunc, tincidunt eu euismod maximus, placerat ut justo. Phasellus commodo ante dignissim felis commodo molestie. Nunc sit amet laoreet massa, at vehicula augue. Proin vehicula nibh sed diam sodales, non molestie elit dignissim.
-           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            <p>DDoSGrid uses PCAP files as input because they are not oriented towards a specific protocol or model (compared to for example flow-based capture files). DDoSGrid provides the following features for feature extraction using PCAP files:</p>
+            <ul class="no-list-style">
+              <li>Efficiently Decoding and parsing packets from pcap files</li>
+              <li>Receive packets from different layers using an Observer-style API using the <a href="https://nodejs.org/api/events.html">EventEmitter</a> class in NodeJS. This allows for a performant, stream-processing based implementation that feels natural to work with.</li>
+              <li>Abstract views based on (OSI) layers and concrete views on specific protocols. For example, simply register an observer for all abstract "transport-level packets" or observe a concrete protocol, for example UDP.</li>
+              <li>Supports easy extension by running multiple feature miners independently of each other using the same decoding stream.</li>
+              <li>Orchestrates asynchronous operations in different parts of the lifecycle of your feature miners. For example, you can load an in-memory database in one miner and connect to a database through a socket in another miner.</li>
+            </ul>
+            <p>Using PCAP files as input allows you to analyse from the following sources:
+              <ul>
+                <li>Packet capture software like Wireshark and tcpdump</li>
+                <li>Projects collecting DDoS attacks such as <a href="https://ddosdb.org">DDoSDB</a></li>
+                <li>Attack simulators such as DDoS_log_sim</li>
+              </ul>
+            </p>
+            <p></p>
+            <p></p>
           </span>
             <div style="clear: both"></div>
           </md-card-content>
@@ -39,8 +62,8 @@
           <md-card-content>
             <img id="chart-icon" src="/img/show_chart-24px.svg">
             <p class="section-text">
-            Duis luctus egestas eros, in ornare lacus tincidunt quis. In justo purus, semper a sodales vel, auctor id est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc et viverra sapien, in interdum risus. Nam imperdiet varius risus, eget mattis justo posuere eu.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            You can leverage all existing visualizations by simply doing the visual transformation required for a specific diagram and labeling your output. Your result will then automatically be served, grouped based on attack type and rendered using the appropriate diagram. For example, to render your results on a Scatterplot you would define two resulting Arrays for the x and y axis and describe the type of attack.
+            Of course you can also write custom visualizations by writing it from scratch or by wrapping an existing chart.js visualization. Once your diagrams are registered you can create a dashboard by opening a dataset and the diagrams you are interested in. The final dashboard can be exported to PNG, PDF and it can be saved for later editing.
             </p>
             <div style="clear: both"></div>
           </md-card-content>
@@ -54,8 +77,8 @@
             <md-card-content>
               <img class="left" id="github-icon" src="/img/github.svg">
               <p class="section-text" id="github-text">
-              Writing your own feature miner is easy and can be done in A MATTER OF MINUTES. DDoSGrid decodes all packets in your PCAP files and allows you to observe specific packets.
-              Ready to write and integrate your own feature miner? Head over to our GitHub repository!
+              Writing your own feature miner is easy and can be done in a matter of minutes.
+              Ready to write and integrate your own feature miner? Head over to our GitHub repository.
               </p>
               <div style="clear: both"></div>
               <div class="github-link-wrapper">
@@ -153,5 +176,22 @@ section {
     transform: translate(0, 0);
     margin-left: 0%;
   }
+}
+.logo-wrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.logo {
+  height: 3em;
+}
+ul {
+}
+.no-list-style {
+  list-style: none;
+  padding-left: 0px;
+}
+.no-list-style > li {
+  margin-bottom: 10px;
 }
 </style>
