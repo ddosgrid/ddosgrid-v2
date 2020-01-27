@@ -9,30 +9,30 @@ const {
 
 try {
   var settings = parseAndCheckArguments(process.argv)
-  analyseFileInProjectFolder(settings.pcapPath, settings.filter)  
+  analyseFileInProjectFolder(settings.pcapPath)  
 
 } catch (e) {
   console.error(e.message)
   process.exit(1)
 }
 
-function analyseFileInProjectFolder (projectPath, filter) {
+function analyseFileInProjectFolder (projectPath) {
   var emitter = new PacketEmitter()
 
   var miners = [ MetricAnalyser, TopTwentyPortsByTrafficAnalyser, PortUsageClusteredAnalyser, SynStateAnalyser ]
   var activeMiners = miners.map(miner => new miner(emitter, projectPath))
 
-  setUpAndRun(emitter, activeMiners, projectPath, filter)
+  setUpAndRun(emitter, activeMiners, projectPath)
 
 }
-async function setUpAndRun (emitter, activeMiners, target, filter='') {
+async function setUpAndRun (emitter, activeMiners, target) {
   // The NodeJS version used (10) does not support Promise.map
   for(miner of activeMiners) {
     await miner.setUp()
   }
 
   try {
-    emitter.startPcapSession(target, filter)
+    emitter.startPcapSession(target)
   } catch (e) {
     console.error(e)
     process.exit(1)
