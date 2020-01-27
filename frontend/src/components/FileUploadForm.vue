@@ -15,6 +15,11 @@
       <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
     </md-field>
 
+    <md-field>
+      <label>Filter</label>
+      <md-input v-model="filter" placeholder="Valid WireShark filter"></md-input>
+    </md-field>
+
   <md-button class="md-raised md-primary md-icon-button" @click="uploadFile" v-if="!isLoading">
     <md-icon>cloud_upload</md-icon>
   </md-button>
@@ -32,6 +37,7 @@ export default {
   data: () => ({
     file: null,
     fileName: null,
+    filter: '',
     fileDescription: null,
     showSnackbar: false,
     position: 'center',
@@ -50,6 +56,7 @@ export default {
       formData.append('captureFile', fileField.files[0])
 
       this.isLoading = true
+      var captureFilter = this.filter
       fetch(`${apibaseurl}/analysis/upload`, {
         method: 'POST',
         body: formData
@@ -62,7 +69,7 @@ export default {
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
           this.showSnackbar = true
           // start analysis
-          fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
+          fetch(`${apibaseurl}/analysis/${result.id}/analyse?filter=${captureFilter}`, {
             method: 'POST'
           })
             .then((result) => {
