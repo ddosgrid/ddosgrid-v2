@@ -194,4 +194,11 @@ ul {
 .no-list-style > li {
   margin-bottom: 10px;
 }
+@media only screen and (max-width: 600px) {
+  #analysis-icon, #chart-icon {
+    float: none;
+    display: block;
+    margin: 0 auto;
+  }
+}
 </style>
