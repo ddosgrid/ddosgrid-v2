@@ -35,7 +35,8 @@ class IPVersionAnalyser extends AbstractPcapAnalyser {
         }
         var summary = {
             fileName: fileName,
-            attackCategory: 'IPversions',
+            attackCategory: 'Network State',
+            analysisName: 'IPv4 and IPv6 usage',
             supportedDiagrams: ['PieChart']
         }
         return await this.storeAndReturnResult(fileName, fileContent, summary)

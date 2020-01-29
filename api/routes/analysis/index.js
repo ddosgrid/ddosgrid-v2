@@ -83,7 +83,7 @@ async function startAnalysis (req, res) {
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
 
-    var metrics = analysisResult.find(el => el.analysisName === 'Network State Metrics').metrics
+    var metrics = analysisResult.find(el => el.analysisName === 'Miscellaneous Metrics').metrics
 
     analyses.changeAnalysisStatus(id, 'analysed')
     analyses.appendMetrics(id, metrics)

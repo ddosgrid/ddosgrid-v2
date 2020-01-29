@@ -104,8 +104,8 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       var fileName = `${this.baseOutPath}-generic-metrics.json`
       var outputToStore = this.output
       var resultSummary = {
-        attackCategory: 'Generic',
-        analysisName: 'Network State Metrics',
+        attackCategory: 'Network State',
+        analysisName: 'Miscellaneous Metrics',
         supportedDiagrams: [],
         fileName: fileName,
         metrics: outputToStore

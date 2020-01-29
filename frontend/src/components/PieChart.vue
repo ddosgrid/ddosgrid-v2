@@ -9,19 +9,26 @@ export default {
     try {
       var response = await fetch(this.url)
       var parsedResponse = await response.json()
-      var vals = Object.values(parsedResponse.data)
-      var labels = parsedResponse.labels
+      // If the data of the response is formatted to be rendered directly we
+      // can directly feed it to the renderChart method!
+      if (parsedResponse.hasOwnProperty('piechart')) {
+        this.renderChart(parsedResponse.piechart)
+      } else {
+        var vals = Object.values(parsedResponse.data)
+        var labels = parsedResponse.labels
 
-      this.renderChart({
-        datasets: [
-          {
-            backgroundColor: vals.map(getRandomHexColro),
-            data: vals
-          }
-        ],
-        labels: labels
-      })
+        this.renderChart({
+          datasets: [
+            {
+              backgroundColor: vals.map(getRandomHexColro),
+              data: vals
+            }
+          ],
+          labels: labels
+        })
+      }
     } catch (e) {
+      console.log(e)
       this.$emit('unavailable')
     }
   }
