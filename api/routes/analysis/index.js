@@ -122,6 +122,9 @@ function handleFilePost (req, res) {
   if (req.files.length > 1) {
     return res.status(400).send('Only one file can be uploaded at a time');
   }
+  if(!req.body) {
+    return res.status(400).send('No body sent')
+  }
   if(!req.body.hasOwnProperty('name') || !req.body.name || req.body.name == "" ) {
     return res.status(400).send('No name was given to the dataset')
   }

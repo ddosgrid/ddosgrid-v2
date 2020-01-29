@@ -50,16 +50,20 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
         console.log('Packets presumable in established state:', this.results.nrOfPacketsInRemainingStates / this.results.nrOfTransportPackets * 100)
         var fileName = `${this.baseOutPath}-synfloodanalysis.json`
         var fileContent = {
-            data: {
-              syn: this.results.nrOfPacketsInSynState,
-              synack: this.results.nrOfPacketsInSynAckState,
-              fin: this.results.nrOfPacketsInFinState,
-              finack: this.results.nrOfPacketsInFinAckState,
-              other: this.results.nrOfPacketsInRemainingStates
-            },
-            labels: [ 'SYN', 'SYN/ACK', 'FIN', 'FIN/ACK', 'Other' ]
+            piechart: {
+              datasets: [{
+                backgroundColor: ['#DB0071',  '#005FD0', '#b967ff', '#fffb96', '#05ffa1'],
+                data: [
+                  this.results.nrOfPacketsInSynState,
+                  this.results.nrOfPacketsInSynAckState,
+                  this.results.nrOfPacketsInFinState,
+                  this.results.nrOfPacketsInFinAckState,
+                  this.results.nrOfPacketsInRemainingStates
+                ]
+              }],
+              labels: [ 'SYN', 'SYN/ACK', 'FIN', 'FIN/ACK', 'Other' ]
+            }
         }
-        fileContent.piechart = this.formatForPiechart(fileContent)
         var summary = {
             fileName: fileName,
             attackCategory: 'SYN-Flood',
@@ -67,15 +71,6 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
             supportedDiagrams: ['PieChart']
         }
         return await  this.storeAndReturnResult(fileName, fileContent, summary)
-    }
-    formatForPiechart (results) {
-      return {
-        datasets: [{
-          backgroundColor: ['#DB0071',  '#005FD0', '#b967ff', '#fffb96', '#05ffa1'],
-          vals: Object.values(results.data)
-        }],
-        labels: results.labels
-      }
     }
 }
 
