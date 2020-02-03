@@ -1,7 +1,7 @@
 # DDoSGrid
 > A tool for analysis and visualization of DDoS attacks from PCAP files
 
-Table of Contents
+## Table of Contents
 =================
 
    * [DDoSGrid](#ddosgrid)
