@@ -1,6 +1,19 @@
 # DDoSGrid
 > A tool for analysis and visualization of DDoS attacks from PCAP files
 
+Table of Contents
+=================
+
+   * [DDoSGrid](#ddosgrid)
+      * [Introduction](#introduction)
+   * [Development](#development)
+      * [miner](#miner)
+      * [api](#api)
+      * [frontend](#frontend)
+   * [Production deployment](#production-deployment)
+      * [frontend](#frontend-1)
+      * [API](#api-1)
+
 ## Introduction
 
 This tool consist of three parts:
