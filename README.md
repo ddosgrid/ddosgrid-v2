@@ -92,7 +92,7 @@ From there we simply pull the docker file in a 5minute time interval from Docker
 ```
 */5 * * * * docker pull ddosgrid/ddosgrid-api:latest; docker service update ddosgridapi_ddosgridapi --image ddosgrid/ddosgrid-api:latest
 ```
-This docker compose file will run the API on local interface and also expose it as a TOR service. You can then connect to that onion service or place a reverse-proxy in front of the local server:
+This docker compose file will run the API on local interface and also expose it as a TOR service. You can then connect to that onion service or place a reverse-proxy in front of the local server. With NGINX, this would look as follows:
 ```
 server {
   listen       443 ssl;
