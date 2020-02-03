@@ -1,6 +1,9 @@
 name: CD (Docker Hub)
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   docker:
