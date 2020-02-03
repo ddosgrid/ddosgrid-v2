@@ -2,7 +2,6 @@
 > A tool for analysis and visualization of DDoS attacks from PCAP files
 
 ## Table of Contents
-=================
 
    * [DDoSGrid](#ddosgrid)
       * [Introduction](#introduction)
