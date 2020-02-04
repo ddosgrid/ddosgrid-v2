@@ -21,7 +21,12 @@ class PacketEmitter extends EventEmitter {
     inspectPcapPacket (pcapPacket) {
         this.emit('rawPcapPacket', pcapPacket)
 
+      try {
         var decodedPacket = pcap.decode(pcapPacket)
+      } catch (e) {
+        console.log('Unable to decode packet', e.message)
+        return
+      }
         this.emit('pcapPacket', decodedPacket)
 
         if(this.firstPacket) {
@@ -38,9 +43,30 @@ class PacketEmitter extends EventEmitter {
     inspectEthernetPacket (ethernetPacket) {
         this.emit('ethernetPacket', ethernetPacket)
 
-        var ipPacket = ethernetPacket.payload
-        this.inspectIPPacket(ipPacket)
+        var etherType = ethernetPacket.ethertype
+
+        var etherTypeARP = 2054
+        var etherTypeIPv4 = 2048
+        var etherTypeIPv6 = 34525
+        var etherTypeNoPayload = 0
+
+        if(etherType === etherTypeARP) {
+          var arpPacket = ethernetPacket.payload
+          this.inspectARPPacket(arpPacket)
+        } else if (etherType === etherTypeIPv4 || etherType == etherTypeIPv6) {
+            var ipPacket = ethernetPacket.payload
+            this.inspectIPPacket(ipPacket)
+        }  else if (etherType === etherTypeNoPayload) {
+           // Don't emit anything more that the ethernet packet since there is not payload!
+        }
+        else {
+            console.warn(`Ethernet packet contains a payload packet (EtherType ${etherType}) for which there is no dedicated handler.`)
+        }
     }
+    inspectARPPacket (arpPacket) {
+       this.emit(arpPacket, arpPacket)
+    }
+
     inspectIPPacket (ipPacket) {
         this.emit('ipPacket', ipPacket)
         if(ipPacket) {

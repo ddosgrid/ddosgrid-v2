@@ -59,19 +59,21 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       this.output.nrOfTCPPackets++
     }
     countPorts (transportPacket) {
-      try {
-        var srcPort = transportPacket.sport
-        var dstPort = transportPacket.dport
-        if(!this.results.dstPorts.has(dstPort)) {
-          this.results.dstPorts.add(dstPort)
-          this.output.nrOfDstPorts++
+      if(transportPacket) {
+        try {
+          var srcPort = transportPacket.sport
+          var dstPort = transportPacket.dport
+          if(!this.results.dstPorts.has(dstPort)) {
+            this.results.dstPorts.add(dstPort)
+            this.output.nrOfDstPorts++
+          }
+          if(!this.results.srcPorts.has(srcPort)) {
+            this.results.srcPorts.add(srcPort)
+            this.output.nrOfSrcPorts++
+          }
+        } catch (e) {
+          console.log('Unable to process transport-level packet:', transportPacket)
         }
-        if(!this.results.srcPorts.has(srcPort)) {
-          this.results.srcPorts.add(srcPort)
-          this.output.nrOfSrcPorts++
-        }
-      } catch (e) {
-        console.log('Unable to process transport-level packet:', transportPacket)
       }
     }
     countIPPackets (ipPacket) {
