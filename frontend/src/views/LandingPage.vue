@@ -106,6 +106,7 @@ export default {
 }
 .about-item {
   padding: 32px 24px 0px 24px;
+  box-sizing: border-box;
 }
 .howto:last-child {
   padding-bottom: 32px;
