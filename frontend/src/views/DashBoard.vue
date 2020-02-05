@@ -10,12 +10,13 @@
         md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="datasets.length === 0" class="empty-notification">
         <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
       </md-empty-state>
+      <div class="tile-wrapper tile" v-for="tile in tiles" :key="tile.key">
+        <visualizationtile v-if="Object.prototype.hasOwnProperty.call(tile, 'file')" class="" :analysisfile="tile">
+        </visualizationtile>
 
-      <visualizationtile class="tile" v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
-      </visualizationtile>
-
-      <datasettile class="tile" v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
-      </datasettile>
+        <datasettile v-if="Object.prototype.hasOwnProperty.call(tile, 'md5')" class="" :dataset="tile">
+        </datasettile>
+      </div>
     </div>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
@@ -133,6 +134,9 @@ export default {
     },
     analysisfiles () {
       return this.$store.state.visualizations
+    },
+    tiles () {
+      return this.$store.state.tiles
     },
     storedSetups () {
       return this.$store.state.setups

@@ -107,7 +107,8 @@ export default {
     addDataSet: function (dataset) {
       this.snackbarMsg = 'Added ' + dataset.name + ' to the Dashboard'
       this.showSnackbar = true
-      this.$store.commit('addDataSet', dataset)
+      // this.$store.commit('addDataSet', dataset)
+      this.$store.commit('addTile', dataset)
     },
     notifyNotAnalysed: function () {
       this.snackbarMsg = 'This data set has not been analysed, probably due to an error while parsing.'

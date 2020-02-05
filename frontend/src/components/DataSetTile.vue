@@ -100,10 +100,12 @@ export default {
     },
     openDiagram: function (analysisFile, chart) {
       analysisFile.chart = chart
-      this.$store.commit('addVisualization', analysisFile)
+      // this.$store.commit('addVisualization', analysisFile)
+      this.$store.commit('addTile', analysisFile)
     },
     closeDataSet: function (dataset) {
-      this.$store.commit('removeDataSet', dataset)
+      // this.$store.commit('removeDataSet', dataset)
+      this.$store.commit('removeTile', dataset)
     },
     translateDiagramToIcon: function translateDiagramToIcon (diagram) {
       if (diagram.toLowerCase() === 'barchart') {

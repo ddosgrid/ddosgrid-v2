@@ -33,7 +33,6 @@ export default new Vuex.Store({
       var existing = state.datasets.find(dataset => dataset.md5 === newDataSet.md5)
       if (!existing) {
         state.datasets.push(newDataSet)
-        console.log(newDataSet)
       }
     },
     removeDataSet (state, toBeRemoved) {
@@ -43,7 +42,6 @@ export default new Vuex.Store({
       var found = state.visualizations.find(existingVisualisation => newVisualization.file === existingVisualisation.file)
       if (!found) {
         state.visualizations.push(newVisualization)
-        console.log(newVisualization)
       }
     },
     removeVisualization (state, toBeRemoved) {
@@ -54,13 +52,11 @@ export default new Vuex.Store({
         var found = state.tiles.find(existingVisualisation => newTile.file === existingVisualisation.file)
         if (!found) {
           state.tiles.push(newTile)
-          console.log(newTile)
         }
       } else if (Object.prototype.hasOwnProperty.call(newTile, 'md5')) {
         var existing = state.tiles.find(dataset => dataset.md5 === newTile.md5)
         if (!existing) {
-          state.datasets.push(newTile)
-          console.log(newTile)
+          state.tiles.push(newTile)
         }
       }
     },
