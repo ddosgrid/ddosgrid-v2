@@ -19,10 +19,10 @@
             <div class="">{{ dataset.description }}</div>
           </div>
           <div class="card-content-half">
-            <div class="">Uploaded on: {{ dataset.created }}</div>
+            <div class="">Uploaded on: {{ new Date(dataset.created).toLocaleString() }}</div>
             <div class="">Status: {{ dataset.status }}</div>
-            <div class="">Filesize in MBs: {{ dataset.fileSizeMB }}</div>
-            <div class="">Analysis Duration: {{ dataset.analysisDuration }}</div>
+            <div class="">Filesize: {{ dataset.fileSizeMB }} MB</div>
+            <div class="">Analysis Duration: {{ dataset.analysisDuration }} seconds</div>
           </div>
         </div>
       </md-card-content>
@@ -50,13 +50,13 @@
               </md-card-header>
               <div class="card-content-container">
                 <div class="card-content-half">
-                  <div class="">Start: {{ dataset.metrics.start }}</div>
-                  <div class="">End: {{ dataset.metrics.end }}</div>
-                  <div class="">Duration: {{ dataset.metrics.duration }}</div>
+                  <div class="">Start: {{ new Date(dataset.metrics.start * 1000).toLocaleString() }}</div>
+                  <div class="">End: {{ new Date(dataset.metrics.end * 1000).toLocaleString() }}</div>
+                  <div class="">Duration: {{ dataset.metrics.duration }} seconds</div>
                   <div class="">Number of IP Packets: {{ dataset.metrics.nrOfIPpackets }}</div>
-                  <div class="">Attack Size in Bytes: {{ dataset.metrics.attackSizeInBytes }}</div>
-                  <div class="">Attack Bandwith in Bytes Per Second: {{ dataset.metrics.attackBandwidthInBps }}</div>
-                  <div class="">Average Packet Size: {{ dataset.metrics.avgPacketSize }}</div>
+                  <div class="">Attack Size: {{ Math.floor(dataset.metrics.attackSizeInBytes / 1000) }} KB</div>
+                  <div class="">Attack Bandwith: {{ Math.floor(dataset.metrics.attackBandwidthInBps / 1000) }} KB/s</div>
+                  <div class="">Average Packet Size: {{ Math.floor(dataset.metrics.avgPacketSize / 1000) }} KB</div>
                   <div class="">Number of IPv4 Packets: {{ dataset.metrics.nrOfIPv4Packets }}</div>
                 </div>
                 <div class="card-content-half">
@@ -67,15 +67,18 @@
                   <div class="">Number of Destination Ports: {{ dataset.metrics.nrOfDstPorts }}</div>
                   <div class="">Number of UDP Packets: {{ dataset.metrics.nrOfUDPPackets }}</div>
                   <div class="">Number of TCP Packets: {{ dataset.metrics.nrOfTCPPackets }}</div>
-                  <div class="">UDP to TCP Ratio: {{ dataset.metrics.udpToTcpRatio }}</div>
+                  <div class="">UDP to TCP Ratio: {{ Math.floor(dataset.metrics.udpToTcpRatio* 1000) / 1000 }}</div>
                 </div>
               </div>
               <md-card-header>
                 <div class="md-subhead">Analysis Files</div>
               </md-card-header>
                 <div v-for="analysis in dataset.analysisFiles" :key="analysis.file" class="analysisFile">
+                  <h5 class="">
+                    {{ analysis.attackCategory }}:
+                  </h5>
                   <div class="">
-                    {{ analysis }}
+                    {{ analysis.file }}
                   </div>
                 </div>
             </md-card-content>
