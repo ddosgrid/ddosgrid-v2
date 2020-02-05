@@ -81,12 +81,16 @@ export PORT=1234; node index.js
 
 ## frontend
 Enter the `frontend` subproject and run it after fetching its dependencies
-```
+```bash
 npm i; npm run serve
 ```
 This will automatically rebuild the project if a file changes. 
 To use the application you will need to let it connect to an api instance.
 In development mode (`npm run serve`) it will always connect to `localhost:3000`.
+You can run the api locally as described in the previous section or if you don't plan to work on the backend part you can just run the latest image from Docker hub with one command:
+```bash
+docker run -it -p 3000:3000 ddosgrid/ddosgrid-api
+```
 
 # Production deployment
 ## frontend
