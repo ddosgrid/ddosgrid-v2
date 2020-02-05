@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     datasets: [],
     visualizations: [],
-    setups: []
+    setups: [],
+    tiles: []
   },
   mutations: {
     storeSetup (state, name = `setup-${new Date().toJSON()}`) {
@@ -32,6 +33,7 @@ export default new Vuex.Store({
       var existing = state.datasets.find(dataset => dataset.md5 === newDataSet.md5)
       if (!existing) {
         state.datasets.push(newDataSet)
+        console.log(newDataSet)
       }
     },
     removeDataSet (state, toBeRemoved) {
@@ -41,10 +43,33 @@ export default new Vuex.Store({
       var found = state.visualizations.find(existingVisualisation => newVisualization.file === existingVisualisation.file)
       if (!found) {
         state.visualizations.push(newVisualization)
+        console.log(newVisualization)
       }
     },
     removeVisualization (state, toBeRemoved) {
       state.visualizations = state.visualizations.filter(visualization => visualization.file !== toBeRemoved.file)
+    },
+    addTile (state, newTile) {
+      if (Object.prototype.hasOwnProperty.call(newTile, 'file')) {
+        var found = state.tiles.find(existingVisualisation => newTile.file === existingVisualisation.file)
+        if (!found) {
+          state.tiles.push(newTile)
+          console.log(newTile)
+        }
+      } else if (Object.prototype.hasOwnProperty.call(newTile, 'md5')) {
+        var existing = state.tiles.find(dataset => dataset.md5 === newTile.md5)
+        if (!existing) {
+          state.datasets.push(newTile)
+          console.log(newTile)
+        }
+      }
+    },
+    removeTile (state, toBeRemoved) {
+      if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'file')) {
+        state.tiles = state.tiles.filter(visualization => visualization.file !== toBeRemoved.file)
+      } else if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'md5')) {
+        state.tiles = state.tiles.filter(dataset => dataset._id !== toBeRemoved._id)
+      }
     }
   },
   actions: {
