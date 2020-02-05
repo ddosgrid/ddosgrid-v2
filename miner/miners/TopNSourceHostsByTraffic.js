@@ -13,6 +13,7 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
 
     // Setup phase, load additional databases, setup subscriptions and signal completion
     async setUp () {
+        this.whois = require('whois-json')
         this.pcapParser.on('ipv4Packet', this.countIPv4Address.bind(this))
     }
 
@@ -41,7 +42,7 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
               backgroundColor: ['#D33F49',  '#77BA99', '#23FFD9','#27B299', '#831A49',],
               data: this.formatData(topNentries)
             }],
-            labels: this.formatLabels(topNentries)
+            labels: await this.formatLabels(topNentries)
           }
         }
         var summary = {
@@ -57,8 +58,14 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
       return elements.map(entry => entry.count)
     }
 
-    formatLabels (elements) {
-      return elements.map(entry => entry.addr)
+    async formatLabels (elements) {
+      var addresses = elements.map(entry => entry.addr)
+      var result = []
+      for(var address of addresses) {
+        var whoisresult = await this.whois(address)
+        result.push(`${address}: ${whoisresult.route} (${whoisresult.origin}, ${whoisresult.country})`)
+      }
+      return result
     }
 
     sortEntriesByCount (elements) {
