@@ -12,27 +12,32 @@
 
     <md-divider></md-divider>
     <md-card-content>
-       <md-list>
-        <div class="" v-for="group in Object.keys(groupedByAttackType)" :key="group">
-          <md-subheader>{{ group }}</md-subheader>
-          <div class="" v-for="analysisFile in groupedByAttackType[group]"  :key="analysisFile.file">
-
-          <md-list-item>
-             <md-button v-for="diagram in analysisFile.supportedDiagrams"
-                        :key="diagram"
-                        @click="openDiagram(analysisFile, diagram)"
-                        class="md-icon-button md-raised md-primary">
-               <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
-             </md-button>
-             <md-button v-if="analysisFile.supportedDiagrams.length === 0"
-                        class="md-icon-button md-raised md-primary no-print" disabled>
-               <md-icon>close</md-icon>
-             </md-button>
-            <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
-          </md-list-item>
-          </div>
-        </div>
-      </md-list>
+      <md-tabs md-alignment="centered">
+        <md-tab id="tab-metrics" md-label="Metrics">
+        </md-tab>
+        <md-tab id="tab-visualizations" md-label="Visualizations">
+          <md-list>
+           <div class="" v-for="group in Object.keys(groupedByAttackType)" :key="group">
+             <md-subheader>{{ group }}</md-subheader>
+             <div class="" v-for="analysisFile in groupedByAttackType[group]"  :key="analysisFile.file">
+             <md-list-item>
+                <md-button v-for="diagram in analysisFile.supportedDiagrams"
+                           :key="diagram"
+                           @click="openDiagram(analysisFile, diagram)"
+                           class="md-icon-button md-raised md-primary">
+                  <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
+                </md-button>
+                <md-button v-if="analysisFile.supportedDiagrams.length === 0"
+                           class="md-icon-button md-raised md-primary no-print" disabled>
+                  <md-icon>close</md-icon>
+                </md-button>
+               <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
+             </md-list-item>
+             </div>
+           </div>
+         </md-list>
+        </md-tab>
+      </md-tabs>
     </md-card-content>
 
     <md-card-actions>
