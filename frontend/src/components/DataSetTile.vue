@@ -1,5 +1,6 @@
 <template lang="html">
   <md-card class="card">
+
     <md-card-header>
         <md-card-header-text>
           <div class="md-title">{{ dataset.name }}</div>
@@ -11,28 +12,34 @@
     </md-card-header>
 
     <md-divider></md-divider>
-    <md-card-content>
-       <md-list>
-        <div class="" v-for="group in Object.keys(groupedByAttackType)" :key="group">
-          <md-subheader>{{ group }}</md-subheader>
-          <div class="" v-for="analysisFile in groupedByAttackType[group]"  :key="analysisFile.file">
 
-          <md-list-item>
-             <md-button v-for="diagram in analysisFile.supportedDiagrams"
-                        :key="diagram"
-                        @click="openDiagram(analysisFile, diagram)"
-                        class="md-icon-button md-raised md-primary">
-               <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
-             </md-button>
-             <md-button v-if="analysisFile.supportedDiagrams.length === 0"
-                        class="md-icon-button md-raised md-primary no-print" disabled>
-               <md-icon>close</md-icon>
-             </md-button>
-            <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
-          </md-list-item>
-          </div>
-        </div>
-      </md-list>
+    <md-card-content>
+      <md-tabs md-alignment="fixed">
+        <md-tab id="tab-metrics" md-label="Metrics">
+        </md-tab>
+        <md-tab id="tab-visualizations" md-label="Visualizations">
+           <md-list :md-expand-single="true">
+             <md-list-item md-expand v-for="group in Object.keys(groupedByAttackType)" :key="group">
+               <span class="md-list-item-text">{{ group }}</span>
+               <md-list slot="md-expand">
+                 <md-list-item v-for="analysisFile in groupedByAttackType[group]"  :key="analysisFile.file">
+                   <md-button v-for="diagram in analysisFile.supportedDiagrams"
+                              :key="diagram"
+                              @click="openDiagram(analysisFile, diagram)"
+                              class="md-icon-button md-raised md-primary">
+                     <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
+                   </md-button>
+                   <md-button v-if="analysisFile.supportedDiagrams.length === 0"
+                              class="md-icon-button md-raised md-primary no-print" disabled>
+                     <md-icon>close</md-icon>
+                   </md-button>
+                  <span class="item md-list-item-text">{{ analysisFile.analysisName }}</span>
+                 </md-list-item>
+               </md-list>
+             </md-list-item>
+           </md-list>
+        </md-tab>
+      </md-tabs>
     </md-card-content>
 
     <md-card-actions>
@@ -107,6 +114,12 @@ export default {
         -ms-animation: fadein 2s; /* Internet Explorer */
          -o-animation: fadein 2s; /* Opera < 12.1 */
             animation: fadein 2s;
+}
+
+.md-card-actions {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
 }
 
 @keyframes fadein {
