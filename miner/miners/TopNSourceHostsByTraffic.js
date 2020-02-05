@@ -1,5 +1,6 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
-const analysisName = 'TBD'
+const analysisName = 'top-5-source-hosts-by-traffic'
+const N = 5
 
 class SourceHostsAnalyser extends AbstractPcapAnalyser {
     constructor(parser, outPath) {
@@ -29,24 +30,49 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
     // Actual mining function
     // Post-analysis phase, do additional computation with the collected data and write it out
     async postParsingAnalysis() {
+        var sortedByCount = this.sortEntriesByCount(this.results)
+        var topNentries = this.getTopN(this.results, N)
+
         var fileName = `${this.baseOutPath}-${analysisName}.json`
         var fileContent = {
           // Signal and format to visualize as piechart
           piechart: {
             datasets: [{
-              backgroundColor: [],
-              data: Object.values(this.results.map(entry => entry.count))
+              backgroundColor: ['#D33F49',  '#77BA99', '#23FFD9','#27B299', '#831A49',],
+              data: this.formatData(topNentries)
             }],
-            labels: []
+            labels: this.formatLabels(topNentries)
           }
         }
         var summary = {
             fileName: fileName,
-            attackCategory: 'TBD',
-            analysisName: 'TBD',
+            attackCategory: 'Network State',
+            analysisName: 'Top 5 sources by traffic',
             supportedDiagrams: ['PieChart']
         }
         return await this.storeAndReturnResult(fileName, fileContent, summary)
+    }
+
+    formatData (elements) {
+      return elements.map(entry => entry.count)
+    }
+
+    formatLabels (elements) {
+      return elements.map(entry => entry.addr)
+    }
+
+    sortEntriesByCount (elements) {
+        elements.sort((a, b) => {
+            if (a.count > b.count)
+                return -1;
+            if (a.count < b.count)
+                return 1;
+            return 0;
+        })
+    }
+    
+    getTopN (elements, num) {
+        return elements.slice(0, num)
     }
 }
 
