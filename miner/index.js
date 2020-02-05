@@ -5,7 +5,8 @@ const {
   PortUsageClusteredAnalyser,
   TopTwentyPortsByTrafficAnalyser,
   SynStateAnalyser,
-  IPVersionAnalyser
+  IPVersionAnalyser,
+  SourceHostsAnalyser
 } = require('./exports')
 
 try {
@@ -20,7 +21,7 @@ try {
 function analyseFileInProjectFolder (projectPath) {
   var emitter = new PacketEmitter()
 
-  var miners = [ MetricAnalyser, TopTwentyPortsByTrafficAnalyser, PortUsageClusteredAnalyser, SynStateAnalyser, IPVersionAnalyser ]
+  var miners = [ MetricAnalyser, TopTwentyPortsByTrafficAnalyser, PortUsageClusteredAnalyser, SynStateAnalyser, IPVersionAnalyser, SourceHostsAnalyser ]
   var activeMiners = miners.map(miner => new miner(emitter, projectPath))
 
   setUpAndRun(emitter, activeMiners, projectPath)
