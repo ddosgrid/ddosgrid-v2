@@ -116,6 +116,12 @@ export default {
             animation: fadein 2s;
 }
 
+.md-card-actions {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
