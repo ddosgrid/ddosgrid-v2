@@ -168,7 +168,7 @@ export default {
 }
 
 .tile {
-  flex-basis: 600px;
+  flex-basis: 300px;
   flex-grow: 1;
   margin: 10px 10px;
 }

@@ -68,9 +68,8 @@ export default {
     overflow-y: scroll;
     scrollbar-width: none;
   }
-  #main::webkit-scrollbar {
-    display: none;
-    width: 0 !important;
+  ::-webkit-scrollbar {
+    display: none !important;
   }
   @media print {
     .no-print, .no-print * {
