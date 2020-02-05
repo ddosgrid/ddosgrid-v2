@@ -61,7 +61,9 @@ export default {
   }
   #main {
     flex: 1 1 auto;
-    width: 80%;
+    max-width: 960px;
+    padding-right: 10px;
+    padding-left: 10px;
     margin: auto;
     overflow-y: scroll;
     scrollbar-width: none;
