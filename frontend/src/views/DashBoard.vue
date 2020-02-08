@@ -1,4 +1,4 @@
-<template>
+''<template>
   <div class="dashboard">
     <h1>
     Visualization Dashboard
@@ -13,9 +13,7 @@
         {{ tiles }}
       </md-empty-state>
 
-      <div class="tile-wrapper tile" v-for="tile in tiles" :key="tile.key">
-        <component v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
-      </div>
+      <component v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
     </div>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
