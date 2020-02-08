@@ -3,6 +3,7 @@
     <h1>
     Visualization Dashboard
     </h1>
+
     <div id="flex-container">
       <md-empty-state
         md-icon="grid_on"
@@ -13,12 +14,7 @@
       </md-empty-state>
 
       <div class="tile-wrapper tile" v-for="tile in tiles" :key="tile.key">
-
-        <visualizationtile v-if="Object.prototype.hasOwnProperty.call(tile, 'file')" class="" :analysisfile="tile">
-        </visualizationtile>
-
-        <datasettile v-if="Object.prototype.hasOwnProperty.call(tile, 'md5')" class="" :dataset="tile">
-        </datasettile>
+        <component v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
       </div>
     </div>
 
@@ -129,6 +125,13 @@ export default {
     },
     exportToPdf: function exportToPdf () {
       window.print()
+    },
+    getComponentType: function getComponentType (tile) {
+      if (Object.prototype.hasOwnProperty.call(tile, 'file')) {
+        return 'visualizationtile'
+      } else if (Object.prototype.hasOwnProperty.call(tile, 'md5')) {
+        return 'datasettile'
+      }
     }
   },
   computed: {
