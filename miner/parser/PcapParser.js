@@ -109,18 +109,19 @@ class PacketEmitter extends EventEmitter {
     inspectTCPPacket (tcpPacket) {
         this.emit('tcpPacket', tcpPacket)
 
-        var applicationPacket = tcpPacket.payload
+        var applicationPacket = tcpPacket.data
         this.inspectApplicationPacket(applicationPacket)
     }
     inspectUDPPacket (udpPacket) {
         this.emit('udpPacket', udpPacket)
 
-        var applicationPacket = udpPacket.payload
+        var applicationPacket = udpPacket.data
         this.inspectApplicationPacket(applicationPacket)
     }
     inspectApplicationPacket (applicationPacket) {
-        this.emit('applicationPacket', applicationPacket)
-
+      if(applicationPacket) {
+          this.emit('applicationPacket', applicationPacket)
+      }
     }
     tryGuessApplicationPacket (port) {
         try {
