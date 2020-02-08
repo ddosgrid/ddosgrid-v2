@@ -6,8 +6,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    datasets: [],
-    visualizations: [],
     setups: [],
     tiles: []
   },
@@ -16,36 +14,16 @@ export default new Vuex.Store({
       state.setups.push({
         id: uuidv4(),
         name: name,
-        visualizationsOpened: state.visualizations,
-        datasetsOpened: state.datasets
+        tilesOpened: state.tiles
       })
     },
     loadSetup (state, id) {
       try {
         var setUp = state.setups.find(setup => setup.id === id)
-        state.datasets = setUp.datasetsOpened
-        state.visualizations = setUp.visualizationsOpened
+        state.tiles = setUp.tilesOpened
       } catch (e) {
         console.error(`Unable to load setup ${id}`)
       }
-    },
-    addDataSet (state, newDataSet) {
-      var existing = state.datasets.find(dataset => dataset.md5 === newDataSet.md5)
-      if (!existing) {
-        state.datasets.push(newDataSet)
-      }
-    },
-    removeDataSet (state, toBeRemoved) {
-      state.datasets = state.datasets.filter(dataset => dataset._id !== toBeRemoved._id)
-    },
-    addVisualization (state, newVisualization) {
-      var found = state.visualizations.find(existingVisualisation => newVisualization.file === existingVisualisation.file)
-      if (!found) {
-        state.visualizations.push(newVisualization)
-      }
-    },
-    removeVisualization (state, toBeRemoved) {
-      state.visualizations = state.visualizations.filter(visualization => visualization.file !== toBeRemoved.file)
     },
     addTile (state, newTile) {
       if (Object.prototype.hasOwnProperty.call(newTile, 'file')) {

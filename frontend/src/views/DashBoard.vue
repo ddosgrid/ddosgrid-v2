@@ -7,10 +7,13 @@
       <md-empty-state
         md-icon="grid_on"
         md-label="No analysis files were added"
-        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="datasets.length === 0" class="empty-notification">
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
         <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+        {{ tiles }}
       </md-empty-state>
+
       <div class="tile-wrapper tile" v-for="tile in tiles" :key="tile.key">
+
         <visualizationtile v-if="Object.prototype.hasOwnProperty.call(tile, 'file')" class="" :analysisfile="tile">
         </visualizationtile>
 
@@ -129,12 +132,6 @@ export default {
     }
   },
   computed: {
-    datasets () {
-      return this.$store.state.datasets
-    },
-    analysisfiles () {
-      return this.$store.state.visualizations
-    },
     tiles () {
       return this.$store.state.tiles
     },
@@ -143,8 +140,8 @@ export default {
     },
     dashBoardIsEmpty () {
       try {
-        var { datasets, visualizations } = this.$store.state
-        return datasets.length === 0 && visualizations.length === 0
+        var openTiles = this.$store.state.tiles
+        return openTiles.length === 0
       } catch (e) {
         return false
       }
