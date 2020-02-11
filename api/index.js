@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const app = express()
-const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload-sha256')
 
 const rootRoutes = require('./routes/root')
 const analysisRoutes = require('./routes/analysis/index')

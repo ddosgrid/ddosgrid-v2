@@ -137,7 +137,7 @@ function handleFilePost (req, res) {
   }
   var datasetName = req.body.name
   var datasetDescription = req.body.description
-  var fileHash = uploadedFile.md5
+  var fileHash = uploadedFile.hash
   var fileSize = uploadedFile.size / 1024 / 1024
   var fileSizeInMB = Number(Number(fileSize).toFixed(3))
   uploadedFile.mv(path.resolve(analysisBaseDir, fileHash, `${fileHash}.pcap`), mvHandler)
