@@ -10,7 +10,6 @@
         md-label="No analysis files were added"
         md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
         <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
-        {{ tiles }}
       </md-empty-state>
 
       <component v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
