@@ -86,7 +86,8 @@ export default {
       }
     },
     clearVisualization: function (analysisfile) {
-      this.$store.commit('removeVisualization', analysisfile)
+      // this.$store.commit('removeVisualization', analysisfile)
+      this.$store.commit('removeTile', analysisfile)
     },
     downloadChart: function downloadChart () {
       var b64image = this.$el.querySelector('canvas').toDataURL('image/png')

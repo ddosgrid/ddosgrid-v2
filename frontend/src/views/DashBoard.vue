@@ -1,20 +1,19 @@
-<template>
+''<template>
   <div class="dashboard">
     <h1>
     Visualization Dashboard
     </h1>
+
     <div id="flex-container">
       <md-empty-state
         md-icon="grid_on"
         md-label="No analysis files were added"
-        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="datasets.length === 0" class="empty-notification">
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
         <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+        {{ tiles }}
       </md-empty-state>
-      <visualizationtile class="tile" v-for="analysisfile in analysisfiles" :key="analysisfile.file" :analysisfile="analysisfile">
-      </visualizationtile>
 
-      <datasettile class="tile" v-for="dataset in datasets" :key="dataset._id" :dataset="dataset">
-      </datasettile>
+      <component v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
     </div>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
@@ -124,22 +123,26 @@ export default {
     },
     exportToPdf: function exportToPdf () {
       window.print()
+    },
+    getComponentType: function getComponentType (tile) {
+      if (Object.prototype.hasOwnProperty.call(tile, 'file')) {
+        return 'visualizationtile'
+      } else if (Object.prototype.hasOwnProperty.call(tile, 'md5')) {
+        return 'datasettile'
+      }
     }
   },
   computed: {
-    datasets () {
-      return this.$store.state.datasets
-    },
-    analysisfiles () {
-      return this.$store.state.visualizations
+    tiles () {
+      return this.$store.state.tiles
     },
     storedSetups () {
       return this.$store.state.setups
     },
     dashBoardIsEmpty () {
       try {
-        var { datasets, visualizations } = this.$store.state
-        return datasets.length === 0 && visualizations.length === 0
+        var openTiles = this.$store.state.tiles
+        return openTiles.length === 0
       } catch (e) {
         return false
       }

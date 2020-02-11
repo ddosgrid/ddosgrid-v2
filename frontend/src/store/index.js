@@ -6,45 +6,44 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    datasets: [],
-    visualizations: [],
-    setups: []
+    setups: [],
+    tiles: []
   },
   mutations: {
     storeSetup (state, name = `setup-${new Date().toJSON()}`) {
       state.setups.push({
         id: uuidv4(),
         name: name,
-        visualizationsOpened: state.visualizations,
-        datasetsOpened: state.datasets
+        tilesOpened: state.tiles
       })
     },
     loadSetup (state, id) {
       try {
         var setUp = state.setups.find(setup => setup.id === id)
-        state.datasets = setUp.datasetsOpened
-        state.visualizations = setUp.visualizationsOpened
+        state.tiles = setUp.tilesOpened
       } catch (e) {
         console.error(`Unable to load setup ${id}`)
       }
     },
-    addDataSet (state, newDataSet) {
-      var existing = state.datasets.find(dataset => dataset.md5 === newDataSet.md5)
-      if (!existing) {
-        state.datasets.push(newDataSet)
+    addTile (state, newTile) {
+      if (Object.prototype.hasOwnProperty.call(newTile, 'file')) {
+        var found = state.tiles.find(existingVisualisation => newTile.file === existingVisualisation.file)
+        if (!found) {
+          state.tiles.push(newTile)
+        }
+      } else if (Object.prototype.hasOwnProperty.call(newTile, 'md5')) {
+        var existing = state.tiles.find(dataset => dataset.md5 === newTile.md5)
+        if (!existing) {
+          state.tiles.push(newTile)
+        }
       }
     },
-    removeDataSet (state, toBeRemoved) {
-      state.datasets = state.datasets.filter(dataset => dataset._id !== toBeRemoved._id)
-    },
-    addVisualization (state, newVisualization) {
-      var found = state.visualizations.find(existingVisualisation => newVisualization.file === existingVisualisation.file)
-      if (!found) {
-        state.visualizations.push(newVisualization)
+    removeTile (state, toBeRemoved) {
+      if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'file')) {
+        state.tiles = state.tiles.filter(visualization => visualization.file !== toBeRemoved.file)
+      } else if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'md5')) {
+        state.tiles = state.tiles.filter(dataset => dataset._id !== toBeRemoved._id)
       }
-    },
-    removeVisualization (state, toBeRemoved) {
-      state.visualizations = state.visualizations.filter(visualization => visualization.file !== toBeRemoved.file)
     }
   },
   actions: {

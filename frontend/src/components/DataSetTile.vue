@@ -16,6 +16,36 @@
     <md-card-content>
       <md-tabs md-alignment="fixed">
         <md-tab id="tab-metrics" md-label="Metrics">
+          <md-list>
+            <md-list-item md-expand>
+              <span class="md-list-item-text">Attack Stats</span>
+              <md-list slot="md-expand" class="md-dense">
+                <md-list-item>
+                  {{ "Duration: " + dataset.metrics.duration + "s"}}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Attack Size: " + dataset.metrics.attackSizeInBytes + " Bytes"}}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
+                </md-list-item>
+              </md-list>
+            </md-list-item>
+            <md-list-item md-expand>
+              <span class="md-list-item-text">Network Stats</span>
+              <md-list slot="md-expand" class="md-dense">
+                <md-list-item>
+                  {{ "Number of Source IPs: " + dataset.metrics.nrOfSrcIps }}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Number of Source Ports: " + dataset.metrics.nrOfSrcPorts }}
+                </md-list-item>
+              </md-list>
+            </md-list-item>
+          </md-list>
         </md-tab>
         <md-tab id="tab-visualizations" md-label="Visualizations">
            <md-list :md-expand-single="true">
@@ -70,10 +100,12 @@ export default {
     },
     openDiagram: function (analysisFile, chart) {
       analysisFile.chart = chart
-      this.$store.commit('addVisualization', analysisFile)
+      // this.$store.commit('addVisualization', analysisFile)
+      this.$store.commit('addTile', analysisFile)
     },
     closeDataSet: function (dataset) {
-      this.$store.commit('removeDataSet', dataset)
+      // this.$store.commit('removeDataSet', dataset)
+      this.$store.commit('removeTile', dataset)
     },
     translateDiagramToIcon: function translateDiagramToIcon (diagram) {
       if (diagram.toLowerCase() === 'barchart') {
