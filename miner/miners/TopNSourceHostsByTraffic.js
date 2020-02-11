@@ -63,8 +63,20 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
       var addresses = elements.map(entry => entry.addr)
       var result = []
       for(var address of addresses) {
-        var whoisresult = await this.whois(address)
-        result.push(`${address}: ${whoisresult.route} (${whoisresult.origin}, ${whoisresult.country})`)
+        try {
+          var { route, origin, country } = await this.whois(address)
+
+          // Sometimes we know all three, sometimes only country and ASN and sometimes none
+          if(route && origin && country && route !== 0 && origin !== 0 && country !== 0) {
+            result.push(`${address} (${route}, ${origin}, ${country})`)
+          } else if(origin && country && origin !== 0 && country !== 0) {
+            result.push(`${address} (${origin}, ${country})`)
+          } else {
+            result.push(address)
+          }
+        } catch (e) {
+          result.push(address)
+        }
       }
       return result
     }
