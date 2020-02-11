@@ -43,7 +43,8 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
               data: this.formatData(topNentries)
             }],
             labels: await this.formatLabels(topNentries)
-          }
+          },
+          hint: 'The labels of this chart have been computed using temporally sensitive data'
         }
         var summary = {
             fileName: fileName,
