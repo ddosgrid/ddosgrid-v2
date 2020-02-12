@@ -43,6 +43,7 @@ import { apibaseurl } from '@/config/variables.js'
 import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
+import WorldMap from '../components/WorldMap'
 import VisualizationUnavailable from '../components/VisualizationUnavailable'
 import hashicon from 'hashicon'
 
@@ -51,6 +52,7 @@ export default {
     'barchart': BarChart,
     'scatterplot': ScatterPlot,
     'piechart': PieChart,
+    'worldmap': WorldMap,
     'no-visualization-possible': VisualizationUnavailable
   },
   props: [

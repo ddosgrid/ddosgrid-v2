@@ -117,6 +117,9 @@ export default {
       if (diagram.toLowerCase() === 'scatterplot') {
         return 'scatter_plot'
       }
+      if (diagram.toLowerCase() === 'worldmap') {
+        return 'map'
+      }
       return 'add'
     }
   }

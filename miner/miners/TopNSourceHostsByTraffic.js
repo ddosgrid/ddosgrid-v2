@@ -1,6 +1,6 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 const analysisName = 'top-5-source-hosts-by-traffic'
-const N = 5
+const N = 20
 
 class SourceHostsAnalyser extends AbstractPcapAnalyser {
     constructor(parser, outPath) {
@@ -42,15 +42,16 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
               backgroundColor: ['#D33F49',  '#77BA99', '#23FFD9','#27B299', '#831A49',],
               data: this.formatData(topNentries)
             }],
-            labels: await this.formatLabels(topNentries)
+            labels: await this.formatLabelsForPieChart(topNentries)
           },
+          worldmap: await this.formatLabelsForWorldMap(topNentries),
           hint: 'The labels of this chart have been computed using temporally sensitive data'
         }
         var summary = {
             fileName: fileName,
             attackCategory: 'Network State',
-            analysisName: 'Top 5 sources by traffic',
-            supportedDiagrams: ['PieChart']
+            analysisName: `Top ${N} sources by traffic`,
+            supportedDiagrams: ['PieChart', 'WorldMap']
         }
         return await this.storeAndReturnResult(fileName, fileContent, summary)
     }
@@ -59,7 +60,7 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
       return elements.map(entry => entry.count)
     }
 
-    async formatLabels (elements) {
+    async formatLabelsForPieChart (elements) {
       var addresses = elements.map(entry => entry.addr)
       var result = []
       for(var address of addresses) {
@@ -76,6 +77,24 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
           }
         } catch (e) {
           result.push(address)
+        }
+      }
+      return result
+    }
+    async formatLabelsForWorldMap (addresses) {
+      var result = {}
+      for(var address of addresses) {
+        try {
+          var { country } = await this.whois(address.addr)
+          if(country) {
+            if(result.hasOwnProperty(country)) {
+              result[country] += address.count
+            } else {
+              result[country] = address.count
+            }
+            console.log(result)
+          }
+        } catch (e) {
         }
       }
       return result
