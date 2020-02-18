@@ -1,3 +1,5 @@
+const NotImplemented = require('./NotImplementedError')
+
 class AbstractPCAPAnalyser {
     constructor (pcapParser, baseOutPath) {
         this.pcapParser = pcapParser
@@ -9,8 +11,10 @@ class AbstractPCAPAnalyser {
     // Here one should setUp all dependencies needed for analysis this involves
     // stuff like connecting to a DB and subscribing to the parser.
     async setUp() {
+      throw new NotImplemented('setUp')
     }
     async postParsingAnalysis() {
+      throw new NotImplemented('setUp')
     }
     async storeAndReturnResult (fileName, fileContent, resultSummary) {
         return new Promise((resolve, reject) => {
