@@ -22,6 +22,9 @@ class IPVersionAnalyser extends AbstractPcapAnalyser {
     countIPV6 () {
       this.results.nrOfIPv6++
     }
+    getName() {
+      return 'Analysis of IPv4 vs IPv6 traffic (based on packets)'
+    }
     async postParsingAnalysis() {
         var fileName = `${this.baseOutPath}-ipversion.json`
         var fileContent = {

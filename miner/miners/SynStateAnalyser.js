@@ -16,6 +16,9 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
     async setUp() {
         this.pcapParser.on('tcpPacket', this.checkState.bind(this))
     }
+    getName () {
+      return 'Connection states of TCP segments'
+    }
     // Actual mining function
     checkState (transportPacket) {
         this.results.nrOfTransportPackets++
@@ -43,11 +46,13 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
     }
     // Post-analysis phase, do additional computation with the collected data and write it out
     async postParsingAnalysis() {
+        /*
         console.log('Packets in SYN state:', this.results.nrOfPacketsInSynState / this.results.nrOfTransportPackets * 100)
         console.log('Packets in SYN/ACK state:', this.results.nrOfPacketsInSynAckState / this.results.nrOfTransportPackets * 100)
         console.log('Packets in FIN state:', this.results.nrOfPacketsInFinState / this.results.nrOfTransportPackets * 100)
         console.log('Packets in FIN/ACK state:', this.results.nrOfPacketsInFinAckState / this.results.nrOfTransportPackets * 100)
         console.log('Packets presumable in established state:', this.results.nrOfPacketsInRemainingStates / this.results.nrOfTransportPackets * 100)
+        */
         var fileName = `${this.baseOutPath}-synfloodanalysis.json`
         var fileContent = {
             piechart: {

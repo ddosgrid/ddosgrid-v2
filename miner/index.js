@@ -19,6 +19,7 @@ try {
 }
 
 function analyseFileInProjectFolder (projectPath) {
+  console.log('✓ Analysis started..')
   var emitter = new PacketEmitter()
 
   var miners = [ MetricAnalyser, TopTwentyPortsByTrafficAnalyser, PortUsageClusteredAnalyser, SynStateAnalyser, IPVersionAnalyser, SourceHostsAnalyser ]
@@ -32,6 +33,10 @@ async function setUpAndRun (emitter, activeMiners, target) {
   for(miner of activeMiners) {
     await miner.setUp()
   }
+  console.log('✓ Setup of the following miners has started:')
+  activeMiners.forEach(miner => {
+    console.log(`\t- ${miner.getName()}`)
+  })
 
   try {
     emitter.startPcapSession(target)
@@ -41,13 +46,14 @@ async function setUpAndRun (emitter, activeMiners, target) {
   }
 
   emitter.on('complete', async () => {
+    console.log('✓ Decoding has finished, starting post-parsing analysis')
     //var results = activeMiners.map(async (miner) => { return await miner.postParsingAnalysis() })
     var results = []
     for(miner of activeMiners) {
       var result = await miner.postParsingAnalysis()
       results.push(result)
     }
-
+    console.log('✓ All miners have finished.')
     var output = JSON.stringify(results)
     if(process && process.send) {
       // If this function exists in scope we know that we are in a forked ChildProcess

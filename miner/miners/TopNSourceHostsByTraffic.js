@@ -27,6 +27,9 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
         this.results.push({ addr: srcAddress, count: 1 })
       }
     }
+    getName () {
+      return 'Top 5 source hosts (IPv4)'
+    }
 
     // Actual mining function
     // Post-analysis phase, do additional computation with the collected data and write it out
@@ -92,7 +95,7 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
             } else {
               result[country] = address.count
             }
-            console.log(result)
+            // console.log(result)
           }
         } catch (e) {
         }

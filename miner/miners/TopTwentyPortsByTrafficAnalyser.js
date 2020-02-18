@@ -32,6 +32,10 @@ class TopTwentyPortsAnalyser extends AbstractPCAPAnalyser {
         }
     }
 
+    getName() {
+      return 'Top 20 UPD/TCP ports by number of segments'
+    }
+
     async postParsingAnalysis() {
         var ports = Object.values(this.results)
         ports.sort((a, b) => {

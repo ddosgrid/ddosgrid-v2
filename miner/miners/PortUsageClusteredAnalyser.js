@@ -24,6 +24,9 @@ class PortUsageClusteredAnalyser extends AbstractPCAPAnalyser {
             console.error('Unable to analyse packet', transportPacket)
         }
     }
+    getName () {
+      return 'Number of segments received over all TCP/UDP ports'
+    }
 
     async postParsingAnalysis () {
         this.output.clusters = this.results.clusters

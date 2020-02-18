@@ -11,9 +11,7 @@ function parseAndCheckArguments (argv) {
 
   var settings = {
     pcapPath: '',
-    pcapFile: '',
-    aggregate: false,
-    extractMetaInf: false
+    pcapFile: ''
   }
 
   var pcap_file_param_pattern = /pcap_path=(.*)/

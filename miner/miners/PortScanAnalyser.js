@@ -30,6 +30,9 @@ class PortScanAnalyser extends AbstractPCAPAnalyser {
             console.error('Unable to analyse packet', transportPacket)
         }
     }
+    getName () {
+      return 'Top 10 UDP/TCP ports by number of segments'
+    }
 
     async postParsingAnalysis() {
         var ports = Object.values(this.results)

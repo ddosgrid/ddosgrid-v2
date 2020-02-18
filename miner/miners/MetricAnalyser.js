@@ -42,6 +42,9 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       this.pcapParser.on('udpPacket', this.countUdpPackets.bind(this))
       this.pcapParser.on('tcpPacket', this.counttcpPackets.bind(this))
     }
+    getName () {
+      return 'Miscellaneous Metrics'
+    }
     noteStartTime (pcapPacket) {
       this.output.start = pcapPacket.pcap_header.tv_sec
     }

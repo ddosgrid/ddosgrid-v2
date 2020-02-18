@@ -8,6 +8,9 @@ class AbstractPCAPAnalyser {
     setParser (pcapParser) {
         this.pcapParser = pcapParser
     }
+    getName () {
+      throw new NotImplemented('getName')
+    }
     // Here one should setUp all dependencies needed for analysis this involves
     // stuff like connecting to a DB and subscribing to the parser.
     async setUp() {
