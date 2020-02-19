@@ -14,11 +14,11 @@ function parseAndCheckArguments (argv) {
     pcapFile: ''
   }
 
-  var pcap_file_param_pattern = /pcap_path=(.*)/
-  var pcap_file_param = argv[2].match(pcap_file_param_pattern)
+  var pcapFileParamPattern = /pcap_path=(.*)/
+  var pcapFileParam = argv[2].match(pcapFileParamPattern)
 
-  if (pcap_file_param) {
-    var filePath = pcap_file_param[1]
+  if (pcapFileParam) {
+    var filePath = pcapFileParam[1]
     if (fs.existsSync(filePath)) {
       settings.pcapPath = filePath
       settings.pcapFile = path.basename(filePath)
