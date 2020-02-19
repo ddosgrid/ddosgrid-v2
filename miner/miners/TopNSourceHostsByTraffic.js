@@ -92,10 +92,11 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
       try {
         var { country } = await this.whois(address.addr)
         if (country) {
+          var formattedCountry = tryFormatCountry(country)
           if (hasProp(result, 'country')) {
-            result[country] += address.count
+            result[formattedCountry] += address.count
           } else {
-            result[country] = address.count
+            result[formattedCountry] = address.count
           }
           // console.log(result)
         }
@@ -115,6 +116,20 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
 
   getTopN (elements, num) {
     return elements.slice(0, num)
+  }
+}
+
+function tryFormatCountry (countryString) {
+  try {
+    // This just removes the whitespace and duplicates if exist
+    var containsWhiteSpace = countryString.substring(' ') === -1
+    if(containsWhiteSpace) {
+      return countryString
+    } else {
+      return countryString.split(' ')[0]
+    }
+  } catch (e) {
+    return countryString
   }
 }
 
