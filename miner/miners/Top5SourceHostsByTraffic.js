@@ -29,7 +29,7 @@ class Top5SourceHostsAnalyser extends AbstractPcapAnalyser {
   }
 
   getName () {
-    return 'Top 5 source hosts (IPv4)'
+    return `Top ${N} source hosts (IPv4)`
   }
 
   // Actual mining function
