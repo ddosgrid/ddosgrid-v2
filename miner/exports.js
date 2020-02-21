@@ -5,7 +5,8 @@ var TopTwentyPortsByTrafficAnalyser = require('./miners/TopTwentyPortsByTrafficA
 var PortUsageClusteredAnalyser = require('./miners/PortUsageClusteredAnalyser')
 var SynStateAnalyser = require('./miners/SynStateAnalyser')
 var IPVersionAnalyser = require('./miners/IPVersionAnalyser')
-var SourceHostsAnalyser = require('./miners/TopNSourceHostsByTraffic')
+var Top5SourceHostsAnalyser = require('./miners/Top5SourceHostsByTraffic')
+var Top100SourceHostsAnalyser = require('./miners/Top100SourceHostsByTraffic')
 
 module.exports = {
   PacketEmitter,
@@ -15,5 +16,6 @@ module.exports = {
   PortUsageClusteredAnalyser,
   SynStateAnalyser,
   IPVersionAnalyser,
-  SourceHostsAnalyser
+  Top5SourceHostsAnalyser,
+  Top100SourceHostsAnalyser
 }

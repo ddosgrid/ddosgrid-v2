@@ -1,8 +1,8 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
-const analysisName = 'top-5-source-hosts-by-traffic'
-const N = 20
+const N = 5
+const analysisName = `top-${N}-source-hosts-by-traffic`
 
-class SourceHostsAnalyser extends AbstractPcapAnalyser {
+class Top5SourceHostsAnalyser extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
     this.results = [
@@ -48,14 +48,13 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
         }],
         labels: await this.formatLabelsForPieChart(topNentries)
       },
-      worldmap: await this.formatLabelsForWorldMap(topNentries),
       hint: 'The labels of this chart have been computed using temporally sensitive data'
     }
     var summary = {
       fileName: fileName,
       attackCategory: 'Network State',
       analysisName: `Top ${N} sources by traffic`,
-      supportedDiagrams: ['PieChart', 'WorldMap']
+      supportedDiagrams: ['PieChart']
     }
     return await this.storeAndReturnResult(fileName, fileContent, summary)
   }
@@ -83,29 +82,8 @@ class SourceHostsAnalyser extends AbstractPcapAnalyser {
         result.push(address)
       }
     }
-    return result
+    return result.slice(0, 5)
   }
-
-  async formatLabelsForWorldMap (addresses) {
-    var result = {}
-    for (var address of addresses) {
-      try {
-        var { country } = await this.whois(address.addr)
-        if (country) {
-          var formattedCountry = tryFormatCountry(country)
-          if (hasProp(result, 'country')) {
-            result[formattedCountry] += address.count
-          } else {
-            result[formattedCountry] = address.count
-          }
-          // console.log(result)
-        }
-      } catch (e) {
-      }
-    }
-    return result
-  }
-
   sortEntriesByCount (elements) {
     return elements.sort((a, b) => {
       if (a.count > b.count) { return -1 }
@@ -137,4 +115,4 @@ function hasProp (target, prop) {
   return Object.prototype.hasOwnProperty.call(target, prop)
 }
 
-module.exports = SourceHostsAnalyser
+module.exports = Top5SourceHostsAnalyser

@@ -28,7 +28,6 @@ export default {
     try {
       let response = await fetch(this.url)
       let parsedResponse = await response.json()
-      console.log(parsedResponse.worldmap)
       this.countries = parsedResponse.worldmap
     } catch (e) {
       this.$emit('unavailable')
