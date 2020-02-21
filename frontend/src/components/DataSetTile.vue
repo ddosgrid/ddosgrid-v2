@@ -27,7 +27,7 @@
                   {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
                 </md-list-item>
                 <md-list-item>
-                  {{ "Attack Size: " + dataset.metrics.attackSizeInBytes + " Bytes"}}
+                  {{ "Attack Size: " + Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) + " MB"}}
                 </md-list-item>
                 <md-list-item>
                   {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
@@ -42,6 +42,12 @@
                 </md-list-item>
                 <md-list-item>
                   {{ "Number of Source Ports: " + dataset.metrics.nrOfSrcPorts }}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Number of Destination IPs: " + dataset.metrics.nrOfDstIps }}
+                </md-list-item>
+                <md-list-item>
+                  {{ "Number of Destination Ports: " + dataset.metrics.nrOfDstPorts }}
                 </md-list-item>
               </md-list>
             </md-list-item>

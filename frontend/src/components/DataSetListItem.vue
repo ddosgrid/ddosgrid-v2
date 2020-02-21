@@ -54,9 +54,9 @@
                   <div class="">End: {{ new Date(dataset.metrics.end * 1000).toLocaleString() }}</div>
                   <div class="">Duration: {{ dataset.metrics.duration }} seconds</div>
                   <div class="">Number of IP Packets: {{ dataset.metrics.nrOfIPpackets }}</div>
-                  <div class="">Attack Size: {{ Math.floor(dataset.metrics.attackSizeInBytes / 1000) }} KB</div>
-                  <div class="">Attack Bandwith: {{ Math.floor(dataset.metrics.attackBandwidthInBps / 1000) }} KB/s</div>
-                  <div class="">Average Packet Size: {{ Math.floor(dataset.metrics.avgPacketSize / 1000) }} KB</div>
+                  <div class="">Attack Size: {{ Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) }} MB</div>
+                  <div class="">Attack Bandwith: {{ Math.floor(dataset.metrics.attackBandwidthInBps / 1000 / 1000) }} MB/s</div>
+                  <div class="">Average Packet Size: {{ Math.floor(dataset.metrics.avgPacketSize / 1000 / 1000) }} MB</div>
                   <div class="">Number of IPv4 Packets: {{ dataset.metrics.nrOfIPv4Packets }}</div>
                 </div>
                 <div class="card-content-half">
