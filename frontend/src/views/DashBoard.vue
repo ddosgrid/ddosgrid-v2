@@ -12,7 +12,7 @@
         <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
       </md-empty-state>
 
-      <component v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
+      <component class="datasetordashboard" v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
     </div>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
@@ -194,5 +194,8 @@ export default {
 }
 .above {
   z-index: 1;
+}
+.datasetordashboard {
+  margin: 5px;
 }
 </style>
