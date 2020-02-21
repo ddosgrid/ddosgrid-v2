@@ -11,6 +11,7 @@ const {
 
 try {
   var settings = parseAndCheckArguments(process.argv)
+  console.log('✓ Input check completed') 
   analyseFileInProjectFolder(settings.pcapPath)  
 
 } catch (e) {
@@ -19,7 +20,7 @@ try {
 }
 
 function analyseFileInProjectFolder (projectPath) {
-  console.log('✓ Analysis started..')
+  console.log('✓ Analysis started')
   var emitter = new PacketEmitter()
 
   var miners = [ MetricAnalyser, TopTwentyPortsByTrafficAnalyser, PortUsageClusteredAnalyser, SynStateAnalyser, IPVersionAnalyser, SourceHostsAnalyser ]
@@ -33,7 +34,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
   for(miner of activeMiners) {
     await miner.setUp()
   }
-  console.log('✓ Setup of the following miners has started:')
+  console.log('✓ Setup of the following miners has completed:')
   activeMiners.forEach(miner => {
     console.log(`\t- ${miner.getName()}`)
   })
