@@ -4,7 +4,7 @@
     <md-divider></md-divider>
     <div class="chips-wrapper">
       <div>Please note that the world map above only shows the origin of the top N source hosts!</div>
-      <md-chip class="md-primary country" v-for="obj of Object.entries(countries)" :key="obj">
+      <md-chip class="md-primary country" v-for="obj of Object.entries(countries)" :key="obj[0]">
         {{obj[0]}}: {{obj[1]}} packets
       </md-chip>
     </div>
