@@ -38,6 +38,25 @@ For example to run it through a shell:
 ```bash
 node index.js pcap_path=/path/to/your/pcap-file
 ```
+This will run the miner which will render its result to stdout:
+```bash
+node index.js pcap_path=/path/to/your/capture.pcap
+
+✓ Input check completed
+✓ Analysis started
+✓ Setup of the following miners has completed:
+	- Miscellaneous Metrics
+	- Top 20 UPD/TCP ports by number of segments
+	- Number of segments received over all TCP/UDP ports
+	- Connection states of TCP segments
+	- Analysis of IPv4 vs IPv6 traffic (based on packets)
+	- Top 5 source hosts (IPv4)
+	- Top 100 source hosts (IPv4)
+✓ Decoding has finished, starting post-parsing analysis
+✓ All miners have finished.
+
+```
+
 Run it as a subprocess:
 ```javascript
 const child_process = require('child_process')
