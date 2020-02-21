@@ -57,7 +57,7 @@ export default {
         .then((response) => response.json())
         .then((result) => {
           this.isLoading = false
-          console.log('Success:', result)
+          // console.log('Success:', result)
           // snackbar to let user know that file was uploaded and analysis has started
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
           this.showSnackbar = true
@@ -66,11 +66,11 @@ export default {
             method: 'POST'
           })
             .then((result) => {
-              console.log(result)
+              // console.log(result)
             })
         })
         .then((result) => {
-          console.log(result)
+          // console.log(result)
         })
         .catch((error) => {
           this.isLoading = false
