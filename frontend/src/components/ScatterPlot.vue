@@ -45,6 +45,7 @@ export default {
             }
           }],
           xAxes: [{
+            allowDecimals: false,
             scaleLabel: {
               display: true,
               labelString: 'Port ranges in buckets (64 ports per bucket)'
