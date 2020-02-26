@@ -25,10 +25,35 @@ export default {
           }
         ]
       }, {
+        tooltips: {
+          callbacks: {
+            label: function (item) {
+              console.log(arguments)
+              var bucket = item.xLabel
+              var count = item.yLabel
+              return `Port range ${bucket}-${bucket + 64} received ${count} segments`
+            }
+          }
+        },
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          Axes: [{
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Number of segments'
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Port ranges in buckets (64 ports per bucket)'
+            },
+            ticks: {
+              callback: function (val) {
+                return `${val}-${val + 64}`
+              }
+            }
           }]
         }
       })

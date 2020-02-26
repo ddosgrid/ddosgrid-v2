@@ -30,10 +30,21 @@ export default {
             data: count
           }
         ]
-      }, { responsive: true,
+      }, {
+        responsive: true,
         maintainAspectRatio: false,
         scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Destination UDP/TCP port'
+            }
+          }],
           yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Number of segments'
+            },
             ticks: {
               beginAtZero: true
             }
