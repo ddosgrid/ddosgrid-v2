@@ -20,7 +20,7 @@ class TopTwentyPortsAnalyser extends AbstractPCAPAnalyser {
     }
     var port = transportPacket.dport
     try {
-      if (hasProp(this.results, 'port')) {
+      if (hasProp(this.results[port], 'port')) {
         this.results[port].count++
       } else {
         this.results[port] = {
@@ -85,6 +85,7 @@ class TopTwentyPortsAnalyser extends AbstractPCAPAnalyser {
 }
 
 function hasProp (target, prop) {
+  if(!target === null || target === undefined) { return false }
   return Object.prototype.hasOwnProperty.call(target, prop)
 }
 
