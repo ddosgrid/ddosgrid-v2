@@ -61,7 +61,7 @@ export default {
   }
   #main {
     flex: 1 1 auto;
-    max-width: 1460px;
+    max-width: 1900px;
     padding-right: 20px;
     padding-left: 20px;
     margin: auto;

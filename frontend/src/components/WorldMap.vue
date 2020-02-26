@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap">
     <mymap :countryData="countries" defaultCountryFillColor="#f8f8f8" lowColor="#ffbdbb" highColor="#af4448"></mymap>
     <md-divider></md-divider>
     <div class="chips-wrapper">
@@ -37,6 +37,9 @@ export default {
 </script>
 
 <style scoped>
+.wrap {
+  max-width: 890px;
+}
 .country {
   margin-top: 10px;
 }
