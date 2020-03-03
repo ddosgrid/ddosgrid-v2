@@ -104,10 +104,10 @@ class PacketEmitter extends EventEmitter {
 
     if (ipProtocolField === 6) {
       this.inspectTCPPacket(transportPacket)
-      this.tryGuessApplicationPacket(transportPacket.dport)
+      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
     } else if (ipProtocolField === 17) {
       this.inspectUDPPacket(transportPacket)
-      this.tryGuessApplicationPacket(transportPacket.dport)
+      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
     } else if (ipProtocolField === 1) {
       this.inspectICMPPacket(transportPacket)
     }
@@ -128,17 +128,39 @@ class PacketEmitter extends EventEmitter {
   }
 
   inspectApplicationPacket (applicationPacket) {
+
+
     if (applicationPacket) {
       this.emit('applicationPacket', applicationPacket)
     }
   }
 
-  tryGuessApplicationPacket (port) {
+  tryGuessApplicationPacket (port, packet) {
     try {
       var guessedServicename = portNumbers.getService(port)
-      this.emit(`${guessedServicename}Packet`, port)
+      this.emit(`${guessedServicename.name}Packet`, packet)
+      if(guessedServicename.name === 'http') {
+        this.tryNaiveHttpParse(packet)
+      }
     } catch (e) {
       console.error(`Unable to parse service name from port ${port}`)
+    }
+  }
+
+  tryNaiveHttpParse (packet) {
+    try {
+      var httpString = Buffer.from(packet).toString('utf-8')
+      var lines = httpString.split('\r\n')
+      if (lines.length > 1) {
+        var verbAndEndpoint = lines[0]
+        var endpoint = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[2]
+        var verb = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[1]
+        //console.log(`${verb} request made to ${endpoint}`)
+        this.emit('httpVerb', verb)
+        this.emit('httpEndpoint', endpoint)
+      }
+    } catch (e) {
+      // console.log('Unable to process http packet')
     }
   }
 
