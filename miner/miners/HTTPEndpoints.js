@@ -26,7 +26,7 @@ class HTTPEndpoints extends AbstractPcapAnalyser {
   }
 
   getName () {
-    return `Most used HTTP endpoints`
+    return `Top ${N} most used HTTP endpoints`
   }
 
   // Actual mining function
@@ -41,20 +41,20 @@ class HTTPEndpoints extends AbstractPcapAnalyser {
       piechart: {
         datasets: [{
           backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
-          data: this.pickCounts(this.results)
+          data: this.pickCounts(topNentries)
         }],
-        labels: this.pickEndpoints(this.results)
+        labels: this.pickEndpoints(topNentries)
       },
       hint: ''
     }
     var summary = {
       fileName: fileName,
       attackCategory: 'HTTP',
-      analysisName: `Most used HTTP endpoints`,
+      analysisName: 'Most used HTTP endpoints',
       supportedDiagrams: ['PieChart']
     }
     console.log('')
-    return await this.storeAndReturnResult(fileName, fileContent, summary)
+    return this.storeAndReturnResult(fileName, fileContent, summary)
   }
 
   pickCounts (elements) {

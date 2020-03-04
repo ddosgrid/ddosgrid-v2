@@ -139,11 +139,11 @@ class PacketEmitter extends EventEmitter {
     try {
       var guessedServicename = portNumbers.getService(port)
       this.emit(`${guessedServicename.name}Packet`, packet)
-      if(guessedServicename.name === 'http') {
+      if (guessedServicename.name === 'http') {
         this.tryNaiveHttpParse(packet)
       }
     } catch (e) {
-      console.error(`Unable to parse service name from port ${port}`)
+      // console.error(`Unable to parse service name from port ${port}`)
     }
   }
 
@@ -155,7 +155,7 @@ class PacketEmitter extends EventEmitter {
         var verbAndEndpoint = lines[0]
         var endpoint = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[2]
         var verb = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[1]
-        //console.log(`${verb} request made to ${endpoint}`)
+        // console.log(`${verb} request made to ${endpoint}`)
         this.emit('httpVerb', verb)
         this.emit('httpEndpoint', endpoint)
       }
