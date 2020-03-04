@@ -7,7 +7,9 @@ const {
   SynStateAnalyser,
   IPVersionAnalyser,
   Top5SourceHostsAnalyser,
-  Top100SourceHostsAnalyser
+  Top100SourceHostsAnalyser,
+  HTTPVerbs,
+  HTTPEndpoints
 } = require('./exports')
 
 try {
@@ -29,7 +31,9 @@ function analyseFileInProjectFolder (projectPath) {
     SynStateAnalyser,
     IPVersionAnalyser,
     Top5SourceHostsAnalyser,
-    Top100SourceHostsAnalyser
+    Top100SourceHostsAnalyser,
+    HTTPVerbs,
+    HTTPEndpoints
   ]
   var activeMiners = miners.map(Miner => new Miner(emitter, projectPath))
 

@@ -7,6 +7,8 @@ var SynStateAnalyser = require('./miners/SynStateAnalyser')
 var IPVersionAnalyser = require('./miners/IPVersionAnalyser')
 var Top5SourceHostsAnalyser = require('./miners/Top5SourceHostsByTraffic')
 var Top100SourceHostsAnalyser = require('./miners/Top100SourceHostsByTraffic')
+var HTTPVerbs = require('./miners/HTTPVerbs')
+var HTTPEndpoints = require('./miners/HTTPEndpoints')
 
 module.exports = {
   PacketEmitter,
@@ -17,5 +19,7 @@ module.exports = {
   SynStateAnalyser,
   IPVersionAnalyser,
   Top5SourceHostsAnalyser,
-  Top100SourceHostsAnalyser
+  Top100SourceHostsAnalyser,
+  HTTPVerbs,
+  HTTPEndpoints
 }
