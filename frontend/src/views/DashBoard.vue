@@ -25,7 +25,7 @@
           :vertical-compact="true"
           :margin="[10, 10]"
           :use-css-transforms="true"
-          :rowHeight="500"
+          :rowHeight="600"
           :responsive="true"
           :cols="{ lg: 4, md: 3, sm: 2, xs: 1, xxs: 1 }">
 
@@ -40,6 +40,12 @@
                  :minH="1">
                  <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
       </grid-item>
+      <md-empty-state
+        md-icon="grid_on"
+        md-label="No analysis files were added"
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
+        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+      </md-empty-state>
   </grid-layout>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">

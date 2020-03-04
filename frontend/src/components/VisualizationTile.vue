@@ -116,6 +116,9 @@ export default {
   align-items: center;
   justify-content: center;
 }
+md-card-content {
+
+}
 .card {
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
