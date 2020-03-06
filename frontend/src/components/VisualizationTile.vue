@@ -25,6 +25,9 @@
       <md-button class="md-icon-button" @click="downloadChart">
         <md-icon>arrow_downward</md-icon>
       </md-button>
+      <md-button class="md-icon-button no-print" @click="resizeHandler(analysisfile.i)">
+        <md-icon>photo_size_select_large</md-icon>
+      </md-button>
       <md-button class="md-icon-button no-print"
                  @click="clearVisualization(analysisfile)">
         <md-icon>close</md-icon>
@@ -97,6 +100,9 @@ export default {
       setTimeout(() => {
         this.$el.querySelector('.download').click()
       }, 300)
+    },
+    resizeHandler: function resizeHandler (tileId) {
+      this.$emit('resized', tileId)
     }
   }
 }

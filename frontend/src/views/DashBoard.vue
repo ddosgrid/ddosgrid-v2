@@ -38,7 +38,7 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
+                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
       <md-empty-state
         md-icon="grid_on"
@@ -186,6 +186,18 @@ export default {
       console.log('updateevent')
       const toBeCommited = JSON.parse(JSON.stringify(newLayout))
       this.$store.commit('setTiles', toBeCommited)
+    },
+    resizeTile: function (tileId) {
+      console.log(tileId)
+      var tileIndex = this.layout.findIndex(tile => tile.i === tileId)
+      if (tileIndex !== -1) {
+        console.log(`tile found ${tileIndex}`)
+        if (this.layout[tileIndex].w === 2) {
+          this.layout[tileIndex].w = 1
+        } else {
+          this.layout[tileIndex].w = 2
+        }
+      }
     }
   },
   computed: {
