@@ -122,10 +122,14 @@ export default {
   align-items: center;
   justify-content: center;
 }
-md-card-content {
-
+md-card-actions{
+position: fixed;
+bottom: 0;
+right: 0;
 }
 .card {
+  height: 100%;
+  width: 100%;
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
