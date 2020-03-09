@@ -13,7 +13,8 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
-    this.whois = require('whois-json')
+    var IPToASN = require('ip-to-asn')
+    this.whois = new IPToASN()
     this.pcapParser.on('ipv4Packet', this.countIPv4Address.bind(this))
   }
 
@@ -59,7 +60,21 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
 
   async formatLabelsForWorldMap (addresses) {
     var result = {}
-    for (var address of addresses) {
+    this.whois.query(addresses, function (err, results) {
+      if (err) { console.error('Unable to parse WHOIS data') }
+      for (var address in results) {
+        var result = results[address]
+        if (result.countryCode) {
+          var formattedCountry = result.countryCode
+          if (hasProp(result, 'country')) {
+            result[formattedCountry] += address.count
+          } else {
+            result[formattedCountry] = address.count
+          }
+        }
+      }
+    })
+    /* for (var address of addresses) {
       try {
         var { country } = await this.whois(address.addr)
         if (country) {
@@ -73,7 +88,7 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
         }
       } catch (e) {
       }
-    }
+    } */
     return result
   }
 
