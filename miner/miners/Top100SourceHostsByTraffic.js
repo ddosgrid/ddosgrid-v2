@@ -58,21 +58,26 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
     return elements.map(entry => entry.count)
   }
 
-  async formatLabelsForWorldMap (addresses) {
-    var result = {}
-    this.whois.query(addresses, function (err, results) {
-      if (err) { console.error('Unable to parse WHOIS data') }
-      for (var address in results) {
-        var result = results[address]
-        if (result.countryCode) {
-          var formattedCountry = result.countryCode
-          if (hasProp(result, 'country')) {
-            result[formattedCountry] += address.count
-          } else {
-            result[formattedCountry] = address.count
+  async formatLabelsForWorldMap (addressesCounted) {
+    var countedCountries = { }
+    var addresses = addressesCounted.map(resultItem => resultItem.addr)
+    return new  Promise((resolve, reject) => {
+      this.whois.query(addresses, function (err, results) {
+        if (err) { reject(err) }
+        for (var address in results) {
+          var resultItem = addressesCounted.find(resultItem => resultItem.addr === address)
+          var ipresult = results[address]
+          var countryCode = ipresult.countryCode
+          if(countryCode) {
+            if (hasProp(countedCountries, countryCode)) {
+              countedCountries[countryCode] += resultItem.count
+            } else {
+              countedCountries[countryCode] = resultItem.count
+            }
           }
         }
-      }
+        resolve(countedCountries)
+      })
     })
     /* for (var address of addresses) {
       try {
@@ -89,7 +94,6 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
       } catch (e) {
       }
     } */
-    return result
   }
 
   sortEntriesByCount (elements) {
