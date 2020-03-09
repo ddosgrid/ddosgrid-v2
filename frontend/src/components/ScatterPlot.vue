@@ -51,6 +51,7 @@ export default {
               labelString: 'Port ranges in buckets (64 ports per bucket)'
             },
             ticks: {
+              precision: 0,
               callback: function (val) {
                 return `${val}-${val + 64}`
               }
