@@ -42,6 +42,9 @@ export default {
             scaleLabel: {
               display: true,
               labelString: 'Number of segments'
+            },
+            ticks: {
+              precision: 0
             }
           }],
           xAxes: [{
