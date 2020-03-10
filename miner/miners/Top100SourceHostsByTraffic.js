@@ -5,10 +5,10 @@ const analysisName = `top-${N}-source-hosts-by-traffic`
 class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
-    this.results = [
+    this.results = {
       // store interim results here
       // { addr: '1.2.3.4', count: 1 }
-    ]
+    }
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
@@ -20,12 +20,12 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
 
   countIPv4Address (ipv4Packet) {
     var srcAddress = ipv4Packet.saddr.addr.join('.')
-    var existingEntry = this.results.find(item => item.addr === srcAddress)
+    var existingEntry = this.results.hasOwnProperty(srcAddress)
 
     if (existingEntry) {
-      existingEntry.count++
+      this.results[srcAddress]++
     } else {
-      this.results.push({ addr: srcAddress, count: 1 })
+      this.results[srcAddress] = 1
     }
   }
 
@@ -36,7 +36,8 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
   // Actual mining function
   // Post-analysis phase, do additional computation with the collected data and write it out
   async postParsingAnalysis () {
-    var sortedByCount = this.sortEntriesByCount(this.results)
+    var mapped = Object.keys(this.results).map(addr => {return { addr: addr, count: this.results[addr] }})
+    var sortedByCount = this.sortEntriesByCount(mapped)
     var topNentries = this.getTopN(sortedByCount, N)
 
     var fileName = `${this.baseOutPath}-${analysisName}.json`
