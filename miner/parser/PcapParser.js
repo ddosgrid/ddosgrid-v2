@@ -39,8 +39,13 @@ class PacketEmitter extends EventEmitter {
     // Store the current packet 'globally' so that it can be used in other events, e.g. 'completed'
     this.currentPcapPacket = decodedPacket
 
-    var ethernetPacket = decodedPacket.payload
-    this.inspectEthernetPacket(ethernetPacket)
+    if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET') {
+      var ethernetPacket = decodedPacket.payload
+      this.inspectEthernetPacket(ethernetPacket)
+    } else {
+      console.warn('DDoSGrid only supports Ethernet on L1!')
+      console.warn(`Dropping packet with link_type: ${this.currentPcapPacket.link_type}`)
+    }
   }
 
   inspectEthernetPacket (ethernetPacket) {

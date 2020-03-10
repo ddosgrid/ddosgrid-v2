@@ -59,10 +59,12 @@ async function setUpAndRun (emitter, activeMiners, target) {
   emitter.on('complete', async () => {
     console.log('✓ Decoding has finished, starting post-parsing analysis')
     // var results = activeMiners.map(async (miner) => { return await miner.postParsingAnalysis() })
+    console.log('✓ Post-parsing analysis of the following miners has completed:')
     var results = []
     for (var miner of activeMiners) {
       var result = await miner.postParsingAnalysis()
       results.push(result)
+      console.log(`\t- ${miner.getName()}`)
     }
     console.log('✓ All miners have finished.')
     var output = JSON.stringify(results)
