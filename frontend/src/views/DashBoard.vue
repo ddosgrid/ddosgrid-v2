@@ -27,13 +27,13 @@
                  :minH="1">
                  <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
-      <md-empty-state
-        md-icon="grid_on"
-        md-label="No analysis files were added"
-        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
-        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
-      </md-empty-state>
   </grid-layout>
+  <md-empty-state
+    md-icon="grid_on"
+    md-label="No analysis files were added"
+    md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
+    <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+  </md-empty-state>
 
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
