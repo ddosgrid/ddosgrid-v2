@@ -239,6 +239,7 @@ export default {
 <style scoped>
 .dashboard {
   width: 100%;
+  user-select: none;
 }
 @media print {
   .no-print, .no-print * {
