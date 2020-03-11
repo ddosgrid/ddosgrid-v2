@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="">
+  <div class="dataset-wrap">
     <md-card md-with-hover>
       <md-card-header>
         <md-card-header-text>
@@ -155,6 +155,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.dataset-wrap {
+  max-width: 960px;
+  min-width: 400px;
+  margin: auto;
+}
 .icon {
   width: 30px;
   height: 30px;

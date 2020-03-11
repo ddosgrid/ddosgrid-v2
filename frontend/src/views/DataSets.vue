@@ -14,29 +14,25 @@
     <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
 
   </md-empty-state>
+  <md-dialog :md-active.sync="showFileUpload">
+    <md-dialog-title>Upload a Data Set</md-dialog-title>
+    <file-upload-form @done="closeUploadForm">
+    </file-upload-form>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showFileUpload = false">
+        <md-icon>close</md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </md-dialog>
 
-  <div class="wrapper">
-    <md-dialog :md-active.sync="showFileUpload">
-      <md-dialog-title>Upload a Data Set</md-dialog-title>
-      <file-upload-form>
-      </file-upload-form>
-      <md-dialog-actions>
-        <md-button class="md-primary" @click="showFileUpload = false">
-          <md-icon>close</md-icon>
-        </md-button>
-      </md-dialog-actions>
-    </md-dialog>
-
-    <div v-for="dataset in datasets" :key="dataset._id" class="dataset">
-      <data-set-list-item :dataset="dataset" @deleted="refresh">
-      </data-set-list-item>
-    </div>
-
-    <md-button id="fab" @click="showFileUpload = true" class="md-fab md-primary md-fab-bottom-right">
-      <md-icon>cloud_upload</md-icon>
-    </md-button>
-
+  <div v-for="dataset in datasets" :key="dataset._id" class="dataset">
+    <data-set-list-item :dataset="dataset" @deleted="refresh">
+    </data-set-list-item>
   </div>
+
+  <md-button id="fab" @click="showFileUpload = true" class="md-fab md-primary md-fab-bottom-right">
+    <md-icon>cloud_upload</md-icon>
+  </md-button>
 </div>
 </template>
 
@@ -68,6 +64,9 @@ export default {
     clearInterval(intervalId)
   },
   methods: {
+    closeUploadForm: function () {
+      this.showFileUpload = false
+    },
     refresh: function () {
       this.fetchDataSets()
     },
