@@ -153,7 +153,6 @@ export default {
   },
   created: function () {
     this.layout = JSON.parse(JSON.stringify(this.tiles))
-    console.log('created')
   },
   mounted: function () {
     // TODO: is this needed?
@@ -163,9 +162,7 @@ export default {
     tiles (val) {
       // needed for adding tiles
       if (val) {
-        console.log('watcher')
         this.layout = JSON.parse(JSON.stringify(this.tiles))
-        console.log(this.layout)
       }
     }
   },
@@ -197,15 +194,12 @@ export default {
       }
     },
     layoutUpdatedEvent: function (newLayout) {
-      console.log('updateevent')
       const toBeCommited = JSON.parse(JSON.stringify(newLayout))
       this.$store.commit('setTiles', toBeCommited)
     },
     resizeTile: function (tileId) {
-      console.log(tileId)
       var tileIndex = this.layout.findIndex(tile => tile.i === tileId)
       if (tileIndex !== -1) {
-        console.log(`tile found ${tileIndex}`)
         if (this.layout[tileIndex].w === 2) {
           this.layout[tileIndex].w = 1
         } else {
@@ -231,12 +225,10 @@ export default {
   computed: {
     tiles: {
       get () {
-        console.log('computed get')
         return this.$store.state.tiles
       }/*,
 
       set (newLayout) {
-        console.log('computed set')
         this.$store.commit('setTiles', newLayout)
       }
       */
