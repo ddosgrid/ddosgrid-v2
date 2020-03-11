@@ -4,8 +4,10 @@
         <md-card-header-text>
           <div class="md-title">{{ analysisfile.analysisName }}</div>
         </md-card-header-text>
-        <md-card-media class="icon-wrap">
-          <img :src="getIconForHash(analysisfile.file)" class="icon">
+        <md-card-media class="icon-wrap" @click="">
+          <md-button class="md-icon-button enlarged-button">
+            <img :src="getIconForHash(analysisfile.file)" class="icon">
+          </md-button>
         </md-card-media>
     </md-card-header>
 
@@ -119,10 +121,14 @@ export default {
 .download {
   display: none;
 }
+.enlarged-button {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+}
 .icon {
   width: 30px;
   height: 30px;
-  float: right;
 }
 .icon-wrap {
   display: flex;
@@ -130,9 +136,9 @@ export default {
   justify-content: center;
 }
 md-card-actions{
-position: fixed;
-bottom: 0;
-right: 0;
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 .card {
   height: 100%;

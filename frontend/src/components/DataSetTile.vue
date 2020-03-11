@@ -7,7 +7,9 @@
           <div class="md-subhead">Dataset ({{dataset.md5.slice(0,5)}}..{{dataset.md5.slice(dataset.md5.length-5)}})</div>
         </md-card-header-text>
       <md-card-media class="icon-wrap">
-        <img :src="getIconForHash(dataset.md5)" class="icon">
+          <md-button class="md-icon-button enlarged-button">
+            <img :src="getIconForHash(dataset.md5)" class="icon">
+          </md-button>
       </md-card-media>
     </md-card-header>
 
@@ -137,6 +139,11 @@ export default {
   width: 30px;
   height: 30px;
   float: right;
+}
+.enlarged-button {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
 }
 .icon-wrap {
   display: flex;
