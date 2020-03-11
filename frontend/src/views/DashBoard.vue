@@ -48,6 +48,11 @@
           <md-tooltip md-direction="top" v-else>Clear the dashboard</md-tooltip>
           <md-icon>clear</md-icon>
         </md-button>
+        <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="showFilter = !showFilter">
+          <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Dashboard is empty</md-tooltip>
+          <md-tooltip md-direction="top" v-else>Filter by Datasets</md-tooltip>
+          <md-icon>filter_list</md-icon>
+        </md-button>
 
         <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="exportToPdf">
           <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Please add some visualizations first</md-tooltip>
@@ -105,6 +110,18 @@
         </md-button>
       </md-dialog-actions>
     </md-dialog>
+
+    <md-dialog :md-active.sync="showFilter">
+      <md-dialog-title>Filter the Dashboard by Datasets</md-dialog-title>
+      <div class="chips">
+        <md-chip v-for="dataset in getDatasets()" :key="dataset.key" class="md-accent" md-clickable>Clickable</md-chip>
+      </div>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showFilter = false">
+          <md-icon>close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 
@@ -120,6 +137,7 @@ export default {
     return {
       showLoadSetups: false,
       showSaveSetups: false,
+      showFilter: false,
       setupName: '',
       loading: false,
       layout: []
@@ -194,6 +212,9 @@ export default {
     },
     clearDashboard: function clearDashboard () {
       this.$store.commit('setTiles', [])
+    },
+    getDatasets: function () {
+      return this.layout.filter(tile => typeof tile.md5 !== 'undefined')
     }
   },
   computed: {
