@@ -176,4 +176,8 @@ md-card-actions{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+
+.md-card-header-text {
+  overflow-wrap: anywhere;
+}
 </style>

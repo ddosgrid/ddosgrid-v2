@@ -164,4 +164,8 @@ export default {
   width: 100%;
   position: absolute;
 }
+
+.md-card-header-text {
+  overflow-wrap: anywhere;
+}
 </style>
