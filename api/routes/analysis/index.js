@@ -108,6 +108,7 @@ async function startAnalysis (req, res) {
       }
     })
     var cleanedResults = validResults.map(keepRequiredAttributes)
+    var resultsWithHash = cleanedResults.map((el) => addHash(el, id))
     analyses.addAnalysisFiles(id, cleanedResults)
   } catch (e) {
     analyses.changeAnalysisStatus(id, 'failed')
@@ -161,6 +162,11 @@ function keepRequiredAttributes(element) {
     file: element.file,
     supportedDiagrams: element.supportedDiagrams
   }
+}
+
+function addHash (element, hash) {
+  element.datasetHash = hash
+  return element
 }
 
 function deleteFilesInDir (directory, cb) {
