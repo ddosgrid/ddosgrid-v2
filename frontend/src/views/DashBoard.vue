@@ -3,25 +3,6 @@
     <h1>
     Visualization Dashboard
     </h1>
-
-    <!--
-    <div id="flex-container">
-      <md-empty-state
-        md-icon="grid_on"
-        md-label="No analysis files were added"
-        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
-        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
-      </md-empty-state>
-
-      <component class="datasetordashboard" v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
-    </div>
-  -->
-      <md-empty-state
-        md-icon="grid_on"
-        md-label="No analysis files were added"
-        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
-        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
-      </md-empty-state>
   <grid-layout
           @layout-updated="layoutUpdatedEvent"
           :layout.sync="layout"
@@ -46,7 +27,14 @@
                  :minH="1">
                  <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
+      <md-empty-state
+        md-icon="grid_on"
+        md-label="No analysis files were added"
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
+        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+      </md-empty-state>
   </grid-layout>
+
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
         <md-icon class="md-morph-initial">grid_on</md-icon>
@@ -55,6 +43,12 @@
       </md-speed-dial-target>
 
       <md-speed-dial-content>
+        <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="clearDashboard">
+          <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Dashboard is already empty</md-tooltip>
+          <md-tooltip md-direction="top" v-else>Clear the dashboard</md-tooltip>
+          <md-icon>clear</md-icon>
+        </md-button>
+
         <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="exportToPdf">
           <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Please add some visualizations first</md-tooltip>
           <md-tooltip md-direction="top" v-else>Export dashboard as PDF or print it</md-tooltip>
@@ -193,12 +187,13 @@ export default {
         console.log(`tile found ${tileIndex}`)
         if (this.layout[tileIndex].w === 2) {
           this.layout[tileIndex].w = 1
-          this.layout[tileIndex].h = 1
         } else {
           this.layout[tileIndex].w = 2
-          this.layout[tileIndex].h = 2
         }
       }
+    },
+    clearDashboard: function clearDashboard () {
+      this.$store.commit('setTiles', [])
     }
   },
   computed: {
@@ -239,7 +234,6 @@ export default {
 <style scoped>
 .dashboard {
   width: 100%;
-  user-select: none;
 }
 @media print {
   .no-print, .no-print * {
