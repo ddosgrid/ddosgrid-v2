@@ -25,7 +25,7 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" v-if="tile.show" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
   </grid-layout>
   <md-empty-state
@@ -113,8 +113,10 @@
 
     <md-dialog :md-active.sync="showFilter">
       <md-dialog-title>Filter the Dashboard by Datasets</md-dialog-title>
-      <div class="chips">
-        <md-chip v-for="dataset in getDatasets()" :key="dataset.key" class="md-accent" md-clickable>Clickable</md-chip>
+      <div class="form">
+        <div class="chip" v-for="dataset in getDatasets()" :key="dataset.i">
+          <md-chip  v-bind:class="{ 'md-primary': dataset.show, 'md-accent': !dataset.show }" md-clickable @click="setFilter(dataset.i)">{{ dataset.name }}</md-chip>
+        </div>
       </div>
       <md-dialog-actions>
         <md-button class="md-primary" @click="showFilter = false">
@@ -163,6 +165,7 @@ export default {
       if (val) {
         console.log('watcher')
         this.layout = JSON.parse(JSON.stringify(this.tiles))
+        console.log(this.layout)
       }
     }
   },
@@ -215,6 +218,14 @@ export default {
     },
     getDatasets: function () {
       return this.layout.filter(tile => typeof tile.md5 !== 'undefined')
+    },
+    setFilter: function (hash) {
+      this.layout = this.layout.map(tile => {
+        if (tile.i.startsWith(hash)) {
+          tile.show = !tile.show
+        }
+        return tile
+      })
     }
   },
   computed: {
@@ -279,5 +290,9 @@ export default {
 }
 .datasetordashboard {
   margin: 5px;
+}
+.chip {
+  display: block;
+  margin-bottom: 10px;
 }
 </style>
