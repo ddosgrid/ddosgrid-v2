@@ -129,6 +129,9 @@ export default {
         return 'map'
       }
       return 'add'
+    },
+    filterEvent: function (i) {
+      this.$emit('filterSet', i)
     }
   }
 }

@@ -112,6 +112,10 @@ export default {
     },
     resizeHandler: function resizeHandler (tileId) {
       this.$emit('resized', tileId)
+    },
+    filterEvent: function (i) {
+      console.log('click')
+      this.$emit('filterSet', i)
     }
   }
 }

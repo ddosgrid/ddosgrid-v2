@@ -25,7 +25,9 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" v-if="tile.show" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+                 <component class="datasetordashboard" v-bind:class="{ 'transparent': !tile.show }"
+                 v-bind:is="getComponentType(tile)" :analysisfile="tile"
+                 :dataset="tile" @resized="resizeTile" @filterSet="setFilter"></component>
       </grid-item>
   </grid-layout>
   <md-empty-state
@@ -153,7 +155,6 @@ export default {
   },
   created: function () {
     this.layout = JSON.parse(JSON.stringify(this.tiles))
-    console.log('created')
   },
   mounted: function () {
     // TODO: is this needed?
@@ -163,9 +164,7 @@ export default {
     tiles (val) {
       // needed for adding tiles
       if (val) {
-        console.log('watcher')
         this.layout = JSON.parse(JSON.stringify(this.tiles))
-        console.log(this.layout)
       }
     }
   },
@@ -197,15 +196,12 @@ export default {
       }
     },
     layoutUpdatedEvent: function (newLayout) {
-      console.log('updateevent')
       const toBeCommited = JSON.parse(JSON.stringify(newLayout))
       this.$store.commit('setTiles', toBeCommited)
     },
     resizeTile: function (tileId) {
-      console.log(tileId)
       var tileIndex = this.layout.findIndex(tile => tile.i === tileId)
       if (tileIndex !== -1) {
-        console.log(`tile found ${tileIndex}`)
         if (this.layout[tileIndex].w === 2) {
           this.layout[tileIndex].w = 1
         } else {
@@ -231,12 +227,10 @@ export default {
   computed: {
     tiles: {
       get () {
-        console.log('computed get')
         return this.$store.state.tiles
       }/*,
 
       set (newLayout) {
-        console.log('computed set')
         this.$store.commit('setTiles', newLayout)
       }
       */
@@ -277,7 +271,7 @@ export default {
   position: fixed;
 }
 .form {
-  padding: 24px 24px 0
+  padding: 0px 24px;
 }
 .empty-notification {
   position: absolute;
@@ -294,5 +288,8 @@ export default {
 .chip {
   display: block;
   margin-bottom: 10px;
+}
+.transparent {
+  opacity: 0.2 !important;
 }
 </style>
