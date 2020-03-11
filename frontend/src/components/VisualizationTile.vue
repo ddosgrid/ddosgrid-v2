@@ -22,7 +22,7 @@
     </md-card-content>
 
     <md-card-actions class="no-print">
-      <md-button class="md-icon-button" @click="downloadChart">
+      <md-button class="md-icon-button" @click="downloadChart" v-if="downloadAble">
         <md-icon>arrow_downward</md-icon>
       </md-button>
       <md-button class="md-icon-button no-print" @click="resizeHandler(analysisfile.i)">
@@ -64,8 +64,12 @@ export default {
   data: () => {
     return {
       exportUrl: '',
-      visualizationUnavailable: false
+      visualizationUnavailable: false,
+      downloadAble: false
     }
+  },
+  mounted: function () {
+    this.determineDownloadable()
   },
   computed: {
     currentTabComponent: function () {
@@ -93,6 +97,9 @@ export default {
     clearVisualization: function (analysisfile) {
       // this.$store.commit('removeVisualization', analysisfile)
       this.$store.commit('removeTile', analysisfile)
+    },
+    determineDownloadable: function () {
+      this.downloadAble = this.$el.querySelector('canvas') !== null
     },
     downloadChart: function downloadChart () {
       var b64image = this.$el.querySelector('canvas').toDataURL('image/png')
