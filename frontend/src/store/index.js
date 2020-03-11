@@ -35,6 +35,7 @@ export default new Vuex.Store({
           newTile.w = 1
           newTile.key = newTile.file
           newTile.i = newTile.file
+          newTile.show = true
           console.log(newTile)
           state.tiles.push(newTile)
         }
@@ -47,6 +48,7 @@ export default new Vuex.Store({
           newTile.w = 1
           newTile.key = newTile.md5
           newTile.i = newTile.md5
+          newTile.show = true
           console.log(newTile)
           state.tiles.push(newTile)
         }

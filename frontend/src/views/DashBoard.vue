@@ -25,7 +25,7 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" v-if="tile.show" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
   </grid-layout>
   <md-empty-state
@@ -47,6 +47,11 @@
           <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Dashboard is already empty</md-tooltip>
           <md-tooltip md-direction="top" v-else>Clear the dashboard</md-tooltip>
           <md-icon>clear</md-icon>
+        </md-button>
+        <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="showFilter = !showFilter">
+          <md-tooltip md-direction="top" v-if="dashBoardIsEmpty">Dashboard is empty</md-tooltip>
+          <md-tooltip md-direction="top" v-else>Filter by Datasets</md-tooltip>
+          <md-icon>filter_list</md-icon>
         </md-button>
 
         <md-button :disabled="dashBoardIsEmpty" class="md-icon-button" @click="exportToPdf">
@@ -105,6 +110,20 @@
         </md-button>
       </md-dialog-actions>
     </md-dialog>
+
+    <md-dialog :md-active.sync="showFilter">
+      <md-dialog-title>Filter the Dashboard by Datasets</md-dialog-title>
+      <div class="form">
+        <div class="chip" v-for="dataset in getDatasets()" :key="dataset.i">
+          <md-chip  v-bind:class="{ 'md-primary': dataset.show, 'md-accent': !dataset.show }" md-clickable @click="setFilter(dataset.i)">{{ dataset.name }}</md-chip>
+        </div>
+      </div>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showFilter = false">
+          <md-icon>close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 
@@ -120,6 +139,7 @@ export default {
     return {
       showLoadSetups: false,
       showSaveSetups: false,
+      showFilter: false,
       setupName: '',
       loading: false,
       layout: []
@@ -145,6 +165,7 @@ export default {
       if (val) {
         console.log('watcher')
         this.layout = JSON.parse(JSON.stringify(this.tiles))
+        console.log(this.layout)
       }
     }
   },
@@ -194,6 +215,17 @@ export default {
     },
     clearDashboard: function clearDashboard () {
       this.$store.commit('setTiles', [])
+    },
+    getDatasets: function () {
+      return this.layout.filter(tile => typeof tile.md5 !== 'undefined')
+    },
+    setFilter: function (hash) {
+      this.layout = this.layout.map(tile => {
+        if (tile.i.startsWith(hash)) {
+          tile.show = !tile.show
+        }
+        return tile
+      })
     }
   },
   computed: {
@@ -258,5 +290,9 @@ export default {
 }
 .datasetordashboard {
   margin: 5px;
+}
+.chip {
+  display: block;
+  margin-bottom: 10px;
 }
 </style>
