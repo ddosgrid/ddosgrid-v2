@@ -25,7 +25,7 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" v-if="tile.show" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+                 <component class="datasetordashboard" v-bind:class="{ 'transparent': !tile.show }" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
       </grid-item>
   </grid-layout>
   <md-empty-state
@@ -269,7 +269,7 @@ export default {
   position: fixed;
 }
 .form {
-  padding: 24px 24px 0
+  padding: 0px 24px;
 }
 .empty-notification {
   position: absolute;
@@ -286,5 +286,8 @@ export default {
 .chip {
   display: block;
   margin-bottom: 10px;
+}
+.transparent {
+  opacity: 0.2 !important;
 }
 </style>
