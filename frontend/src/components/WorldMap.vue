@@ -2,11 +2,13 @@
   <div class="wrap">
     <mymap :countryData="countries" defaultCountryFillColor="#f8f8f8" lowColor="#ffbdbb" highColor="#af4448"></mymap>
     <md-divider></md-divider>
-    <div class="chips-wrapper">
+    <div class="legend-wrapper">
       <div>Please note that the world map above only shows the origin of the top N source hosts!</div>
-      <md-chip class="md-primary country" v-for="obj of Object.entries(countries)" :key="obj[0]">
-        {{obj[0]}}: {{obj[1]}} packets
-      </md-chip>
+      <div class="chips-wrapper">
+        <md-chip class="md-primary country" v-for="obj of Object.entries(countries)" :key="obj[0]">
+          {{obj[0]}}: {{obj[1]}} packets
+        </md-chip>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +39,10 @@ export default {
 </script>
 
 <style scoped>
+.chips-wrapper {
+  max-height: 130px;
+  overflow-y: scroll;
+}
 .wrap {
   max-width: 890px;
 }
