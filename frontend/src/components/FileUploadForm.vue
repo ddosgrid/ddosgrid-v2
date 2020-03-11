@@ -20,7 +20,7 @@
   </md-button>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
-    <md-button class="md-primary" @click="showSnackbar = false">OK</md-button>
+    <md-button class="md-primary" @click="uploadAnother">Upload another file</md-button>
   </md-snackbar>
   <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
   </div>
@@ -38,9 +38,20 @@ export default {
     duration: 4000,
     isInfinity: false,
     snackbarMsg: null,
-    isLoading: false
+    isLoading: false,
+    closingTimeout: 0
   }),
   methods: {
+    clear () {
+      this.file = null
+      this.fileName = null
+      this.fileDescription = null
+    },
+    uploadAnother () {
+      this.clear()
+      clearTimeout(this.closingTimeout)
+      this.showSnackbar = false
+    },
     uploadFile () {
       const formData = new FormData()
       const fileField = document.querySelector('input[type="file"]')
@@ -66,7 +77,10 @@ export default {
             method: 'POST'
           })
             .then((result) => {
-              // console.log(result)
+            // console.log(result)
+              this.clear()
+              this.showSnackbar = true
+              this.closingTimeout = setTimeout(() => { this.$emit('done') }, 5000)
             })
         })
         .then((result) => {

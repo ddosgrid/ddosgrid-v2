@@ -16,7 +16,7 @@
   </md-empty-state>
   <md-dialog :md-active.sync="showFileUpload">
     <md-dialog-title>Upload a Data Set</md-dialog-title>
-    <file-upload-form>
+    <file-upload-form @done="closeUploadForm">
     </file-upload-form>
     <md-dialog-actions>
       <md-button class="md-primary" @click="showFileUpload = false">
@@ -64,6 +64,9 @@ export default {
     clearInterval(intervalId)
   },
   methods: {
+    closeUploadForm: function () {
+      this.showFileUpload = false
+    },
     refresh: function () {
       this.fetchDataSets()
     },
