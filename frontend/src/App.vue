@@ -64,7 +64,6 @@ export default {
     max-width: 1900px;
     padding-right: 20px;
     padding-left: 20px;
-    margin: auto;
     overflow-y: scroll;
     scrollbar-width: none;
   }
