@@ -7,7 +7,7 @@
           <div class="md-subhead">Dataset ({{dataset.md5.slice(0,5)}}..{{dataset.md5.slice(dataset.md5.length-5)}})</div>
         </md-card-header-text>
       <md-card-media class="icon-wrap">
-          <md-button class="md-icon-button enlarged-button">
+          <md-button class="md-icon-button enlarged-button" @click="filterEvent(dataset.i)">
             <img :src="getIconForHash(dataset.md5)" class="icon">
           </md-button>
       </md-card-media>
@@ -63,7 +63,7 @@
                  <md-list-item v-for="analysisFile in groupedByAttackType[group]"  :key="analysisFile.file">
                    <md-button v-for="diagram in analysisFile.supportedDiagrams"
                               :key="diagram"
-                              @click="openDiagram(analysisFile, diagram)"
+                              @click="openDiagram(analysisFile, diagram, dataset.md5)"
                               class="md-icon-button md-raised md-primary">
                      <md-icon>{{translateDiagramToIcon(diagram)}}</md-icon>
                    </md-button>
@@ -106,8 +106,10 @@ export default {
     getIconForHash: function getIconForHash (hash) {
       return hashicon(hash, { size: 80 }).toDataURL()
     },
-    openDiagram: function (analysisFile, chart) {
+    openDiagram: function (analysisFile, chart, datasetHash) {
+      console.log(datasetHash)
       analysisFile.chart = chart
+      analysisFile.datasetHash = datasetHash
       // this.$store.commit('addVisualization', analysisFile)
       this.$store.commit('addTile', analysisFile)
     },
