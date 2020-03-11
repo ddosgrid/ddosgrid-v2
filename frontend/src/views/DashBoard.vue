@@ -25,7 +25,9 @@
                  :i="tile.i"
                  :minW="1"
                  :minH="1">
-                 <component class="datasetordashboard" v-bind:class="{ 'transparent': !tile.show }" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+                 <component class="datasetordashboard" v-bind:class="{ 'transparent': !tile.show }"
+                 v-bind:is="getComponentType(tile)" :analysisfile="tile"
+                 :dataset="tile" @resized="resizeTile" @filterSet="setFilter"></component>
       </grid-item>
   </grid-layout>
   <md-empty-state
