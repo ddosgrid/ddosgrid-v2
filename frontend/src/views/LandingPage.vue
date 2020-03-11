@@ -14,10 +14,10 @@
               DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
             <div class="logo-wrapper">
-              <a href="https://csg.uzh.ch" target="_blank">
+              <a href="https://csg.uzh.ch" target="_blank" rel="noreferrer">
                 <img src="/img/logos/csg.png" class="logo">
               </a>
-              <a href="https://uzh.ch" target="_blank">
+              <a href="https://uzh.ch" target="_blank" rel="noreferrer">
                 <img src="/img/logos/uzh.png" class="logo">
               </a>
             </div>
