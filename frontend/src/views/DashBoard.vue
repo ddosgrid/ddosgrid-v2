@@ -4,6 +4,7 @@
     Visualization Dashboard
     </h1>
 
+    <!--
     <div id="flex-container">
       <md-empty-state
         md-icon="grid_on"
@@ -14,7 +15,38 @@
 
       <component class="datasetordashboard" v-for="tile in tiles" :key="tile.key" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile"></component>
     </div>
+  -->
+      <md-empty-state
+        md-icon="grid_on"
+        md-label="No analysis files were added"
+        md-description="You can add a tile for each dataset that you have uploaded on the datasets page" v-if="tiles.length === 0" class="empty-notification">
+        <md-button class="md-primary md-raised" to="/datasets">Open a dataset</md-button>
+      </md-empty-state>
+  <grid-layout
+          @layout-updated="layoutUpdatedEvent"
+          :layout.sync="layout"
+          :is-draggable="true"
+          :is-resizable="true"
+          :is-mirrored="false"
+          :vertical-compact="true"
+          :margin="[10, 10]"
+          :use-css-transforms="true"
+          :rowHeight="600"
+          :responsive="true"
+          :cols="{ lg: 4, md: 3, sm: 2, xs: 1, xxs: 1 }">
 
+      <grid-item  v-for="tile in layout"
+                 :key="tile.i"
+                 :x="tile.x"
+                 :y="tile.y"
+                 :w="tile.w"
+                 :h="tile.h"
+                 :i="tile.i"
+                 :minW="1"
+                 :minH="1">
+                 <component class="datasetordashboard" v-bind:is="getComponentType(tile)" :analysisfile="tile" :dataset="tile" @resized="resizeTile"></component>
+      </grid-item>
+  </grid-layout>
     <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
       <md-speed-dial-target class="md-primary">
         <md-icon class="md-morph-initial">grid_on</md-icon>
@@ -83,6 +115,8 @@
 </template>
 
 <script>
+import VueGridLayout from 'vue-grid-layout'
+
 import DataSetTile from '../components/DataSetTile'
 import VisualizationTile from '../components/VisualizationTile'
 
@@ -93,15 +127,32 @@ export default {
       showLoadSetups: false,
       showSaveSetups: false,
       setupName: '',
-      loading: false
+      loading: false,
+      layout: []
     }
   },
   components: {
     'datasettile': DataSetTile,
-    'visualizationtile': VisualizationTile
+    'visualizationtile': VisualizationTile,
+    GridLayout: VueGridLayout.GridLayout,
+    GridItem: VueGridLayout.GridItem
+  },
+  created: function () {
+    this.layout = JSON.parse(JSON.stringify(this.tiles))
+    console.log('created')
   },
   mounted: function () {
+    // TODO: is this needed?
     window.gg = this.$store
+  },
+  watch: {
+    tiles (val) {
+      // needed for adding tiles
+      if (val) {
+        console.log('watcher')
+        this.layout = JSON.parse(JSON.stringify(this.tiles))
+      }
+    }
   },
   methods: {
     loadSetup: function saveSetup (id) {
@@ -129,11 +180,39 @@ export default {
       } else if (Object.prototype.hasOwnProperty.call(tile, 'md5')) {
         return 'datasettile'
       }
+    },
+    layoutUpdatedEvent: function (newLayout) {
+      console.log('updateevent')
+      const toBeCommited = JSON.parse(JSON.stringify(newLayout))
+      this.$store.commit('setTiles', toBeCommited)
+    },
+    resizeTile: function (tileId) {
+      console.log(tileId)
+      var tileIndex = this.layout.findIndex(tile => tile.i === tileId)
+      if (tileIndex !== -1) {
+        console.log(`tile found ${tileIndex}`)
+        if (this.layout[tileIndex].w === 2) {
+          this.layout[tileIndex].w = 1
+          this.layout[tileIndex].h = 1
+        } else {
+          this.layout[tileIndex].w = 2
+          this.layout[tileIndex].h = 2
+        }
+      }
     }
   },
   computed: {
-    tiles () {
-      return this.$store.state.tiles
+    tiles: {
+      get () {
+        console.log('computed get')
+        return this.$store.state.tiles
+      }/*,
+
+      set (newLayout) {
+        console.log('computed set')
+        this.$store.commit('setTiles', newLayout)
+      }
+      */
     },
     storedSetups () {
       return this.$store.state.setups
@@ -158,25 +237,13 @@ export default {
 </script>
 
 <style scoped>
+.dashboard {
+  width: 100%;
+  user-select: none;
+}
 @media print {
   .no-print, .no-print * {
     display: none !important;
-  }
-}
-#flex-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.tile {
-  flex-basis: 300px;
-  flex-grow: 1;
-  margin: 10px 10px;
-}
-@media only screen and (max-device-width: 768px){
-  .tile {
-    flex-basis: 100%;
   }
 }
 

@@ -29,11 +29,25 @@ export default new Vuex.Store({
       if (Object.prototype.hasOwnProperty.call(newTile, 'file')) {
         var found = state.tiles.find(existingVisualisation => newTile.file === existingVisualisation.file)
         if (!found) {
+          newTile.x = 0
+          newTile.y = 0
+          newTile.h = 1
+          newTile.w = 1
+          newTile.key = newTile.file
+          newTile.i = newTile.file
+          console.log(newTile)
           state.tiles.push(newTile)
         }
       } else if (Object.prototype.hasOwnProperty.call(newTile, 'md5')) {
         var existing = state.tiles.find(dataset => dataset.md5 === newTile.md5)
         if (!existing) {
+          newTile.x = 0
+          newTile.y = 0
+          newTile.h = 1
+          newTile.w = 1
+          newTile.key = newTile.md5
+          newTile.i = newTile.md5
+          console.log(newTile)
           state.tiles.push(newTile)
         }
       }
@@ -44,6 +58,9 @@ export default new Vuex.Store({
       } else if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'md5')) {
         state.tiles = state.tiles.filter(dataset => dataset._id !== toBeRemoved._id)
       }
+    },
+    setTiles (state, newTiles) {
+      state.tiles = newTiles
     }
   },
   actions: {

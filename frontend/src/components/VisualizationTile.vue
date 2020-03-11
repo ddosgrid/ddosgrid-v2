@@ -25,6 +25,9 @@
       <md-button class="md-icon-button" @click="downloadChart">
         <md-icon>arrow_downward</md-icon>
       </md-button>
+      <md-button class="md-icon-button no-print" @click="resizeHandler(analysisfile.i)">
+        <md-icon>photo_size_select_large</md-icon>
+      </md-button>
       <md-button class="md-icon-button no-print"
                  @click="clearVisualization(analysisfile)">
         <md-icon>close</md-icon>
@@ -97,6 +100,9 @@ export default {
       setTimeout(() => {
         this.$el.querySelector('.download').click()
       }, 300)
+    },
+    resizeHandler: function resizeHandler (tileId) {
+      this.$emit('resized', tileId)
     }
   }
 }
@@ -116,7 +122,14 @@ export default {
   align-items: center;
   justify-content: center;
 }
+md-card-actions{
+position: fixed;
+bottom: 0;
+right: 0;
+}
 .card {
+  height: 100%;
+  width: 100%;
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */

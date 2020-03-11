@@ -144,7 +144,8 @@ export default {
   justify-content: center;
 }
 .card {
-  max-width: 25em;
+  width: 100%;
+  height: 100%;
 }
 .item {
   padding-left: 10px;
