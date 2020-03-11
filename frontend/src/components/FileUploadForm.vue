@@ -12,10 +12,10 @@
 
     <md-field>
       <label>Description</label>
-      <md-textarea v-model="fileDescription" md-autogrow></md-textarea>
+      <md-textarea v-model="fileDescription" @keyup.ctrl.enter="uploadFile" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary md-icon-button" @click="uploadFile" v-if="!isLoading">
+  <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
     <md-icon>cloud_upload</md-icon>
   </md-button>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
@@ -41,6 +41,11 @@ export default {
     isLoading: false,
     closingTimeout: 0
   }),
+  computed: {
+    inputDefined: function () {
+      return this.file && this.fileName && this.fileDescription
+    }
+  },
   methods: {
     clear () {
       this.file = null
