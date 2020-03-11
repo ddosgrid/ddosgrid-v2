@@ -36,7 +36,6 @@ export default new Vuex.Store({
           newTile.key = newTile.file
           newTile.i = newTile.file
           newTile.show = true
-          console.log(newTile)
           state.tiles.push(newTile)
         }
       } else if (Object.prototype.hasOwnProperty.call(newTile, 'md5')) {
@@ -49,7 +48,6 @@ export default new Vuex.Store({
           newTile.key = newTile.md5
           newTile.i = newTile.md5
           newTile.show = true
-          console.log(newTile)
           state.tiles.push(newTile)
         }
       }
