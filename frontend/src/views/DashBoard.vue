@@ -5,7 +5,7 @@
     </h1>
   <grid-layout
           @layout-updated="layoutUpdatedEvent"
-          :layout.sync="layout"
+          :layout="layout"
           :is-draggable="true"
           :is-resizable="true"
           :is-mirrored="false"
@@ -228,12 +228,10 @@ export default {
     tiles: {
       get () {
         return this.$store.state.tiles
-      }/*,
-
+      },
       set (newLayout) {
         this.$store.commit('setTiles', newLayout)
       }
-      */
     },
     storedSetups () {
       return this.$store.state.setups
