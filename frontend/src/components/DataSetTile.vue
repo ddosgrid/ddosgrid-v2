@@ -109,12 +109,9 @@ export default {
     openDiagram: function (analysisFile, chart, datasetHash) {
       console.log(datasetHash)
       analysisFile.chart = chart
-      analysisFile.datasetHash = datasetHash
-      // this.$store.commit('addVisualization', analysisFile)
       this.$store.commit('addTile', analysisFile)
     },
     closeDataSet: function (dataset) {
-      // this.$store.commit('removeDataSet', dataset)
       this.$store.commit('removeTile', dataset)
     },
     translateDiagramToIcon: function translateDiagramToIcon (diagram) {
