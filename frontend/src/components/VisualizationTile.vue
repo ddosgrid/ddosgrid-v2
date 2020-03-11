@@ -4,8 +4,8 @@
         <md-card-header-text>
           <div class="md-title">{{ analysisfile.analysisName }}</div>
         </md-card-header-text>
-        <md-card-media class="icon-wrap" @click="">
-          <md-button class="md-icon-button enlarged-button">
+        <md-card-media class="icon-wrap">
+          <md-button class="md-icon-button enlarged-button" @click="filterEvent(analysisfile.datasetHash)">
             <img :src="getIconForHash(analysisfile.file)" class="icon">
           </md-button>
         </md-card-media>
