@@ -30,6 +30,7 @@ export default {
   }
   .nav {
     flex: 0 1 auto;
+    z-index: 1;
   }
   @keyframes fadein {
     from { opacity: 0; }
