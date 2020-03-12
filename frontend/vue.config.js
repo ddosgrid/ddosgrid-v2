@@ -3,9 +3,9 @@ module.exports = {
     name: 'DDoSGrid',
     themeColor: '#ffffff',
     iconPaths: {
-      favicon16: '/img/icons/favicon.ico',
-      favicon32: '/img/icons/apple-touch-icon-120x120.png',
-      msTileImage: '/img/icons/apple-touch-icon-152x152.png'
+      favicon16: 'https://web.ddosgrid.online/img/icons/favicon.ico',
+      favicon32: 'https://web.ddosgrid.online/img/icons/apple-touch-icon-120x120.png',
+      msTileImage: 'https://web.ddosgrid.online/img/icons/apple-touch-icon-152x152.png'
     },
     appleMobileWebAppCapable: true,
     manifestOptions: {
