@@ -3,11 +3,38 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import VueMaterial from 'vue-material'
+import {
+  MdTabs,
+  MdCard,
+  MdButton,
+  MdIcon,
+  MdDivider,
+  MdSnackbar,
+  MdField,
+  MdList,
+  MdDialog,
+  MdEmptyState,
+  MdSpeedDial,
+  MdTooltip,
+  MdProgress,
+  MdChips } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
-Vue.use(VueMaterial)
+Vue.use(MdTabs)
+Vue.use(MdCard)
+Vue.use(MdButton)
+Vue.use(MdIcon)
+Vue.use(MdDivider)
+Vue.use(MdSnackbar)
+Vue.use(MdField)
+Vue.use(MdList)
+Vue.use(MdDialog)
+Vue.use(MdTooltip)
+Vue.use(MdSpeedDial)
+Vue.use(MdEmptyState)
+Vue.use(MdProgress)
+Vue.use(MdChips)
 
 Vue.config.productionTip = false
 
