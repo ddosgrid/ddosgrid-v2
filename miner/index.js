@@ -9,12 +9,13 @@ const {
   Top5SourceHostsAnalyser,
   Top100SourceHostsAnalyser,
   HTTPVerbs,
-  HTTPEndpoints
+  HTTPEndpoints,
+  BrowserAndOSAnalyzer
 } = require('./exports')
 
 try {
   var settings = parseAndCheckArguments(process.argv)
-  console.log('✓ Input check completed') 
+  console.log('✓ Input check completed')
   analyseFileInProjectFolder(settings.pcapPath)
 } catch (e) {
   console.error(e.message)
@@ -33,7 +34,8 @@ function analyseFileInProjectFolder (projectPath) {
     Top5SourceHostsAnalyser,
     Top100SourceHostsAnalyser,
     HTTPVerbs,
-    HTTPEndpoints
+    HTTPEndpoints,
+    BrowserAndOSAnalyzer
   ]
   var activeMiners = miners.map(Miner => new Miner(emitter, projectPath))
 

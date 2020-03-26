@@ -22,6 +22,7 @@
     "ip-to-asn": "^1.0.0",
     "pcap": "^2.1.0",
     "port-numbers": "^4.0.20",
+    "ua-parser-js": "^0.7.21",
     "whois-json": "^2.0.4"
   },
   "devDependencies": {

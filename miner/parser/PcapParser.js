@@ -158,11 +158,16 @@ class PacketEmitter extends EventEmitter {
       var lines = httpString.split('\r\n')
       if (lines.length > 1) {
         var verbAndEndpoint = lines[0]
+        var userAgentLine = lines.find(line => line.startsWith('User-Agent: '))
+
+        // Or just trim off the start to get the raw useragent string. Might perform better.
+        var userAgent = userAgentLine.match('^User-Agent: (.+)')[1]
         var endpoint = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[2]
         var verb = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[1]
-        // console.log(`${verb} request made to ${endpoint}`)
+
         this.emit('httpVerb', verb)
         this.emit('httpEndpoint', endpoint)
+        this.emit('httpUserAgent', userAgent)
       }
     } catch (e) {
       // console.log('Unable to process http packet')

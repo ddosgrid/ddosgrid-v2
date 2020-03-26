@@ -9,6 +9,7 @@ var Top5SourceHostsAnalyser = require('./miners/Top5SourceHostsByTraffic')
 var Top100SourceHostsAnalyser = require('./miners/Top100SourceHostsByTraffic')
 var HTTPVerbs = require('./miners/HTTPVerbs')
 var HTTPEndpoints = require('./miners/HTTPEndpoints')
+var BrowserAndOSAnalyzer = require('./miners/BrowserAndOSAnalyzer')
 
 module.exports = {
   PacketEmitter,
@@ -21,5 +22,6 @@ module.exports = {
   Top5SourceHostsAnalyser,
   Top100SourceHostsAnalyser,
   HTTPVerbs,
-  HTTPEndpoints
+  HTTPEndpoints,
+  BrowserAndOSAnalyzer
 }
