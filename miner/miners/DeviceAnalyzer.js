@@ -18,7 +18,6 @@ class DeviceAnalyzer extends AbstractPcapAnalyser {
     try {
       var parsedUA = UAParser(userAgent)
       var deviceString = `${parsedUA.device.model} ${parsedUA.device.type} ${parsedUA.device.vendor}`.trim()
-      console.log(deviceString);
       var exists = this.results.find(item => item.device === deviceString)
       if (exists) {
         exists.count++
