@@ -1,9 +1,9 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 const UAParser = require('ua-parser-js')
-const analysisName = `most-used-browser-and-os-combinations`
+const analysisName = `most-used-vendor-and-type-combinations`
 const N = 10
 
-class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
+class DeviceAnalyzer extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
     this.results = []
@@ -11,41 +11,26 @@ class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
-    this.pcapParser.on('httpUserAgent', this.countBrowserAndOSCombination.bind(this))
+    this.pcapParser.on('httpUserAgent', this.countVendorAndTypeCombination.bind(this))
   }
 
-  countBrowserAndOSCombination (userAgent) {
+  countVendorAndTypeCombination (userAgent) {
     try {
       var parsedUA = UAParser(userAgent)
-
-      if (typeof parsedUA.os.name !== 'undefined' && typeof parsedUA.os.version === 'undefined') {
-        parsedUA.os.version = '(No Version)'
-      }
-      if (typeof parsedUA.browser.name === 'undefined') {
-        parsedUA.browser.name = 'Undefined Browser'
-      }
-      if (typeof parsedUA.browser.version === 'undefined') {
-        parsedUA.browser.version = ''
-      }
-      if (typeof parsedUA.os.name === 'undefined') {
-        parsedUA.os.name = 'Undefined OS'
-      }
-      if (typeof parsedUA.os.version === 'undefined') {
-        parsedUA.os.version = ''
-      }
-      var browserAndOSCombination = `${parsedUA.browser.name} on ${parsedUA.os.name} ${parsedUA.os.version}`.trim()
-      var exists = this.results.find(item => item.browserOS === browserAndOSCombination)
+      var deviceString = `${parsedUA.device.model} ${parsedUA.device.type} ${parsedUA.device.vendor}`.trim()
+      console.log(deviceString);
+      var exists = this.results.find(item => item.device === deviceString)
       if (exists) {
         exists.count++
       } else {
-        this.results.push({ browserOS: browserAndOSCombination, count: 1 })
+        this.results.push({ device: deviceString, count: 1 })
       }
     } catch (e) {
     }
   }
 
   getName () {
-    return `Top ${N} most used Browser and OS Combinations`
+    return `Top ${N} most used Devices`
   }
 
   // Actual mining function
@@ -62,14 +47,14 @@ class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
           backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
           data: this.pickCounts(topNentries)
         }],
-        labels: this.pickBrowserOS(topNentries)
+        labels: this.pickDevice(topNentries)
       },
       hint: ''
     }
     var summary = {
       fileName: fileName,
       attackCategory: 'HTTP',
-      analysisName: 'Most used Browser and OS Combinations',
+      analysisName: 'Most used Devices',
       supportedDiagrams: ['PieChart']
     }
 
@@ -80,8 +65,8 @@ class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
     return elements.map(entry => entry.count)
   }
 
-  pickBrowserOS (elements) {
-    return elements.map(entry => entry.browserOS)
+  pickDevice (elements) {
+    return elements.map(entry => entry.device)
   }
 
   sortEntriesByCount (elements) {
@@ -97,4 +82,4 @@ class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
   }
 }
 
-module.exports = BrowserAndOSAnalyzer
+module.exports = DeviceAnalyzer

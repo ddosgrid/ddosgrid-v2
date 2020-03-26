@@ -10,7 +10,8 @@ const {
   Top100SourceHostsAnalyser,
   HTTPVerbs,
   HTTPEndpoints,
-  BrowserAndOSAnalyzer
+  BrowserAndOSAnalyzer,
+  DeviceAnalyzer
 } = require('./exports')
 
 try {
@@ -35,7 +36,8 @@ function analyseFileInProjectFolder (projectPath) {
     Top100SourceHostsAnalyser,
     HTTPVerbs,
     HTTPEndpoints,
-    BrowserAndOSAnalyzer
+    BrowserAndOSAnalyzer,
+    DeviceAnalyzer
   ]
   var activeMiners = miners.map(Miner => new Miner(emitter, projectPath))
 
