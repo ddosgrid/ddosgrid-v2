@@ -53,7 +53,6 @@ class HTTPEndpoints extends AbstractPcapAnalyser {
       analysisName: 'Most used HTTP endpoints',
       supportedDiagrams: ['PieChart']
     }
-    console.log('')
     return this.storeAndReturnResult(fileName, fileContent, summary)
   }
 

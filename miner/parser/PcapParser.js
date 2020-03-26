@@ -170,7 +170,6 @@ class PacketEmitter extends EventEmitter {
         this.emit('httpUserAgent', userAgent)
       }
     } catch (e) {
-      // console.log('Unable to process http packet')
     }
   }
 

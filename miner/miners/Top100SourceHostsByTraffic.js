@@ -80,21 +80,6 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
         resolve(countedCountries)
       })
     })
-    /* for (var address of addresses) {
-      try {
-        var { country } = await this.whois(address.addr)
-        if (country) {
-          var formattedCountry = tryFormatCountry(country)
-          if (hasProp(result, 'country')) {
-            result[formattedCountry] += address.count
-          } else {
-            result[formattedCountry] = address.count
-          }
-          // console.log(result)
-        }
-      } catch (e) {
-      }
-    } */
   }
 
   sortEntriesByCount (elements) {
