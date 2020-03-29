@@ -1,8 +1,5 @@
 ''<template>
   <div class="dashboard">
-    <h1>
-    Visualization Dashboard
-    </h1>
   <grid-layout
           @layout-updated="layoutUpdatedEvent"
           :layout="layout"
@@ -282,7 +279,6 @@ export default {
   z-index: 1;
 }
 .datasetordashboard {
-  margin: 5px;
 }
 .chip {
   display: block;

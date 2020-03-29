@@ -1,8 +1,5 @@
 <template>
 <div class="data-sets">
-  <h1>
-    Uploaded Data Sets
-  </h1>
   <div class="loader" v-if="!hasLoaded">
     <md-progress-spinner :md-diameter="60" :md-stroke="3" md-mode="indeterminate" class="centered"></md-progress-spinner>
   </div>
