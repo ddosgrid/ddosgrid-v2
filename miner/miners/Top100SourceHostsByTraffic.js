@@ -69,7 +69,7 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
           var resultItem = addressesCounted.find(resultItem => resultItem.addr === address)
           var ipresult = results[address]
           var countryCode = ipresult.countryCode
-          if(countryCode) {
+          if(countryCode && resultItem) {
             if (hasProp(countedCountries, countryCode)) {
               countedCountries[countryCode] += resultItem.count
             } else {
