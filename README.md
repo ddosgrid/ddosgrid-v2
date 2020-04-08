@@ -20,6 +20,10 @@ This tool consist of three parts:
 * `api` is a RESTful api based on Express.js which orchestrates the `miner` package if required.
 * The `frontend` is a Vue.js based SPA that renders visualizations obtained from the api.
 
+There are two ways to use this project:
+* Just running the miner through the shell as described under `Development > miner`.
+* Running the api (locally or on a server) and serving the frontend through a webserver
+
 # Development
 
 Clone the project from github:
