@@ -2,6 +2,9 @@ const EventEmitter = require('events')
 const pcap = require('pcap')
 const portNumbers = require('port-numbers')
 
+// Change to true if you want to know about every unsupported frame
+const verbose = false
+
 class PacketEmitter extends EventEmitter {
   constructor () {
     super()
@@ -26,7 +29,9 @@ class PacketEmitter extends EventEmitter {
     try {
       var decodedPacket = pcap.decode(pcapPacket)
     } catch (e) {
-      console.log('Unable to decode packet', e.message)
+      if (verbose) {
+        console.log('Unable to decode packet', e.message)
+      }
       return
     }
     this.emit('pcapPacket', decodedPacket)
@@ -67,7 +72,9 @@ class PacketEmitter extends EventEmitter {
     } else if (etherType === etherTypeNoPayload) {
       // Don't emit anything more that the ethernet packet since there is not payload!
     } else {
-      console.warn(`Ethernet packet contains a payload packet (EtherType ${etherType}) for which there is no dedicated handler.`)
+      if (verbose) {
+        console.warn(`Ethernet packet contains a payload packet (EtherType ${etherType}) for which there is no dedicated handler.`)
+      }
     }
   }
 
@@ -85,7 +92,7 @@ class PacketEmitter extends EventEmitter {
           this.inspectIPv6Packet(ipPacket)
         }
       } catch (e) {
-        console.error('Unable to parser IP version: ', e)
+        console.error('Unable to parse IP version: ', e)
       }
     }
   }
