@@ -163,6 +163,7 @@ export default {
   bottom: 0;
   width: 100%;
   position: absolute;
+  z-index: -1
 }
 
 .md-card-header-text {
