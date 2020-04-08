@@ -155,7 +155,9 @@ class PacketEmitter extends EventEmitter {
         this.tryNaiveHttpParse(packet)
       }
     } catch (e) {
-      // console.error(`Unable to parse service name from port ${port}`)
+      if (verbose) {
+        console.error(`Unable to parse service name from port ${port}`)
+      }
     }
   }
 
