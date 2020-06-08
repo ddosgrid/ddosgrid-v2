@@ -39,6 +39,7 @@ export default {
         maintainAspectRatio: false,
         scales: {
           yAxes: [{
+            type: 'logarithmic',
             scaleLabel: {
               display: true,
               labelString: 'Number of segments'
