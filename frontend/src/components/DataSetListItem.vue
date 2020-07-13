@@ -156,8 +156,7 @@ export default {
 
 <style lang="css" scoped>
 .dataset-wrap {
-  max-width: 960px;
-  min-width: 400px;
+  max-width: 800px;
   margin: auto;
 }
 .icon {

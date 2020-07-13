@@ -68,7 +68,6 @@ export default {
     padding-top: 20px;
     overflow-y: scroll;
     scrollbar-width: none;
-    margin: auto;
   }
   ::-webkit-scrollbar {
     display: none !important;
