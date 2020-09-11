@@ -21,36 +21,39 @@ export default {
       }
 
       // make fetch, get labels, and pass data
-      this.renderChart({
-        labels: ports,
-        datasets: [
-          {
-            label: 'Count',
-            backgroundColor: '#f87979',
-            data: count
+      // TODO: Fix workaround using timeout
+      setTimeout(() => {
+        this.renderChart({
+          labels: ports,
+          datasets: [
+            {
+              label: 'Count',
+              backgroundColor: '#f87979',
+              data: count
+            }
+          ]
+        }, {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Destination UDP/TCP port'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of segments'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }]
           }
-        ]
-      }, {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Destination UDP/TCP port'
-            }
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Number of segments'
-            },
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      })
+        })
+      }, 300)
     } catch (e) {
       this.$emit('unavailable')
     }

@@ -16,53 +16,55 @@ export default {
         return bucket.y > 0
       })
       // make fetch, get labels, and pass data
-      this.renderChart({
-        datasets: [
-          {
-            label: 'Count',
-            backgroundColor: '#f87979',
-            data: filteredPorts
-          }
-        ]
-      }, {
-        tooltips: {
-          callbacks: {
-            label: function (item) {
-              console.log(arguments)
-              var bucket = item.xLabel
-              var count = item.yLabel
-              return `Port range ${bucket}-${bucket + 64} received ${count} segments`
+      setTimeout(() => {
+        this.renderChart({
+          datasets: [
+            {
+              label: 'Count',
+              backgroundColor: '#f87979',
+              data: filteredPorts
             }
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          yAxes: [{
-            type: 'logarithmic',
-            scaleLabel: {
-              display: true,
-              labelString: 'Number of segments'
-            },
-            ticks: {
-              precision: 0
-            }
-          }],
-          xAxes: [{
-            allowDecimals: false,
-            scaleLabel: {
-              display: true,
-              labelString: 'Port ranges in buckets (64 ports per bucket)'
-            },
-            ticks: {
-              precision: 0,
-              callback: function (val) {
-                return `${val}-${val + 64}`
+          ]
+        }, {
+          tooltips: {
+            callbacks: {
+              label: function (item) {
+                console.log(arguments)
+                var bucket = item.xLabel
+                var count = item.yLabel
+                return `Port range ${bucket}-${bucket + 64} received ${count} segments`
               }
             }
-          }]
-        }
-      })
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              type: 'logarithmic',
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of segments'
+              },
+              ticks: {
+                precision: 0
+              }
+            }],
+            xAxes: [{
+              allowDecimals: false,
+              scaleLabel: {
+                display: true,
+                labelString: 'Port ranges in buckets (64 ports per bucket)'
+              },
+              ticks: {
+                precision: 0,
+                callback: function (val) {
+                  return `${val}-${val + 64}`
+                }
+              }
+            }]
+          }
+        })
+      }, 300)
     } catch (e) {
       console.log('cant be rendnernd')
       console.log(e)
