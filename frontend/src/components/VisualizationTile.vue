@@ -14,6 +14,7 @@
     <md-card-content>
       <component v-if="!visualizationUnavailable"
                  :url="fileUrl"
+                 :yscale="scaleType"
                  v-bind:is="currentTabComponent"
                  @unavailable="hideVisualization">
       </component>
@@ -23,17 +24,22 @@
       </no-visualization-possible>
     </md-card-content>
 
-    <md-card-actions class="no-print">
-      <md-button class="md-icon-button" @click="downloadChart" v-if="downloadAble">
-        <md-icon>arrow_downward</md-icon>
-      </md-button>
-      <md-button class="md-icon-button no-print" @click="resizeHandler(analysisfile.i)">
-        <md-icon>photo_size_select_large</md-icon>
-      </md-button>
-      <md-button class="md-icon-button no-print"
-                 @click="clearVisualization(analysisfile)">
-        <md-icon>close</md-icon>
-      </md-button>
+    <md-card-actions class="no-print" md-alignment="space-between">
+      <div>
+        <md-switch v-model="scaleType" value="logarithmic" v-if="typesThatSupportLogCharts.includes(currentTabComponent)"> Logarithmic</md-switch>
+      </div>
+      <div>
+        <md-button class="md-icon-button" @click="downloadChart" v-if="downloadAble">
+          <md-icon>arrow_downward</md-icon>
+        </md-button>
+        <md-button class="md-icon-button no-print" @click="resizeHandler(analysisfile.i)">
+          <md-icon>photo_size_select_large</md-icon>
+        </md-button>
+        <md-button class="md-icon-button no-print"
+                   @click="clearVisualization(analysisfile)">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
     </md-card-actions>
 
     <a class="download"
@@ -67,7 +73,9 @@ export default {
     return {
       exportUrl: '',
       visualizationUnavailable: false,
-      downloadAble: false
+      downloadAble: false,
+      scaleType: 'linear',
+      typesThatSupportLogCharts: [ 'scatterplot' ]
     }
   },
   mounted: function () {

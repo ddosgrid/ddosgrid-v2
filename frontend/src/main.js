@@ -17,6 +17,7 @@ import {
   MdSpeedDial,
   MdTooltip,
   MdProgress,
+  MdSwitch,
   MdChips } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -35,6 +36,7 @@ Vue.use(MdSpeedDial)
 Vue.use(MdEmptyState)
 Vue.use(MdProgress)
 Vue.use(MdChips)
+Vue.use(MdSwitch)
 
 Vue.config.productionTip = false
 
