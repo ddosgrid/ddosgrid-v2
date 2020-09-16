@@ -1,4 +1,4 @@
-# DDoSGrid v2
+# DDoSGrid (V2)
 > A tool for analysis and visualization of DDoS attacks from PCAP files
 
 ## Table of Contents
