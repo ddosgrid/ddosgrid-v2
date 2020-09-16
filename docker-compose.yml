@@ -1,20 +1,25 @@
 version: '3'
 services:
-  tor:
-    image: "goldy/tor-hidden-service:0.4.0.5"
-    environment:
-      # Set mapping ports
-      SERVICE_TOR_SERVICE_HOSTS: 80:ddosgridapi:3000
-      # Set private key
-      SERVICE_TOR_SERVICE_KEY: |
-        -----BEGIN RSA PRIVATE KEY-----
-                ....
-        -----END RSA PRIVATE KEY-----
+#  tor:
+#    image: "goldy/tor-hidden-service:0.4.0.5"
+#    environment:
+#      # Set mapping ports
+#      SERVICE_TOR_SERVICE_HOSTS: 80:ddosgridapi:3000
+#      # Set private key
+#      SERVICE_TOR_SERVICE_KEY: |
+#        -----BEGIN RSA PRIVATE KEY-----
+#                ....
+#        -----END RSA PRIVATE KEY-----
   ddosgridapi:
     ports:
-      - "127.0.0.1:3000:3000"
-    image: "ddosgrid/ddosgrid-api"
+      - "3000:3000"
+#    image: "ddosgrid/ddosgrid-api"
+    build: "."
     volumes:
       - userdata:/usr/src/app/api/data/
+  ddosgridfrontend:
+    ports:
+      - "3001:80"
+    build: "./frontend"
 volumes:
   userdata:
