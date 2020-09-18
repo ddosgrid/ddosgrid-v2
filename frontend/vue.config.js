@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/ddosgrid/',
   pwa: {
     name: 'DDoSGrid',
     themeColor: '#ffffff',
