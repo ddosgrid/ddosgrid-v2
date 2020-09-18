@@ -8,17 +8,17 @@
           </md-card-header>
           <md-card-content>
             <div class="main-icon-wrapper">
-              <img src="/img/multiline_chart-24px.svg" class="main-icon">
+              <img src="img/multiline_chart-24px.svg" class="main-icon">
             </div>
             <span class="section-text">
               DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
             <div class="logo-wrapper">
               <a href="https://csg.uzh.ch" target="_blank" rel="noreferrer">
-                <img src="/img/logos/csg.png" class="logo">
+                <img src="img/logos/csg.png" class="logo">
               </a>
               <a href="https://uzh.ch" target="_blank" rel="noreferrer">
-                <img src="/img/logos/uzh.png" class="logo">
+                <img src="img/logos/uzh.png" class="logo">
               </a>
             </div>
           </md-card-content>
@@ -30,7 +30,7 @@
               <div class="md-title">Upload and analyse PCAP files</div>
             </md-card-header>
             <md-card-content>
-            <img id="analysis-icon" src="/img/search-24px.svg">
+            <img id="analysis-icon" src="img/search-24px.svg">
           <span class="section-text">
             <p>DDoSGrid uses PCAP files as input because they are not oriented towards a specific protocol or model (compared to for example flow-based capture files). DDoSGrid provides the following features for feature extraction using PCAP files:</p>
             <ul class="no-list-style">
@@ -60,7 +60,7 @@
             <div class="md-title">Creating your dashboard</div>
           </md-card-header>
           <md-card-content>
-            <img id="chart-icon" src="/img/show_chart-24px.svg">
+            <img id="chart-icon" src="img/show_chart-24px.svg">
             <p class="section-text">
             You can leverage all existing visualizations by simply doing the visual transformation required for a specific diagram and labeling your output. Your result will then automatically be served, grouped based on attack type and rendered using the appropriate diagram. For example, to render your results on a Scatterplot you would define two resulting Arrays for the x and y axis and describe the type of attack.
             Of course you can also write custom visualizations by writing it from scratch or by wrapping an existing chart.js visualization. Once your diagrams are registered you can create a dashboard by opening a dataset and the diagrams you are interested in. The final dashboard can be exported to PNG, PDF and it can be saved for later editing.
@@ -75,7 +75,7 @@
               <div class="md-title">Implement your own analysis</div>
             </md-card-header>
             <md-card-content>
-              <img class="left" id="github-icon" src="/img/github.svg">
+              <img class="left" id="github-icon" src="img/github.svg">
               <p class="section-text" id="github-text">
               Writing your own feature miner is easy and can be done in a matter of minutes.
               Ready to write and integrate your own feature miner? Head over to our GitHub repository.
