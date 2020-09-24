@@ -1,4 +1,3 @@
-const nedb = require('nedb')
 const Datastore = require('nedb')
 var instance = null;
 
