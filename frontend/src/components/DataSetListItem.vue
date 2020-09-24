@@ -121,7 +121,8 @@ export default {
       var app = this
       console.log(dataset)
       fetch(`${apibaseurl}/analysis/${dataset.md5}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       })
         .then(() => {
           app.$emit('deleted')
@@ -134,7 +135,8 @@ export default {
       var id = dataset.md5
       var app = this
       fetch(`${apibaseurl}/analysis/${id}/analyse`, {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
         .then((result) => {
           app.$emit('deleted')

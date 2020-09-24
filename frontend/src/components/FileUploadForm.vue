@@ -68,7 +68,8 @@ export default {
       this.isLoading = true
       fetch(`${apibaseurl}/analysis/upload`, {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
       })
         .then((response) => response.json())
         .then((result) => {
@@ -79,7 +80,8 @@ export default {
           this.showSnackbar = true
           // start analysis
           fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
           })
             .then((result) => {
             // console.log(result)

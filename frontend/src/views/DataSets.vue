@@ -69,7 +69,7 @@ export default {
     },
     fetchDataSets: async function fetchDataSets () {
       try {
-        var res = await fetch(`${apibaseurl}/analysis`)
+        var res = await fetch(`${apibaseurl}/analysis`, { credentials: 'include' })
         var json = await res.json()
         this.datasets = json
         this.hasLoaded = true

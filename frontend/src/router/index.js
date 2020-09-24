@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LandingPage from '../views/LandingPage.vue'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/DashBoard.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/DashBoard.vue'),
+    beforeEnter: authRequired
   },
   {
     path: '/datasets',
@@ -24,9 +26,18 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue'),
+    beforeEnter: authRequired
   }
 ]
+
+function authRequired (to, from, next) {
+  if (store.state.authenticated) {
+    next()
+    return
+  }
+  next('/')
+}
 
 const router = new VueRouter({
   mode: 'history',
