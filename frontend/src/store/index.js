@@ -7,9 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     setups: [],
-    tiles: []
+    tiles: [],
+    authenticated: false
   },
   mutations: {
+    updateAuthState (state, authenticated = false) {
+      state.authenticated = authenticated
+    },
     storeSetup (state, name = `setup-${new Date().toJSON()}`) {
       state.setups.push({
         id: uuidv4(),
@@ -64,6 +68,18 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async determineAuthState ({ commit }) {
+      try {
+        var res = await fetch('http://localhost:8080/auth/info', {
+          credentials: 'include'
+        })
+        var info = await res.json()
+        this.authenticated = info.authenticated
+        commit('updateAuthState', info.authenticated)
+      } catch (e) {
+        commit('updateAuthState', false)
+      }
+    }
   },
   modules: {
   },

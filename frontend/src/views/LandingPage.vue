@@ -10,6 +10,14 @@
             <div class="main-icon-wrapper">
               <img src="img/multiline_chart-24px.svg" class="main-icon">
             </div>
+            <div class="authActions">
+              <md-button v-if="this.$store.state.authenticated" class="md-raised md-primary" href="datasets">
+                <md-icon>arrow_right_alt</md-icon><span>Get Started</span>
+              </md-button>
+              <md-button v-else class="md-raised md-accent" href="http://localhost:8080/auth/provider">
+                <md-icon>login</md-icon> <span> Log In</span>
+              </md-button>
+            </div>
             <span class="section-text">
               DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
@@ -201,5 +209,12 @@ ul {
     display: block;
     margin: 0 auto;
   }
+}
+.authActions {
+  text-align:center;
+  margin-bottom: 20px;
+}
+.authActions span {
+  margin: 0 5px;
 }
 </style>

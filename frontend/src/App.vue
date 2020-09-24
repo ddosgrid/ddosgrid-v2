@@ -2,8 +2,8 @@
   <div id="app">
     <md-tabs md-sync-route md-elevation="2" class="nav no-print">
       <md-tab id="tab-home" md-label="home" to="/" md-icon="home" exact></md-tab>
-      <md-tab id="tab-dashboard" md-label="dashboard" to="/dashboard" md-icon="dashboard" exact></md-tab>
-      <md-tab id="tab-data-sets" md-label="datasets" to="/datasets" md-icon="view_list" exact></md-tab>
+      <md-tab id="tab-dashboard" md-label="dashboard" to="/dashboard" md-icon="dashboard" exact v-if="this.$store.state.authenticated"></md-tab>
+      <md-tab id="tab-data-sets" md-label="datasets" to="/datasets" md-icon="view_list" exact v-if="this.$store.state.authenticated"></md-tab>
     </md-tabs>
     <router-view id="main" />
   </div>
@@ -11,6 +11,9 @@
 
 <script>
 export default {
+  mounted: async function () {
+    this.$store.dispatch('determineAuthState')
+  }
 }
 </script>
 
