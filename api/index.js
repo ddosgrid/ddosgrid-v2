@@ -48,7 +48,7 @@ function logStart () {
 function allowCORS (req, res, next) {
   const clientAppOrigin = process.env.CLIENT_APP_ORIGIN || 'http://localhost:8081'
   res.header('Access-Control-Allow-Origin', clientAppOrigin)
-  res.header('Access-Control-Allow-Methods', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,HEAD,OPTIONS')
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   res.header('Access-Control-Allow-Credentials', 'true')
   next();

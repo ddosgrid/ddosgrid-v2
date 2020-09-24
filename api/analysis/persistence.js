@@ -9,9 +9,30 @@ class Analyses {
     }
     // do nothing we can use it as a singleton
   }
+  async getAnalysesOfUser (id) {
+    return new Promise((resolve, reject) => {
+      instance.find({ uploader: id}, (err, analyses) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(analyses)
+      })
+    })
+  }
   async getAnalyses () {
     return new Promise((resolve, reject) => {
       instance.find({}, (err, analyses) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(analyses)
+      })
+    })
+  }
+
+  async getAnalysesOfUser (userid) {
+    return new Promise((resolve, reject) => {
+      instance.find({uploader: userid}, (err, analyses) => {
         if (err) {
           reject(err)
         }
@@ -39,7 +60,7 @@ class Analyses {
       })
     })
   }
-  createAnalysis (md5, name, description, fileSize) {
+  createAnalysis (md5, name, description, fileSize, uploader) {
     var newAnalysis = {
       md5: md5,
       created: new Date(),
@@ -48,7 +69,8 @@ class Analyses {
       description: description,
       fileSizeMB: fileSize,
       analysisFiles: [],
-      metrics: {}
+      metrics: {},
+      uploader: uploader
     }
     instance.insert(newAnalysis)
   }

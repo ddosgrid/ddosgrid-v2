@@ -5,19 +5,21 @@ const fs = require('fs')
 const pcapAnalyser = require('./pcapAnalyser')
 const persistedAnalyses =  require('./persistence')
 
-const analysisBaseDir = path.resolve(__dirname, '../../data/public/analysis/')
-const analysesDB = path.resolve(__dirname, '../../data/anyleses.db')
+const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
+const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
 var analyses = new persistedAnalyses(analysesDB)
 
-router.get('', getAllAnalyses)
-router.get('/:id', getAnalysisById)
-router.delete('/:id', deleteAnalysisById)
-router.post('/upload', handleFilePost)
-router.post('/:id/analyse', startAnalysis)
+const { protect } = require('../auth/index')
+
+router.get('', protect, getAllAnalyses)
+router.get('/:id', protect, getAnalysisById)
+router.delete('/:id', protect, deleteAnalysisById)
+router.post('/upload', protect, handleFilePost)
+router.post('/:id/analyse', protect, startAnalysis)
 
 async function getAllAnalyses (req, res) {
     try {
-      var all = await analyses.getAnalyses()
+      var all = await analyses.getAnalysesOfUser(req.user._id)
       res.json(all)
     } catch (e) {
       res.send(500)
@@ -25,6 +27,7 @@ async function getAllAnalyses (req, res) {
 }
 
 async function getAnalysisById (req, res) {
+  // TODO: Check if user the uploader
   var analysis = await analyses.getAnalysis(req.params.id)
   res.json(analysis)
 }
@@ -62,7 +65,12 @@ async function startAnalysis (req, res) {
   if(!analysis) {
     return res.status(404).send('File was found but no corresponding database entry. Check upload?')
   }
-  if(analysis.status !== 'uploaded' && analysis.status !== 'failed') {
+  var analysisRequestedByUploader = req.user._id === analysis.uploader
+  if(!analysisRequestedByUploader) {
+    return res.status(403).send('Unauthorized to start analysis on a dataset that was uploaded with different account')
+  }
+  var analysed = analysis.status !== 'uploaded' && analysis.status !== 'failed'
+  if(analysed) {
     if(analysis.status === 'analysed') {
       return res.status(400).send('Analysis has already been performed')
     }
@@ -138,6 +146,7 @@ function handleFilePost (req, res) {
   }
   var datasetName = req.body.name
   var datasetDescription = req.body.description
+  var uploader = req.user._id
   var fileHash = uploadedFile.hash
   var fileSize = uploadedFile.size / 1024 / 1024
   var fileSizeInMB = Number(Number(fileSize).toFixed(3))
@@ -147,7 +156,7 @@ function handleFilePost (req, res) {
     if (err) {
       return res.status(500).send('Error uploading/moving file')
     }
-    analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB)
+    analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
     return res.status(200).json({
       id: fileHash,
       status: `You're file was uploaded with ID ${fileHash}`

@@ -3,7 +3,7 @@ const passport = require('passport')
 const fetch = require('node-fetch')
 const OAuth2Strategy = require('passport-oauth').OAuth2Strategy
 const Users = require('./persistence')
-const userDB = path.resolve(__dirname, '../../data/users.db')
+const userDB = path.resolve(__dirname, '../data/users.db')
 const { Router } = require('express')
 const router = Router()
 var users = new Users(userDB)
@@ -18,7 +18,7 @@ router.get('/auth/info', protect, (req, res) => {
         name: req.user.name,
         email: req.user.email,
         authenticated: true
-    }).send()
+    })
 })
 // if the user is authenticated
 function protect (req, res, next) {
