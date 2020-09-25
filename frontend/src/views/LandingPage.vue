@@ -14,7 +14,7 @@
               <md-button v-if="this.$store.state.authenticated" class="md-raised md-primary" href="datasets">
                 <md-icon>arrow_right_alt</md-icon><span>Get Started</span>
               </md-button>
-              <md-button v-else class="md-raised md-accent" href="http://localhost:8080/auth/provider">
+              <md-button v-else class="md-raised md-accent" :href="authurl">
                 <md-icon>login</md-icon> <span> Log In</span>
               </md-button>
             </div>
@@ -102,7 +102,14 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
+
 export default {
+  data: function () {
+    return {
+      authurl: `${apibaseurl}/auth/provider/`
+    }
+  },
   name: 'LandingPage'
 }
 </script>

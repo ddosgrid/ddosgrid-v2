@@ -46,7 +46,7 @@ passport.use('provider', new OAuth2Strategy({
   },
   async function(accesstoken, refreshtoken, profile, done) {
     var profileEndpoint = process.env.DDOSDB_PROFILEINFO || 'http://localhost:4000/api/profileinfo'
-    var req = await fetch('http://localhost:4000/api/profileinfo', {
+    var req = await fetch(profileEndpoint, {
       headers: {
         Authorization: `Bearer ${accesstoken}`
       }

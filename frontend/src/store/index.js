@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersist from 'vuex-localstorage'
+import { apibaseurl } from '@/config/variables.js'
 
 Vue.use(Vuex)
 
@@ -70,7 +71,7 @@ export default new Vuex.Store({
   actions: {
     async determineAuthState ({ commit }) {
       try {
-        var res = await fetch('http://localhost:8080/auth/info', {
+        var res = await fetch(`${apibaseurl}/auth/info`, {
           credentials: 'include'
         })
         var info = await res.json()

@@ -17,6 +17,15 @@ services:
     build: "."
     volumes:
       - userdata:/usr/src/app/api/data/
+    environment:
+      - PORT=3000
+      - CLIENT_APP_ORIGIN=https://www.csg.uzh.ch/ddosgrid/
+      - OAUTH2_AUTHORIZE=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/authorize/
+      - OAUTH2_TOKEN=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/token/
+      - OAUTH2_CLIENTID=3Wpm2RleLRAvEcLsALspuowD5CSJvefc9x5R7vcA
+      - OAUTH2_CLIENTSECRET=OqgbEEzNy86435yBpwO0yvDRlArTt3LfTkciMkOvdxRMMAEt2perGIklGjbAsNpwhFJZFw4RjAJ5BqZjdfFTV6QwXeebGhuW7t9h9QRi8A0hKCCeYWTnKuauMXPRUFEZ
+      - OAUTH2_CALLBACK=https://www.csg.uzh.ch/ddosgrid/api/auth/provider/callback/
+      - DDOSDB_PROFILEINFO=https://www.csg.uzh.ch/ddosgrid/ddosdb/api/profileinfo
   ddosgridfrontend:
     ports:
       - "3001:80"
