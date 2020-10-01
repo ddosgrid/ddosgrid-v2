@@ -7,7 +7,7 @@ COPY miner /usr/src/app/miner
 WORKDIR /usr/src/app/miner
 RUN rm -rf node_modules/ ; npm i
 WORKDIR /usr/src/app/api
-RUN rm -rf node_modules/ ; npm i
+RUN rm -rf node_modules/ ; npm i; mkdir tmp
 
 EXPOSE 3000
 
