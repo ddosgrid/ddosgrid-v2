@@ -16,12 +16,12 @@ class Users {
   }
   async updateUser(id, name, email, accesstoken, refreshtoken) {
     return new Promise((resolve, reject) =>{
-      this.instance.update({ email: email }, {
+      this.instance.update({ id: id }, {
           $set: {
             id: id, name: name, email: email, accesstoken: accesstoken, refreshtoken:refreshtoken
           }
         }, {}, (err, nrUpdated) => {
-        if(err || nrUpdated == 0) { reject() }
+        if(err || nrUpdated == 0) { reject(err) }
         resolve()
       })
     })
