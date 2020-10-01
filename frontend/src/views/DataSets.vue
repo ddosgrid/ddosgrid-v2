@@ -9,14 +9,27 @@
     md-label="No datasets uploaded"
     md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0 && hasLoaded" class="centered">
     <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
-
   </md-empty-state>
+
+  <!-- Uploading datasets to DDoSDB/DDoSGrid -->
   <md-dialog :md-active.sync="showFileUpload">
     <md-dialog-title>Upload a Data Set</md-dialog-title>
     <file-upload-form @done="closeUploadForm">
     </file-upload-form>
     <md-dialog-actions>
       <md-button class="md-primary" @click="showFileUpload = false">
+        <md-icon>close</md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
+  <!-- Importing datasets from DDoSDB -->
+  <md-dialog :md-active.sync="showFileImport">
+    <md-dialog-title>Import a Data Set</md-dialog-title>
+    <file-import-form @done="closeImportForm">
+    </file-import-form>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showFileImport = false">
         <md-icon>close</md-icon>
       </md-button>
     </md-dialog-actions>
@@ -36,6 +49,7 @@
 <script>
 import { apibaseurl } from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
+import FileImportForm from '../components/FileImportForm.vue'
 import DataSetListItem from '../components/DataSetListItem.vue'
 
 var intervalId = null
@@ -46,16 +60,20 @@ export default {
     return {
       datasets: [],
       showFileUpload: false,
+      showFileImport: false,
       hasLoaded: false
     }
   },
   components: {
     'file-upload-form': FileUploadForm,
+    'file-import-form': FileImportForm,
     'data-set-list-item': DataSetListItem
   },
   mounted: function () {
     this.fetchDataSets()
     intervalId = setInterval(this.fetchDataSets, 1000)
+    window.ga = this
+    this.showFileImport = 'import' in this.$route.query
   },
   beforeDestroy: function () {
     clearInterval(intervalId)
@@ -63,6 +81,9 @@ export default {
   methods: {
     closeUploadForm: function () {
       this.showFileUpload = false
+    },
+    closeImportForm: function () {
+      this.showFileImport = false
     },
     refresh: function () {
       this.fetchDataSets()

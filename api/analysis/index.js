@@ -1,9 +1,11 @@
 const path = require('path')
+const bodyParser = require('body-parser')
 const { Router } = require('express')
 const router = Router()
 const fs = require('fs')
 const pcapAnalyser = require('./pcapAnalyser')
 const persistedAnalyses =  require('./persistence')
+const fileImport = require('./pcapImporter')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
@@ -15,6 +17,8 @@ router.get('', protect, getAllAnalyses)
 router.get('/:id', protect, getAnalysisById)
 router.delete('/:id', protect, deleteAnalysisById)
 router.post('/upload', protect, handleFilePost)
+router.post('/import/:dataset', protect, bodyParser.json(), handleFileImport)
+router.put('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.post('/:id/analyse', protect, startAnalysis)
 
 async function getAllAnalyses (req, res) {
@@ -123,6 +127,42 @@ async function startAnalysis (req, res) {
   }
 }
 
+async function handleFileImport (req, res) {
+  if (!req.params.dataset) {
+    return res.status(400).send('No dataset supplied to import')
+  }
+  var datasetToImport = req.params.dataset
+  var datasetName = req.body.datasetname
+  var datasetDescription = req.body.datasetdescription
+  var uploader = req.user._id
+  var uploaderToken = req.user.accesstoken
+  try {
+    var { fileHash, fileSizeInMB, file } = await fileImport.importFileByID(datasetToImport, uploaderToken)
+    var existingAnalysis = await analyses.getAnalysis(fileHash)
+    if (existingAnalysis && req.method === 'POST' && false) {
+      return res.status(409).json({
+        id: fileHash,
+        status: `Your dataset already exists with ID ${fileHash}. Please submit a PUT to overwrite`
+      })
+    } else if (existingAnalysis && req.method === 'PUT') {
+      // TODO: Update the record
+    }
+    var newDir = path.resolve(analysisBaseDir, fileHash)
+    if (!fs.existsSync(newDir)){
+      fs.mkdirSync(newDir, {recursive: true});
+    }
+    fs.rename(file.path, path.resolve(newDir, `${fileHash}.pcap`), mvHandler)
+    function mvHandler (e) {
+      analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
+      return res.status(200).json({
+        id: fileHash,
+        status: `Your dataset was imported with ID ${fileHash}`
+      })
+    }
+  } catch (e) {
+    console.warn(e)
+  }
+}
 
 function handleFilePost (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -159,7 +199,7 @@ function handleFilePost (req, res) {
     analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
     return res.status(200).json({
       id: fileHash,
-      status: `You're file was uploaded with ID ${fileHash}`
+      status: `Your file was uploaded with ID ${fileHash}`
     })
   }
 }

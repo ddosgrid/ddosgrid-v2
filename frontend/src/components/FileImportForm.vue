@@ -63,9 +63,15 @@ export default {
     },
     uploadFile () {
       this.isLoading = true
-      fetch(`${apibaseurl}/analysis/import`, {
+      fetch(`${apibaseurl}/analysis/import/${this.file}`, {
         method: 'POST',
-        body: { file: this.file },
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          datasetname: this.fileName,
+          datasetdescription: this.fileDescription
+        }),
         credentials: 'include'
       })
         .then((response) => response.json())
