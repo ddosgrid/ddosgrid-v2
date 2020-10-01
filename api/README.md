@@ -9,5 +9,7 @@
 `OAUTH2_CLIENTID` Client ID for this API (needs to be registered in auth server).
 `OAUTH2_CLIENTSECRET` Client secret for this API (needs to be registered in auth server).
 `OAUTH2_CALLBACK` Callback where a successful auth shall be redirected towards (needs to be registered in auth server).
-`DDOSDB_PROFILEINFO` Callback where user info can be queried using the Bearer token, may be a resource server that uses that auth server.
+`DDOSDB_HOST` The host where the DDoSDB instance is deployed
+`DDOSDB_PROFILEINFO` Endpoint/URL where user info can be queried using the Bearer token, may be a resource server that uses that auth server.
 `NODE_ENV`
+`DDOSDB_ATTACKTRACE_PATH` Path where attack traces can be fetched for if a Bearer token is set.
