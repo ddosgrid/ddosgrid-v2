@@ -118,7 +118,6 @@ export default {
   },
   name: 'LandingPage',
   mounted: function () {
-    window.th = this
     if ('authprevented' in this.$route.query) {
       this.showSnackbar = true
     }

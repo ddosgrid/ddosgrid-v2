@@ -154,8 +154,6 @@ export default {
     this.layout = JSON.parse(JSON.stringify(this.tiles))
   },
   mounted: function () {
-    // TODO: is this needed?
-    window.gg = this.$store
   },
   watch: {
     tiles (val) {

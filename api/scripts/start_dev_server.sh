@@ -1,4 +1,5 @@
 #!/bin/bash
+export PORT=8080
 export CLIENT_APP_ORIGIN=http://localhost:8081
 export OAUTH2_AUTHORIZE=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/authorize/
 export OAUTH2_TOKEN=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/token/

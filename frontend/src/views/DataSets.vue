@@ -87,7 +87,6 @@ export default {
   mounted: function () {
     this.fetchDataSets()
     intervalId = setInterval(this.fetchDataSets, 1000)
-    window.ga = this
     this.showFileImport = 'import' in this.$route.query
   },
   beforeDestroy: function () {

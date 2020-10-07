@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./scripts/start_dev_server.sh",
     "start": "node index.js",
     "clean-data": "rm -rf ./data/*db ./data/public/analysis/* ./tmp/*"
   },
