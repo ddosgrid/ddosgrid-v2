@@ -26,8 +26,8 @@ services:
       - OAUTH2_CLIENTSECRET=OqgbEEzNy86435yBpwO0yvDRlArTt3LfTkciMkOvdxRMMAEt2perGIklGjbAsNpwhFJZFw4RjAJ5BqZjdfFTV6QwXeebGhuW7t9h9QRi8A0hKCCeYWTnKuauMXPRUFEZ
       - OAUTH2_CALLBACK=https://www.csg.uzh.ch/ddosgrid/api/auth/provider/callback/
       - DDOSDB_PROFILEINFO=https://www.csg.uzh.ch/ddosgrid/ddosdb/api/profileinfo
-      - DDOSDB_HOST=https://www.csg.uzh.ch/ddosgrid/ddosdb
-      - DDOSDB_ATTACKTRACE_PATH=/api/attack-trace
+      - DDOSDB_HOST=www.csg.uzh.ch
+      - DDOSDB_ATTACKTRACE_PATH=/ddosgrid/ddosdb/api/attack-trace
   ddosgridfrontend:
     ports:
       - "3001:80"
