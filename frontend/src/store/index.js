@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersist from 'vuex-localstorage'
 import { apibaseurl } from '@/config/variables.js'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -77,6 +78,11 @@ export default new Vuex.Store({
         var info = await res.json()
         this.authenticated = info.authenticated
         commit('updateAuthState', info.authenticated)
+        // Forward user to the initial URL and clear from session storage
+        if (this.authenticated) {
+          router.push(sessionStorage.getItem('intercepted'))
+          sessionStorage.removeItem('intercepted')
+        }
       } catch (e) {
         commit('updateAuthState', false)
       }

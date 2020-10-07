@@ -9,8 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'LandingPage',
-    component: LandingPage,
-    beforeEnter: checkIfInterceptedBefore
+    component: LandingPage
   },
   {
     path: '/dashboard',
@@ -35,26 +34,13 @@ const routes = [
   }
 ]
 
-function checkIfInterceptedBefore (to, from, next) {
-  if (store.state.authenticated && store.state.intercepted_page) {
-    console.log('forw to inter page')
-    next(store.state.intercepted_page)
-    store.state.intercepted_page = undefined
-  } else {
-    console.log('nothing was intercepted')
-    next()
-  }
-}
-
 function authRequired (to, from, next) {
-  window.st = store
   if (store.state.authenticated) {
-    console.log('authenticated, nothing to intercept')
     next()
   } else {
-    console.log('intercept!:', to.fullPath)
-    store.state.intercepted_page = to.fullPath
-    // TODO / page should hint about auth
+    // Store the desired URL in session storage for when
+    // the user 'comes back' authenticated
+    sessionStorage.setItem('intercepted', to.fullPath)
     next('/?authprevented')
   }
 }
