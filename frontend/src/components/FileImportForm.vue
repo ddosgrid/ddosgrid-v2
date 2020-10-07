@@ -12,15 +12,15 @@
 
     <md-field>
       <label>Description</label>
-      <md-textarea v-model="fileDescription" @keyup.ctrl.enter="uploadFile" md-autogrow></md-textarea>
+      <md-textarea v-model="fileDescription" @keyup.ctrl.enter="importFile" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
-    <md-icon>cloud_upload</md-icon>
+  <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="importFile" v-if="!isLoading">
+    <md-icon>cloud_download</md-icon>
   </md-button>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
-    <md-button class="md-primary" @click="uploadAnother">Upload another file</md-button>
+    <md-button class="md-primary" @click="uploadAnother">Import another file</md-button>
   </md-snackbar>
   <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
   </div>
@@ -61,7 +61,7 @@ export default {
       clearTimeout(this.closingTimeout)
       this.showSnackbar = false
     },
-    uploadFile () {
+    importFile () {
       this.isLoading = true
       fetch(`${apibaseurl}/analysis/import/${this.file}`, {
         method: 'POST',

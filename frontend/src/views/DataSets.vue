@@ -9,6 +9,7 @@
     md-label="No datasets uploaded"
     md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0 && hasLoaded" class="centered">
     <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
+    <md-button class="md-primary md-raised" @click="showFileImport = true">Import a dataset</md-button>
   </md-empty-state>
 
   <!-- Uploading datasets to DDoSDB/DDoSGrid -->
@@ -40,9 +41,23 @@
     </data-set-list-item>
   </div>
 
-  <md-button id="fab" @click="showFileUpload = true" class="md-fab md-primary md-fab-bottom-right">
-    <md-icon>cloud_upload</md-icon>
-  </md-button>
+  <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
+    <md-speed-dial-target class="md-primary">
+      <md-icon class="md-morph-initial">add</md-icon>
+      <md-icon class="md-morph-final no-print">close</md-icon>
+    </md-speed-dial-target>
+
+    <md-speed-dial-content>
+      <md-button class="md-icon-button" @click="showFileUpload = true">
+        <md-tooltip md-direction="top">Upload a raw PCAP file</md-tooltip>
+        <md-icon>cloud_upload</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" @click="showFileImport = true">
+        <md-tooltip md-direction="top">Import an existing dataset from DDoSDB</md-tooltip>
+        <md-icon>cloud_download</md-icon>
+      </md-button>
+    </md-speed-dial-content>
+  </md-speed-dial>
 </div>
 </template>
 

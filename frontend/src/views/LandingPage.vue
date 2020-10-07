@@ -98,6 +98,10 @@
         </md-card>
       </section>
     </div>
+    <md-snackbar :md-position="position" :md-duration="7000" :md-active.sync="showSnackbar" md-persistent>
+      <span>{{ snackbarMsg}}</span>
+      <md-button class="md-primary" :href="authurl">Login</md-button>
+    </md-snackbar>
   </div>
 </template>
 
@@ -107,10 +111,18 @@ import { apibaseurl } from '@/config/variables.js'
 export default {
   data: function () {
     return {
-      authurl: `${apibaseurl}/auth/provider/`
+      authurl: `${apibaseurl}/auth/provider/`,
+      showSnackbar: false,
+      snackbarMsg: 'The action you are trying to perform requires authentication'
     }
   },
-  name: 'LandingPage'
+  name: 'LandingPage',
+  mounted: function () {
+    window.th = this
+    if ('authprevented' in this.$route.query) {
+      this.showSnackbar = true
+    }
+  }
 }
 </script>
 
