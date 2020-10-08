@@ -14,6 +14,7 @@
 export default {
   mounted: async function () {
     this.$store.dispatch('determineAuthState')
+    setInterval(() => { this.$store.dispatch('pollAnalyses') }, 10000)
   }
 }
 </script>

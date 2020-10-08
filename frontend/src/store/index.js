@@ -10,9 +10,30 @@ export default new Vuex.Store({
   state: {
     setups: [],
     tiles: [],
-    authenticated: false
+    authenticated: false,
+    nrOfAnalysedDatasets: []
   },
   mutations: {
+    updateNrOfAnalysedSetups (state, newnr) {
+      if (newnr > state.nrOfAnalysedDatasets) {
+        var msg = 'A new dataset is analysed and ready for visualization!'
+        if (!('Notification' in window)) {
+          return null
+        } else if (Notification.permission === 'granted') {
+          // This will create an ESLint error since the Notification API only
+          // requires the constructor to be invoked (variable unused).
+          var notification = new Notification(msg) // eslint-disable-line
+        } else if (Notification.permission !== 'denied') {
+          Notification.requestPermission().then(function (permission) {
+            if (permission === 'granted') {
+              var notification = new Notification(msg)
+              console.log(notification)
+            }
+          })
+        }
+      }
+      state.nrOfAnalysedDatasets = newnr
+    },
     updateAuthState (state, authenticated = false) {
       state.authenticated = authenticated
     },
@@ -70,6 +91,20 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async pollAnalyses ({ commit }) {
+      try {
+        var res = await fetch(`${apibaseurl}/analysis`, { credentials: 'include' })
+        var json = await res.json()
+        this.datasets = json
+        this.hasLoaded = true
+        var nrOfAnalysedSetups = this.datasets.filter(d => {
+          return d.status === 'analysed'
+        }).length
+        commit('updateNrOfAnalysedSetups', nrOfAnalysedSetups)
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async determineAuthState ({ commit }) {
       try {
         var res = await fetch(`${apibaseurl}/auth/info`, {

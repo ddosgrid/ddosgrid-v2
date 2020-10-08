@@ -86,7 +86,7 @@ export default {
   },
   mounted: function () {
     this.fetchDataSets()
-    intervalId = setInterval(this.fetchDataSets, 1000)
+    intervalId = setInterval(this.fetchDataSets, 3000)
     this.showFileImport = 'import' in this.$route.query
   },
   beforeDestroy: function () {
@@ -108,6 +108,11 @@ export default {
         var json = await res.json()
         this.datasets = json
         this.hasLoaded = true
+        var nrOfAnalysedSetups = this.datasets.filter(d => {
+          return d.status === 'analysed'
+        }).length
+        console.log(nrOfAnalysedSetups)
+        this.$store.commit('updateNrOfAnalysedSetups', nrOfAnalysedSetups)
       } catch (e) {
         console.log(e)
       }
@@ -131,21 +136,6 @@ export default {
     }
   },
   watch: {
-    datasets: async function (newval, oldval) {
-      var app = this
-      if (newval.length > 1 && oldval.length === 0) {
-        return null
-      }
-      newval.forEach(function (el) {
-        var correspondingOldDataset = oldval.find((olds) => { return olds.md5 === el.md5 })
-        if (!correspondingOldDataset && el.status === 'analysed') {
-          app.sendNotification(el.name)
-        }
-        if (correspondingOldDataset && correspondingOldDataset.status !== 'analysed' && el.status === 'analysed') {
-          app.sendNotification(el.name)
-        }
-      })
-    },
     showFileUpload: async function (newVal, oldVal) {
       if (!newVal) {
         // refresh list
