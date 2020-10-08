@@ -137,9 +137,13 @@ async function handleFileImport (req, res) {
   var uploader = req.user._id
   var uploaderToken = req.user.accesstoken
   try {
-    var { fileHash, fileSizeInMB, file } = await fileImport.importFileByID(datasetToImport, uploaderToken)
+    try {
+      var { fileHash, fileSizeInMB, file } = await fileImport.importFileByID(datasetToImport, uploaderToken)
+    } catch (e) {
+      return res.status(400).json({ errmsg: e.message })
+    }
     var existingAnalysis = await analyses.getAnalysis(fileHash)
-    if (existingAnalysis && req.method === 'POST' && false) {
+    if (existingAnalysis && req.method === 'POST') {
       return res.status(409).json({
         id: fileHash,
         status: `Your dataset already exists with ID ${fileHash}. Please submit a PUT to overwrite`

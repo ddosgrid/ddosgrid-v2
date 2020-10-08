@@ -114,7 +114,7 @@ export default new Vuex.Store({
         this.authenticated = info.authenticated
         commit('updateAuthState', info.authenticated)
         // Forward user to the initial URL and clear from session storage
-        if (this.authenticated) {
+        if (this.authenticated && sessionStorage.getItem('intercepted')) {
           router.push(sessionStorage.getItem('intercepted'))
           sessionStorage.removeItem('intercepted')
         }

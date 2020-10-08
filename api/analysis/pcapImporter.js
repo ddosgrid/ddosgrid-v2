@@ -10,7 +10,6 @@ async function importFileByID (datasetID, access_token) {
     return new Promise((resolve, reject) => {
         const randID = Math.random() * 1e17
         const hash = crypto.createHash('sha256');
-        const file = fs.createWriteStream(`./tmp/imported-dataset-${randID}.pcap`);
         var options = {
             path: `${ATTACKTRACE_ENDPOINT}/${datasetID}`,
             host: DDoSDBHOST,
@@ -19,9 +18,14 @@ async function importFileByID (datasetID, access_token) {
             }
         }
         https.get(options, function(response) {
+            if(response.statusCode !== 200) {
+              reject('Dataset can not be fetched')
+            }
+            const file = fs.createWriteStream(`./tmp/imported-dataset-${randID}.pcap`);
             response.pipe(file)
             response.pipe(hash).setEncoding('hex')
             response.on('end', () => {
+                if(file.bytesWritten === 0) { reject('Dataset can not be fetched') }
                 resolve({
                     fileHash: hash.read(),
                     fileSizeInMB: Number(file.bytesWritten / 1024 / 1024).toFixed(3),
