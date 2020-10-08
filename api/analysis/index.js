@@ -155,7 +155,7 @@ async function handleFileImport (req, res) {
     if (!fs.existsSync(newDir)){
       fs.mkdirSync(newDir, {recursive: true});
     }
-    fs.rename(file.path, path.resolve(newDir, `${fileHash}.pcap`), mvHandler)
+    fs.copyFile(file.path, path.resolve(newDir, `${fileHash}.pcap`), mvHandler)
     function mvHandler (e) {
       analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
       return res.status(200).json({
