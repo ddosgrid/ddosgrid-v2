@@ -180,4 +180,13 @@ export default {
 .card-content-half {
   width: 50%;
 }
+.card-content-half > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.md-title, .md-card-header-flex, .md-card-header-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.md-title { width: 100%; }
 </style>
