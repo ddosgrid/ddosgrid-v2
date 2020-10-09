@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const { Router } = require('express')
 const router = Router()
 const fs = require('fs')
+const pcapDissector = require('./pcapDissector')
 const pcapAnalyser = require('./pcapAnalyser')
 const persistedAnalyses =  require('./persistence')
 const fileImport = require('./pcapImporter')
@@ -90,6 +91,11 @@ async function startAnalysis (req, res) {
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var startTime = new Date()
   analyses.changeAnalysisStatus(id, 'pending')
+  try {
+    var dissectorResult = await pcapDissector.dissectAndUpload(projectPath, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
+  } catch (e) {
+    console.warn('Dissector failed!', e)
+  }
   try {
     var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
     var endTime = new Date()
