@@ -9,9 +9,9 @@ class Analyses {
     }
     // do nothing we can use it as a singleton
   }
-  async getAnalysesOfUser (id) {
+  async getAnalysesOfUser (userid) {
     return new Promise((resolve, reject) => {
-      instance.find({ uploader: id}, (err, analyses) => {
+      instance.find({ users: userid }, (err, analyses) => {
         if (err) {
           reject(err)
         }
@@ -22,17 +22,6 @@ class Analyses {
   async getAnalyses () {
     return new Promise((resolve, reject) => {
       instance.find({}, (err, analyses) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(analyses)
-      })
-    })
-  }
-
-  async getAnalysesOfUser (userid) {
-    return new Promise((resolve, reject) => {
-      instance.find({uploader: userid}, (err, analyses) => {
         if (err) {
           reject(err)
         }
@@ -64,18 +53,26 @@ class Analyses {
     var newAnalysis = {
       md5: md5,
       created: new Date(),
-      status: 'uploaded',
+      status: 'planned',
+      exportstatus: 'planned',
       name: name,
       description: description,
       fileSizeMB: fileSize,
       analysisFiles: [],
       metrics: {},
-      uploader: uploader
+      uploader: uploader,
+      users: [ uploader ]
     }
     instance.insert(newAnalysis)
   }
+  addUserToDatasetClients(id, user) {
+    instance.update({ md5: id }, { $push: { users: user }})
+  }
   changeAnalysisStatus (md5, newStatus) {
     instance.update({ md5: md5 }, { $set: { status: newStatus }})
+  }
+  changeExportStatus (md5, newStatus) {
+    instance.update({ md5: md5 }, { $set: { exportstatus: newStatus }})
   }
   storeAnalysisDuration(md5, durationInSeconds) {
     instance.update({md5: md5}, { $set: { analysisDuration: durationInSeconds }})

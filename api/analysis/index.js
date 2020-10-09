@@ -79,7 +79,7 @@ async function startAnalysis (req, res) {
     if(analysis.status === 'analysed') {
       return res.status(400).send('Analysis has already been performed')
     }
-    if(analysis.status === 'pending') {
+    if(analysis.status === 'in progress') {
       return res.status(400).send('Analysis is already running')
     }
   }
@@ -90,13 +90,16 @@ async function startAnalysis (req, res) {
   })
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var startTime = new Date()
-  analyses.changeAnalysisStatus(id, 'pending')
+  analyses.changeExportStatus(id, 'in progress')
   try {
     var dissectorResult = await pcapDissector.dissectAndUpload(projectPath, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
+    analyses.changeExportStatus(id, 'exported')
   } catch (e) {
+    analyses.changeExportStatus(id, 'failed')
     console.warn('Dissector failed!', e)
   }
   try {
+    analyses.changeAnalysisStatus(id, 'in progress')
     var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
@@ -150,6 +153,9 @@ async function handleFileImport (req, res) {
     }
     var existingAnalysis = await analyses.getAnalysis(fileHash)
     if (existingAnalysis && req.method === 'POST') {
+      if(!existingAnalysis.users.includes(uploader)) {
+        analyses.addUserToDatasetClients(fileHash, uploader)
+      }
       return res.status(409).json({
         id: fileHash,
         status: `Your dataset already exists with ID ${fileHash}. Please submit a PUT to overwrite`
@@ -174,7 +180,7 @@ async function handleFileImport (req, res) {
   }
 }
 
-function handleFilePost (req, res) {
+async function handleFilePost (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No file was uploaded');
   }
@@ -198,6 +204,16 @@ function handleFilePost (req, res) {
   var datasetDescription = req.body.description
   var uploader = req.user._id
   var fileHash = uploadedFile.hash
+  var existsAlready = await analyses.getAnalysis(fileHash)
+  if(existsAlready) {
+    if(!existsAlready.users.includes(uploader)) {
+      analyses.addUserToDatasetClients(fileHash, uploader)
+    }
+    return res.status(409).json({
+      id: fileHash,
+      status: `Exists already! You can now access ${fileHash}`
+    })
+  }
   var fileSize = uploadedFile.size / 1024 / 1024
   var fileSizeInMB = Number(Number(fileSize).toFixed(3))
   uploadedFile.mv(path.resolve(analysisBaseDir, fileHash, `${fileHash}.pcap`), mvHandler)
