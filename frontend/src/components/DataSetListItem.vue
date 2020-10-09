@@ -20,11 +20,14 @@
           </div>
           <div class="card-content-half">
             <div class="">Uploaded on: {{ new Date(dataset.created).toLocaleString() }}</div>
-            <div class="">Export Status: {{ dataset.exportstatus }}
+            <div class="" v-if="dataset.exportstatus !== 'exported'">Export Status: {{ dataset.exportstatus }}
               <md-icon v-if="dataset.exportstatus === 'planned'" md-diameter="10">schedule</md-icon>
-              <md-icon v-if="dataset.exportstatus === 'exported'" md-diameter="10" class="success-icon">check</md-icon>
               <md-progress-spinner v-if="dataset.exportstatus === 'in progress'" md-diameter="10" md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
               <md-icon v-if="dataset.exportstatus === 'failed'" md-diameter="10" class="failure-icon">warning</md-icon>
+            </div>
+            <!-- TODO: Extract as variable -->
+            <div class="" v-else>Export Status: <a target="_blank" :href="`https://www.csg.uzh.ch/ddosgrid/ddosdb/query?q=key:${dataset.md5}`">{{ dataset.exportstatus }}</a>
+              <md-icon md-diameter="10" class="success-icon">check</md-icon>
             </div>
             <div class="">Analysis Status: {{ dataset.status }}
               <md-icon v-if="dataset.status === 'planned'" md-diameter="10">schedule</md-icon>
