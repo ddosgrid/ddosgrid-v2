@@ -76,7 +76,7 @@ export default {
       })
         .then((response) => {
           if (response.status === 409) {
-            throw new Error('This dataset already exists! Please upload another one')
+            throw new Error('This dataset already exists in the system, it was added to your account.')
           }
           if (response.status >= 400 && response.status < 600) {
             throw new Error('Unable to import dataset. Please check your input or try later')
@@ -96,6 +96,7 @@ export default {
             .then((result) => {
             // console.log(result)
               this.clear()
+              this.$router.replace({ 'query': null })
               this.showSnackbar = true
               this.closingTimeout = setTimeout(() => { this.$emit('done') }, 5000)
             })
@@ -106,8 +107,9 @@ export default {
         .catch((error) => {
           this.isLoading = false
           console.error('Error:', error)
+          this.$router.replace({ 'query': null })
           // snackbar to let user know an error has occurred
-          this.snackbarMsg = error
+          this.snackbarMsg = error.message
           this.showSnackbar = true
         })
     }

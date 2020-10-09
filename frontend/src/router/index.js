@@ -25,12 +25,6 @@ const routes = [
     name: 'datasets',
     component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue'),
     beforeEnter: authRequired
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Profile.vue'),
-    beforeEnter: authRequired
   }
 ]
 

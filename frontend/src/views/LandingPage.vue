@@ -10,14 +10,6 @@
             <div class="main-icon-wrapper">
               <img src="img/multiline_chart-24px.svg" class="main-icon">
             </div>
-            <div class="authActions">
-              <md-button v-if="this.$store.state.authenticated" class="md-raised md-primary" href="datasets">
-                <md-icon>arrow_right_alt</md-icon><span>Get Started</span>
-              </md-button>
-              <md-button v-else class="md-raised md-accent" :href="authurl">
-                <md-icon>login</md-icon> <span> Log In</span>
-              </md-button>
-            </div>
             <span class="section-text">
               DDoSGrid is an open platform aiming at making feature extraction and visualization from PCAP files easier. This platform was developed in the scope of a master project at the Communication Systems Group at the University of Zurich.
             </span>
@@ -31,6 +23,9 @@
             </div>
           </md-card-content>
         </md-card>
+      </section>
+     <section class="about-item">
+       <profile></profile>
       </section>
       <section class="uploading about-item slidefromleft">
         <md-card>
@@ -107,13 +102,15 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import Profile from '@/components/Profile.vue'
 
 export default {
   data: function () {
     return {
       authurl: `${apibaseurl}/auth/provider/`,
       showSnackbar: false,
-      snackbarMsg: 'The action you are trying to perform requires authentication'
+      snackbarMsg: 'The action you are trying to perform requires authentication',
+      position: 'center'
     }
   },
   name: 'LandingPage',
@@ -121,6 +118,9 @@ export default {
     if ('authprevented' in this.$route.query) {
       this.showSnackbar = true
     }
+  },
+  components: {
+    'profile': Profile
   }
 }
 </script>

@@ -188,4 +188,7 @@ md-card-actions{
 .md-card-header-text {
   overflow-wrap: anywhere;
 }
+.vue-grid-item.cssTransforms {
+  min-width: 450px!important;
+}
 </style>

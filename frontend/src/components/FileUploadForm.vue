@@ -71,6 +71,15 @@ export default {
         body: formData,
         credentials: 'include'
       })
+        .then((response) => {
+          if (response.status === 409) {
+            throw new Error('This dataset already exists in the system, it was added to your account.')
+          }
+          if (response.status >= 400 && response.status < 600) {
+            throw new Error('Unable to import dataset. Please check your input or try later')
+          }
+          return response
+        })
         .then((response) => response.json())
         .then((result) => {
           this.isLoading = false
@@ -97,7 +106,7 @@ export default {
           this.isLoading = false
           console.error('Error:', error)
           // snackbar to let user know an error has occurred
-          this.snackbarMsg = error
+          this.snackbarMsg = error.message
           this.showSnackbar = true
         })
     }

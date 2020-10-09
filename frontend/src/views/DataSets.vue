@@ -111,7 +111,6 @@ export default {
         var nrOfAnalysedSetups = this.datasets.filter(d => {
           return d.status === 'analysed'
         }).length
-        console.log(nrOfAnalysedSetups)
         this.$store.commit('updateNrOfAnalysedSetups', nrOfAnalysedSetups)
       } catch (e) {
         console.log(e)
