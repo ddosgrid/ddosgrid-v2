@@ -2,7 +2,7 @@
   <md-card>
     <md-card-header>
       <div v-if="this.$store.state.authenticated">
-        <div class="md-title">Welcome back, {{ name }}</div>
+        <div class="md-title">Welcome back, {{ firstname }} {{ lastname }}</div>
         <div class="md-subhead">{{ email }}</div>
       </div>
       <div v-else>
@@ -15,7 +15,7 @@
     </md-card-header>
 
     <md-card-content v-if="this.$store.state.authenticated">
-      You are logged in with your DDoSDB account and can get started using DDoSGrid.
+      You are logged in with your DDoSDB account as <code>{{ name }}</code> and can get started using DDoSGrid.
     </md-card-content>
     <md-card-content v-else>
         Please login using your DDoSDB account. If you don't have such an account you can request access on DDoSDB.
@@ -43,7 +43,9 @@ export default {
       authurl: `${apibaseurl}/auth/provider/`,
       infourl: `${apibaseurl}/auth/info`,
       name: '',
-      email: ''
+      email: '',
+      firstname: '',
+      lastname: ''
     }
   },
   mounted: async function () {
@@ -51,6 +53,8 @@ export default {
     var info = await res.json()
     this.name = info.name
     this.email = info.email
+    this.firstname = info.firstname
+    this.lastname = info.lastname
   },
   name: 'Profile'
 }
@@ -99,5 +103,12 @@ export default {
   50% {transform: rotate(10deg);}
   75% {transform: rotate(-2deg);}
   100% {transform: rotate(0deg);}
+}
+code {
+  display: inline;
+  padding: 0.2em .4em;
+  margin: 0;
+  background-color: rgba(27,31,35,.05);
+  border-radius: 6px;
 }
 </style>

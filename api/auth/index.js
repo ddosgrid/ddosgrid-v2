@@ -17,6 +17,8 @@ router.get('/auth/info', protect, (req, res) => {
     res.json({
         name: req.user.name,
         email: req.user.email,
+        firstname: req.user.firstname,
+        lastname: req.user.lastname,
         authenticated: true
     })
 })
@@ -52,7 +54,13 @@ passport.use('provider', new OAuth2Strategy({
       }
     })
     var userInfo = await req.json()
-    var user =  await users.createOrUpdateUser(userInfo.id, userInfo.username, userInfo.email, accesstoken, refreshtoken)
+    var user =  await users.createOrUpdateUser(userInfo.id,
+        userInfo.username,
+        userInfo.email,
+        userInfo.first_name,
+        userInfo.last_name,
+        accesstoken,
+        refreshtoken)
 	done(null, user)
   }
 ));

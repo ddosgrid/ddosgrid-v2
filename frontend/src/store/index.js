@@ -16,17 +16,23 @@ export default new Vuex.Store({
   mutations: {
     updateNrOfAnalysedSetups (state, newnr) {
       if (newnr > state.nrOfAnalysedDatasets) {
-        var msg = 'A new dataset is analysed and ready for visualization!'
+        var msg = '✓ New dataset available!'
         if (!('Notification' in window)) {
           return null
         } else if (Notification.permission === 'granted') {
           // This will create an ESLint error since the Notification API only
           // requires the constructor to be invoked (variable unused).
-          var notification = new Notification(msg) // eslint-disable-line
+          var notification = new Notification(msg, { // eslint-disable-line
+            icon: './img/icons/android-chrome-512x512.png',
+            body: 'You can now open this dataset for visualization. Click this notification to overview your datasets.'
+          })
+          notification.onclick = function () {
+            router.push('datasets')
+          }
         } else if (Notification.permission !== 'denied') {
           Notification.requestPermission().then(function (permission) {
             if (permission === 'granted') {
-              var notification = new Notification(msg)
+              var notification = new Notification(msg, { icon: './img/icons/android-chrome-512x512.png' })
               console.log(notification)
             }
           })

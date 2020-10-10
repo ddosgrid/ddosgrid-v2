@@ -24,7 +24,7 @@
           </md-card-content>
         </md-card>
       </section>
-     <section class="about-item">
+     <section class="about-item" v-bind:class="{higherorder: !this.$store.state.authenticated}">
        <profile></profile>
       </section>
       <section class="uploading about-item slidefromleft">
@@ -129,10 +129,16 @@ export default {
 .howto {
   max-width: 960px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 .about-item {
   padding: 32px 24px 0px 24px;
   box-sizing: border-box;
+  order: 1;
+}
+.higherorder {
+  order: 0;
 }
 .howto:last-child {
   padding-bottom: 32px;
