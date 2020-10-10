@@ -36,6 +36,8 @@ Vue.use(MdSpeedDial)
 Vue.use(MdEmptyState)
 Vue.use(MdProgress)
 Vue.use(MdChips)
+Vue.use(MdCheckbox)
+Vue.use(MdBadge)
 Vue.use(MdSwitch)
 
 Vue.config.productionTip = false

@@ -57,6 +57,7 @@ async function deleteAnalysisById (req, res) {
 
 async function startAnalysis (req, res) {
   var id = req.params.id
+  var exportToDB = req.query.export === "true" || false
   if (!id) {
     return res.status(404).send('ID not supplied')
   }
@@ -90,13 +91,17 @@ async function startAnalysis (req, res) {
   })
   var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
   var startTime = new Date()
-  analyses.changeExportStatus(id, 'in progress')
-  try {
-    var dissectorResult = await pcapDissector.dissectAndUpload(projectPath, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
-    analyses.changeExportStatus(id, 'exported')
-  } catch (e) {
-    analyses.changeExportStatus(id, 'failed')
-    console.warn('Dissector failed!', e)
+  if(exportToDB) {
+    analyses.changeExportStatus(id, 'in progress')
+    try {
+      var dissectorResult = await pcapDissector.dissectAndUpload(projectPath, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
+      analyses.changeExportStatus(id, 'exported')
+    } catch (e) {
+      analyses.changeExportStatus(id, 'failed')
+      console.warn('Dissector failed!', e)
+    }
+  } else {
+    analyses.changeExportStatus(id, 'opt-out')
   }
   try {
     analyses.changeAnalysisStatus(id, 'in progress')

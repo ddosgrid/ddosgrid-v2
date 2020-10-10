@@ -15,14 +15,23 @@
       <md-textarea v-model="fileDescription" @keyup.ctrl.enter="uploadFile" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
-    <md-icon>cloud_upload</md-icon>
-  </md-button>
+    <md-list>
+      <md-list-item>
+        <md-checkbox class="md-primary" v-model="exportUploadedFile">Export to DDoSDB</md-checkbox>
+        <md-badge class="md-square" md-content="BETA" />
+      </md-list-item>
+    </md-list>
+
+  <div class="upload-btn-wrapper">
+    <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
+      <md-icon>cloud_upload</md-icon>
+    </md-button>
+    <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
+  </div>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
     <md-button class="md-primary" @click="uploadAnother">Upload another file</md-button>
   </md-snackbar>
-  <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
   </div>
 </template>
 
@@ -39,7 +48,8 @@ export default {
     isInfinity: false,
     snackbarMsg: null,
     isLoading: false,
-    closingTimeout: 0
+    closingTimeout: 0,
+    exportUploadedFile: true
   }),
   computed: {
     inputDefined: function () {
@@ -88,7 +98,7 @@ export default {
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
           this.showSnackbar = true
           // start analysis
-          fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
+          fetch(`${apibaseurl}/analysis/${result.id}/analyse?export=${this.exportUploadedFile}`, {
             method: 'POST',
             credentials: 'include'
           })
@@ -114,9 +124,16 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
   #form {
     width: 90%;
     margin: auto;
+  }
+  .md-list-item-content {
+    padding-left: 0px;
+  }
+  .upload-btn-wrapper {
+    text-align: center;
+    margin-top: 20px;
   }
 </style>
