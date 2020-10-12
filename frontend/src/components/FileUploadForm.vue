@@ -1,8 +1,8 @@
 <template lang="html">
   <div id="form">
     <md-field>
-      <label>Upload files</label>
-      <md-file v-model="file" accept=".pcap" placeholder="Choose a PCAP File..." />
+      <label>Upload files ({{fileSizeInMB}}MB)</label>
+      <md-file v-model="file" accept=".pcap" placeholder="Choose a PCAP File..." @md-change="checkDetails" />
     </md-field>
 
     <md-field>
@@ -26,7 +26,7 @@
     <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
       <md-icon>cloud_upload</md-icon>
     </md-button>
-    <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
+    <md-progress-bar v-if="isLoading" :md-diameter="36" :md-stroke="4" :md-value="uploadProgress" md-mode="determinate"></md-progress-bar>
   </div>
   <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ snackbarMsg}}</span>
@@ -37,6 +37,8 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import axios from 'axios'
+
 export default {
   data: () => ({
     file: null,
@@ -49,14 +51,26 @@ export default {
     snackbarMsg: null,
     isLoading: false,
     closingTimeout: 0,
-    exportUploadedFile: true
+    exportUploadedFile: true,
+    fileSize: 0,
+    uploadProgress: 0
   }),
   computed: {
     inputDefined: function () {
       return this.file && this.fileName && this.fileDescription
+    },
+    fileSizeInMB: function () {
+      var mbs = this.fileSize / 1000 / 1000
+      if (mbs >= 1) {
+        return (this.fileSize / 1000 / 1000).toFixed()
+      }
+      return (this.fileSize / 1000 / 1000).toFixed(3)
     }
   },
   methods: {
+    checkDetails (fileList) {
+      this.fileSize = fileList.item(0).size
+    },
     clear () {
       this.file = null
       this.fileName = null
@@ -76,10 +90,15 @@ export default {
       formData.append('captureFile', fileField.files[0])
 
       this.isLoading = true
-      fetch(`${apibaseurl}/analysis/upload`, {
+      axios.request({
+        url: `${apibaseurl}/analysis/upload`,
         method: 'POST',
-        body: formData,
-        credentials: 'include'
+        data: formData,
+        withCredentials: 'include',
+        onUploadProgress: (p) => {
+          var progress = (p.loaded / p.total) * 100
+          this.uploadProgress = progress.toFixed(2)
+        }
       })
         .then((response) => {
           if (response.status === 409) {
@@ -90,10 +109,9 @@ export default {
           }
           return response
         })
-        .then((response) => response.json())
-        .then((result) => {
+        .then((response) => {
+          var result = response.data
           this.isLoading = false
-          // console.log('Success:', result)
           // snackbar to let user know that file was uploaded and analysis has started
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
           this.showSnackbar = true
@@ -103,10 +121,10 @@ export default {
             credentials: 'include'
           })
             .then((result) => {
-            // console.log(result)
               this.clear()
               this.showSnackbar = true
-              this.closingTimeout = setTimeout(() => { this.$emit('done') }, 5000)
+              //  this.closingTimeout = setTimeout(() => { this.$emit('done') }, 5000)
+              this.$emit('done')
             })
         })
         .then((result) => {
