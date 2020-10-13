@@ -1,6 +1,6 @@
 {
   "name": "ddosgrid-miner",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "POC showing feature extraction from pcap files",
   "main": "exports.js",
   "scripts": {
