@@ -55,11 +55,12 @@ class Analyses {
       created: new Date(),
       status: 'planned',
       exportstatus: 'planned',
+      filterstatus: 'planned',
       name: name,
       description: description,
       fileSizeMB: fileSize,
-      analysisFiles: [],
-      metrics: {},
+      analysisFiles: [ ],
+      metrics: { },
       uploader: uploader,
       users: [ uploader ]
     }
@@ -73,6 +74,9 @@ class Analyses {
   }
   changeExportStatus (md5, newStatus) {
     instance.update({ md5: md5 }, { $set: { exportstatus: newStatus }})
+  }
+  changeFilterGenStatus (md5, newStatus) {
+    instance.update({ md5: md5 }, { $set: { filterstatus: newStatus }})
   }
   storeAnalysisDuration(md5, durationInSeconds) {
     instance.update({md5: md5}, { $set: { analysisDuration: durationInSeconds }})

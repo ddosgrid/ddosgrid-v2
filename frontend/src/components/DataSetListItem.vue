@@ -19,25 +19,40 @@
             <div class="">{{ dataset.description }}</div>
           </div>
           <div class="card-content-half">
-            <div class="">Uploaded on: {{ new Date(dataset.created).toLocaleString() }}</div>
-            <div class="" v-if="dataset.exportstatus !== 'exported'">Export Status: {{ dataset.exportstatus }}
+            <div class="">
+              <md-icon class="success-icon">check</md-icon>
+              Uploaded: {{ new Date(dataset.created).toLocaleString('en-US', {year: 'numeric', month: 'long', day: 'numeric' }) }}</div>
+            <div class="" v-if="dataset.exportstatus !== 'exported'">
               <md-icon v-if="dataset.exportstatus === 'planned'" :md-diameter="10">schedule</md-icon>
               <md-icon v-if="dataset.exportstatus === 'opt-out'" :md-diameter="10" title="Exporting was disabled by the user" style="cursor: help">block</md-icon>
               <md-progress-spinner v-if="dataset.exportstatus === 'in progress'" :md-diameter="12" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
               <md-icon v-if="dataset.exportstatus === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
+              DDoSDB Export: {{ dataset.exportstatus }}
             </div>
             <!-- TODO: Extract as variable -->
-            <div class="" v-else>Export Status: <a target="_blank" :href="`https://www.csg.uzh.ch/ddosgrid/ddosdb/query?q=key:${dataset.md5}`">{{ dataset.exportstatus }}</a>
+            <div class="" v-else>
               <md-icon :md-diameter="10" class="success-icon">check</md-icon>
+              DDoSDB Export: <a target="_blank" :href="`https://www.csg.uzh.ch/ddosgrid/ddosdb/query?q=key:${dataset.md5}`"><span class="cap">{{ dataset.exportstatus }}</span></a>
             </div>
-            <div class="">Analysis Status: {{ dataset.status }}
+            <div class="">
+              <md-icon v-if="dataset.filterstatus === 'planned'" :md-diameter="10">schedule</md-icon>
+              <md-icon v-if="dataset.filterstatus === 'generated'" :md-diameter="10" class="success-icon">check</md-icon>
+              <md-progress-spinner v-if="dataset.filterstatus === 'in progress'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
+              <md-icon v-if="dataset.filterstatus === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
+              Filtering Rules: <span class="cap">{{ dataset.filterstatus }}</span>
+            </div>
+            <div class="">
               <md-icon v-if="dataset.status === 'planned'" :md-diameter="10">schedule</md-icon>
               <md-icon v-if="dataset.status === 'analysed'" :md-diameter="10" class="success-icon">check</md-icon>
-              <md-progress-spinner v-if="dataset.status === 'in progress'" :md-diameter="10" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
+              <md-progress-spinner v-if="dataset.status === 'in progress'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
               <md-icon v-if="dataset.status === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
+              Feature Extraction: <span class="cap">{{ dataset.status }}</span>
             </div>
-            <div class="">Filesize: {{ dataset.fileSizeMB }} MB</div>
-            <div class="">Analysis Duration: {{ dataset.analysisDuration }} seconds</div>
+
+            <div class="divider" style="margin: 5px 0;"></div>
+
+            <div class="">File Size: {{ dataset.fileSizeMB >= 1 ? dataset.fileSizeMB.toFixed() : dataset.fileSizeMB}} MB</div>
+            <div class="">Analysis Duration: {{ dataset.analysisDuration >= 1 ? dataset.analysisDuration.toFixed() : dataset.analysisDuration }} seconds</div>
           </div>
         </div>
       </md-card-content>
@@ -182,6 +197,9 @@ export default {
   width: 30px;
   height: 30px;
   float: right;
+}
+.cap {
+  text-transform: capitalize;
 }
 .icon-wrap {
   display: flex;

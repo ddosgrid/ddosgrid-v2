@@ -4,6 +4,7 @@ const { Router } = require('express')
 const router = Router()
 const fs = require('fs')
 const pcapDissector = require('./pcapDissector')
+const pcapFilterGen = require('./pcapFilterGenerator')
 const pcapAnalyser = require('./pcapAnalyser')
 const persistedAnalyses =  require('./persistence')
 const fileImport = require('./pcapImporter')
@@ -89,23 +90,36 @@ async function startAnalysis (req, res) {
     id: id,
     status: 'File was found, analysis should start'
   })
-  var projectPath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
+  var projectPath = path.resolve(analysisBaseDir, id)
+  var projectPathPCAP = path.resolve(projectPath, `${id}.pcap`)
   var startTime = new Date()
   if(exportToDB) {
     analyses.changeExportStatus(id, 'in progress')
     try {
-      var dissectorResult = await pcapDissector.dissectAndUpload(projectPath, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
+      var dissectorResult = await pcapDissector.dissectAndUpload(projectPathPCAP, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
       analyses.changeExportStatus(id, 'exported')
+
+      try {
+        analyses.changeFilterGenStatus(id, 'in progress')
+        var filterGenResult = await pcapFilterGen.generateFilterAndUpload(projectPath, id, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/api/upload-filter_rules', req.user.accesstoken)
+        analyses.changeFilterGenStatus(id, 'generated')
+
+      } catch (e) {
+        analyses.changeFilterGenStatus(id, 'failed')
+        console.warn('Dissector failed!', e)
+      }
+
     } catch (e) {
       analyses.changeExportStatus(id, 'failed')
       console.warn('Dissector failed!', e)
     }
   } else {
     analyses.changeExportStatus(id, 'opt-out')
+    analyses.changeFilterGenStatus(id, 'opt-out')
   }
   try {
     analyses.changeAnalysisStatus(id, 'in progress')
-    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPath)
+    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPathPCAP)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
 
