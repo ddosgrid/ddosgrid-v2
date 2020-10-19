@@ -27,7 +27,7 @@
               <md-icon v-if="dataset.exportstatus === 'opt-out'" :md-diameter="10" title="Exporting was disabled by the user" style="cursor: help">block</md-icon>
               <md-progress-spinner v-if="dataset.exportstatus === 'in progress'" :md-diameter="12" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
               <md-icon v-if="dataset.exportstatus === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
-              DDoSDB Export: {{ dataset.exportstatus }}
+              DDoSDB Export: <span class="cap">{{ dataset.exportstatus }}</span>
             </div>
             <!-- TODO: Extract as variable -->
             <div class="" v-else>
@@ -39,6 +39,7 @@
               <md-icon v-if="dataset.filterstatus === 'generated'" :md-diameter="10" class="success-icon">check</md-icon>
               <md-progress-spinner v-if="dataset.filterstatus === 'in progress'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
               <md-icon v-if="dataset.filterstatus === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
+              <md-icon v-if="dataset.filterstatus === 'opt-out'" :md-diameter="10">block</md-icon>
               Filtering Rules: <span class="cap">{{ dataset.filterstatus }}</span>
             </div>
             <div class="">
@@ -51,8 +52,8 @@
 
             <div class="divider" style="margin: 5px 0;"></div>
 
-            <div class="">File Size: {{ dataset.fileSizeMB >= 1 ? dataset.fileSizeMB.toFixed() : dataset.fileSizeMB}} MB</div>
-            <div class="">Analysis Duration: {{ dataset.analysisDuration >= 1 ? dataset.analysisDuration.toFixed() : dataset.analysisDuration }} seconds</div>
+            <div class="" v-if="'fileSizeMB' in dataset">File Size: {{ dataset.fileSizeMB >= 1 ? Number(dataset.fileSizeMB).toFixed() : dataset.fileSizeMB}} MB</div>
+            <div class="" v-if="'analysisDuration' in dataset">Analysis Duration: {{ dataset.analysisDuration >= 1 ? Number(dataset.analysisDuration).toFixed() : dataset.analysisDuration }} seconds</div>
           </div>
         </div>
       </md-card-content>
