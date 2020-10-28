@@ -94,12 +94,13 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     try {
       var srcAddr = ipPacket.saddr.addr.join('.')
       var dstAddr = ipPacket.daddr.addr.join('.')
+
       if (!this.results.srcIps[srcAddr]) {
-        this.results.srcIps[srcAddr] = 1
+        this.results.srcIps[srcAddr] = true
         this.output.nrOfSrcIps++
       }
       if (!this.results.dstIps[dstAddr]) {
-        this.results.dstIps[dstAddr] = 1
+        this.results.dstIps[dstAddr] = true
         this.output.nrOfDstIps++
       }
     } catch (e) {
