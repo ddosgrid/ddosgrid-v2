@@ -3,15 +3,12 @@ const AbstractPCAPAnalyser = require('./AbstractPCAPAnalyser')
 class MetricAnalyser extends AbstractPCAPAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
+    const PortNumberSpace = Math.pow(2, 16)
     this.results = {
-      srcIps: {
-      },
-      dstIps: {
-      },
-      srcPorts: {
-      },
-      dstPorts: {
-      }
+      srcIps: {},
+      dstIps: {},
+      srcPorts: new Array(PortNumberSpace),
+      dstPorts: new Array(PortNumberSpace)
     }
     this.output = {
       start: null,
@@ -79,11 +76,11 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
         var srcPort = transportPacket.sport
         var dstPort = transportPacket.dport
         if (!this.results.dstPorts[dstPort]) {
-          this.results.dstPorts[dstPort] = 1
+          this.results.dstPorts[dstPort] = true
           this.output.nrOfDstPorts++
         }
         if (!this.results.srcPorts[srcPort]) {
-          this.results.srcPorts[srcPort] = 1
+          this.results.srcPorts[srcPort] = true
           this.output.nrOfSrcPorts++
         }
       } catch (e) {
