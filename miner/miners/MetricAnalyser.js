@@ -4,10 +4,14 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
     this.results = {
-      srcIps: new Set(),
-      dstIps: new Set(),
-      srcPorts: new Set(),
-      dstPorts: new Set()
+      srcIps: {
+      },
+      dstIps: {
+      },
+      srcPorts: {
+      },
+      dstPorts: {
+      }
     }
     this.output = {
       start: null,
@@ -74,12 +78,12 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       try {
         var srcPort = transportPacket.sport
         var dstPort = transportPacket.dport
-        if (!this.results.dstPorts.has(dstPort)) {
-          this.results.dstPorts.add(dstPort)
+        if (!this.results.dstPorts[dstPort]) {
+          this.results.dstPorts[dstPort] = 1
           this.output.nrOfDstPorts++
         }
-        if (!this.results.srcPorts.has(srcPort)) {
-          this.results.srcPorts.add(srcPort)
+        if (!this.results.srcPorts[srcPort]) {
+          this.results.srcPorts[srcPort] = 1
           this.output.nrOfSrcPorts++
         }
       } catch (e) {
@@ -93,12 +97,12 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     try {
       var srcAddr = ipPacket.saddr.addr.join('.')
       var dstAddr = ipPacket.daddr.addr.join('.')
-      if (!this.results.srcIps.has(srcAddr)) {
-        this.results.srcIps.add(srcAddr)
+      if (!this.results.srcIps[srcAddr]) {
+        this.results.srcIps[srcAddr] = 1
         this.output.nrOfSrcIps++
       }
-      if (!this.results.dstIps.has(dstAddr)) {
-        this.results.dstIps.add(dstAddr)
+      if (!this.results.dstIps[dstAddr]) {
+        this.results.dstIps[dstAddr] = 1
         this.output.nrOfDstIps++
       }
     } catch (e) {
@@ -115,6 +119,7 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   }
 
   async postParsingAnalysis () {
+    console.log('INFO: Memory usage (heap):', process.memoryUsage().heapTotal / 1024 / 1024)
     this.output.attackBandwidthInBps = this.output.attackSizeInBytes / this.output.duration
     this.output.avgPacketSize = this.output.attackSizeInBytes / this.output.nrOfIPpackets
     this.output.udpToTcpRatio = this.output.nrOfUDPPackets / this.output.nrOfTCPPackets
