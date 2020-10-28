@@ -1,8 +1,14 @@
 const AbstractPCAPAnalyser = require('./AbstractPCAPAnalyser')
+const { spawn, fork } = require('child_process')
+const path = require('path')
 
 class MetricAnalyser extends AbstractPCAPAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
+    this.buffer = {
+      ippackets: [],
+      ports: []
+    }
     this.results = {
       srcIps: new Set(),
       dstIps: new Set(),
@@ -21,8 +27,6 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       nrOfIPv6Packets: 0,
       nrOfSrcIps: 0,
       nrOfDstIps: 0,
-      nrOfSrcPorts: 0,
-      nrOfDstPorts: 0,
       nrOfUDPPackets: 0,
       nrOfTCPPackets: 0,
       udpToTcpRatio: 0
@@ -42,6 +46,11 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     this.pcapParser.on('transportPacket', this.countPorts.bind(this))
     this.pcapParser.on('udpPacket', this.countUdpPackets.bind(this))
     this.pcapParser.on('tcpPacket', this.counttcpPackets.bind(this))
+    const workerScript = path.join(__dirname, 'MetricAnalyserWorker.js')
+    this.worker = fork(workerScript)
+    this.worker.on('error', function (e) { console.log('error in sub:', e) })
+    this.worker.on('close', function (e) { console.log('close in sub:', e) })
+    this.worker.on('exit', function (e) { console.log('exit in sub:', e) })
   }
 
   getName () {
@@ -70,39 +79,31 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   }
 
   countPorts (transportPacket) {
-    if (transportPacket) {
-      try {
-        var srcPort = transportPacket.sport
-        var dstPort = transportPacket.dport
-        if (!this.results.dstPorts.has(dstPort)) {
-          this.results.dstPorts.add(dstPort)
-          this.output.nrOfDstPorts++
-        }
-        if (!this.results.srcPorts.has(srcPort)) {
-          this.results.srcPorts.add(srcPort)
-          this.output.nrOfSrcPorts++
-        }
-      } catch (e) {
-        console.log('Unable to process transport-level packet:', transportPacket)
-      }
+    this.buffer.ports.push(`${transportPacket.sport}@${transportPacket.dport}`)
+    if (this.buffer.ports.length === 1000) {
+      this.worker.send({
+        type: 'tppacket',
+        packet: this.buffer.ports
+      })
+      this.buffer.ports = []
     }
   }
 
   countIPPackets (ipPacket) {
-    this.output.nrOfIPpackets++
     try {
       var srcAddr = ipPacket.saddr.addr.join('.')
       var dstAddr = ipPacket.daddr.addr.join('.')
-      if (!this.results.srcIps.has(srcAddr)) {
-        this.results.srcIps.add(srcAddr)
-        this.output.nrOfSrcIps++
-      }
-      if (!this.results.dstIps.has(dstAddr)) {
-        this.results.dstIps.add(dstAddr)
-        this.output.nrOfDstIps++
+      this.buffer.ippackets.push(srcAddr + '@' + dstAddr)
+
+      if (this.buffer.ippackets.length === 1000) {
+        this.worker.send({
+          type: 'ippacket',
+          packet: this.buffer.ippackets
+        })
+        this.buffer.ippackets = []
       }
     } catch (e) {
-      console.log('Unable to process IP packet:', ipPacket)
+
     }
   }
 
@@ -115,6 +116,18 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   }
 
   async postParsingAnalysis () {
+    var workerResult = await this.getInfoFromWorker()
+
+    this.results.srcIps = workerResult.srcIps
+    this.results.dstIps = workerResult.dstIps
+    this.results.srcPorts = workerResult.srcPorts
+    this.results.dstPorts = workerResult.dstPorts
+    this.output.nrOfSrcPorts = workerResult.nrOfSrcPorts
+    this.output.nrOfDstIps = workerResult.nrOfDstPorts
+    this.output.nrOfIPpackets = workerResult.nrOfIPpackets
+    this.output.nrOfSrcIps = workerResult.nrOfSrcIps
+    this.output.nrOfDstIps = workerResult.nrOfDstIps
+
     this.output.attackBandwidthInBps = this.output.attackSizeInBytes / this.output.duration
     this.output.avgPacketSize = this.output.attackSizeInBytes / this.output.nrOfIPpackets
     this.output.udpToTcpRatio = this.output.nrOfUDPPackets / this.output.nrOfTCPPackets
@@ -128,6 +141,18 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       metrics: outputToStore
     }
     return await this.storeAndReturnResult(fileName, outputToStore, resultSummary)
+  }
+
+  async getInfoFromWorker () {
+    return new Promise((resolve, reject) => {
+      console.log('listen to forked process')
+      this.worker.on('message', (m) => {
+        console.log('received from child:', m)
+        resolve(m)
+        this.worker.kill()
+      })
+      this.worker.send({ type: 'postanalysis' })
+    })
   }
 }
 
