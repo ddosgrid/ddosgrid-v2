@@ -65,7 +65,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
 
   emitter.on('complete', async () => {
     var decodingDuration = (new Date() - decodingTimer) / 1000
-    console.log(`✓ Decoding has finished after ${decodingDuration} seconds, starting post-parsing analysis`)
+    console.log(`✓ Decoding has finished (${decodingDuration}s), starting post-parsing analysis`)
     // var results = activeMiners.map(async (miner) => { return await miner.postParsingAnalysis() })
     console.log('✓ Post-parsing analysis of the following miners has completed:')
     var results = []

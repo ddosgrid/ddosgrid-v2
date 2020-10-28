@@ -22,7 +22,7 @@ RUN rm -rf node_modules/ ; npm i
   
 # Fetch dependencies of API
 WORKDIR /usr/src/app/api
-RUN rm -rf node_modules/ ; npm i; mkdir tmp
+RUN rm -rf node_modules/ ; npm i; mkdir -p tmp
 
 EXPOSE 3000
 
