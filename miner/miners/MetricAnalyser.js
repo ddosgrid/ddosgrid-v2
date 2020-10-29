@@ -90,36 +90,27 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     }
   }
 
-  printProgress () {
-    var anim = ['◴','◷','◶','◵']
-    if (this.output.nrOfIPpackets % 1000000 === 0) {
-      var icon = anim[this.progressPrintCounter % 4]
-      this.flush()
-      process.stdout.write(`\t${icon}  ${this.output.nrOfIPpackets / 1e6} × 10⁶ IP packets analysed`);
-      this.progressPrintCounter++
-    }
-  }
-
-  flush () {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-  }
-
   countIPPackets (ipPacket) {
     this.output.nrOfIPpackets++
-    this.printProgress()
     try {
-      var srcAddr = ipPacket.saddr.addr.join('.')
-      var dstAddr = ipPacket.daddr.addr.join('.')
+      var srcAddress = ipPacket.saddr.addr.join('.')
+      var existingEntry = this.results.srcIps.hasOwnProperty(srcAddress)
 
-      if (!this.results.srcIps[srcAddr]) {
-        this.results.srcIps[srcAddr] = true
+      if (existingEntry) {
         this.output.nrOfSrcIps++
+      } else {
+        this.results.srcIps[srcAddress] = true
       }
-      if (!this.results.dstIps[dstAddr]) {
-        this.results.dstIps[dstAddr] = true
+
+      var dstAddress = ipPacket.daddr.addr.join('.')
+      var existingEntry = this.results.dstIps.hasOwnProperty(dstAddress)
+
+      if (existingEntry) {
         this.output.nrOfDstIps++
+      } else {
+        this.results.dstIps[srcAddress] = true
       }
+
     } catch (e) {
       console.log('Unable to process IP packet:', ipPacket)
     }

@@ -10,6 +10,8 @@ class PacketEmitter extends EventEmitter {
     super()
     this.firstPacket = true
     this.currentPcapPacket = undefined
+    this.pcapPacketCounter = 0
+    this.progressPrintCounter = 0
   }
 
   startPcapSession (pcapPath) {
@@ -25,6 +27,8 @@ class PacketEmitter extends EventEmitter {
 
   inspectPcapPacket (pcapPacket) {
     this.emit('rawPcapPacket', pcapPacket)
+    this.pcapPacketCounter++
+    this.printProgress()
 
     try {
       var decodedPacket = pcap.decode(pcapPacket)
@@ -184,6 +188,23 @@ class PacketEmitter extends EventEmitter {
 
   inspectICMPPacket (icmpPacket) {
     this.emit('icmpPacket', icmpPacket)
+  }
+
+  printProgress () {
+    var anim = ['◴','◷','◶','◵']
+    if (this.pcapPacketCounter % 1000000 === 0) {
+      var icon = anim[this.progressPrintCounter % 4]
+      this.flushStdout()
+      var heapUsage = process.memoryUsage().heapTotal / 1024 / 1024
+      process.stdout.write(`\t${icon}  ${this.pcapPacketCounter / 1e6} × 10⁶ PCAP packets analysed. Current Heap Memory usage: ${heapUsage.toFixed()}MB`);
+      this.progressPrintCounter++
+    }
+  }
+  flushStdout () {
+    try {
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
+    } catch (e) {}
   }
 }
 

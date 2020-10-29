@@ -27,7 +27,8 @@ function analyseFileInProjectFolder (projectPath) {
   console.log('✓ Analysis started')
   var emitter = new PacketEmitter()
 
-  var miners = [ MetricAnalyser,
+  var miners = [
+    MetricAnalyser,
     TopTwentyPortsByTrafficAnalyser,
     PortUsageClusteredAnalyser,
     SynStateAnalyser,
