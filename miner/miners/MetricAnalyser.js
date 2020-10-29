@@ -28,6 +28,7 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       nrOfTCPPackets: 0,
       udpToTcpRatio: 0
     }
+    this.progressPrintCounter = 0
   }
 
   async setUp () {
@@ -89,8 +90,24 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     }
   }
 
+  printProgress () {
+    var anim = ['◴','◷','◶','◵']
+    if (this.output.nrOfIPpackets % 1000000 === 0) {
+      var icon = anim[this.progressPrintCounter % 4]
+      this.flush()
+      process.stdout.write(`\t${icon}  ${this.output.nrOfIPpackets / 1e6} × 10⁶ IP packets analysed`);
+      this.progressPrintCounter++
+    }
+  }
+
+  flush () {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+  }
+
   countIPPackets (ipPacket) {
     this.output.nrOfIPpackets++
+    this.printProgress()
     try {
       var srcAddr = ipPacket.saddr.addr.join('.')
       var dstAddr = ipPacket.daddr.addr.join('.')

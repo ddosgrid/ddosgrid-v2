@@ -58,6 +58,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
   try {
     var decodingTimer = new Date()
     emitter.startPcapSession(target)
+    console.log(`✓ Decoding has started:`)
   } catch (e) {
     console.error(e)
     process.exit(1)
