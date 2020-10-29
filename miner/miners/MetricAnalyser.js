@@ -125,7 +125,6 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   }
 
   async postParsingAnalysis () {
-    console.log('INFO: Memory usage (heap):', process.memoryUsage().heapTotal / 1024 / 1024)
     this.output.attackBandwidthInBps = this.output.attackSizeInBytes / this.output.duration
     this.output.avgPacketSize = this.output.attackSizeInBytes / this.output.nrOfIPpackets
     this.output.udpToTcpRatio = this.output.nrOfUDPPackets / this.output.nrOfTCPPackets
