@@ -59,7 +59,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
   try {
     var decodingTimer = new Date()
     emitter.startPcapSession(target)
-    console.log(`✓ Decoding has started:`)
+    console.log(`✓ Decoding has started...`)
   } catch (e) {
     console.error(e)
     process.exit(1)
@@ -67,7 +67,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
 
   emitter.on('complete', async () => {
     var decodingDuration = (new Date() - decodingTimer) / 1000
-    console.log(`✓ Decoding has finished (${decodingDuration}s), starting post-parsing analysis`)
+    console.log(`\n✓ Decoding has finished (${decodingDuration}s), starting post-parsing analysis`)
     // var results = activeMiners.map(async (miner) => { return await miner.postParsingAnalysis() })
     console.log('✓ Post-parsing analysis of the following miners has completed:')
     var results = []
