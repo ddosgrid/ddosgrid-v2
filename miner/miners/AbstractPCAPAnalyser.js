@@ -29,7 +29,7 @@ class AbstractPCAPAnalyser {
       const fs = require('fs')
       fs.writeFile(fileName, JSON.stringify(fileContent), function (err) {
         if (err) {
-          console.err(`Error writing file ${fileName}.`)
+          console.error(`Error writing file ${fileName}:`, err.message)
           reject(err)
         }
         resolve(resultSummary)

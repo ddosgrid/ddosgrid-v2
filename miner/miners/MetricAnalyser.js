@@ -7,8 +7,8 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     this.results = {
       srcIps: {},
       dstIps: {},
-      srcPorts: new Array(PortNumberSpace),
-      dstPorts: new Array(PortNumberSpace)
+      srcPorts: {},
+      dstPorts: {}
     }
     this.output = {
       start: null,
@@ -76,11 +76,13 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       try {
         var srcPort = transportPacket.sport
         var dstPort = transportPacket.dport
-        if (!this.results.dstPorts[dstPort]) {
+        var dstExists = this.results.dstPorts.hasOwnProperty(dstPort)
+        if (!dstExists) {
           this.results.dstPorts[dstPort] = true
           this.output.nrOfDstPorts++
         }
-        if (!this.results.srcPorts[srcPort]) {
+        var srcExists = this.results.srcPorts.hasOwnProperty(srcPort)
+        if (!srcExists) {
           this.results.srcPorts[srcPort] = true
           this.output.nrOfSrcPorts++
         }
@@ -96,19 +98,17 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       var srcAddress = ipPacket.saddr.addr.join('.')
       var existingEntry = this.results.srcIps.hasOwnProperty(srcAddress)
 
-      if (existingEntry) {
-        this.output.nrOfSrcIps++
-      } else {
+      if (!existingEntry) {
         this.results.srcIps[srcAddress] = true
+        this.output.nrOfSrcIps++
       }
 
       var dstAddress = ipPacket.daddr.addr.join('.')
       var existingEntry = this.results.dstIps.hasOwnProperty(dstAddress)
 
-      if (existingEntry) {
+      if (!existingEntry) {
+        this.results.dstIps[dstAddress] = true
         this.output.nrOfDstIps++
-      } else {
-        this.results.dstIps[srcAddress] = true
       }
 
     } catch (e) {
