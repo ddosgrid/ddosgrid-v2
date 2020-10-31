@@ -41,9 +41,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   // Actual mining function
   // Post-analysis phase, do additional computation with the collected data and write it out
   handlePcap (pcapPacket) {
-    // console.log(pcapPacket);
     if (Object.keys(this.currentWindowData).length == 0) {
-      console.log('first packet');
       // First packet, no window created yet
 
       // set global start time based off this packet
@@ -90,9 +88,10 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         num_unique_source_ports: [...new Set(currentWindowData.source_ports)].length,
         num_unique_dest_ports: [...new Set(currentWindowData.dest_ports)].length,
         perc_err_packets: 0,
-        tcp_perc: 0,
-        udp_perc: 0,
-        other_perc: 0,
+        tcp_perc: currentWindowData.num_tcp / currentWindowData.num_packets,
+        udp_perc: currentWindowData.num_udp / currentWindowData.num_packets,
+        icmp_perc: currentWindowData.num_icmp / currentWindowData.num_packets,
+        other_perc: currentWindowData.num_other / currentWindowData.num_packets,
         of_tcp_syn: 0,
         of_tcp_fin: 0,
         of_tcp_ack: 0,
@@ -114,6 +113,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         num_err_packets: 0,
         num_tcp: 0,
         num_udp: 0,
+        num_icmp: 0,
         num_other: 0,
         of_tcp_syn: 0,
         of_tcp_fin: 0,
@@ -131,6 +131,20 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       currentWindowData.source_ips.push(pcapPacket.payload.payload.saddr.addr.join('.'))
       currentWindowData.source_ports.push(pcapPacket.payload.payload.payload.sport)
       currentWindowData.dest_ports.push(pcapPacket.payload.payload.payload.dport)
+
+      if (pcapPacket.payload.payload.protocol === 6) {
+        currentWindowData.num_tcp += 1
+      }
+      else if (pcapPacket.payload.payload.protocol === 17) {
+        currentWindowData.num_udp += 1
+
+      }
+      else if (pcapPacket.payload.payload.protocol === 1) {
+        currentWindowData.num_icmp += 1
+      }
+      else {
+        currentWindowData.num_other += 1
+      }
 
       return currentWindowData
     }
