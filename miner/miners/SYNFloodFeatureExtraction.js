@@ -5,7 +5,6 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     super(parser, outPath)
     this.currentPacketTime
     this.windowLength = 1
-    this.currentWindowResult = {} // used at the end of a window
     this.currentWindowData = {} // used while going through packets
     this.result = []
     // TIME BASED
@@ -36,7 +35,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
     this.pcapParser.on('pcapPacket', this.handlePcap.bind(this))
-    this.pcapParser.on('complete', this.addLastWindow.bind(this))
+    // this.pcapParser.on('complete', this.addLastWindow.bind(this))
   }
 
   // Actual mining function
@@ -44,12 +43,15 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   handlePcap (pcapPacket) {
     // console.log(pcapPacket);
     if (Object.keys(this.currentWindowData).length == 0) {
+      console.log('first packet');
       // First packet, no window created yet
 
       // set global start time based off this packet
       this.currentPacketTime = pcapPacket.pcap_header.tv_sec
-      this.currentWindowData = createNewWindowData()
-      // create features for packet/window and store in currentWindow
+      this.currentWindowData = createNewWindowData(pcapPacket.pcap_header.tv_sec)
+
+      this.currentWindowData = createFeatures(this.currentWindowData, pcapPacket)
+
     } else {
       // regular process
       if (pcapPacket.pcap_header.tv_sec - this.windowLength >= this.currentPacketTime) {
@@ -62,28 +64,31 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
           // add to results
         }
         // add currentWindow to results
-        this.result.push(calculateWindowResult(this.result.length))
+        this.result.push(calculateWindowResult(this. currentWindowData, this.result.length))
 
         // create new window
+        this.currentPacketTime = pcapPacket.pcap_header.tv_sec
         this.currentWindowData = createNewWindowData(pcapPacket.pcap_header.tv_sec)
 
-        // create features
+        this.currentWindowData = createFeatures(this.currentWindowData, pcapPacket)
       } else {
         // window exists and not new interval
 
-        // create features
+        this.currentWindowData = createFeatures(this.currentWindowData, pcapPacket)
+
       }
     }
 
-    function calculateWindowResult(windowNr) {
+    function calculateWindowResult(currentWindowData, windowNr) {
       var newWindowResult = {
         windowNr: windowNr,
-        num_packets: 0,
-        avg_packet_size: 0,
-        num_bytes: 0,
-        num_unique_packet_lengths: 0,
-        num_unique_source_ips: 0,
-        num_unique_source_ports: 0,
+        num_packets: currentWindowData.num_packets,
+        avg_packet_size: Math.round(currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) / currentWindowData.num_packets),
+        num_bytes: currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0),
+        num_unique_packet_lengths: [...new Set(currentWindowData.packet_sizes_bytes)].length,
+        num_unique_source_ips: [...new Set(currentWindowData.source_ips)].length,
+        num_unique_source_ports: [...new Set(currentWindowData.source_ports)].length,
+        num_unique_dest_ports: [...new Set(currentWindowData.dest_ports)].length,
         perc_err_packets: 0,
         tcp_perc: 0,
         udp_perc: 0,
@@ -92,7 +97,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         of_tcp_fin: 0,
         of_tcp_ack: 0,
         avg_inter_packet_interval: 0,
-        is_attack: 0,
+        is_attack: 1,
       }
       return newWindowResult
     }
@@ -100,11 +105,12 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     function createNewWindowData(arrivalTime) {
       var newWindowData = {
         arrival_time: arrivalTime,
-        packet_sizes: [],
+        packet_sizes_bytes: [],
         num_packets: 0,
         num_bytes: 0,
         source_ips: [],
         source_ports: [],
+        dest_ports: [],
         num_err_packets: 0,
         num_tcp: 0,
         num_udp: 0,
@@ -116,6 +122,17 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       }
 
       return newWindowData
+    }
+
+    function createFeatures(currentWindowData, pcapPacket) {
+      currentWindowData.packet_sizes_bytes.push(pcapPacket.pcap_header.len)
+      currentWindowData.num_packets += 1
+      currentWindowData.size_bytes += pcapPacket.pcap_header.len
+      currentWindowData.source_ips.push(pcapPacket.payload.payload.saddr.addr.join('.'))
+      currentWindowData.source_ports.push(pcapPacket.payload.payload.payload.sport)
+      currentWindowData.dest_ports.push(pcapPacket.payload.payload.payload.dport)
+
+      return currentWindowData
     }
   }
 
