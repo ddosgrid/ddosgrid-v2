@@ -92,10 +92,10 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         udp_perc: currentWindowData.num_udp / currentWindowData.num_packets,
         icmp_perc: currentWindowData.num_icmp / currentWindowData.num_packets,
         other_perc: currentWindowData.num_other / currentWindowData.num_packets,
-        of_tcp_syn: 0,
-        of_tcp_fin: 0,
-        of_tcp_ack: 0,
-        avg_inter_packet_interval: 0,
+        perc_tcp_syn: currentWindowData.of_tcp_syn / currentWindowData.num_packets,
+        perc_tcp_fin: currentWindowData.of_tcp_fin / currentWindowData.num_packets,
+        perc_tcp_ack: currentWindowData.of_tcp_ack / currentWindowData.num_packets,
+        avg_inter_packet_interval: currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1,
         is_attack: 1,
       }
       return newWindowResult
@@ -118,7 +118,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         of_tcp_syn: 0,
         of_tcp_fin: 0,
         of_tcp_ack: 0,
-        inter_packet_interval_times: [],
+        arrival_times: [],
       }
 
       return newWindowData
@@ -131,6 +131,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       currentWindowData.source_ips.push(pcapPacket.payload.payload.saddr.addr.join('.'))
       currentWindowData.source_ports.push(pcapPacket.payload.payload.payload.sport)
       currentWindowData.dest_ports.push(pcapPacket.payload.payload.payload.dport)
+      currentWindowData.arrival_times.push(pcapPacket.pcap_header.tv_sec * 1000000 + pcapPacket.pcap_header.tv_usec)
 
       if (pcapPacket.payload.payload.protocol === 6) {
         currentWindowData.num_tcp += 1
@@ -144,6 +145,18 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       }
       else {
         currentWindowData.num_other += 1
+      }
+
+      if (pcapPacket.payload.payload.payload.flags.syn) {
+        currentWindowData.of_tcp_syn += 1
+      }
+
+      if (pcapPacket.payload.payload.payload.flags.ack) {
+        currentWindowData.of_tcp_ack += 1
+      }
+
+      if (pcapPacket.payload.payload.payload.flags.fin) {
+        currentWindowData.of_tcp_fin += 1
       }
 
       return currentWindowData
