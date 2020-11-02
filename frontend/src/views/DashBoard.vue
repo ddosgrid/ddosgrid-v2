@@ -285,4 +285,8 @@ export default {
 .transparent {
   opacity: 0.2 !important;
 }
+.vue-grid-item {
+  min-width: 364px;
+}
+
 </style>
