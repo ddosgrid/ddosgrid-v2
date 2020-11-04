@@ -27,13 +27,27 @@ class AbstractPCAPAnalyser {
   async storeAndReturnResult (fileName, fileContent, resultSummary) {
     return new Promise((resolve, reject) => {
       const fs = require('fs')
-      fs.writeFile(fileName, JSON.stringify(fileContent), function (err) {
-        if (err) {
-          console.err(`Error writing file ${fileName}.`)
-          reject(err)
-        }
-        resolve(resultSummary)
-      })
+      if (fileName.endsWith('.csv')) {
+        const jsonexport = require('jsonexport');
+        jsonexport(fileContent, function(err, csv) {
+          if (err) return(err)
+          fs.writeFile(fileName, csv, function (err) {
+            if (err) {
+              console.err(`Error writing file ${fileName}.`)
+              reject(err)
+            }
+            resolve(resultSummary)
+          })
+        })
+      } else {
+        fs.writeFile(fileName, JSON.stringify(fileContent), function (err) {
+          if (err) {
+            console.err(`Error writing file ${fileName}.`)
+            reject(err)
+          }
+          resolve(resultSummary)
+        })
+      }
     })
   }
 }

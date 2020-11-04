@@ -79,7 +79,7 @@ class PacketEmitter extends EventEmitter {
   }
 
   inspectARPPacket (arpPacket) {
-    this.emit(arpPacket, arpPacket)
+    this.emit('arpPacket', arpPacket)
   }
 
   inspectIPPacket (ipPacket) {

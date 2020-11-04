@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jvdassen/ddos-pcap-decoder-POC#readme",
   "dependencies": {
     "ip-to-asn": "^1.0.0",
+    "jsonexport": "^3.0.1",
     "pcap": "^2.1.0",
     "port-numbers": "^4.0.20",
     "ua-parser-js": "^0.7.21",
