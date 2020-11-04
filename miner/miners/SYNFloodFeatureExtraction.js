@@ -3,7 +3,7 @@ const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
-    this.currentPacketTime
+    this.currentPacketTimeSeconds
     this.windowLengthInSeconds = 1
     this.currentWindowData = {} // used while going through packets
     this.result = []
@@ -20,7 +20,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     this.pcapParser.on('udpPacket', this.handleUDPPacket.bind(this))
     this.pcapParser.on('icmpPacket', this.handleICMPPacket.bind(this))
 
-    // this.pcapParser.on('complete', this.addLastWindow.bind(this))
+    this.pcapParser.on('complete', this.addLastWindow.bind(this))
   }
 
   // Actual mining function
@@ -28,22 +28,24 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   handlePcap (pcapPacket) {
     if (Object.keys(this.currentWindowData).length == 0) {
       // First packet, no window created yet
-
-      this.currentPacketTime = pcapPacket.pcap_header.tv_sec
-      this.currentWindowData = this.createNewWindowData(pcapPacket.pcap_header.tv_sec)
+      this.currentPacketTimeSeconds = pcapPacket.pcap_header.tv_sec
+      this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds)
     } else {
       // regular process
-      if (pcapPacket.pcap_header.tv_sec - this.windowLengthInSeconds >= this.currentPacketTime) {
-        // is new window required?
-        var skippedwindows = false
-        if (skippedwindows) {
-          // have windows been skipped? some mod calc will do
-          // fill empty windows and
-          // add to results
-        }
+      var newPacketArrivalTimeInSeconds = pcapPacket.pcap_header.tv_sec
+      if (newPacketArrivalTimeInSeconds - this.windowLengthInSeconds >= this.currentWindowData.arrival_time) {
+        // new window(s) required
         this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
-        this.currentPacketTime = pcapPacket.pcap_header.tv_sec
-        this.currentWindowData = this.createNewWindowData(pcapPacket.pcap_header.tv_sec)
+        var skippedWindows = this.numberOfSkippedWindows(newPacketArrivalTimeInSeconds)
+        if (skippedWindows > 0) {
+          // add skipped windows
+          for (var i = 0; i < skippedWindows; i++) {
+            var emptyWindowData = this.createNewWindowData(0)
+            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length))
+          }
+        }
+        this.currentPacketTimeSeconds = newPacketArrivalTimeInSeconds
+        this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds)
       }
     }
     // create pcap features
@@ -91,9 +93,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   addLastWindow() {
-    // add current window to results
-    this.result.push(this.calculateWindowResult(this.result.length))
-
+    this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
   }
 
   createNewWindowData(arrivalTime) {
@@ -117,6 +117,10 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     }
 
     return newWindowData
+  }
+
+  numberOfSkippedWindows(newPacketArrivalTimeInSeconds) {
+    return ((newPacketArrivalTimeInSeconds - this.currentWindowData.arrival_time) - 1) / this.windowLengthInSeconds
   }
 
   calculateWindowResult(currentWindowData, windowNr) {
