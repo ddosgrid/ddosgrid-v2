@@ -40,8 +40,8 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
         if (skippedWindows > 0) {
           // add skipped windows
           for (var i = 0; i < skippedWindows; i++) {
-            var emptyWindowData = this.createNewWindowData(0)
-            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length))
+            var emptyWindowData = this.createNewWindowData(0, true)
+            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length, true))
           }
         }
         this.currentPacketTimeSeconds = newPacketArrivalTimeInSeconds
@@ -96,15 +96,15 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
   }
 
-  createNewWindowData(arrivalTime) {
+  createNewWindowData(arrivalTime, emptyWindow = false) {
     var newWindowData = {
       arrival_time: arrivalTime,
-      packet_sizes_bytes: [],
+      packet_sizes_bytes: !emptyWindow ? [] : 0,
       num_packets: 0,
       num_bytes: 0,
-      source_ips: [],
-      source_ports: [],
-      dest_ports: [],
+      source_ips: !emptyWindow ? [] : 0,
+      source_ports: !emptyWindow ? [] : 0,
+      dest_ports: !emptyWindow ? [] : 0,
       num_err_packets: 0,
       num_tcp: 0,
       num_udp: 0,
@@ -113,7 +113,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       of_tcp_syn: 0,
       of_tcp_fin: 0,
       of_tcp_ack: 0,
-      arrival_times: [],
+      arrival_times: !emptyWindow ? [] : 0,
     }
 
     return newWindowData
@@ -123,25 +123,25 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     return ((newPacketArrivalTimeInSeconds - this.currentWindowData.arrival_time) - 1) / this.windowLengthInSeconds
   }
 
-  calculateWindowResult(currentWindowData, windowNr) {
+  calculateWindowResult(currentWindowData, windowNr, emptyWindow = false) {
     var newWindowResult = {
       windowNr: windowNr,
       num_packets: currentWindowData.num_packets,
-      avg_packet_size: Math.round(currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) / currentWindowData.num_packets),
-      num_bytes: currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0),
-      num_unique_packet_lengths: [...new Set(currentWindowData.packet_sizes_bytes)].length,
-      num_unique_source_ips: [...new Set(currentWindowData.source_ips)].length,
-      num_unique_source_ports: [...new Set(currentWindowData.source_ports)].length,
-      num_unique_dest_ports: [...new Set(currentWindowData.dest_ports)].length,
+      avg_packet_size: !emptyWindow ? Math.round(currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) / currentWindowData.num_packets) : 0,
+      num_bytes: !emptyWindow ? currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) : 0,
+      num_unique_packet_lengths: !emptyWindow ? [...new Set(currentWindowData.packet_sizes_bytes)].length : 0,
+      num_unique_source_ips: !emptyWindow ? [...new Set(currentWindowData.source_ips)].length : 0,
+      num_unique_source_ports: !emptyWindow ? [...new Set(currentWindowData.source_ports)].length : 0,
+      num_unique_dest_ports: !emptyWindow ? [...new Set(currentWindowData.dest_ports)].length : 0,
       perc_err_packets: 0,
-      tcp_perc: currentWindowData.num_tcp / currentWindowData.num_packets,
-      udp_perc: currentWindowData.num_udp / currentWindowData.num_packets,
-      icmp_perc: currentWindowData.num_icmp / currentWindowData.num_packets,
-      other_perc: currentWindowData.num_other / currentWindowData.num_packets,
-      perc_tcp_syn: currentWindowData.of_tcp_syn / currentWindowData.num_packets,
-      perc_tcp_fin: currentWindowData.of_tcp_fin / currentWindowData.num_packets,
-      perc_tcp_ack: currentWindowData.of_tcp_ack / currentWindowData.num_packets,
-      avg_inter_packet_interval: currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1,
+      tcp_perc: !emptyWindow ? currentWindowData.num_tcp / currentWindowData.num_packets : 0,
+      udp_perc: !emptyWindow ? currentWindowData.num_udp / currentWindowData.num_packets : 0,
+      icmp_perc: !emptyWindow ? currentWindowData.num_icmp / currentWindowData.num_packets : 0,
+      other_perc: !emptyWindow ? currentWindowData.num_other / currentWindowData.num_packets : 0,
+      perc_tcp_syn: !emptyWindow ? currentWindowData.of_tcp_syn / currentWindowData.num_packets : 0,
+      perc_tcp_fin: !emptyWindow ? currentWindowData.of_tcp_fin / currentWindowData.num_packets : 0,
+      perc_tcp_ack: !emptyWindow ? currentWindowData.of_tcp_ack / currentWindowData.num_packets : 0,
+      avg_inter_packet_interval: !emptyWindow ? (currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1) : 0,
       is_attack: 1,
     }
     return newWindowResult
@@ -153,7 +153,8 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
 
   async postParsingAnalysis () {
     console.log("finished");
-    var fileName = `${this.baseOutPath}-SYN-Flood-features.csv`
+    // multiple filenames for multiple file formats
+    var fileName = `${this.baseOutPath}-SYN-Flood-features.json`
     var fileContent = this.result
     var summary = {
       fileName: fileName,
