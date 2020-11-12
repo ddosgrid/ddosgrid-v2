@@ -11,8 +11,11 @@ const {
   HTTPVerbs,
   HTTPEndpoints,
   BrowserAndOSAnalyzer,
-  DeviceAnalyzer
+  DeviceAnalyzer,
+  UDPvsTCPRatio,
+  ICMPMessages
 } = require('./exports')
+const colors = require('colors')
 
 try {
   var settings = parseAndCheckArguments(process.argv)
@@ -32,7 +35,9 @@ function analyseFileInProjectFolder (projectPath) {
     TopTwentyPortsByTrafficAnalyser,
     PortUsageClusteredAnalyser,
     SynStateAnalyser,
+    UDPvsTCPRatio,
     IPVersionAnalyser,
+    ICMPMessages,
     Top5SourceHostsAnalyser,
     Top100SourceHostsAnalyser,
     HTTPVerbs,
@@ -66,8 +71,8 @@ async function setUpAndRun (emitter, activeMiners, target) {
   }
 
   emitter.on('complete', async () => {
-    var decodingDuration = (new Date() - decodingTimer) / 1000
-    console.log(`\n✓ Decoding has finished (${decodingDuration}s), starting post-parsing analysis`)
+    var decodingDuration = (new Date() - decodingTimer) / 1000 + 's'
+    console.log(`\n✓ Decoding has finished (${decodingDuration.green}), starting post-parsing analysis`)
     // var results = activeMiners.map(async (miner) => { return await miner.postParsingAnalysis() })
     console.log('✓ Post-parsing analysis of the following miners has completed:')
     var results = []
