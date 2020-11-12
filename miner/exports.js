@@ -11,6 +11,8 @@ var HTTPVerbs = require('./miners/HTTPVerbs')
 var HTTPEndpoints = require('./miners/HTTPEndpoints')
 var BrowserAndOSAnalyzer = require('./miners/BrowserAndOSAnalyzer')
 var DeviceAnalyzer = require('./miners/DeviceAnalyzer')
+var UDPvsTCPRatio = require('./miners/UDPvsTCP')
+var ICMPMessages = require('./miners/ICMPmessages')
 
 module.exports = {
   PacketEmitter,
@@ -25,5 +27,7 @@ module.exports = {
   HTTPVerbs,
   HTTPEndpoints,
   BrowserAndOSAnalyzer,
-  DeviceAnalyzer
+  DeviceAnalyzer,
+  UDPvsTCPRatio,
+  ICMPMessages
 }

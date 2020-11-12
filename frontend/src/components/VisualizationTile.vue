@@ -12,16 +12,21 @@
     </md-card-header>
 
     <md-card-content>
-      <component v-if="!visualizationUnavailable"
+      <component v-if="!visualizationUnavailable && !visualizationEmpty"
                  :url="fileUrl"
                  :yscale="scaleType"
                  v-bind:is="currentTabComponent"
-                 @unavailable="hideVisualization">
+                 @unavailable="hideVisualization"
+                 @empty="showWarning">
       </component>
       <no-visualization-possible
-                 v-else
+                 v-if="visualizationUnavailable"
                  @removeVisualization="clearVisualization(analysisfile)">
       </no-visualization-possible>
+      <empty-dataset
+                 v-if="visualizationEmpty"
+                 @removeVisualization="clearVisualization(analysisfile)">
+      </empty-dataset>
     </md-card-content>
 
     <md-card-actions class="no-print" md-alignment="space-between">
@@ -56,6 +61,7 @@ import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
 import WorldMap from '../components/WorldMap'
 import VisualizationUnavailable from '../components/VisualizationUnavailable'
+import VisualizationEmpty from '../components/VisualizationEmpty'
 import hashicon from 'hashicon'
 
 export default {
@@ -64,7 +70,8 @@ export default {
     'scatterplot': ScatterPlot,
     'piechart': PieChart,
     'worldmap': WorldMap,
-    'no-visualization-possible': VisualizationUnavailable
+    'no-visualization-possible': VisualizationUnavailable,
+    'empty-dataset': VisualizationEmpty
   },
   props: [
     'analysisfile'
@@ -73,6 +80,7 @@ export default {
     return {
       exportUrl: '',
       visualizationUnavailable: false,
+      visualizationEmpty: false,
       downloadAble: false,
       scaleType: 'linear',
       typesThatSupportLogCharts: [ 'scatterplot' ]
@@ -95,6 +103,9 @@ export default {
   methods: {
     hideVisualization: function hideVisualization () {
       this.visualizationUnavailable = true
+    },
+    showWarning: function showWarning () {
+      this.visualizationEmpty = true
     },
     getIconForHash: function getIconForHash (file) {
       try {

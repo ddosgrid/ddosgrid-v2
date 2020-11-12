@@ -1,6 +1,7 @@
 const EventEmitter = require('events')
 const pcap = require('pcap')
 const portNumbers = require('port-numbers')
+const colors = require('colors')
 
 // Change to true if you want to know about every unsupported frame
 const verbose = false
@@ -116,12 +117,12 @@ class PacketEmitter extends EventEmitter {
   }
 
   inspectTransportPacket (transportPacket, ipProtocolField) {
-    this.emit('transportPacket', transportPacket)
-
     if (ipProtocolField === 6) {
+      this.emit('transportPacket', transportPacket)
       this.inspectTCPPacket(transportPacket)
       this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
     } else if (ipProtocolField === 17) {
+      this.emit('transportPacket', transportPacket)
       this.inspectUDPPacket(transportPacket)
       this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
     } else if (ipProtocolField === 1) {
@@ -196,7 +197,15 @@ class PacketEmitter extends EventEmitter {
       var icon = anim[this.progressPrintCounter % 4]
       this.flushStdout()
       var heapUsage = process.memoryUsage().heapTotal / 1024 / 1024
-      process.stdout.write(`\t${icon}  ${this.pcapPacketCounter / 1e6} × 10⁶ PCAP packets analysed. Current Heap Memory usage: ${heapUsage.toFixed()}MB`);
+      var formattedMemUsage = heapUsage.toFixed() + 'MB'
+      if (heapUsage < 1000) {
+        var coloredMemUsage = formattedMemUsage.black.bgGreen
+      } else if (heapUsage < 2000) {
+        var coloredMemUsage = formattedMemUsage.black.bgYellow
+      } else {
+        var coloredMemUsage = formattedMemUsage.black.bgRed
+      }
+      process.stdout.write(`\t${icon}  ${this.pcapPacketCounter / 1e6} × 10⁶ PCAP packets analysed. Current Heap Memory usage: ${coloredMemUsage}`);
       this.progressPrintCounter++
     }
   }
