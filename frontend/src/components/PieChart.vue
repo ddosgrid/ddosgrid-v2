@@ -12,7 +12,13 @@ export default {
       // If the data of the response is formatted to be rendered directly we
       // can directly feed it to the renderChart method!
       if (parsedResponse.hasOwnProperty('piechart')) {
-        this.renderChart(parsedResponse.piechart)
+        var data = parsedResponse.piechart.datasets[0].data
+        var emptyDataset = data.every(el => el === 0)
+        if (!data || emptyDataset) {
+          this.$emit('empty')
+        } else {
+          this.renderChart(parsedResponse.piechart)
+        }
       } else {
         var vals = Object.values(parsedResponse.data)
         var labels = parsedResponse.labels
