@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersist from 'vuex-localstorage'
-import { apibaseurl } from '@/config/variables.js'
+import { apibaseurl, demoUserEmail } from '@/config/variables.js'
 import router from '../router'
 
 Vue.use(Vuex)
@@ -11,6 +11,7 @@ export default new Vuex.Store({
     setups: [],
     tiles: [],
     authenticated: false,
+    demomode: false,
     nrOfAnalysedDatasets: []
   },
   mutations: {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     updateAuthState (state, authenticated = false) {
       state.authenticated = authenticated
+    },
+    updateConstrainedMode (state, constrained = false) {
+      state.demomode = constrained
     },
     storeSetup (state, name = `setup-${new Date().toJSON()}`) {
       state.setups.push({
@@ -124,6 +128,9 @@ export default new Vuex.Store({
           router.push(sessionStorage.getItem('intercepted'))
           sessionStorage.removeItem('intercepted')
         }
+        // check if the user is logged in with the demo account
+        var constrained = info.email === demoUserEmail
+        commit('updateConstrainedMode', constrained)
       } catch (e) {
         commit('updateAuthState', false)
       }

@@ -17,7 +17,9 @@
 
     <md-list>
       <md-list-item>
-        <md-checkbox class="md-primary" v-model="exportUploadedFile">Export to DDoSDB</md-checkbox>
+        <md-checkbox class="md-primary" v-model="exportUploadedFile" :disabled="!exportAllowed">
+          <span :class="{ unavailable: !exportAllowed }" title="Only available for files under 50MB">Export to DDoSDB</span>
+        </md-checkbox>
         <md-badge class="md-square" md-content="BETA" />
       </md-list-item>
     </md-list>
@@ -51,7 +53,7 @@ export default {
     snackbarMsg: null,
     isLoading: false,
     closingTimeout: 0,
-    exportUploadedFile: true,
+    exportUploadedFile: false,
     fileSize: 0,
     uploadProgress: 0
   }),
@@ -65,6 +67,9 @@ export default {
         return (this.fileSize / 1000 / 1000).toFixed()
       }
       return (this.fileSize / 1000 / 1000).toFixed(3)
+    },
+    exportAllowed: function () {
+      return this.fileSize < 50000000
     }
   },
   methods: {
@@ -116,7 +121,8 @@ export default {
           this.snackbarMsg = 'Upload was Successful, starting analysis now.'
           this.showSnackbar = true
           // start analysis
-          fetch(`${apibaseurl}/analysis/${result.id}/analyse?export=${this.exportUploadedFile}`, {
+          var shouldExport = this.exportUploadedFile && this.exportAllowed
+          fetch(`${apibaseurl}/analysis/${result.id}/analyse?export=${shouldExport}`, {
             method: 'POST',
             credentials: 'include'
           })
@@ -153,5 +159,9 @@ export default {
   .upload-btn-wrapper {
     text-align: center;
     margin-top: 20px;
+  }
+  .unavailable {
+    text-decoration: line-through;
+    cursor: help;
   }
 </style>
