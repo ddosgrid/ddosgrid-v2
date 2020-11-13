@@ -1,0 +1,38 @@
+{
+  "name": "ddosgrid-miner",
+  "version": "1.1.0",
+  "description": "POC showing feature extraction from pcap files",
+  "main": "exports.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "node node_modules/eslint/bin/eslint.js ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvdassen/ddos-pcap-decoder-POC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jvdassen/ddos-pcap-decoder-POC/issues"
+  },
+  "homepage": "https://github.com/jvdassen/ddos-pcap-decoder-POC#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "icmp-code-resolution": "^1.0.0",
+    "ip-to-asn": "^1.0.0",
+    "pcap": "^2.1.0",
+    "port-numbers": "^4.0.20",
+    "ua-parser-js": "^0.7.21",
+    "whois-json": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}

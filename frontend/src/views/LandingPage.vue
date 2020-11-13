@@ -33,7 +33,7 @@
               <div class="md-title">Upload and analyse PCAP files</div>
             </md-card-header>
             <md-card-content>
-            <img id="analysis-icon" src="img/search-24px.svg">
+            <img id="analysis-icon" src="img/logos/appr.webp">
           <span class="section-text">
             <p>DDoSGrid uses PCAP files as input because they are not oriented towards a specific protocol or model (compared to for example flow-based capture files). DDoSGrid provides the following features for feature extraction using PCAP files:</p>
             <ul class="no-list-style">
@@ -154,7 +154,7 @@ section {
 #chart-icon {
   height: 200px !important;
   float: right;
-  shape-outside: polygon(182px 13px, 115px 79px, 77px 50px, -12px 139px, 20px 177px, 82px 124px, 114px 163px, 183px 91px, 192px 28px);
+  shape-outside: polygon(372px 218px, 373px 5px, 2px 1px, 4px 428px, 2px 576px, 456px 581px, 457px 398px, 457px 216px);
 }
 #github-icon {
   height: 80px !important;
@@ -163,9 +163,9 @@ section {
 }
 #analysis-icon {
   float: left;
-  height: 200px !important;
+  height: 600px !important;
   margin: 0 20px 20px 0px;
-  shape-outside: polygon(143px 38px, 104px 11px, 2px 1px, 0px 128px, 148px 186px, 176px 181px, 189px 157px, 152px 105px, 158px 72px);
+  shape-outside: polygon(359px 197px, 358px 3px, 2px 1px, 4px 428px, 389px 539px, 496px 344px, 350px 258px, 384px 222px);
 }
 .main-icon-wrapper {
   height: 200px;
