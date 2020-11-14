@@ -13,7 +13,8 @@ const {
   BrowserAndOSAnalyzer,
   DeviceAnalyzer,
   UDPvsTCPRatio,
-  ICMPMessages
+  ICMPMessages,
+  VLANDomains
 } = require('./exports')
 const colors = require('colors')
 
@@ -31,6 +32,7 @@ function analyseFileInProjectFolder (projectPath) {
   var emitter = new PacketEmitter()
 
   var miners = [
+    VLANDomains,
     MetricAnalyser,
     TopTwentyPortsByTrafficAnalyser,
     PortUsageClusteredAnalyser,

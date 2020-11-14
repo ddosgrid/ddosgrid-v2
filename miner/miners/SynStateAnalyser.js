@@ -75,7 +75,7 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'SYN-Flood',
+      attackCategory: 'Transport Layer',
       analysisName: 'State of TCP packets',
       supportedDiagrams: ['PieChart']
     }

@@ -42,7 +42,7 @@ class IPVersionAnalyser extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'Network State',
+      attackCategory: 'Network Layer',
       analysisName: 'IPv4 and IPv6 usage',
       supportedDiagrams: ['PieChart']
     }

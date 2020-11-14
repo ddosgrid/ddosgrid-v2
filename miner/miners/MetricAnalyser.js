@@ -26,7 +26,9 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       nrOfDstPorts: 0,
       nrOfUDPPackets: 0,
       nrOfTCPPackets: 0,
-      udpToTcpRatio: 0
+      udpToTcpRatio: 0,
+      nrOfHTTP: 0,
+      nrOfICMP: 0
     }
     this.progressPrintCounter = 0
   }
@@ -44,6 +46,9 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     this.pcapParser.on('transportPacket', this.countPorts.bind(this))
     this.pcapParser.on('udpPacket', this.countUdpPackets.bind(this))
     this.pcapParser.on('tcpPacket', this.counttcpPackets.bind(this))
+
+    this.pcapParser.on('httpPacket', this.countHTTP.bind(this))
+    this.pcapParser.on('icmpPacket', this.countICMP.bind(this))
   }
 
   getName () {
@@ -61,6 +66,14 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
 
   countPacketSize (pcapPacket) {
     this.output.attackSizeInBytes += pcapPacket.pcap_header.len
+  }
+
+  countHTTP () {
+    this.output.nrOfHTTP++
+  }
+  
+  countICMP () {
+    this.output.nrOfICMP++
   }
 
   countUdpPackets () {
@@ -131,7 +144,7 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     var fileName = `${this.baseOutPath}-generic-metrics.json`
     var outputToStore = this.output
     var resultSummary = {
-      attackCategory: 'Network State',
+      attackCategory: 'Network Layer',
       analysisName: 'Miscellaneous Metrics',
       supportedDiagrams: [],
       fileName: fileName,

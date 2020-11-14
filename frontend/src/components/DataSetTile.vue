@@ -19,40 +19,46 @@
       <md-tabs md-alignment="fixed">
         <md-tab id="tab-metrics" md-label="Metrics">
           <md-list>
-            <md-list-item md-expand>
-              <span class="md-list-item-text">Attack Stats</span>
-              <md-list slot="md-expand" class="md-dense">
-                <md-list-item>
-                  {{ "Duration: " + dataset.metrics.duration + "s"}}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Attack Size: " + Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) + " MB"}}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Number of Packets: " + dataset.metrics.nrOfIPpackets }}
-                </md-list-item>
-              </md-list>
-            </md-list-item>
-            <md-list-item md-expand>
-              <span class="md-list-item-text">Network Stats</span>
-              <md-list slot="md-expand" class="md-dense">
-                <md-list-item>
-                  {{ "Number of Source IPs: " + dataset.metrics.nrOfSrcIps }}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Number of Source Ports: " + dataset.metrics.nrOfSrcPorts }}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Number of Destination IPs: " + dataset.metrics.nrOfDstIps }}
-                </md-list-item>
-                <md-list-item>
-                  {{ "Number of Destination Ports: " + dataset.metrics.nrOfDstPorts }}
-                </md-list-item>
-              </md-list>
-            </md-list-item>
+              <md-list-item>
+                <span>Duration</span>
+                <span>{{ formattedDuration }}</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Number of Packets:</span>
+                <span>{{ dataset.metrics.nrOfIPpackets }}</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Attack Size</span>
+                <span>{{ Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) + " MB"}}</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Number of Packets</span>
+                <span> {{ dataset.metrics.nrOfIPpackets }}</span>
+              </md-list-item>
+              <md-list-item>
+                <span> Number of Source IPs</span>
+                <span> {{ dataset.metrics.nrOfSrcIps }} </span>
+              </md-list-item>
+              <md-list-item>
+                <span>Number of Source Ports </span>
+                <span> {{ dataset.metrics.nrOfSrcPorts }} </span>
+              </md-list-item>
+              <md-list-item>
+                <span>Number of Destination IPs</span>
+                <span> {{ dataset.metrics.nrOfDstIps }}</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Number of Destination Ports</span>
+                <span>{{ dataset.metrics.nrOfDstPorts }}</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Proportion of HTTP traffic</span>
+                <span>{{ httpShare }}%</span>
+              </md-list-item>
+              <md-list-item>
+                <span>Proportion of ICMP traffic</span>
+                <span>{{ icmpShare }}%</span>
+              </md-list-item>
           </md-list>
         </md-tab>
         <md-tab id="tab-visualizations" md-label="Visualizations">
@@ -100,6 +106,32 @@ export default {
     groupedByAttackType: function () {
       var result = this.dataset.analysisFiles.reduce((h, obj) => Object.assign(h, { [obj.attackCategory]: (h[obj.attackCategory] || []).concat(obj) }), {})
       return result
+    },
+    httpShare: function () {
+      var percentage = this.dataset.metrics.nrOfHTTP / this.dataset.metrics.nrOfIPpackets
+      var dec = percentage * 100
+      return dec.toFixed(2)
+    },
+    icmpShare: function () {
+      var percentage = this.dataset.metrics.nrOfICMP / this.dataset.metrics.nrOfIPpackets
+      var dec = percentage * 100
+      return dec.toFixed(2)
+    },
+    formattedDuration: function () {
+      var duration = this.dataset.metrics.duration
+      if (duration < 60) {
+        return `${duration} seconds`
+      }
+      if (duration < 600) {
+        var minutes = duration / 60
+        return `${minutes.toFixed(0)} minutes`
+      }
+      if (duration < 86400) {
+        var hours = duration / 3600
+        return `${hours.toFixed(0)} hours`
+      }
+      var days = duration / 86400
+      return `${days.toFixed(0)} days`
     }
   },
   methods: {
@@ -168,5 +200,8 @@ export default {
 
 .md-card-header-text {
   overflow-wrap: anywhere;
+}
+>>> .md-list-item-content {
+  min-height: 32px !important;
 }
 </style>
