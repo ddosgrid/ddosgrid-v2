@@ -31,7 +31,7 @@ class AbstractPCAPAnalyser {
         const jsonexport = require('jsonexport');
         jsonexport(fileContent, function(err, csv) {
           if (err) return(err)
-          fs.writeFile(fileName, csv, function (err) {
+          fs.writeFile(fileName, csv, 'utf8', function (err) {
             if (err) {
               console.err(`Error writing file ${fileName}.`)
               reject(err)

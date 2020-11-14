@@ -11,19 +11,20 @@ const {
   HTTPVerbs,
   HTTPEndpoints,
   BrowserAndOSAnalyzer,
-  DeviceAnalyzer
+  DeviceAnalyzer,
+  MachineLearningFeatureExtraction
 } = require('./exports')
 
 try {
   var settings = parseAndCheckArguments(process.argv)
   console.log('✓ Input check completed')
-  analyseFileInProjectFolder(settings.pcapPath)
+  analyseFileInProjectFolder(settings.pcapPath, settings.attackType)
 } catch (e) {
   console.error(e.message)
   process.exit(1)
 }
 
-function analyseFileInProjectFolder (projectPath) {
+function analyseFileInProjectFolder (projectPath, attackType) {
   console.log('✓ Analysis started')
   var emitter = new PacketEmitter()
 
@@ -37,13 +38,15 @@ function analyseFileInProjectFolder (projectPath) {
     HTTPVerbs,
     HTTPEndpoints,
     BrowserAndOSAnalyzer,
-    DeviceAnalyzer
+    DeviceAnalyzer,
+    MachineLearningFeatureExtraction
   ]
-  var activeMiners = miners.map(Miner => new Miner(emitter, projectPath))
 
-  setUpAndRun(emitter, activeMiners, projectPath)
+  var activeMiners = miners.map(Miner => new Miner(emitter, projectPath, attackType))
+
+  setUpAndRun(emitter, activeMiners, projectPath, attackType)
 }
-async function setUpAndRun (emitter, activeMiners, target) {
+async function setUpAndRun (emitter, activeMiners, target, attackType) {
   // The NodeJS version used (10) does not support Promise.map
   var setupTimer = new Date()
   for (var miner of activeMiners) {
@@ -57,7 +60,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
 
   try {
     var decodingTimer = new Date()
-    emitter.startPcapSession(target)
+    emitter.startPcapSession(target, attackType)
   } catch (e) {
     console.error(e)
     process.exit(1)

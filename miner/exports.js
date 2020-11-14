@@ -12,6 +12,8 @@ var HTTPEndpoints = require('./miners/HTTPEndpoints')
 var BrowserAndOSAnalyzer = require('./miners/BrowserAndOSAnalyzer')
 var DeviceAnalyzer = require('./miners/DeviceAnalyzer')
 
+var MachineLearningFeatureExtraction = require('./miners/MachineLearningFeatureExtraction');
+
 module.exports = {
   PacketEmitter,
   PortAnalyser,
@@ -25,5 +27,6 @@ module.exports = {
   HTTPVerbs,
   HTTPEndpoints,
   BrowserAndOSAnalyzer,
-  DeviceAnalyzer
+  DeviceAnalyzer,
+  MachineLearningFeatureExtraction,
 }
