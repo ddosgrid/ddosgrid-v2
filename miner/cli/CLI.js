@@ -11,7 +11,20 @@ function parseAndCheckArguments (argv) {
 
   var settings = {
     pcapPath: '',
-    pcapFile: ''
+    pcapFile: '',
+    attackType: 0
+  }
+
+  if (argv.length === 4) {
+    var attackTypeParamPattern = /attack_type=(.*)/
+    var attackTypeParam = argv[3].match(attackTypeParamPattern)
+
+    if (attackTypeParam) {
+      if (typeof attackTypeParam[1] === undefined) {
+        throw new Error('Invalid attack type specified!')
+      }
+      settings.attackType = attackTypeParam[1]
+    }
   }
 
   var pcapFileParamPattern = /pcap_path=(.*)/
