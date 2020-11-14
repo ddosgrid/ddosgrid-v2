@@ -68,7 +68,7 @@ class BrowserAndOSAnalyzer extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'HTTP',
+      attackCategory: 'Application Layer',
       analysisName: 'Most used Browser and OS Combinations',
       supportedDiagrams: ['PieChart']
     }

@@ -48,7 +48,7 @@ class Top100SourceHostsAnalyser extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'Network State',
+      attackCategory: 'Network Layer',
       analysisName: `Top ${N} sources by traffic`,
       supportedDiagrams: ['WorldMap']
     }

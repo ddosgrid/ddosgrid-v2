@@ -50,7 +50,7 @@ class HTTPVerbs extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'HTTP',
+      attackCategory: 'Application Layer',
       analysisName: `Most used HTTP verbs`,
       supportedDiagrams: ['PieChart']
     }
