@@ -36,7 +36,9 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       if (newPacketArrivalTimeInSeconds - this.windowLengthInSeconds >= this.currentWindowData.arrival_time) {
         // new window(s) required
         this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
-        var skippedWindows = this.numberOfSkippedWindows(newPacketArrivalTimeInSeconds)
+        // var skippedWindows = this.numberOfSkippedWindows(newPacketArrivalTimeInSeconds)
+        var skippedWindows = 0
+
         if (skippedWindows > 0) {
           // add skipped windows
           for (var i = 0; i < skippedWindows; i++) {
@@ -90,10 +92,19 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
 
   handleICMPPacket(icmpPacket) {
     this.currentWindowData.num_icmp += 1
+    if (icmpPacket.type === 0) {
+      this.currentWindowData.of_icmp_echo_reply += 1
+    }
+
+    if (icmpPacket.type === 3) {
+      this.currentWindowData.of_icmp_dest_unreachable += 1
+    }
   }
 
   addLastWindow() {
     this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
+
+    this.result = this.result.filter(window => window.num_packets > 2)
   }
 
   createNewWindowData(arrivalTime, emptyWindow = false) {
@@ -105,7 +116,6 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       source_ips: !emptyWindow ? [] : 0,
       source_ports: !emptyWindow ? [] : 0,
       dest_ports: !emptyWindow ? [] : 0,
-      num_err_packets: 0,
       num_tcp: 0,
       num_udp: 0,
       num_icmp: 0,
@@ -113,6 +123,8 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       of_tcp_syn: 0,
       of_tcp_fin: 0,
       of_tcp_ack: 0,
+      of_icmp_echo_reply: 0,
+      of_icmp_dest_unreachable: 0,
       arrival_times: !emptyWindow ? [] : 0,
     }
 
@@ -133,16 +145,19 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       num_unique_source_ips: !emptyWindow ? [...new Set(currentWindowData.source_ips)].length : 0,
       num_unique_source_ports: !emptyWindow ? [...new Set(currentWindowData.source_ports)].length : 0,
       num_unique_dest_ports: !emptyWindow ? [...new Set(currentWindowData.dest_ports)].length : 0,
-      perc_err_packets: 0,
-      tcp_perc: !emptyWindow ? currentWindowData.num_tcp / currentWindowData.num_packets : 0,
-      udp_perc: !emptyWindow ? currentWindowData.num_udp / currentWindowData.num_packets : 0,
-      icmp_perc: !emptyWindow ? currentWindowData.num_icmp / currentWindowData.num_packets : 0,
-      other_perc: !emptyWindow ? currentWindowData.num_other / currentWindowData.num_packets : 0,
-      perc_tcp_syn: !emptyWindow ? currentWindowData.of_tcp_syn / currentWindowData.num_packets : 0,
-      perc_tcp_fin: !emptyWindow ? currentWindowData.of_tcp_fin / currentWindowData.num_packets : 0,
-      perc_tcp_ack: !emptyWindow ? currentWindowData.of_tcp_ack / currentWindowData.num_packets : 0,
+      tcp_perc: !emptyWindow && currentWindowData.numPackets !== 0 ? currentWindowData.num_tcp / currentWindowData.num_packets : 0,
+      udp_perc: !emptyWindow && currentWindowData.numPackets !== 0 ? currentWindowData.num_udp / currentWindowData.num_packets : 0,
+      icmp_perc: !emptyWindow && currentWindowData.numPackets !== 0 ? currentWindowData.num_icmp / currentWindowData.num_packets : 0,
+      other_perc: !emptyWindow && currentWindowData.numPackets !== 0 ? currentWindowData.num_other / currentWindowData.num_packets : 0,
+      perc_tcp_syn: !emptyWindow && currentWindowData.num_tcp !== 0 ? currentWindowData.of_tcp_syn / currentWindowData.num_packets : 0,
+      perc_tcp_fin: !emptyWindow && currentWindowData.num_tcp !== 0 ? currentWindowData.of_tcp_fin / currentWindowData.num_packets : 0,
+      perc_tcp_ack: !emptyWindow && currentWindowData.num_tcp !== 0 ? currentWindowData.of_tcp_ack / currentWindowData.num_packets : 0,
+      perc_icmp_echo_reply: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_echo_reply / currentWindowData.num_packets : 0,
+      perc_icmp_dest_unreachable: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_dest_unreachable / currentWindowData.num_packets : 0,
       avg_inter_packet_interval: !emptyWindow ? (currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1) : 0,
-      is_attack: 1,
+      is_attack: 2,
+    }
+    if (newWindowResult.perc_icmp_echo_reply > 0) {
     }
     return newWindowResult
   }
@@ -154,7 +169,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   async postParsingAnalysis () {
     console.log("finished");
     // multiple filenames for multiple file formats
-    var fileName = `${this.baseOutPath}-SYN-Flood-features.json`
+    var fileName = `${this.baseOutPath}-SYN-Flood-features.csv`
     var fileContent = this.result
     var summary = {
       fileName: fileName,

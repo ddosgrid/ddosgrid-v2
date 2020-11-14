@@ -65,6 +65,10 @@ typings/
 # next.js build output
 .next
 
+# pcap file directories
+*/darpa
+*/pcaps
+*/trainingPcaps
 /converters/
 /ddos_dissector/
 
