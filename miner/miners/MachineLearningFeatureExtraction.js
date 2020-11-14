@@ -1,16 +1,18 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 
-class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
+class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
     this.currentPacketTimeSeconds
     this.windowLengthInSeconds = 1
     this.currentWindowData = {} // used while going through packets
     this.result = []
+    this.attackType = 0;
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
+    this.pcapParser.on('firstPcapPacket', this.handleFirstPacket.bind(this))
     this.pcapParser.on('pcapPacket', this.handlePcap.bind(this))
     this.pcapParser.on('ethernetPacket', this.handleEthernet.bind(this))
     this.pcapParser.on('ipv4Packet', this.handleIPv4.bind(this))
@@ -21,6 +23,10 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     this.pcapParser.on('icmpPacket', this.handleICMPPacket.bind(this))
 
     this.pcapParser.on('complete', this.addLastWindow.bind(this))
+  }
+
+  handleFirstPacket (pcapPacket, attackType) {
+    this.attackType = attackType
   }
 
   // Actual mining function
@@ -35,7 +41,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       var newPacketArrivalTimeInSeconds = pcapPacket.pcap_header.tv_sec
       if (newPacketArrivalTimeInSeconds - this.windowLengthInSeconds >= this.currentWindowData.arrival_time) {
         // new window(s) required
-        this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
+        this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.attackType))
         // var skippedWindows = this.numberOfSkippedWindows(newPacketArrivalTimeInSeconds)
         var skippedWindows = 0
 
@@ -43,7 +49,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
           // add skipped windows
           for (var i = 0; i < skippedWindows; i++) {
             var emptyWindowData = this.createNewWindowData(0, true)
-            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length, true))
+            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length, this.attackType, true))
           }
         }
         this.currentPacketTimeSeconds = newPacketArrivalTimeInSeconds
@@ -102,7 +108,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   addLastWindow() {
-    this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length))
+    this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.attackType))
 
     this.result = this.result.filter(window => window.num_packets > 2)
   }
@@ -135,7 +141,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
     return ((newPacketArrivalTimeInSeconds - this.currentWindowData.arrival_time) - 1) / this.windowLengthInSeconds
   }
 
-  calculateWindowResult(currentWindowData, windowNr, emptyWindow = false) {
+  calculateWindowResult(currentWindowData, windowNr, attackType, emptyWindow = false) {
     var newWindowResult = {
       windowNr: windowNr,
       num_packets: currentWindowData.num_packets,
@@ -155,7 +161,7 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
       perc_icmp_echo_reply: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_echo_reply / currentWindowData.num_packets : 0,
       perc_icmp_dest_unreachable: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_dest_unreachable / currentWindowData.num_packets : 0,
       avg_inter_packet_interval: !emptyWindow ? (currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1) : 0,
-      is_attack: 2,
+      is_attack: attackType,
     }
     if (newWindowResult.perc_icmp_echo_reply > 0) {
     }
@@ -169,15 +175,29 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
   async postParsingAnalysis () {
     console.log("finished");
     // multiple filenames for multiple file formats
-    var fileName = `${this.baseOutPath}-SYN-Flood-features.csv`
-    var fileContent = this.result
+    var fileName = `${this.baseOutPath}-ML-features.json`
+    // var fileContent = this.result
+
+    var fileContent = {
+      // Signal and format to visualize as piechart
+      piechart: {
+        datasets: [{
+          backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
+          data: Object.values(this.result)
+        }],
+        labels: Object.keys(this.result)
+      },
+      hint: 'The labels of this chart have been computed using temporally sensitive data'
+    }
+
     var summary = {
       fileName: fileName,
       attackCategory: 'SYN',
       analysisName: 'Feature Extraction for ML-Based SYN-Flood DDoS Detection',
+      supportedDiagrams: ['PieChart']
     }
     return await this.storeAndReturnResult(fileName, fileContent, summary)
   }
 }
 
-module.exports = SYNFloodFeatureExtraction
+module.exports = MachineLearningFeatureExtraction

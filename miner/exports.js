@@ -16,6 +16,8 @@ var ICMPMessages = require('./miners/ICMPmessages')
 var VLANDomains = require('./miners/VLANDomains')
 var BGPMessages = require('./miners/BGPmessages')
 
+var MachineLearningFeatureExtraction = require('./miners/MachineLearningFeatureExtraction');
+
 module.exports = {
   PacketEmitter,
   PortAnalyser,
@@ -33,5 +35,6 @@ module.exports = {
   UDPvsTCPRatio,
   ICMPMessages,
   VLANDomains,
-  BGPMessages
+  BGPMessages,
+  MachineLearningFeatureExtraction
 }

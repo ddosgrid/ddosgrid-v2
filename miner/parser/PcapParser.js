@@ -16,10 +16,12 @@ class PacketEmitter extends EventEmitter {
     this.pcapPacketCounter = 0
     this.progressPrintCounter = 0
     this.dnsdecoder = new dns()
+    this.attackType = 0
   }
 
-  startPcapSession (pcapPath) {
+  startPcapSession (pcapPath, attackType = 0) {
     this.pcap_session = pcap.createOfflineSession(pcapPath, '')
+    this.attackType = attackType
     this.pcap_session.on('packet', (packet) => {
       this.inspectPcapPacket(packet)
     })
@@ -46,7 +48,7 @@ class PacketEmitter extends EventEmitter {
 
     if (this.firstPacket) {
       // Emit the first pcap packet
-      this.emit('firstPcapPacket', decodedPacket)
+      this.emit('firstPcapPacket', decodedPacket, this.attackType)
       this.firstPacket = false
     }
     // Store the current packet 'globally' so that it can be used in other events, e.g. 'completed'
