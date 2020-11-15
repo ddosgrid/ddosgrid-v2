@@ -91,7 +91,7 @@ export default {
   mounted: function () {
     this.fetchDataSets()
     intervalId = setInterval(this.fetchDataSets, 3000)
-    this.showFileImport = 'import' in this.$route.query
+    this.showFileImport = 'import' in this.$route.query && !this.demoMode
   },
   beforeDestroy: function () {
     clearInterval(intervalId)
