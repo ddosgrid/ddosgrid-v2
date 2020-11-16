@@ -101,6 +101,7 @@ or
 ```bash
 export PORT=1234; node index.js
 ```
+To use the OAuth2 authentication system, one would need to start the API using the development script in the `scripts` folder. This script will provide additional parameters.
 
 ## frontend
 Enter the `frontend` subproject and run it after fetching its dependencies
