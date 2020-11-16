@@ -40,7 +40,7 @@ class UDPvsTCPRatio extends AbstractPCAPAnalyser {
             this.results.nrOfTCP
           ]
         }],
-        labels: ['UPD', 'TCP']
+        labels: ['UDP', 'TCP']
       }
     }
     var summary = {

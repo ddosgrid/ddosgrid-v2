@@ -21,43 +21,43 @@
           <md-list>
               <md-list-item>
                 <span>Duration</span>
-                <span>{{ formattedDuration }}</span>
+                <span class="selectable">{{ formattedDuration }}</span>
               </md-list-item>
               <md-list-item>
                 <span>Number of Packets:</span>
-                <span>{{ dataset.metrics.nrOfIPpackets }}</span>
+                <span class="selectable">{{ dataset.metrics.nrOfIPpackets }}</span>
               </md-list-item>
               <md-list-item>
                 <span>Attack Size</span>
-                <span>{{ Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) + " MB"}}</span>
+                <span class="selectable">{{ Math.floor(dataset.metrics.attackSizeInBytes / 1000 / 1000) + " MB"}}</span>
               </md-list-item>
               <md-list-item>
                 <span>Number of Packets</span>
-                <span> {{ dataset.metrics.nrOfIPpackets }}</span>
+                <span class="selectable"> {{ dataset.metrics.nrOfIPpackets }}</span>
               </md-list-item>
               <md-list-item>
                 <span> Number of Source IPs</span>
-                <span> {{ dataset.metrics.nrOfSrcIps }} </span>
+                <span class="selectable"> {{ dataset.metrics.nrOfSrcIps }} </span>
               </md-list-item>
               <md-list-item>
                 <span>Number of Source Ports </span>
-                <span> {{ dataset.metrics.nrOfSrcPorts }} </span>
+                <span class="selectable"> {{ dataset.metrics.nrOfSrcPorts }} </span>
               </md-list-item>
               <md-list-item>
                 <span>Number of Destination IPs</span>
-                <span> {{ dataset.metrics.nrOfDstIps }}</span>
+                <span class="selectable"> {{ dataset.metrics.nrOfDstIps }}</span>
               </md-list-item>
               <md-list-item>
                 <span>Number of Destination Ports</span>
-                <span>{{ dataset.metrics.nrOfDstPorts }}</span>
+                <span class="selectable">{{ dataset.metrics.nrOfDstPorts }}</span>
               </md-list-item>
               <md-list-item>
                 <span>Proportion of HTTP traffic</span>
-                <span>{{ httpShare }}%</span>
+                <span class="selectable">{{ httpShare }}%</span>
               </md-list-item>
               <md-list-item>
                 <span>Proportion of ICMP traffic</span>
-                <span>{{ icmpShare }}%</span>
+                <span class="selectable">{{ icmpShare }}%</span>
               </md-list-item>
           </md-list>
         </md-tab>
@@ -203,5 +203,8 @@ export default {
 }
 >>> .md-list-item-content {
   min-height: 32px !important;
+}
+.selectable{
+  user-select: text;
 }
 </style>

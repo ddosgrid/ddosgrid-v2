@@ -35,7 +35,7 @@ class TopTwentyPortsAnalyser extends AbstractPCAPAnalyser {
   }
 
   getName () {
-    return 'Top 20 UPD/TCP ports by number of segments'
+    return 'Top 20 UDP/TCP ports by number of segments'
   }
 
   async postParsingAnalysis () {
