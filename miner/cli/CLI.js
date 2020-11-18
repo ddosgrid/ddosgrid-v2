@@ -48,10 +48,8 @@ function parseAttackType(attackTypeParam) {
     throw new Error('Invalid attack type specified!')
   }
   if (!(attackTypeParam[1].includes(':') || attackTypeParam[1].includes(','))) {
-    console.log('number');
-    return attackTypeParam[1]
+    return parseInt(attackTypeParam[1])
   } else {
-    console.log('object');
     var segments = attackTypeParam[1].split(',')
     var segmentObjects = segments.map(function(segmentString) {
       var segmentObj = {}
