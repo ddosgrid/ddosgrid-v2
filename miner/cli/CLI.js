@@ -39,6 +39,25 @@ function parseAndCheckArguments (argv) {
       throw new Error('Provided pcap file doesnt exist!')
     }
   }
-
   return settings
+}
+
+function parseAttackType(attackTypeParam) {
+  if (typeof attackTypeParam[1] === undefined) {
+    throw new Error('Invalid attack type specified!')
+  }
+  if (!(attackTypeParam[1].includes(':') || attackTypeParam[1].includes(','))) {
+    return parseInt(attackTypeParam[1])
+  } else {
+    var segments = attackTypeParam[1].split(',')
+    var segmentObjects = segments.map(function(segmentString) {
+      var segmentObj = {}
+      segment = segmentString.split(':')
+      segmentObj.start = segment[0]
+      segmentObj.end = segment[1]
+      segmentObj.value = segment[2]
+      return segmentObj
+    })
+    return segmentObjects
+  }
 }
