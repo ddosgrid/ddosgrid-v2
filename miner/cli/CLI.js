@@ -55,7 +55,7 @@ function parseAttackType(attackTypeParam) {
       segment = segmentString.split(':')
       segmentObj.start = segment[0]
       segmentObj.end = segment[1]
-      segmentObj.value = segment[2]
+      segmentObj.value = parseInt(segment[2])
       return segmentObj
     })
     return segmentObjects
