@@ -9,6 +9,7 @@ class PacketEmitter extends EventEmitter {
   constructor () {
     super()
     this.firstPacket = true
+    this.attacksSupplied = false
     this.currentPcapPacket = undefined
     this.attackType = 0
   }
@@ -35,6 +36,10 @@ class PacketEmitter extends EventEmitter {
         console.log('Unable to decode packet', e.message)
       }
       return
+    }
+    if (this.attackType !== 0 && !this.attacksSupplied) {
+      this.emit('setAttackTypes', this.attackType)
+      this.attacksSupplied = true
     }
     this.emit('pcapPacket', decodedPacket)
 

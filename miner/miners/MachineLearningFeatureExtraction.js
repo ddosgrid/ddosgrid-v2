@@ -1,18 +1,21 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 
 class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
-  constructor (parser, outPath) {
+  constructor(parser, outPath) {
     super(parser, outPath)
     this.currentPacketTimeSeconds
     this.windowLengthInSeconds = 1
     this.currentWindowData = {} // used while going through packets
     this.result = []
-    this.attackType = 0;
+    this.currentAttackType = 0
+    this.currentAttackTimes = {}
+    this.attackTypes = []
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
-  async setUp () {
-    this.pcapParser.on('firstPcapPacket', this.handleFirstPacket.bind(this))
+  async setUp() {
+    this.pcapParser.on('setAttackTypes', this.handleAttackTypes.bind(this))
+    // this.pcapParser.on('firstPcapPacket', this.handleFirstPacket.bind(this))
     this.pcapParser.on('pcapPacket', this.handlePcap.bind(this))
     this.pcapParser.on('ethernetPacket', this.handleEthernet.bind(this))
     this.pcapParser.on('ipv4Packet', this.handleIPv4.bind(this))
@@ -25,35 +28,53 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
     this.pcapParser.on('complete', this.addLastWindow.bind(this))
   }
 
-  handleFirstPacket (pcapPacket, attackType) {
-    this.attackType = attackType
+  handleAttackTypes(attackType) {
+    // TODO: check if simple attacktype or changing
+    if (typeof attackType === 'number') {
+      this.currentAttackType = attackType
+    } else {
+      this.attackTypes = attackType
+    }
   }
 
   // Actual mining function
   // Post-analysis phase, do additional computation with the collected data and write it out
-  handlePcap (pcapPacket) {
+  handlePcap(pcapPacket) {
     if (Object.keys(this.currentWindowData).length == 0) {
       // First packet, no window created yet
       this.currentPacketTimeSeconds = pcapPacket.pcap_header.tv_sec
-      this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds)
+      // TODO: update attack type
+      var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
+      console.log(newAttackType);
+      this.currentAttackType = newAttackType.attackType
+      this.attackTypes = newAttackType.attackTypes
+      this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds, this.attackTypes)
     } else {
       // regular process
       var newPacketArrivalTimeInSeconds = pcapPacket.pcap_header.tv_sec
       if (newPacketArrivalTimeInSeconds - this.windowLengthInSeconds >= this.currentWindowData.arrival_time) {
         // new window(s) required
-        this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.attackType))
+        this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.currentAttackType))
         // var skippedWindows = this.numberOfSkippedWindows(newPacketArrivalTimeInSeconds)
         var skippedWindows = 0
 
         if (skippedWindows > 0) {
           // add skipped windows
           for (var i = 0; i < skippedWindows; i++) {
-            var emptyWindowData = this.createNewWindowData(0, true)
-            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length, this.attackType, true))
+            // TODO: update attack type
+            var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
+            this.currentAttackType = newAttackType.attackType
+            this.attackTypes = newAttackType.attackTypes
+            var emptyWindowData = this.createNewWindowData(0, this.attackTypes, true)
+            this.result.push(this.calculateWindowResult(emptyWindowData, this.result.length, this.currentAttackType, true))
           }
         }
         this.currentPacketTimeSeconds = newPacketArrivalTimeInSeconds
-        this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds)
+        // TODO: update attack type
+        var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
+        this.currentAttackType = newAttackType.attackType
+        this.attackTypes = newAttackType.attackTypes
+        this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds, this.attackTypes)
       }
     }
     // create pcap features
@@ -108,12 +129,12 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   addLastWindow() {
-    this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.attackType))
+    this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.currentAttackType))
 
     this.result = this.result.filter(window => window.num_packets > 2)
   }
 
-  createNewWindowData(arrivalTime, emptyWindow = false) {
+  createNewWindowData(arrivalTime, attackTypes, emptyWindow = false) {
     var newWindowData = {
       arrival_time: arrivalTime,
       packet_sizes_bytes: !emptyWindow ? [] : 0,
@@ -160,19 +181,63 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       perc_tcp_ack: !emptyWindow && currentWindowData.num_tcp !== 0 ? currentWindowData.of_tcp_ack / currentWindowData.num_packets : 0,
       perc_icmp_echo_reply: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_echo_reply / currentWindowData.num_packets : 0,
       perc_icmp_dest_unreachable: !emptyWindow && currentWindowData.num_icmp !== 0 ? currentWindowData.of_icmp_dest_unreachable / currentWindowData.num_packets : 0,
-      avg_inter_packet_interval: !emptyWindow ? (currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length -1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1) : 0,
+      avg_inter_packet_interval: !emptyWindow ? (currentWindowData.num_packets === 1 || currentWindowData.num_packets === 0 ? 0 : (currentWindowData.arrival_times[currentWindowData.arrival_times.length - 1] - currentWindowData.arrival_times[0]) / currentWindowData.arrival_times.length - 1) : 0,
       is_attack: attackType,
     }
-    if (newWindowResult.perc_icmp_echo_reply > 0) {
-    }
+    if (newWindowResult.perc_icmp_echo_reply > 0) {}
     return newWindowResult
   }
 
-  getName () {
+  updateAttackType(arrivalTime, attackTypes, currentAttackType) {
+    // TODO: set currentAttackType here if multiple are specified
+    if (attackTypes.length > 0) {
+      // check if update required
+      if (arrivalTime < attackTypes[0].start) {
+        // no attack
+        return {
+          attackType: 0,
+          attackTypes: attackTypes
+        }
+      } else if (arrivalTime >= attackTypes[0].start && arrivalTime <= attackTypes[0].end) {
+        return {
+          attackType: attackTypes[0].value,
+          attackTypes: attackTypes
+        }
+      } else if (arrivalTime > attackTypes[0].end && attackTypes.length > 1) {
+        attackTypes.shift()
+        if (arrivalTime >= attackTypes[0].start && arrivalTime <= attackTypes[0].end) {
+          return {
+            attackType: attackTypes[0].value,
+            attackTypes: attackTypes
+          }
+        } else {
+          return {
+            attackType: 0,
+            attackTypes: attackTypes
+          }
+        }
+      } else {
+        return {
+          attackType: 0,
+          attackTypes: attackTypes
+        }
+      }
+      return {
+        attackType: currentAttackType,
+        attackTypes: attackTypes
+      }
+    } // if not, regular proceess where type does not change
+    return {
+      attackType: currentAttackType,
+      attackTypes: attackTypes
+    }
+  }
+
+  getName() {
     return 'Feature Extraction for ML-Based SYN-Flood DDoS Detection'
   }
 
-  async postParsingAnalysis () {
+  async postParsingAnalysis() {
     console.log("finished");
     // multiple filenames for multiple file formats
     var fileName = `${this.baseOutPath}-ML-features.json`
