@@ -43,7 +43,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
     if (Object.keys(this.currentWindowData).length == 0) {
       // First packet, no window created yet
       this.currentPacketTimeSeconds = pcapPacket.pcap_header.tv_sec
-      // TODO: update attack type
       var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
       console.log(newAttackType);
       this.currentAttackType = newAttackType.attackType
@@ -61,7 +60,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
         if (skippedWindows > 0) {
           // add skipped windows
           for (var i = 0; i < skippedWindows; i++) {
-            // TODO: update attack type
             var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
             this.currentAttackType = newAttackType.attackType
             this.attackTypes = newAttackType.attackTypes
@@ -70,7 +68,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
           }
         }
         this.currentPacketTimeSeconds = newPacketArrivalTimeInSeconds
-        // TODO: update attack type
         var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
         this.currentAttackType = newAttackType.attackType
         this.attackTypes = newAttackType.attackTypes
