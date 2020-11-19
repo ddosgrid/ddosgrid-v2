@@ -36,7 +36,7 @@ mkdir -p results/$name
 # Print header
 echo -n "File Name, File Size," > results/$name/output.csv
 for i in `seq $rounds`; do echo -n  Response Time $i, >> results/$name/output.csv; done
-echo "Average Response Time" >> results/$name/output.csv
+echo "Average Response Time, Memory Usage" >> results/$name/output.csv
 for entry in $dataset
 do
   echo "Starting..  $(basename $entry)"
@@ -49,10 +49,11 @@ do
   for i in `seq $rounds`;
   do
     ts=$(date +%s%N)
-    node ../miner/index.js pcap_path=$entry>/dev/null
+    outp=$(node ../miner/index.js pcap_path=$entry)
     elapsed=$((($(date +%s%N) - $ts)/1000000))
     total=$(expr $total + $elapsed)
     echo -n "$elapsed," >> results/$name/output.csv
+    memusage=$(echo $outp | grep -oP "\d*MB")
 
     prog=$(expr $i \* 100 / $rounds)
     progbar=""
@@ -62,6 +63,6 @@ do
     echo -ne "$progbar ($i/$rounds)\r"
   done
   echo -ne '\n'
-  echo $(expr $total / $i) >> results/$name/output.csv
+  echo "$(expr $total / $i), $memusage" >> results/$name/output.csv
 done
 
