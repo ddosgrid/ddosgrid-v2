@@ -55,6 +55,7 @@ import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
 import WorldMap from '../components/WorldMap'
+import LineChart from '../components/LineChart'
 import VisualizationUnavailable from '../components/VisualizationUnavailable'
 import hashicon from 'hashicon'
 
@@ -64,6 +65,7 @@ export default {
     'scatterplot': ScatterPlot,
     'piechart': PieChart,
     'worldmap': WorldMap,
+    'linechart': LineChart,
     'no-visualization-possible': VisualizationUnavailable
   },
   props: [
