@@ -60,6 +60,7 @@ import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
 import WorldMap from '../components/WorldMap'
+import LineChart from '../components/LineChart'
 import Timeline from '../components/Timeline'
 import VisualizationUnavailable from '../components/VisualizationUnavailable'
 import VisualizationEmpty from '../components/VisualizationEmpty'
@@ -73,7 +74,8 @@ export default {
     'worldmap': WorldMap,
     'timeline': Timeline,
     'no-visualization-possible': VisualizationUnavailable,
-    'empty-dataset': VisualizationEmpty
+    'empty-dataset': VisualizationEmpty,
+    'linechart': LineChart
   },
   props: [
     'analysisfile'
