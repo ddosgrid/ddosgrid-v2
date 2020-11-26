@@ -105,6 +105,12 @@ export default {
   computed: {
     groupedByAttackType: function () {
       var result = this.dataset.analysisFiles.reduce((h, obj) => Object.assign(h, { [obj.attackCategory]: (h[obj.attackCategory] || []).concat(obj) }), {})
+      // exclude csv files in dashboard
+      for (var key in result) {
+        if (result.hasOwnProperty(key)) {
+          result[key] = result[key].filter(analysis => analysis.file.endsWith('.json'))
+        }
+      }
       return result
     },
     httpShare: function () {
