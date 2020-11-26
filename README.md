@@ -111,19 +111,21 @@ npm i; npm run serve
 This will automatically rebuild the project if a file changes. 
 To use the application you will need to let it connect to an api instance.
 In development mode (`npm run serve`) it will always connect to `localhost:3000`.
-You can run the api locally as described in the previous section or if you don't plan to work on the backend part you can just run the latest image from Docker hub with one command:
+~~You can run the api locally as described in the previous section or if you don't plan to work on the backend part you can just run the latest image from Docker hub with one command:~~
 ```bash
 docker run -it -p 3000:3000 ddosgrid/ddosgrid-api
 ```
 
 # Production deployment
+## Parameters
+:warning: TODO: Describe all available parameters for each module
 ## frontend
-Our frontend is continuosly integrated and deployed by a GitHub action to a GitHub pages branch.
+~~Our frontend is continuosly integrated and deployed by a GitHub action to a GitHub pages branch.~~
 If you are building manually simply run `npm run build` and then deploy the `dist` folder.
 This will create a frontend that automatically connects to our hostname in production. If you want to change the hostname of the API please edit `frontend/.env.production`.
 
 ## API
-Our api is continuosly integrated and built as a Docker image and pushed to that registry.
+~~Our api is continuosly integrated and built as a Docker image and pushed to that registry.~~
 From there you can run it with one command:
 ```
 cd api; docker-compose up
