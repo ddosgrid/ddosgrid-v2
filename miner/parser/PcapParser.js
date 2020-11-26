@@ -193,7 +193,7 @@ class PacketEmitter extends EventEmitter {
 
   printProgress () {
     var anim = ['◴','◷','◶','◵']
-    if (this.pcapPacketCounter % 1000000 === 0) {
+    if (this.pcapPacketCounter % 1000000 === 0 || this.pcapPacketCounter === 1000) {
       var icon = anim[this.progressPrintCounter % 4]
       this.flushStdout()
       var heapUsage = process.memoryUsage().heapTotal / 1024 / 1024
