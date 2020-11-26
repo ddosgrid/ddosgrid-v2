@@ -1,3 +1,4 @@
 module.exports = {
-  apibaseurl: process.env.VUE_APP_APIBASEURL
+  apibaseurl: process.env.VUE_APP_APIBASEURL,
+  demoUserEmail: 'evaluation@ddosgrid.online'
 }

@@ -40,12 +40,12 @@ class UDPvsTCPRatio extends AbstractPCAPAnalyser {
             this.results.nrOfTCP
           ]
         }],
-        labels: ['UPD', 'TCP']
+        labels: ['UDP', 'TCP']
       }
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'UDP/TCP Ratio',
+      attackCategory: 'Transport Layer',
       analysisName: 'UDP and TCP Ratio',
       supportedDiagrams: ['PieChart']
     }

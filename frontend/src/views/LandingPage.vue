@@ -165,7 +165,7 @@ section {
   float: left;
   height: 600px !important;
   margin: 0 20px 20px 0px;
-  shape-outside: polygon(359px 197px, 358px 3px, 2px 1px, 4px 428px, 389px 539px, 496px 344px, 350px 258px, 384px 222px);
+  shape-outside: polygon(375px 222px, 372px 0px, 2px 1px, 8px 582px, 458px 580px, 453px 265px, 375px 263px);
 }
 .main-icon-wrapper {
   height: 200px;

@@ -13,6 +13,7 @@ var BrowserAndOSAnalyzer = require('./miners/BrowserAndOSAnalyzer')
 var DeviceAnalyzer = require('./miners/DeviceAnalyzer')
 var UDPvsTCPRatio = require('./miners/UDPvsTCP')
 var ICMPMessages = require('./miners/ICMPmessages')
+var VLANDomains = require('./miners/VLANDomains')
 
 module.exports = {
   PacketEmitter,
@@ -29,5 +30,6 @@ module.exports = {
   BrowserAndOSAnalyzer,
   DeviceAnalyzer,
   UDPvsTCPRatio,
-  ICMPMessages
+  ICMPMessages,
+  VLANDomains
 }

@@ -78,7 +78,7 @@ class ICMPMessages extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'Network State',
+      attackCategory: 'Network Layer',
       analysisName: this.getName(),
       supportedDiagrams: ['PieChart']
     }

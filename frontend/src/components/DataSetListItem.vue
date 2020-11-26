@@ -63,7 +63,10 @@
           <div>
             <md-button v-if="dataset.status === 'analysed'" @click="addDataSet(dataset)">Open</md-button>
             <md-button class="md-accent" v-else @click="notifyNotAnalysed">Open</md-button>
-            <md-button @click="deleteAnalysis(dataset)">Delete</md-button>
+            <md-button @click="deleteAnalysis(dataset)" v-if="!demoMode">Delete</md-button>
+            <md-button class="demobtn" @click="deleteAnalysis(dataset)" v-if="demoMode" disabled>Delete</md-button>
+            <md-tooltip md-direction="right" v-if="demoMode">Demo Mode: Deleting disabled</md-tooltip>
+
             <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry</md-button>
           </div>
 
@@ -132,6 +135,11 @@ import hashicon from 'hashicon'
 
 export default {
   props: ['dataset'],
+  computed: {
+    demoMode () {
+      return this.$store.state.demomode
+    }
+  },
   methods: {
     handleSnackBarShow: function handleSnackBarShow () {
       this.showSnackbar = false
@@ -190,6 +198,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.demobtn {
+  color: rgba(0,0,0,0.26) !important;
+}
 .dataset-wrap {
   max-width: 800px;
   margin: auto;

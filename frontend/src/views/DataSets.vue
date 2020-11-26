@@ -8,8 +8,8 @@
     md-icon="layers_clear"
     md-label="No datasets uploaded"
     md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0 && hasLoaded" class="centered">
-    <md-button class="md-primary md-raised" @click="showFileUpload = true">Upload a dataset</md-button>
-    <md-button class="md-primary md-raised" @click="showFileImport = true">Import a dataset</md-button>
+    <md-button class="md-primary md-raised" @click="showFileUpload = true" :disabled="demoMode">Upload a dataset</md-button>
+    <md-button class="md-primary md-raised" @click="showFileImport = true" :disabled="demoMode">Import a dataset</md-button>
   </md-empty-state>
 
   <!-- Uploading datasets to DDoSDB/DDoSGrid -->
@@ -46,18 +46,22 @@
       <md-icon class="md-morph-initial">add</md-icon>
       <md-icon class="md-morph-final no-print">close</md-icon>
     </md-speed-dial-target>
+    <md-tooltip md-direction="top" v-if="demoMode">Demo Mode: Import/Export disabled!</md-tooltip>
 
     <md-speed-dial-content>
-      <md-button class="md-icon-button" @click="showFileUpload = true">
-        <md-tooltip md-direction="top">Upload a raw PCAP file</md-tooltip>
+      <md-button class="md-icon-button" @click="showFileUpload = true" :disabled="demoMode">
+        <md-tooltip md-direction="top" v-if="!demoMode">Upload a raw PCAP file</md-tooltip>
+        <md-tooltip md-direction="top" v-else>Demo Mode: Upload disabled</md-tooltip>
         <md-icon>cloud_upload</md-icon>
       </md-button>
-      <md-button class="md-icon-button" @click="showFileImport = true">
-        <md-tooltip md-direction="top">Import an existing dataset from DDoSDB</md-tooltip>
+      <md-button class="md-icon-button" @click="showFileImport = true" :disabled="demoMode">
+        <md-tooltip md-direction="top" v-if="!demoMode">Import an existing dataset from DDoSDB</md-tooltip>
+        <md-tooltip md-direction="top" v-else>Demo Mode: Import disabled</md-tooltip>
         <md-icon>cloud_download</md-icon>
       </md-button>
     </md-speed-dial-content>
   </md-speed-dial>
+
 </div>
 </template>
 
@@ -87,10 +91,15 @@ export default {
   mounted: function () {
     this.fetchDataSets()
     intervalId = setInterval(this.fetchDataSets, 3000)
-    this.showFileImport = 'import' in this.$route.query
+    this.showFileImport = 'import' in this.$route.query && !this.demoMode
   },
   beforeDestroy: function () {
     clearInterval(intervalId)
+  },
+  computed: {
+    demoMode () {
+      return this.$store.state.demomode
+    }
   },
   methods: {
     closeUploadForm: function () {

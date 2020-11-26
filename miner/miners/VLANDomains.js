@@ -1,38 +1,45 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
-const analysisName = `most-used-http-endpoints`
 const N = 5
+const analysisName = `top-${N}-vlan-domains-by-eth-traffic`
 
-class HTTPEndpoints extends AbstractPcapAnalyser {
+class VLANDomains extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
-    this.results = []
+    this.results = {
+      // store interim results here
+      // { vlanid: '1.2.3.4', count: 1 }
+    }
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
-    this.pcapParser.on('httpEndpoint', this.countEndpoint.bind(this))
+    this.pcapParser.on('ethernetPacket', this.checkEth.bind(this))
   }
 
-  countEndpoint (endpoint) {
+  checkEth (ethPacket) {
     try {
-      var exists = this.results.find(item => item.endpoint === endpoint)
-      if (exists) {
-        exists.count++
+      var vlanID = ethPacket.vlan.id
+      var existingEntry = this.results.hasOwnProperty(vlanID)
+
+      if (existingEntry) {
+        this.results[vlanID]++
       } else {
-        this.results.push({ endpoint: endpoint, count: 1 })
+        this.results[vlanID] = 1
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   getName () {
-    return `Top ${N} most used HTTP endpoints`
+    return `Top ${N} VLANs by Ethernet traffic`
   }
 
   // Actual mining function
   // Post-analysis phase, do additional computation with the collected data and write it out
   async postParsingAnalysis () {
-    var sortedByCount = this.sortEntriesByCount(this.results)
+    var mapped = Object.keys(this.results).map((key) => {
+      return {id: key, count: this.results[key]}
+    })
+    var sortedByCount = this.sortEntriesByCount(mapped)
     var topNentries = this.getTopN(sortedByCount, N)
 
     var fileName = `${this.baseOutPath}-${analysisName}.json`
@@ -41,29 +48,27 @@ class HTTPEndpoints extends AbstractPcapAnalyser {
       piechart: {
         datasets: [{
           backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
-          data: this.pickCounts(topNentries)
+          data: this.formatData(topNentries)
         }],
-        labels: this.pickEndpoints(topNentries)
+        labels: this.formatLabels(topNentries)
       },
-      hint: ''
+      hint: 'The labels of this chart have been computed using temporally sensitive data'
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'Application Layer',
-      analysisName: 'Most used HTTP endpoints',
+      attackCategory: 'Link Layer',
+      analysisName: `Top ${N} VLANs`,
       supportedDiagrams: ['PieChart']
     }
-    return this.storeAndReturnResult(fileName, fileContent, summary)
+    return await this.storeAndReturnResult(fileName, fileContent, summary)
   }
 
-  pickCounts (elements) {
+  formatData (elements) {
     return elements.map(entry => entry.count)
   }
-
-  pickEndpoints (elements) {
-    return elements.map(entry => entry.endpoint)
+  formatLabels (elements) {
+    return elements.map(entry => entry.id)
   }
-
   sortEntriesByCount (elements) {
     return elements.sort((a, b) => {
       if (a.count > b.count) { return -1 }
@@ -77,4 +82,4 @@ class HTTPEndpoints extends AbstractPcapAnalyser {
   }
 }
 
-module.exports = HTTPEndpoints
+module.exports = VLANDomains

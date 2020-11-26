@@ -52,7 +52,7 @@ class DeviceAnalyzer extends AbstractPcapAnalyser {
     }
     var summary = {
       fileName: fileName,
-      attackCategory: 'HTTP',
+      attackCategory: 'Application Layer',
       analysisName: 'Most used Devices',
       supportedDiagrams: ['PieChart']
     }

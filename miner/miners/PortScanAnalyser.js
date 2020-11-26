@@ -69,7 +69,7 @@ class PortScanAnalyser extends AbstractPCAPAnalyser {
             reject(err)
           }
           resolve({
-            attackCategory: 'Portscan',
+            attackCategory: 'Transport Layer',
             supportedDiagrams: ['Barchart'],
             summaryFile: fileName,
             dumpFile: dumpfileName
