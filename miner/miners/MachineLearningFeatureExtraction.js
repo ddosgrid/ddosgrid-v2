@@ -231,34 +231,49 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   getName() {
-    return 'Feature Extraction for ML-Based SYN-Flood DDoS Detection'
+    return 'Feature Extraction for ML-Based DDoS Attack Detection'
   }
 
   async postParsingAnalysis() {
+    var resultFiles = []
+
     console.log("finished");
     // multiple filenames for multiple file formats
     var fileName = `${this.baseOutPath}-ML-features.json`
     // var fileContent = this.result
-
     var fileContent = {
       // Signal and format to visualize as piechart
-      piechart: {
+      linechart: {
         datasets: [{
           backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
-          data: Object.values(this.result)
+          data: this.result.map(window => window.is_attack)
         }],
-        labels: Object.keys(this.result)
+        labels: this.result.map(window => window.windowNr)
       },
       hint: 'The labels of this chart have been computed using temporally sensitive data'
     }
 
     var summary = {
       fileName: fileName,
-      attackCategory: 'SYN',
-      analysisName: 'Feature Extraction for ML-Based SYN-Flood DDoS Detection',
-      supportedDiagrams: ['PieChart']
+      attackCategory: 'Time-Based',
+      analysisName: 'Feature Extraction for ML-Based DDoS Attack Detection',
+      supportedDiagrams: ['LineChart']
     }
-    return await this.storeAndReturnResult(fileName, fileContent, summary)
+    // TODO: do this twice, once for csv for ml and once for json for vis
+    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
+
+    fileName = `${this.baseOutPath}-ML-features.csv`
+    fileContent = this.result
+    summary = {
+      fileName: fileName,
+      attackCategory: 'Time-Based',
+      analysisName: 'Feature Extraction for ML-Based DDoS Attack Detection',
+      supportedDiagrams: ['LineChart']
+    }
+
+    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
+
+    return resultFiles
   }
 }
 

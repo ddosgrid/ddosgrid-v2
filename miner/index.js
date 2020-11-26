@@ -88,7 +88,13 @@ async function setUpAndRun (emitter, activeMiners, target, attackType) {
     for (var miner of activeMiners) {
       let startTimer = new Date()
       var result = await miner.postParsingAnalysis()
-      results.push(result)
+      if (Array.isArray(result)) {
+        for (var res of result) {
+          results.push(res)
+        }
+      } else {
+        results.push(result)
+      }
       let duration = (new Date() - startTimer) / 10000
       console.log(`\t- (${duration}s) \t${miner.getName()}`)
     }
