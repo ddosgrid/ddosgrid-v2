@@ -1,7 +1,8 @@
 const EventEmitter = require('events')
-const pcap = require('pcap')
+const pcap = require('../../node_pcap')
 const portNumbers = require('port-numbers')
 const colors = require('colors')
+const dns = require('../../node_pcap/decode/dns')
 
 // Change to true if you want to know about every unsupported frame
 const verbose = false
@@ -13,6 +14,7 @@ class PacketEmitter extends EventEmitter {
     this.currentPcapPacket = undefined
     this.pcapPacketCounter = 0
     this.progressPrintCounter = 0
+    this.dnsdecoder = new dns()
   }
 
   startPcapSession (pcapPath) {
@@ -54,6 +56,10 @@ class PacketEmitter extends EventEmitter {
       this.inspectEthernetPacket(ethernetPacket)
     } else {
       console.warn('DDoSGrid only supports Ethernet on L1!')
+      var buf = pcapPacket.buf.slice(4)
+      var i = require('../../node_pcap/decode/ipv4')
+      var p = new i()
+      var b = p.decode(buf, 0)
       console.warn(`Dropping packet with link_type: ${this.currentPcapPacket.link_type}`)
     }
   }
@@ -120,11 +126,16 @@ class PacketEmitter extends EventEmitter {
     if (ipProtocolField === 6) {
       this.emit('transportPacket', transportPacket)
       this.inspectTCPPacket(transportPacket)
+      if(transportPacket.dport === 179) {
+        //console.log('BGP!')
+      }
       this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
+      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data)
     } else if (ipProtocolField === 17) {
       this.emit('transportPacket', transportPacket)
       this.inspectUDPPacket(transportPacket)
       this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
+      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data)
     } else if (ipProtocolField === 1) {
       this.inspectICMPPacket(transportPacket)
     }
@@ -155,14 +166,36 @@ class PacketEmitter extends EventEmitter {
   tryGuessApplicationPacket (port, packet) {
     try {
       var guessedServicename = portNumbers.getService(port)
-      this.emit(`${guessedServicename.name}Packet`, packet)
       if (guessedServicename.name === 'http') {
         this.tryNaiveHttpParse(packet)
+      } else if (guessedServicename.name === 'bgp') {
+        this.decodeBGP(packet)
+      } else if(guessedServicename.name === 'domain') {
+        this.decodeDNS(packet)
+      } else {
+        this.emit(`${guessedServicename.name}Packet`, packet)
       }
     } catch (e) {
       if (verbose) {
         console.error(`Unable to parse service name from port ${port}`)
       }
+    }
+  }
+
+  decodeDNS (packet) {
+    var dnspack = this.dnsdecoder.decode(packet, 0)
+    this.emit('dnsPacket', dnspack)
+  }
+
+  decodeBGP (packet) {
+    try {
+      var bgpdec = require('../../node_pcap/decode/bgp')
+      var decoder = new bgpdec()
+      var pac = decoder.decode(packet, 0)
+      this.emit('bgpPacket', pac)
+    }
+    catch (e) {
+      console.log('s')
     }
   }
 

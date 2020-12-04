@@ -14,7 +14,8 @@ const {
   DeviceAnalyzer,
   UDPvsTCPRatio,
   ICMPMessages,
-  VLANDomains
+  VLANDomains,
+  BGPMessages
 } = require('./exports')
 const colors = require('colors')
 
@@ -42,6 +43,7 @@ function analyseFileInProjectFolder (projectPath) {
     ICMPMessages,
     Top5SourceHostsAnalyser,
     Top100SourceHostsAnalyser,
+    BGPMessages,
     HTTPVerbs,
     HTTPEndpoints,
     BrowserAndOSAnalyzer,
