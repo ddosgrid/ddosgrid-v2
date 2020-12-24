@@ -1,28 +1,69 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 const analysisName = 'BGP_messages'
+var bgpdec = require('../../node_pcap/decode/bgp')
 
 class BGPMessages extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
     super(parser, outPath)
-    this.results = {
-      Update: 0,
-      Open: 0,
-      Keepalive: 0,
-      Notification: 0
-    }
+    this.results = []
+    this.conversations = []
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
-    this.pcapParser.on('bgpPacket', this.checkMessage.bind(this))
+    this.pcapParser.on('ipv4Packet', this.checkMessage.bind(this))
+    this.decoder = new bgpdec()
   }
 
   getName () {
-    return 'Distribution of BGP Message Types'
-      this.withdrawnroutes = [ ]}
+    return 'BGP Messages'
+  }
 
-  checkMessage (message) {
-    this.results[message.messageType]++
+  checkMessage (ipv4pack) {
+    try {
+      var isBGP = ipv4pack.payload.dport === 179 || ipv4pack.payload.sport === 179
+      if(isBGP) {
+        var tcpData = ipv4pack.payload.data
+        if (tcpData) {
+          var bgpMessages = this.decoder.decode(tcpData, 0)
+          for (var message of bgpMessages) {
+            var srcAddr = ipv4pack.saddr.addr.join('.')
+            var dstAddr = ipv4pack.daddr.addr.join('.')
+/*            this.results.push({
+              saddr: srcAddr,
+              daddr: dstAddr,
+              messageType: message.messageType,
+              message: message.message
+            })*/
+            var start = this.results.length * 1000
+            this.results.push([
+              srcAddr,
+              message.messageType,
+              message.message.toString(),
+              start,
+              start + 1000
+            ])
+            var conversationPartnersKnown = this.conversations.some(function checkConversation (conversation) {
+              var isKnown = conversation[0] === srcAddr && conversation[1] === dstAddr
+                            || conversation[0] === dstAddr && conversation[1] === srcAddr
+              return isKnown
+            })
+            if(!conversationPartnersKnown) {
+              this.conversations.push([srcAddr, dstAddr])
+            }
+          }
+        }
+        console.log(decoded)
+      }
+    } catch (e) {
+
+    }
+    /*if(messages && messages.length > 0) {
+      for (var message of messages) {
+        this.results[message.messageType] = message.message
+      }
+    }
+     */
   }
 
   // Actual mining function
@@ -31,30 +72,14 @@ class BGPMessages extends AbstractPcapAnalyser {
     var fileName = `${this.baseOutPath}-${analysisName}.json`
     var fileContent = {
       // Signal and format to visualize as piechart
-      piechart: {
-        datasets: [{
-          backgroundColor: ['#77BA99','#FFBA49', '#D33F49', '#23FFD9'],
-          data: [
-            this.results.Open,
-            this.results.Keepalive,
-            this.results.Update,
-            this.results.Notification
-          ]
-        }],
-        labels: [
-          'Open',
-          'Keepalive',
-          'Update',
-          'Notification'
-        ]
-      },
+      timeline: this.results,
       hint: ''
     }
     var summary = {
       fileName: fileName,
       attackCategory: 'Application Layer',
       analysisName: this.getName(),
-      supportedDiagrams: ['PieChart']
+      supportedDiagrams: ['Timeline']
     }
     return await this.storeAndReturnResult(fileName, fileContent, summary)
   }

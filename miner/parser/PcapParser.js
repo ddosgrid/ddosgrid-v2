@@ -49,8 +49,8 @@ class PacketEmitter extends EventEmitter {
       this.firstPacket = false
     }
     // Store the current packet 'globally' so that it can be used in other events, e.g. 'completed'
-    this.currentPcapPacket = decodedPacket
 
+    this.currentPcapPacket = decodedPacket
     if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET') {
       var ethernetPacket = decodedPacket.payload
       this.inspectEthernetPacket(ethernetPacket)

@@ -60,8 +60,13 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   }
 
   noteEndTime (pcapPacket) {
-    this.output.end = pcapPacket.pcap_header.tv_sec
-    this.output.duration = this.output.end - this.output.start
+    try{
+
+      this.output.end = pcapPacket.pcap_header.tv_sec
+      this.output.duration = this.output.end - this.output.start
+    } catch (e) {
+
+    }
   }
 
   countPacketSize (pcapPacket) {
@@ -71,7 +76,7 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
   countHTTP () {
     this.output.nrOfHTTP++
   }
-  
+
   countICMP () {
     this.output.nrOfICMP++
   }

@@ -60,6 +60,7 @@ import BarChart from '@/components/BarChart'
 import ScatterPlot from '../components/ScatterPlot'
 import PieChart from '../components/PieChart'
 import WorldMap from '../components/WorldMap'
+import Timeline from '../components/Timeline'
 import VisualizationUnavailable from '../components/VisualizationUnavailable'
 import VisualizationEmpty from '../components/VisualizationEmpty'
 import hashicon from 'hashicon'
@@ -70,6 +71,7 @@ export default {
     'scatterplot': ScatterPlot,
     'piechart': PieChart,
     'worldmap': WorldMap,
+    'timeline': Timeline,
     'no-visualization-possible': VisualizationUnavailable,
     'empty-dataset': VisualizationEmpty
   },
