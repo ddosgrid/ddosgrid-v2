@@ -200,7 +200,7 @@ export default {
         if (this.layout[tileIndex].w === 2) {
           this.layout[tileIndex].w = 1
         } else {
-          this.layout[tileIndex].w = 2
+          this.layout[tileIndex].w = 3
         }
       }
     },
