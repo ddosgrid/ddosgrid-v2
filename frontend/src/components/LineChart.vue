@@ -1,30 +1,46 @@
 <script>
-import { Line } from 'vue-chartjs'
+import {
+  Line
+} from 'vue-chartjs'
 
 export default {
   extends: Line,
   name: 'Line',
-  props: [ 'url' ],
+  props: ['url'],
   mounted: async function () {
     try {
       var response = await fetch(this.url)
       var parsedResponse = await response.json()
       // If the data of the response is formatted to be rendered directly we
       // can directly feed it to the renderChart method!
-      if (parsedResponse.hasOwnProperty('linechart')) {
-        this.renderChart(parsedResponse.linechart)
+      if (!parsedResponse.hasOwnProperty('linechart')) {
+        this.renderChart(parsedResponse.linechart, parsedResponse.options)
       } else {
-        var vals = Object.values(parsedResponse.data)
-        var labels = parsedResponse.labels
+        var vals = Object.values(parsedResponse.linechart.datasets[0].data)
+        var labels = parsedResponse.linechart.labels
 
         this.renderChart({
-          datasets: [
-            {
-              backgroundColor: vals.map(getRandomHexColro),
-              data: vals
-            }
-          ],
+          datasets: [{
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            data: vals,
+            label: '0: No Attack, 1: SYN-Flood, 2: ICMP-Flood, 3: UDP-Flood'
+          }],
           labels: labels
+        }, {
+          scales: {
+            yAxes: [{
+              ticks: {
+                max: 3,
+                min: 0,
+                stepSize: 1
+              }
+            }]
+          },
+          legend: {
+            display: true,
+            labels: {
+            }
+          }
         })
       }
     } catch (e) {
@@ -32,10 +48,6 @@ export default {
       this.$emit('unavailable')
     }
   }
-}
-
-function getRandomHexColro () {
-  return `#${(Math.random() * 0xFFFFFF << 0).toString(16)}`
 }
 </script>
 
