@@ -10,8 +10,12 @@ def main():
     X = dataset.iloc[:, 2:-1].values
     y = dataset.iloc[:, -1].values
 
-    from sklearn.ensemble import RandomForestClassifier
-    classifier = RandomForestClassifier(n_estimators = 10, criterion = 'entropy')
+    #from sklearn.preprocessing import StandardScaler
+    #sc = StandardScaler()
+    #X = sc.fit_transform(X)
+
+    from sklearn.neighbors import KNeighborsClassifier
+    classifier = KNeighborsClassifier(n_neighbors = 10, metric = 'minkowski', p = 2)
     classifier.fit(X, y)
 
     toPredict = pd.read_csv(sys.argv[2])
@@ -27,8 +31,3 @@ def main():
     pd.DataFrame(toPredict).to_csv(sys.argv[2], index=False)
 
 main()
-# todo write to csv
-
-# pd.DataFrame(toPredicty).to_csv("/home/luc/Documents/MA/ddosgrid/ddosgrid-v2/api/analysis/predicted.csv")
-
-# print(pd.read_csv('/home/luc/Documents/MA/ddosgrid/ddosgrid-v2/api/analysis/predicted.csv'))
