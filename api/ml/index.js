@@ -3,7 +3,7 @@ const router = Router()
 const { protect } = require('../auth/index')
 const path = require('path')
 const fs = require('fs')
-const pcapAnalyser = require('../analysis/pcapAnalyser')
+const classification = require('./classification')
 const persistedAnalyses =  require('../analysis/persistence')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
@@ -72,7 +72,7 @@ async function addToModel (req, res) {
   }
 
   try {
-    await pcapAnalyser.mergeCSV(filePath)
+    await classification.mergeCSV(filePath)
     // change model status
     analyses.changeModelStatus(id, true)
     return res.status(200).send({
