@@ -34,13 +34,13 @@ async function machineLearning (csvPath, algorithm) {
   })
 }
 
-async function mergeCSV (csvPath) {
+async function mergeCSV (csvPath, id) {
   return new Promise(function (resolve, reject) {
     var program = path.resolve('../ml/csvmerge.py')
     var trainingData = path.resolve('../ml/training.csv')
     var inputPath = path.resolve(csvPath)
 
-    const python = spawn('python', [program, trainingData, csvPath]);
+    const python = spawn('python', [program, trainingData, csvPath, id]);
     python.stderr.on('data', function (data) {
       console.log('stderr: ' + data);
       reject(data.toString())
