@@ -34,9 +34,9 @@ async function machineLearning (csvPath, algorithm) {
   })
 }
 
-async function mergeCSV (csvPath, id) {
+async function addToModel (csvPath, id) {
   return new Promise(function (resolve, reject) {
-    var program = path.resolve('../ml/csvmerge.py')
+    var program = path.resolve('../ml/addtomodel.py')
     var trainingData = path.resolve('../ml/training.csv')
     var inputPath = path.resolve(csvPath)
 
@@ -46,11 +46,29 @@ async function mergeCSV (csvPath, id) {
       reject(data.toString())
     });
     python.on('exit', (code) => {
-      console.log(`csv merge child process close all stdio with code ${code}`);
+      console.log(`model addition child process close all stdio with code ${code}`);
       // console.log(resultArray);
       resolve()
     });
   })
 }
 
-module.exports = { machineLearning, mergeCSV }
+async function removeFromModel (id) {
+  return new Promise(function (resolve, reject) {
+    var program = path.resolve('../ml/removefrommodel.py')
+    var trainingData = path.resolve('../ml/training.csv')
+
+    const python = spawn('python', [program, trainingData, id]);
+    python.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+      reject(data.toString())
+    });
+    python.on('exit', (code) => {
+      console.log(`model subtraction child process close all stdio with code ${code}`);
+      // console.log(resultArray);
+      resolve()
+    });
+  })
+}
+
+module.exports = { machineLearning, addToModel, removeFromModel }
