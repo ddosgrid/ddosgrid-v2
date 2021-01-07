@@ -44,7 +44,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       // First packet, no window created yet
       this.currentPacketTimeSeconds = pcapPacket.pcap_header.tv_sec
       var newAttackType = this.updateAttackType(this.currentPacketTimeSeconds, this.attackTypes, this.currentAttackType)
-      console.log(newAttackType);
       this.currentAttackType = newAttackType.attackType
       this.attackTypes = newAttackType.attackTypes
       this.currentWindowData = this.createNewWindowData(this.currentPacketTimeSeconds, this.attackTypes)
@@ -245,10 +244,13 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       // Signal and format to visualize as piechart
       linechart: {
         datasets: [{
-          backgroundColor: ['#D33F49', '#77BA99', '#23FFD9', '#27B299', '#831A49'],
           data: this.result.map(window => window.is_attack)
         }],
         labels: this.result.map(window => window.windowNr)
+      },
+      options: {
+        scaleStepWidth: 1,
+        scaleStartValue: 0
       },
       hint: 'The labels of this chart have been computed using temporally sensitive data'
     }
