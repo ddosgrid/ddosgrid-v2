@@ -69,3 +69,7 @@ typings/
 */darpa
 */pcaps
 */trainingPcaps
+
+# model data
+**/training.csv
+**/trainingbak.csv
