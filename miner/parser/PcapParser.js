@@ -1,8 +1,8 @@
 const EventEmitter = require('events')
-const pcap = require('../../node_pcap')
+const pcap = require('pcap')
 const portNumbers = require('port-numbers')
 const colors = require('colors')
-const dns = require('../../node_pcap/decode/dns')
+const dns = require('pcap/decode/dns')
 
 // Change to true if you want to know about every unsupported frame
 const verbose = false
@@ -57,7 +57,7 @@ class PacketEmitter extends EventEmitter {
     } else {
       console.warn('DDoSGrid only supports Ethernet on L1!')
       var buf = pcapPacket.buf.slice(4)
-      var i = require('../../node_pcap/decode/ipv4')
+      var i = require('pcap/decode/ipv4')
       var p = new i()
       var b = p.decode(buf, 0)
       console.warn(`Dropping packet with link_type: ${this.currentPcapPacket.link_type}`)
@@ -189,7 +189,7 @@ class PacketEmitter extends EventEmitter {
 
   decodeBGP (packet) {
     try {
-      var bgpdec = require('../../node_pcap/decode/bgp')
+      var bgpdec = require('pcap/decode/bgp')
       var decoder = new bgpdec()
       var pac = decoder.decode(packet, 0)
       this.emit('bgpPacket', pac)

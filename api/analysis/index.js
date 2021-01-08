@@ -96,12 +96,12 @@ async function startAnalysis (req, res) {
   if(exportToDB) {
     analyses.changeExportStatus(id, 'in progress')
     try {
-      var dissectorResult = await pcapDissector.dissectAndUpload(projectPathPCAP, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/', req.user.accesstoken)
+      var dissectorResult = await pcapDissector.dissectAndUpload(projectPathPCAP, process.env.DDOSDB_PCAPEXPORT, req.user.accesstoken)
       analyses.changeExportStatus(id, 'exported')
 
       try {
         analyses.changeFilterGenStatus(id, 'in progress')
-        var filterGenResult = await pcapFilterGen.generateFilterAndUpload(projectPath, id, 'https://www.csg.uzh.ch/ddosgrid/ddosdb/api/upload-filter_rules', req.user.accesstoken)
+        var filterGenResult = await pcapFilterGen.generateFilterAndUpload(projectPath, id, process.env.DDOSDB_FILTEREXPORT, req.user.accesstoken)
         analyses.changeFilterGenStatus(id, 'generated')
 
       } catch (e) {
