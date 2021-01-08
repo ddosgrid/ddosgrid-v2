@@ -2,6 +2,7 @@ const child_process = require('child_process')
 const fork = child_process.fork
 const spawn = child_process.spawn
 const path = require('path')
+const fs = require('fs')
 
 async function machineLearning (csvPath, algorithm) {
   return new Promise(function (resolve, reject) {
@@ -32,6 +33,22 @@ async function machineLearning (csvPath, algorithm) {
       resolve(resultArray)
     });
   })
+}
+
+//check if traning.csv exists, if not, copy from trainingtemplate.csv
+async function checkAndPrepareTrainingFile() {
+  new Promise(function(resolve, reject) {
+    var training = path.resolve('../ml/training.csv')
+    try {
+      fs.statSync(filePath)
+    } catch (e) {
+      fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/training.csv'), function (err) {
+        reject(err)
+      })
+      resolve()
+    }
+    resolve()
+  });
 }
 
 async function addToModel (csvPath, id) {
@@ -71,4 +88,4 @@ async function removeFromModel (id) {
   })
 }
 
-module.exports = { machineLearning, addToModel, removeFromModel }
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile }
