@@ -73,3 +73,6 @@ typings/
 /ddos_dissector/
 
 /*/.idea
+# model data
+**/training.csv
+**/trainingbak.csv
