@@ -32,7 +32,7 @@
             <!-- TODO: Extract as variable -->
             <div class="" v-else>
               <md-icon :md-diameter="10" class="success-icon">check</md-icon>
-              DDoSDB Export: <a target="_blank" :href="`https://www.csg.uzh.ch/ddosgrid/ddosdb/query?q=key:${dataset.md5}`"><span class="cap">{{ dataset.exportstatus }}</span></a>
+              DDoSDB Export: <a target="_blank" :href="`${ddosdb}/query?q=key:${dataset.md5}`"><span class="cap">{{ dataset.exportstatus }}</span></a>
             </div>
             <div class="">
               <md-icon v-if="dataset.filterstatus === 'planned'" :md-diameter="10">schedule</md-icon>
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { apibaseurl } from '@/config/variables.js'
+import { apibaseurl, ddosdbbaseurl } from '@/config/variables.js'
 import hashicon from 'hashicon'
 
 export default {
@@ -191,7 +191,8 @@ export default {
       position: 'center',
       duration: 4000,
       isInfinity: false,
-      snackbarMsg: null
+      snackbarMsg: null,
+      ddosdb: ddosdbbaseurl
     }
   }
 }
