@@ -13,15 +13,10 @@ async function machineLearning (csvPath, algorithm) {
     var resultArray = []
     const python = spawn('python', [program, trainingData, csvPath]);
     python.stdout.on('data', function (data) {
-     console.log('Pipe data from python script ...');
 
      var splitString = data.toString().split("\n")
-     console.log('chunck length');
-     console.log(splitString.length);
      var splitIntChunk = splitString.map(elem => parseInt(elem))
      resultArray = resultArray.concat(splitIntChunk)
-     console.log('result length');
-     console.log(resultArray.length);
     });
     python.stderr.on('data', function (data) {
       console.log('stderr: ' + data);
