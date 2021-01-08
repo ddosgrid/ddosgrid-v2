@@ -8,6 +8,7 @@ const persistedAnalyses =  require('../analysis/persistence')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
+const trainingPath = path.resolve(__dirname, '../')
 var analyses = new persistedAnalyses(analysesDB)
 
 router.get('/algorithms', protect, getAllAlgorithms)
@@ -71,6 +72,7 @@ async function addToModel (req, res) {
   }
 
   try {
+    await classification.checkAndPrepareTrainingFile()
     await classification.addToModel(filePath, id)
     // change model status
     analyses.changeModelStatus(id, true)
@@ -90,6 +92,7 @@ async function removeFromModel (req, res) {
   }
 
   try {
+    await classification.checkAndPrepareTrainingFile()
     await classification.removeFromModel(id)
     // change model status
     analyses.changeModelStatus(id, false)
