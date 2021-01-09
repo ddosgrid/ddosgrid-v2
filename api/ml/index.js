@@ -140,11 +140,14 @@ async function startClassification(req, res) {
 
   if (analysis.classificationType = 'auto') {
     try {
-      console.log(filePath);
-      console.log(analysis.analysisFiles[11].file);
+      analyses.changeClassificationStatus(id, 'classified')
+
       var mlResults = await classification.machineLearning(filePath, analysis.algorithm)
 
-      var fullJSONFileName = analysisBaseDir + '/' + analysis.analysisFiles[11].file
+      // find json file
+      var jsonIndex = analysis.analysisFiles.findIndex(file => file.file.endsWith('.pcap-ML-features.json'))
+
+      var fullJSONFileName = analysisBaseDir + '/' + analysis.analysisFiles[jsonIndex].file
 
       fs.readFile(fullJSONFileName, 'utf8', (err, data) => {
         if (err) { console.log(`Error reading file from disk: ${err}`); }
