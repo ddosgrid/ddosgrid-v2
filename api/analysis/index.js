@@ -8,6 +8,7 @@ const pcapFilterGen = require('./pcapFilterGenerator')
 const pcapAnalyser = require('./pcapAnalyser')
 const persistedAnalyses =  require('./persistence')
 const fileImport = require('./pcapImporter')
+const classification = require('../ml/classification')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
@@ -21,7 +22,7 @@ router.delete('/:id', protect, deleteAnalysisById)
 router.post('/upload', protect, handleFilePost)
 router.post('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.put('/import/:dataset', protect, bodyParser.json(), handleFileImport)
-router.post('/:id/analyse', protect, startAnalysis)
+router.post('/:id/analyse', protect, bodyParser.json(), startAnalysis)
 
 async function getAllAnalyses (req, res) {
     try {
@@ -44,6 +45,9 @@ async function deleteAnalysisById (req, res) {
     if(!analysis) {
       return res.status(404).send('Not found')
     }
+    //needed to remove from model by id. may be done in a separate call from the frontend.
+    await classification.removeFromModel(req.params.id)
+
     // We need to derive the directory from the database md5 hash
     // since reading it from parameter would be dangerous
     var pathToDel = path.resolve(analysisBaseDir, analysis.md5)
@@ -119,7 +123,11 @@ async function startAnalysis (req, res) {
   }
   try {
     analyses.changeAnalysisStatus(id, 'in progress')
-    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPathPCAP)
+    if (analysis.classificationType !== 'no') {
+      analyses.changeClassificationStatus(id, 'planned')
+    }
+
+    var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPathPCAP, analysis.attackTimes)
     var endTime = new Date()
     var analysisDurationInSeconds = (endTime - startTime) / 1000
 
@@ -128,6 +136,10 @@ async function startAnalysis (req, res) {
     analyses.changeAnalysisStatus(id, 'analysed')
     analyses.appendMetrics(id, metrics)
     analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
+
+    if (analysis.classificationType === 'manual') {
+      analyses.changeClassificationStatus(id, 'classified')
+    }
 
     var results = analysisResult
     results.forEach(result => {
@@ -151,6 +163,7 @@ async function startAnalysis (req, res) {
     var resultsWithHash = cleanedResults.map((el) => addHash(el, id))
     analyses.addAnalysisFiles(id, cleanedResults)
   } catch (e) {
+    console.log(e);
     analyses.changeAnalysisStatus(id, 'failed')
   }
 }
@@ -215,12 +228,25 @@ async function handleFilePost (req, res) {
   if(!req.body.hasOwnProperty('description') || !req.body.description || req.body.description == "") {
     return res.status(400).send('No description was given to the dataset')
   }
+  if(!req.body.hasOwnProperty('classification') || !req.body.classification || req.body.classification == "" ) {
+    return res.status(400).send('No classification type was supplied')
+  }
+  if(!req.body.hasOwnProperty('attacktimes') || !req.body.attacktimes || req.body.attacktimes == "" ) {
+    return res.status(400).send('No attack times or types were supplied')
+  }
+  if(!req.body.hasOwnProperty('algorithm') || !req.body.algorithm || req.body.algorithm == "" ) {
+    return res.status(400).send('No attack times or types were supplied')
+  }
+  
   var uploadedFile = req.files.captureFile
   if(!uploadedFile) {
     return res.status(400).send('Please upload file with form key "captureFile"');
   }
   var datasetName = req.body.name
   var datasetDescription = req.body.description
+  var classification = req.body.classification
+  var attackTimes = req.body.attacktimes
+  var algorithm = req.body.algorithm
   var uploader = req.user._id
   var fileHash = uploadedFile.hash
   var existsAlready = await analyses.getAnalysis(fileHash)
@@ -241,7 +267,7 @@ async function handleFilePost (req, res) {
     if (err) {
       return res.status(500).send('Error uploading/moving file')
     }
-    analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
+    analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader, classification, algorithm, attackTimes)
     return res.status(200).json({
       id: fileHash,
       status: `Your file was uploaded with ID ${fileHash}`
@@ -278,4 +304,5 @@ function deleteFilesInDir (directory, cb) {
     }
   });
 }
+
 module.exports = router
