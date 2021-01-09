@@ -7,8 +7,8 @@ import pandas as pd
 
 def main():
     dataset = pd.read_csv(sys.argv[1])
-    X = dataset.iloc[:, 2:-1].values
-    y = dataset.iloc[:, -1].values
+    X = dataset.iloc[:, 2:-2].values
+    y = dataset.iloc[:, -2].values
 
     #from sklearn.preprocessing import StandardScaler
     #sc = StandardScaler()
