@@ -49,7 +49,7 @@ class Analyses {
       })
     })
   }
-  createAnalysis (md5, name, description, fileSize, uploader) {
+  createAnalysis (md5, name, description, fileSize, uploader, classification, algorithm, attackTimes) {
     var newAnalysis = {
       md5: md5,
       created: new Date(),
@@ -62,7 +62,12 @@ class Analyses {
       analysisFiles: [ ],
       metrics: { },
       uploader: uploader,
-      users: [ uploader ]
+      users: [ uploader ],
+      classificationType: classification,
+      classificationStatus: classification !== 'no' ? 'planned' : 'Opt-out',
+      attackTimes: attackTimes,
+      algorithm: algorithm,
+      inmodel: false
     }
     instance.insert(newAnalysis)
   }
@@ -71,6 +76,12 @@ class Analyses {
   }
   changeAnalysisStatus (md5, newStatus) {
     instance.update({ md5: md5 }, { $set: { status: newStatus }})
+  }
+  changeClassificationStatus (md5, newStatus) {
+    instance.update({ md5: md5 }, { $set: { classificationStatus: newStatus }})
+  }
+  changeModelStatus (md5, newStatus) {
+    instance.update({ md5: md5 }, { $set: { inmodel: newStatus }})
   }
   changeExportStatus (md5, newStatus) {
     instance.update({ md5: md5 }, { $set: { exportstatus: newStatus }})
