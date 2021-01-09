@@ -11,6 +11,7 @@ async function machineLearning (csvPath, algorithm) {
     var inputPath = path.resolve(csvPath)
 
     var resultArray = []
+    
     const python = spawn('python', [program, trainingData, csvPath]);
     python.stdout.on('data', function (data) {
 
@@ -35,8 +36,9 @@ async function checkAndPrepareTrainingFile() {
   new Promise(function(resolve, reject) {
     var training = path.resolve('../ml/training.csv')
     try {
-      fs.statSync(filePath)
+      fs.statSync(training)
     } catch (e) {
+      console.error(e);
       fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/training.csv'), function (err) {
         reject(err)
       })
