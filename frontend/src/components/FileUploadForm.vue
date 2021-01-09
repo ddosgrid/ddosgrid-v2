@@ -2,7 +2,7 @@
   <div id="form">
     <md-field>
       <label>Upload files ({{fileSizeInMB}}MB)</label>
-      <md-file v-model="file" accept=".pcap" placeholder="Choose a PCAP File..." @md-change="checkDetails" />
+      <md-file v-model="file" accept=".pcap,.tcpdump" placeholder="Choose a PCAP File..." @md-change="checkDetails" />
     </md-field>
 
     <md-field>
