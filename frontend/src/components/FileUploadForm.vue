@@ -22,6 +22,49 @@
       </md-list-item>
     </md-list>
 
+    <div class="radio-wrapper">
+      <md-radio v-model="classify" value="no">Do Not Classify Attack Type</md-radio>
+
+      <md-radio v-model="classify" value="auto" class="md-primary">Automatically Classify Attack Type</md-radio>
+      <div v-if="classify === 'auto'" class="radio-submenu">
+        <div class="radio-wrapper">
+          <md-radio v-model="algo" :value="algorithm.id" class="md-primary" v-for="algorithm in algorithms"  :key="algorithm.id">{{ algorithm.name }}</md-radio>
+        </div>
+      </div>
+
+      <md-radio v-model="classify" value="manual" class="md-primary">Manually Classify Attack Type</md-radio>
+      <div v-if="classify === 'manual'" class="radio-submenu">
+        <div v-if="sections.length === 0" class="section-row">
+          The entire file is of attack type
+          <md-field class="section-value">
+            <md-select v-model="attackType" name="attackType" id="movie">
+              <md-option v-for="attackType in attackTypes"  :key="attackType.id" :value="attackType.id">{{ attackType.name }}</md-option>
+            </md-select>
+          </md-field>
+        </div>
+
+        <div v-else v-for="(section, index) in sections"  :key="index" class="section-row">
+          Section from
+          <md-field class="section-value">
+            <md-input class="section-value" v-model="sections[index].start" type="number"></md-input>
+          </md-field>
+           to
+           <md-field class="section-value">
+            <md-input class="section-value" v-model="sections[index].end" type="number"></md-input>
+          </md-field>
+          seconds is of attack type
+          <md-field class="section-value">
+            <md-select v-model="sections[index].type" name="attackType" id="movie">
+              <md-option v-for="attackType in attackTypes"  :key="attackType.id" :value="attackType.id">{{ attackType.name }}</md-option>
+            </md-select>
+          </md-field>
+        </div>
+
+        <md-button class="md-dense md-raised md-primary" @click="sections.push({start: 0, end:0, type:0})">Add Section</md-button>
+        <md-button v-if="sections.length > 0" class="md-dense md-raised " @click="sections.pop()">Remove Section</md-button>
+      </div>
+    </div>
+
   <div class="upload-btn-wrapper">
     <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
       <md-icon>cloud_upload</md-icon>
