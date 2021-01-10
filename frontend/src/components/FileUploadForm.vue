@@ -175,6 +175,9 @@ export default {
       formData.append('name', this.fileName)
       formData.append('description', this.fileDescription)
       formData.append('captureFile', fileField.files[0])
+      formData.append('classification', this.classify)
+      formData.append('algorithm', this.algo)
+      formData.append('attacktimes', this.createFinalAttackTimes())
 
       this.isLoading = true
       axios.request({
