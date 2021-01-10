@@ -200,6 +200,42 @@ export default {
           app.$emit('deleted')
           console.log(result)
         })
+    },
+    addToModel: function addToModel (dataset) {
+      var id = dataset.md5
+      var app = this
+      fetch(`${apibaseurl}/ml/${id}/addtomodel`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then((result) => {
+          app.$emit('deleted')
+          console.log(result)
+        })
+    },
+    removeFromModel: function removeFromModel (dataset) {
+      var id = dataset.md5
+      var app = this
+      fetch(`${apibaseurl}/ml/${id}/removefrommodel`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then((result) => {
+          app.$emit('deleted')
+          console.log(result)
+        })
+    },
+    classifyManually: function functionName (dataset) {
+      var id = dataset.md5
+      var app = this
+      fetch(`${apibaseurl}/ml/${id}/classify`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then((result) => {
+          app.$emit('deleted')
+          console.log(result)
+        })
     }
   },
   data: function () {
