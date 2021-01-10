@@ -50,6 +50,23 @@
               Feature Extraction: <span class="cap">{{ dataset.status }}</span>
             </div>
 
+            <div class="">
+              <md-icon v-if="dataset.classificationType === 'no'" :md-diameter="10">block</md-icon>
+              <md-icon v-if="dataset.classificationStatus === 'planned' && dataset.classificationType !== 'no'" :md-diameter="10">schedule</md-icon>
+              <md-progress-spinner v-if="dataset.classificationStatus === 'in progress' && dataset.classificationType !== 'no'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
+              <md-icon v-if="dataset.classificationStatus === 'failed' && dataset.classificationType !== 'no'" :md-diameter="10" class="failure-icon">warning</md-icon>
+              <md-icon v-if="dataset.classificationStatus === 'classified' && dataset.classificationType !== 'no'" :md-diameter="10" class="success-icon">check</md-icon>
+
+              {{ dataset.classificationType }} Classification: <span class="cap">{{ dataset.classificationStatus }}</span>
+            </div>
+
+            <div class="">
+              <md-icon v-if="dataset.inmodel" :md-diameter="10">check</md-icon>
+              <md-icon v-if="!dataset.inmodel" :md-diameter="10" class="success-icon">block</md-icon>
+
+              In ML Model: <span class="cap">{{ dataset.inmodel ? 'Yes' : 'No' }}</span>
+            </div>
+
             <div class="divider" style="margin: 5px 0;"></div>
 
             <div class="" v-if="'fileSizeMB' in dataset">File Size: {{ dataset.fileSizeMB >= 1 ? Number(dataset.fileSizeMB).toFixed() : dataset.fileSizeMB}} MB</div>
