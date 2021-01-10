@@ -154,4 +154,29 @@ export default {
     text-align: center;
     margin-top: 20px;
   }
+  .radio-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .section-value {
+    display: inline;
+    width: 100px;
+    height: 10px;
+    margin-left: 10px;
+    margin-right: 15px;
+  }
+  .section-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+  }
+  .radio-submenu {
+    margin-left: 38px;
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+  .md-radio {
+    margin: 8px 8px 8px 0 !important;
+  }
 </style>
