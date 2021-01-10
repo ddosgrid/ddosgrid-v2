@@ -51,10 +51,39 @@ export default {
     snackbarMsg: null,
     isLoading: false,
     closingTimeout: 0,
-    exportUploadedFile: true,
+    exportUploadedFile: false,
     fileSize: 0,
-    uploadProgress: 0
+    uploadProgress: 0,
+    classify: 'no',
+    sections: [],
+    attackType: 0,
+    algo: 'randomforest',
+    algorithms: [],
+    attackTypes: []
   }),
+  mounted: function () {
+    fetch(`${apibaseurl}/ml/algorithms`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    })
+      .then(async (response) => {
+        this.algorithms = await response.json()
+      })
+
+    fetch(`${apibaseurl}/ml/attacktypes`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    })
+      .then(async (response) => {
+        this.attackTypes = await response.json()
+      })
+  },
   computed: {
     inputDefined: function () {
       return this.file && this.fileName && this.fileDescription
