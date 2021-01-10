@@ -16,6 +16,8 @@ router.get('/attacktypes', protect, getAllAttackTypes)
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
 router.post('/:id/classify', protect, startClassification)
+router.get('/modelstats', protect, getModelStats)
+router.post('/deletemodel', protect, deleteModel)
 
 async function getAllAlgorithms(req, res) {
   var algorithms = [{
@@ -140,7 +142,7 @@ async function startClassification(req, res) {
 
   if (analysis.classificationType = 'auto') {
     try {
-      analyses.changeClassificationStatus(id, 'classified')
+      analyses.changeClassificationStatus(id, 'in progress')
 
       var mlResults = await classification.machineLearning(filePath, analysis.algorithm)
 
@@ -170,6 +172,14 @@ async function startClassification(req, res) {
 
     }
   }
+}
+
+async function getModelStats(req, res) {
+
+}
+
+async function deleteModel(req, res) {
+
 }
 
 module.exports = router
