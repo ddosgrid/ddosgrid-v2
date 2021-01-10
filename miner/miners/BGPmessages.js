@@ -1,6 +1,6 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser')
 const analysisName = 'BGP_messages'
-var bgpdec = require('../../node_pcap/decode/bgp')
+var bgpdec = require('pcap/decode/bgp')
 
 class BGPMessages extends AbstractPcapAnalyser {
   constructor (parser, outPath) {
