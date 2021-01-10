@@ -85,6 +85,10 @@
             <md-tooltip md-direction="right" v-if="demoMode">Demo Mode: Deleting disabled</md-tooltip>
 
             <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry</md-button>
+            <md-button @click="addToModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && !dataset.inmodel">Add to Model</md-button>
+            <md-button @click="removeFromModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.inmodel">Remove From Model</md-button>
+
+            <md-button v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.classificationType === 'auto'">Reclassify</md-button>
           </div>
 
           <md-card-expand-trigger>
@@ -155,6 +159,13 @@ export default {
   computed: {
     demoMode () {
       return this.$store.state.demomode
+    }
+  },
+  watch: {
+    'dataset': function (val, oldVal) {
+      if (val.status === 'analysed' && val.classificationStatus === 'planned') {
+        this.classifyManually(val)
+      }
     }
   },
   methods: {
