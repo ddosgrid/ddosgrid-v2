@@ -158,6 +158,21 @@ export default {
       clearTimeout(this.closingTimeout)
       this.showSnackbar = false
     },
+    createFinalAttackTimes () {
+      var attackTimes = ''
+      if (this.classify === 'no') {
+        attackTimes = '0'
+      } else if (this.sections.length > 0) {
+        var finalString = ''
+        for (var section of this.sections) {
+          finalString = finalString + section.start + ':' + section.end + ':' + section.type + ','
+        }
+        attackTimes = finalString.slice(0, finalString.length - 1)
+      } else {
+        attackTimes = this.attackType
+      }
+      return attackTimes
+    },
     uploadFile () {
       const formData = new FormData()
       const fileField = document.querySelector('input[type="file"]')
