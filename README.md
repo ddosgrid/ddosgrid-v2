@@ -102,6 +102,7 @@ or
 export PORT=1234; node index.js
 ```
 :warning: To use the OAuth2 authentication system, one would need to start the API using the development script in the `scripts` folder. This script will provide additional parameters.
+:warning: If you want to invoke the DDoSDB export you will also need to clone the `converters` and `ddos_dissector` scripts into the root of the repository. Please follow the documentation of these repositories to set up the required dependencies.
 
 ## frontend
 Enter the `frontend` subproject and run it after fetching its dependencies
@@ -111,53 +112,6 @@ npm i; npm run serve
 This will automatically rebuild the project if a file changes. 
 To use the application you will need to let it connect to an api instance.
 In development mode (`npm run serve`) it will always connect to `localhost:3000`.
-~~You can run the api locally as described in the previous section or if you don't plan to work on the backend part you can just run the latest image from Docker hub with one command:~~
-```bash
-docker run -it -p 3000:3000 ddosgrid/ddosgrid-api
-```
 
 # Production deployment
-## Parameters
-:warning: TODO: Describe all available parameters for each module
-## frontend
-~~Our frontend is continuosly integrated and deployed by a GitHub action to a GitHub pages branch.~~
-If you are building manually simply run `npm run build` and then deploy the `dist` folder.
-This will create a frontend that automatically connects to our hostname in production. If you want to change the hostname of the API please edit `frontend/.env.production`.
-
-## API
-~~Our api is continuosly integrated and built as a Docker image and pushed to that registry.~~
-From there you can run it with one command:
-```
-cd api; docker-compose up
-```
-From there we simply pull the docker file in a 5minute time interval from Docker Hub and then redeploy the service using CRON:
-```
-*/5 * * * * docker pull ddosgrid/ddosgrid-api:latest; docker service update ddosgridapi_ddosgridapi --image ddosgrid/ddosgrid-api:latest
-```
-This docker compose file will run the API on local interface and also expose it as a TOR service. You can then connect to that onion service or place a reverse-proxy in front of the local server. With NGINX, this would look as follows:
-```
-server {
-  listen       443 ssl;
-  server_name  api.ddosgrid.online;
-
-  # Configure max upload size
-  client_max_body_size 1G;
-
-  # Configure SSL
-  ssl_certificate      /path/to/your/ssl/cert;
-  ssl_certificate_key  /path/to/your/ssl/key;
-  
-  # Proxy to the locally running server
-  location / {
-    proxy_pass http://localhost:3000;
-  }
-}
-```
-Since we don't want that our server can be accessed directly without going through the proxy, we recommend blocking external access. Otherwise one could e.g. surpass the file size limit:
-This would drop all packets destined to our server that are being sent from outside our host and would accept traffic to our server coming from our NGINX instance:
-```
-local_server_port=3000
-inbound_wan_interface=eth0
-
-iptables -I FORWARD --protocol tcp --destination-port $local_server_port -j DROP -i $inbound_wan_interface
-```
+There is no written documentation on how to deploy DDoSGrid/DDoSDB productively. A working documentation of such a configuration can be found in [ddosgrid/configuration-management](https://github.com/ddosgrid/configuration-management). That repository can be used as a 'working' documentation since all the steps required to setup all components will be shown. Alternatively, one may use the Ansible / Vagrant workflow to deploy the platform in an automated manner.
