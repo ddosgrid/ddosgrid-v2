@@ -10,7 +10,7 @@ var users = new Users(userDB)
 
 router.get('/auth/provider', passport.authenticate('provider', {scope: 'profile' }))
 router.get('/auth/provider/callback', passport.authenticate('provider', {
-  successRedirect: process.env.CLIENT_APP_ORIGIN || 'http://localhost:8081/ddosgrid',
+  successRedirect: process.env.OAUTH2_SUCCESS_FORWARD,
   failureRedirect: '/fail'
 }))
 router.get('/auth/info', protect, (req, res) => {

@@ -6,6 +6,7 @@ const dns = require('pcap/decode/dns')
 
 // Change to true if you want to know about every unsupported frame
 const verbose = false
+const experimentalFeatures = false
 
 class PacketEmitter extends EventEmitter {
   constructor () {
@@ -183,8 +184,10 @@ class PacketEmitter extends EventEmitter {
   }
 
   decodeDNS (packet) {
-    var dnspack = this.dnsdecoder.decode(packet, 0)
-    this.emit('dnsPacket', dnspack)
+    if (experimentalFeatures) {
+      var dnspack = this.dnsdecoder.decode(packet, 0)
+      this.emit('dnsPacket', dnspack)
+    }
   }
 
   decodeBGP (packet) {

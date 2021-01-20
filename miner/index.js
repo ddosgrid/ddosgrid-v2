@@ -43,7 +43,8 @@ function analyseFileInProjectFolder (projectPath) {
     ICMPMessages,
     Top5SourceHostsAnalyser,
     Top100SourceHostsAnalyser,
-    BGPMessages,
+    // Uncomment to run the experimental BGP miner
+    // BGPMessages,
     HTTPVerbs,
     HTTPEndpoints,
     BrowserAndOSAnalyzer,
