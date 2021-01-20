@@ -153,13 +153,12 @@ class SYNFloodFeatureExtraction extends AbstractPcapAnalyser {
 
   async postParsingAnalysis () {
     console.log("finished");
-    var fileName = `${this.baseOutPath}-SYN-Flood-features.json`
+    var fileName = `${this.baseOutPath}-SYN-Flood-features.csv`
     var fileContent = this.result
     var summary = {
       fileName: fileName,
-      attackCategory: 'Network State',
-      analysisName: 'IPv4 and IPv6 usage',
-      supportedDiagrams: ['PieChart']
+      attackCategory: 'SYN',
+      analysisName: 'Feature Extraction for ML-Based SYN-Flood DDoS Detection',
     }
     return await this.storeAndReturnResult(fileName, fileContent, summary)
   }
