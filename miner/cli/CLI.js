@@ -20,10 +20,8 @@ function parseAndCheckArguments (argv) {
     var attackTypeParam = argv[3].match(attackTypeParamPattern)
 
     if (attackTypeParam) {
-      if (typeof attackTypeParam[1] === undefined) {
-        throw new Error('Invalid attack type specified!')
-      }
-      settings.attackType = attackTypeParam[1]
+      var parsedAttackType = parseAttackType(attackTypeParam)
+      settings.attackType = parsedAttackType
     }
   }
 
