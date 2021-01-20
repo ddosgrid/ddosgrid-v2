@@ -9,7 +9,7 @@ export OAUTH2_CLIENTSECRET=bHNpzRhgEtjVpibxFApW9ddJ0pZfyNwCM6vQTjwcCysCyVIlsVk12
 export OAUTH2_CALLBACK=http://localhost:8080/auth/provider/callback/
 export DDOSDB_PROFILEINFO=https://www.csg.uzh.ch/ddosgrid/ddosdb/api/profileinfo
 export DDOSDB_PCAPEXPORT=https://www.csg.uzh.ch/ddosgrid/ddosdb/
-export DDOSDB_ATTACKTRACE_PATH=https://www.csg.uzh.ch/ddosgrid/ddosdb/
+export DDOSDB_ATTACKTRACE_PATH=https://www.csg.uzh.ch/ddosgrid/ddosdb/api/attack-trace
 export DDOSDB_FILTEREXPORT=https://www.csg.uzh.ch/ddosgrid/ddosdb/api/upload-filter_rules
 
 node index.js
