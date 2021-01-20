@@ -23,6 +23,7 @@ services:
       # Make sure that the following two URLs end with a slash !
       - OAUTH2_AUTHORIZE=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/authorize/
       - OAUTH2_TOKEN=https://www.csg.uzh.ch/ddosgrid/ddosdb/o/token/
+      - OAUTH2_SUCCESS_FORWARD=https://www.csg.uz.ch/ddosgrid
       - OAUTH2_CLIENTID=3Wpm2RleLRAvEcLsALspuowD5CSJvefc9x5R7vcA
       - OAUTH2_CLIENTSECRET=OqgbEEzNy86435yBpwO0yvDRlArTt3LfTkciMkOvdxRMMAEt2perGIklGjbAsNpwhFJZFw4RjAJ5BqZjdfFTV6QwXeebGhuW7t9h9QRi8A0hKCCeYWTnKuauMXPRUFEZ
       - OAUTH2_CALLBACK=https://www.csg.uzh.ch/ddosgrid/api/auth/provider/callback/
