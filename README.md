@@ -28,7 +28,7 @@ There are two ways to use this project:
 
 Clone the project from github:
 ```
-git clone git@github.com:ddosgrid/ddos-visualization.git
+git clone git@github.com:ddosgrid/ddosgrid-v2.git
 ```
 
 ## miner
