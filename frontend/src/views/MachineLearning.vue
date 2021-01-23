@@ -40,7 +40,8 @@
       </md-card-content>
 
       <md-card-actions md-alignment="left">
-        <md-button>Delete Model</md-button>
+        <md-button @click="deleteModel()">Delete Model</md-button>
+
         <md-button>Action</md-button>
       </md-card-actions>
     </md-card>
@@ -78,6 +79,19 @@ export default {
       .then(async (response) => {
         this.algorithms = await response.json()
       })
+  },
+  methods: {
+    deleteModel: function () {
+      fetch(`${apibaseurl}/ml/deletemodel`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then(() => {
+        })
+        .catch(() => {
+          console.error('Unable to delete model')
+        })
+    }
   }
 }
 </script>

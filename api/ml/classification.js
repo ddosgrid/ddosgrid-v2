@@ -11,7 +11,7 @@ async function machineLearning (csvPath, algorithm) {
     var inputPath = path.resolve(csvPath)
 
     var resultArray = []
-    
+
     const python = spawn('python', [program, trainingData, csvPath]);
     python.stdout.on('data', function (data) {
 
@@ -44,6 +44,15 @@ async function checkAndPrepareTrainingFile() {
       })
       resolve()
     }
+    resolve()
+  });
+}
+
+async function resetTrainingFile() {
+  new Promise(function(resolve, reject) {
+    fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/training.csv'), function (err) {
+      reject(err)
+    })
     resolve()
   });
 }
@@ -85,4 +94,4 @@ async function removeFromModel (id) {
   })
 }
 
-module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile }
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile }

@@ -169,7 +169,6 @@ async function startClassification(req, res) {
       });
     } catch (e) {
       analyses.changeClassificationStatus(id, 'failed')
-
     }
   }
 }
@@ -179,7 +178,21 @@ async function getModelStats(req, res) {
 }
 
 async function deleteModel(req, res) {
+  try {
+    await classification.resetTrainingFile()
+    var all = await analyses.getAnalysesOfUser(req.user._id)
+    console.log(all);
+    for (var analysis of all) {
 
+      analyses.changeModelStatus(analysis.md5, false)
+    }
+    return res.status(200).send({
+      status: 'Model was deleted and reset'
+    })
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send()
+  }
 }
 
 module.exports = router
