@@ -50,7 +50,7 @@
               Feature Extraction: <span class="cap">{{ dataset.status }}</span>
             </div>
 
-            <div class="">
+            <div v-if="extensions" class="">
               <md-icon v-if="dataset.classificationType === 'no'" :md-diameter="10">block</md-icon>
               <md-icon v-if="dataset.classificationStatus === 'planned' && dataset.classificationType !== 'no'" :md-diameter="10">schedule</md-icon>
               <md-progress-spinner v-if="dataset.classificationStatus === 'in progress' && dataset.classificationType !== 'no'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
@@ -60,7 +60,7 @@
               {{ dataset.classificationType }} Classification: <span class="cap">{{ dataset.classificationStatus }}</span>
             </div>
 
-            <div class="">
+            <div v-if="extensions" class="">
               <md-icon v-if="dataset.inmodel" :md-diameter="10">check</md-icon>
               <md-icon v-if="!dataset.inmodel" :md-diameter="10" class="success-icon">block</md-icon>
 
@@ -85,10 +85,10 @@
             <md-tooltip md-direction="right" v-if="demoMode">Demo Mode: Deleting disabled</md-tooltip>
 
             <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry</md-button>
-            <md-button @click="addToModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && !dataset.inmodel">Add to Model</md-button>
-            <md-button @click="removeFromModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.inmodel">Remove From Model</md-button>
+            <md-button @click="addToModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && !dataset.inmodel && extensions">Add to Model</md-button>
+            <md-button @click="removeFromModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.inmodel && extensions">Remove From Model</md-button>
 
-            <md-button v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.classificationType === 'auto'">Reclassify</md-button>
+            <md-button v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.classificationType === 'auto' && extensions">Reclassify</md-button>
           </div>
 
           <md-card-expand-trigger>
@@ -159,6 +159,9 @@ export default {
   computed: {
     demoMode () {
       return this.$store.state.demomode
+    },
+    extensions () {
+      return this.$store.state.extensions
     }
   },
   watch: {

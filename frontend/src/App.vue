@@ -6,6 +6,8 @@
       <md-tab id="tab-data-sets" md-label="datasets" to="/datasets" md-icon="view_list" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
       <md-tab v-if="extensions" id="tab-machine-learning" md-label="machine learning" to="/ml" md-icon="insights" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
     </md-tabs>
+    <md-switch class="extension-toggle md-primary" v-model="extensions">Extensions</md-switch>
+
     <router-view id="main" />
   </div>
 </template>
@@ -15,12 +17,15 @@ export default {
   mounted: async function () {
     this.$store.dispatch('determineAuthState')
     setInterval(() => { this.$store.dispatch('pollAnalyses') }, 10000)
-    this.$store.commit('setExtensionMode', true)
   },
   computed: {
-    extensions () {
-      console.log(this.$store.state.extensions)
-      return this.$store.state.extensions
+    extensions: {
+      get () {
+        return this.$store.state.extensions
+      },
+      set (value) {
+        this.$store.commit('setExtensionMode', value)
+      }
     }
   }
 }
@@ -90,4 +95,11 @@ export default {
     }
   }
   .md-button[disabled="disabled"] md-icon { color: var(--md-theme-default-text-primary-on-background,rgba(0,0,0,.38))  }
+
+  .extension-toggle {
+    position: fixed !important;
+    top: 10px !important;;
+    right: 10px !important;;
+    z-index: 100 !important;;
+  }
 </style>
