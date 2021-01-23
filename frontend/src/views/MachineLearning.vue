@@ -13,9 +13,9 @@
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div class="">Number of Datasets: </div>
-            <div class="">Number of Records: </div>
-            <div class="">Size of Traninig Data: </div>
+            <div class="">Number of Datasets: {{ modelstats.nrdatasets }}</div>
+            <div class="">Number of Records: {{ modelstats.lineCount }}</div>
+            <div class="">Size of Traninig Data: {{ modelstats.size }} Bytes</div>
           </div>
         </div>
 
@@ -55,7 +55,8 @@ import { apibaseurl } from '@/config/variables.js'
 export default {
   data: () => ({
     attackTypes: [],
-    algorithms: []
+    algorithms: [],
+    modelstats: {}
   }),
   mounted: function () {
     fetch(`${apibaseurl}/ml/attacktypes`, {
@@ -79,6 +80,8 @@ export default {
       .then(async (response) => {
         this.algorithms = await response.json()
       })
+
+    this.getModelStats()
   },
   methods: {
     deleteModel: function () {
@@ -87,9 +90,22 @@ export default {
         credentials: 'include'
       })
         .then(() => {
+          this.getModelStats()
         })
         .catch(() => {
           console.error('Unable to delete model')
+        })
+    },
+    getModelStats: function () {
+      fetch(`${apibaseurl}/ml/modelstats`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(async (response) => {
+          this.modelstats = await response.json()
         })
     }
   }

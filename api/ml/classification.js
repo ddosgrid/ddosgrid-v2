@@ -33,7 +33,7 @@ async function machineLearning (csvPath, algorithm) {
 
 //check if traning.csv exists, if not, copy from trainingtemplate.csv
 async function checkAndPrepareTrainingFile() {
-  new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var training = path.resolve('../ml/training.csv')
     try {
       fs.statSync(training)
@@ -49,11 +49,25 @@ async function checkAndPrepareTrainingFile() {
 }
 
 async function resetTrainingFile() {
-  new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/training.csv'), function (err) {
       reject(err)
     })
     resolve()
+  });
+}
+
+async function getModelStats() {
+  await checkAndPrepareTrainingFile()
+
+  return new Promise(function(resolve, reject) {
+    fs.stat('../ml/training.csv', function (err, stats) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(stats)
+      }
+    });
   });
 }
 
@@ -94,4 +108,21 @@ async function removeFromModel (id) {
   })
 }
 
-module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile }
+async function countFileLines(){
+  return new Promise((resolve, reject) => {
+  let lineCount = 0;
+  fs.createReadStream('../ml/training.csv')
+    .on("data", (buffer) => {
+      let idx = -1;
+      lineCount--; // Because the loop will run once for idx=-1
+      do {
+        idx = buffer.indexOf(10, idx+1);
+        lineCount++;
+      } while (idx !== -1);
+    }).on("end", () => {
+      resolve(lineCount);
+    }).on("error", reject);
+  });
+};
+
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines }

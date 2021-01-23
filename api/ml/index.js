@@ -16,7 +16,7 @@ router.get('/attacktypes', protect, getAllAttackTypes)
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
 router.post('/:id/classify', protect, startClassification)
-router.get('/modelstats', protect, getModelStats)
+router.get('/modelstats', protect, getModelDataStats)
 router.post('/deletemodel', protect, deleteModel)
 
 async function getAllAlgorithms(req, res) {
@@ -173,15 +173,35 @@ async function startClassification(req, res) {
   }
 }
 
-async function getModelStats(req, res) {
+async function getModelDataStats(req, res) {
+  try {
+    var finalStats = {}
 
+    var stats = await classification.getModelStats()
+    var fileLines = await classification.countFileLines()
+    var all = await analyses.getAnalysesOfUser(req.user._id)
+    var inmodelcounter = 0
+    for (var analysis of all) {
+      if (analysis.inmodel) {
+        inmodelcounter += 1
+      }
+    }
+
+    finalStats.size = stats.size
+    finalStats.nrdatasets = inmodelcounter
+    finalStats.lineCount = fileLines - 1
+
+    return res.status(200).send(finalStats)
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send('Error trying to get model stats.')
+  }
 }
 
 async function deleteModel(req, res) {
   try {
     await classification.resetTrainingFile()
     var all = await analyses.getAnalysesOfUser(req.user._id)
-    console.log(all);
     for (var analysis of all) {
 
       analyses.changeModelStatus(analysis.md5, false)
