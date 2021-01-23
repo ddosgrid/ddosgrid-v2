@@ -24,9 +24,7 @@
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div class="">Number of Datasets: </div>
-            <div class="">Number of Records: </div>
-            <div class="">Size of Traninig Data: </div>
+            <div v-for="at in attackTypes"  :key="at.id" class="">{{ at.id }}: {{ at.name }}</div>
           </div>
         </div>
 
@@ -35,9 +33,8 @@
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div class="">Number of Datasets: </div>
-            <div class="">Number of Records: </div>
-            <div class="">Size of Traninig Data: </div>
+            <div v-for="at in algorithms"  :key="at.id" class="">{{ at.name }}</div>
+
           </div>
         </div>
       </md-card-content>
@@ -52,7 +49,36 @@
 </template>
 
 <script>
+import { apibaseurl } from '@/config/variables.js'
+
 export default {
+  data: () => ({
+    attackTypes: [],
+    algorithms: []
+  }),
+  mounted: function () {
+    fetch(`${apibaseurl}/ml/attacktypes`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    })
+      .then(async (response) => {
+        this.attackTypes = await response.json()
+      })
+
+    fetch(`${apibaseurl}/ml/algorithms`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    })
+      .then(async (response) => {
+        this.algorithms = await response.json()
+      })
+  }
 }
 </script>
 

@@ -4,7 +4,7 @@
       <md-tab id="tab-home" md-label="home" to="/" md-icon="home" exact></md-tab>
       <md-tab id="tab-dashboard" md-label="dashboard" to="/dashboard" md-icon="dashboard" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
       <md-tab id="tab-data-sets" md-label="datasets" to="/datasets" md-icon="view_list" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
-      <md-tab v-if="extensions" id="tab-machine-learning" md-label="machine learning" to="/ml" md-icon="view_list" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
+      <md-tab v-if="extensions" id="tab-machine-learning" md-label="machine learning" to="/ml" md-icon="insights" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
     </md-tabs>
     <router-view id="main" />
   </div>
