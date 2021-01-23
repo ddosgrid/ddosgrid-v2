@@ -4,6 +4,7 @@
       <md-tab id="tab-home" md-label="home" to="/" md-icon="home" exact></md-tab>
       <md-tab id="tab-dashboard" md-label="dashboard" to="/dashboard" md-icon="dashboard" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
       <md-tab id="tab-data-sets" md-label="datasets" to="/datasets" md-icon="view_list" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
+      <md-tab v-if="extensions" id="tab-machine-learning" md-label="machine learning" to="/ml" md-icon="view_list" exact :md-disabled="!this.$store.state.authenticated"></md-tab>
     </md-tabs>
     <router-view id="main" />
   </div>
@@ -14,6 +15,13 @@ export default {
   mounted: async function () {
     this.$store.dispatch('determineAuthState')
     setInterval(() => { this.$store.dispatch('pollAnalyses') }, 10000)
+    this.$store.commit('setExtensionMode', true)
+  },
+  computed: {
+    extensions () {
+      console.log(this.$store.state.extensions)
+      return this.$store.state.extensions
+    }
   }
 }
 </script>

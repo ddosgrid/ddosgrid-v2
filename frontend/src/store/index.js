@@ -12,7 +12,8 @@ export default new Vuex.Store({
     tiles: [],
     authenticated: false,
     demomode: false,
-    nrOfAnalysedDatasets: []
+    nrOfAnalysedDatasets: [],
+    extensions: true
   },
   mutations: {
     updateNrOfAnalysedSetups (state, newnr) {
@@ -98,6 +99,9 @@ export default new Vuex.Store({
     },
     setTiles (state, newTiles) {
       state.tiles = newTiles
+    },
+    setExtensionMode (state, newState) {
+      state.extensions = newState
     }
   },
   actions: {

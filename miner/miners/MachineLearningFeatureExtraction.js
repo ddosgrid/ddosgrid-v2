@@ -258,7 +258,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
     var summary = {
       fileName: fileName,
       attackCategory: 'Time-Based',
-      analysisName: 'Feature Extraction for ML-Based DDoS Attack Detection',
+      analysisName: 'DDoS Attack-Type over Time',
       supportedDiagrams: ['LineChart']
     }
     // TODO: do this twice, once for csv for ml and once for json for vis
@@ -269,7 +269,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
     summary = {
       fileName: fileName,
       attackCategory: 'Time-Based',
-      analysisName: 'Feature Extraction for ML-Based DDoS Attack Detection',
+      analysisName: 'DDoS Attack-Type over Time',
       supportedDiagrams: ['LineChart']
     }
 

@@ -25,6 +25,12 @@ const routes = [
     name: 'datasets',
     component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue'),
     beforeEnter: authRequired
+  },
+  {
+    path: '/ml',
+    name: 'machinelearning',
+    component: () => import(/* webpackChunkName: "about" */ '../views/MachineLearning.vue'),
+    beforeEnter: authRequired
   }
 ]
 
