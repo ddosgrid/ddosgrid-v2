@@ -24,7 +24,7 @@
       </md-list-item>
     </md-list>
 
-    <div class="radio-wrapper">
+    <div class="radio-wrapper" v-if="extensions">
       <md-radio v-model="classify" value="no">Do Not Classify Attack Type</md-radio>
 
       <md-radio v-model="classify" value="auto" class="md-primary">Automatically Classify Attack Type</md-radio>
@@ -142,6 +142,9 @@ export default {
     },
     exportAllowed: function () {
       return this.fileSize < 50000000
+    },
+    extensions () {
+      return this.$store.state.extensions
     }
   },
   methods: {
