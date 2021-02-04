@@ -47,6 +47,22 @@ async function getAllAttackTypes(req, res) {
   {
     name: 'UDP-Flood',
     id: '3'
+  },
+  {
+    name: 'IP-Sweep',
+    id: '4'
+  },
+  {
+    name: 'Ping of Death',
+    id: '5'
+  },
+  {
+    name: 'Portsweep',
+    id: '6'
+  },
+  {
+    name: 'Teardrop',
+    id: '7'
   }]
   return res.status(200).send(attackTypes)
 }

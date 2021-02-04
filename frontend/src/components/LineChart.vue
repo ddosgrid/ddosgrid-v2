@@ -21,7 +21,7 @@ export default {
 
         this.renderChart({
           datasets: [{
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(190, 109, 28, 0.7)',
             data: vals,
             label: '0: No Attack, 1: SYN-Flood, 2: ICMP-Flood, 3: UDP-Flood'
           }],
@@ -30,7 +30,7 @@ export default {
           scales: {
             yAxes: [{
               ticks: {
-                max: 3,
+                max: 7,
                 min: 0,
                 stepSize: 1
               }

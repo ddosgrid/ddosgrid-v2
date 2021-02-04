@@ -86,6 +86,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
 
   handleIPv4(ipv4Packet) {
     this.currentWindowData.source_ips.push(ipv4Packet.saddr.addr.join('.'))
+    this.currentWindowData.dest_ips.push(ipv4Packet.daddr.addr.join('.'))
   }
 
   handleTransportPacket(transportPacket) {
@@ -137,6 +138,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       num_packets: 0,
       num_bytes: 0,
       source_ips: !emptyWindow ? [] : 0,
+      dest_ips: !emptyWindow ? [] : 0,
       source_ports: !emptyWindow ? [] : 0,
       dest_ports: !emptyWindow ? [] : 0,
       num_tcp: 0,
@@ -166,6 +168,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       num_bytes: !emptyWindow ? currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) : 0,
       num_unique_packet_lengths: !emptyWindow ? [...new Set(currentWindowData.packet_sizes_bytes)].length : 0,
       num_unique_source_ips: !emptyWindow ? [...new Set(currentWindowData.source_ips)].length : 0,
+      num_unique_dest_ips: !emptyWindow ? [...new Set(currentWindowData.dest_ips)].length : 0,
       num_unique_source_ports: !emptyWindow ? [...new Set(currentWindowData.source_ports)].length : 0,
       num_unique_dest_ports: !emptyWindow ? [...new Set(currentWindowData.dest_ports)].length : 0,
       tcp_perc: !emptyWindow && currentWindowData.numPackets !== 0 ? currentWindowData.num_tcp / currentWindowData.num_packets : 0,
