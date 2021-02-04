@@ -16,6 +16,7 @@
             <div class="">Number of Datasets: {{ modelstats.nrdatasets }}</div>
             <div class="">Number of Records: {{ modelstats.lineCount }}</div>
             <div class="">Size of Traninig Data: {{ modelstats.size }} Bytes</div>
+            <div class="">Eval: {{ modelstats.evalResults }}</div>
           </div>
         </div>
 
@@ -41,8 +42,6 @@
 
       <md-card-actions md-alignment="left">
         <md-button @click="deleteModel()">Delete Model</md-button>
-
-        <md-button>Action</md-button>
       </md-card-actions>
     </md-card>
   </div>

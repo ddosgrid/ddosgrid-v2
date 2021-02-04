@@ -11,12 +11,14 @@ const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
 const trainingPath = path.resolve(__dirname, '../')
 var analyses = new persistedAnalyses(analysesDB)
 
+router.post('/:id/classify', protect, startClassification)
+
 router.get('/algorithms', protect, getAllAlgorithms)
 router.get('/attacktypes', protect, getAllAttackTypes)
+router.get('/modelstats', protect, getModelDataStats)
+
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
-router.post('/:id/classify', protect, startClassification)
-router.get('/modelstats', protect, getModelDataStats)
 router.post('/deletemodel', protect, deleteModel)
 
 async function getAllAlgorithms(req, res) {
@@ -176,6 +178,7 @@ async function startClassification(req, res) {
 async function getModelDataStats(req, res) {
   try {
     var finalStats = {}
+    var evalResults = ''
 
     var stats = await classification.getModelStats()
     var fileLines = await classification.countFileLines()
@@ -187,9 +190,14 @@ async function getModelDataStats(req, res) {
       }
     }
 
+    if (fileLines > 1) {
+      evalResults = await classification.runEvaluation()
+    }
+
     finalStats.size = stats.size
     finalStats.nrdatasets = inmodelcounter
     finalStats.lineCount = fileLines - 1
+    finalStats.evalResults = evalResults
 
     return res.status(200).send(finalStats)
   } catch (e) {

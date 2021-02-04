@@ -125,4 +125,25 @@ async function countFileLines(){
   });
 };
 
-module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines }
+async function runEvaluation () {
+  return new Promise(function (resolve, reject) {
+    var program = path.resolve('../ml/evaluation.py')
+    var trainingData = path.resolve('../ml/training.csv')
+    var returnData = ""
+    const python = spawn('python', [program, trainingData]);
+    python.stdout.on('data', function (data) {
+      returnData += data
+    });
+    python.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+      reject(data.toString())
+    });
+    python.on('exit', (code) => {
+      console.log(`model evaluation child process close all stdio with code ${code}`);
+      // console.log(resultArray);
+      resolve(returnData)
+    });
+  })
+}
+
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines, runEvaluation }

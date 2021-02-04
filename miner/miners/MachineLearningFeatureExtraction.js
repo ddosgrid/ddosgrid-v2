@@ -127,7 +127,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   addLastWindow() {
     this.result.push(this.calculateWindowResult(this.currentWindowData, this.result.length, this.currentAttackType))
 
-    this.result = this.result.filter(window => window.num_packets > 2)
+    this.result = this.result.filter(window => window.num_packets > 0)
   }
 
   createNewWindowData(arrivalTime, attackTypes, emptyWindow = false) {
