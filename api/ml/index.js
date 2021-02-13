@@ -146,10 +146,6 @@ async function startClassification(req, res) {
     return res.status(400).send('Can\'t start classification as analysis has not yet been performed successfully.')
   }
 
-  if (analysis.classificationStatus === 'classified') {
-    return res.status(400).send('Classification has already been performed.')
-  }
-
   if (analysis.classificationStatus === 'in progress') {
     return res.status(400).send('Classification is already in progress.')
   }
@@ -160,9 +156,35 @@ async function startClassification(req, res) {
 
       var mlResults = await classification.machineLearning(filePath, analysis.algorithm)
 
-      // find json file
-      var jsonIndex = analysis.analysisFiles.findIndex(file => file.file.endsWith('.pcap-ML-features.json'))
+      var occurrences = [0, 0, 0, 0, 0, 0, 0]
+      mlResults.map((type) => {
+        switch (type) {
+          case 0:
+            occurrences[0] += 1
+            break
+          case 1:
+            occurrences[1] += 1
+            break
+          case 2:
+            occurrences[2] += 1
+            break
+          case 3:
+            occurrences[3] += 1
+            break
+          case 4:
+            occurrences[4] += 1
+            break
+          case 5:
+            occurrences[5] += 1
+            break
+          case 6:
+            occurrences[6] += 1
+            break
+        }
+      })
 
+      // find time-based json file
+      var jsonIndex = analysis.analysisFiles.findIndex(file => file.file.endsWith('.pcap-ML-features.json'))
       var fullJSONFileName = analysisBaseDir + '/' + analysis.analysisFiles[jsonIndex].file
 
       fs.readFile(fullJSONFileName, 'utf8', (err, data) => {
@@ -179,8 +201,28 @@ async function startClassification(req, res) {
               }
             });
         }
-        analyses.changeClassificationStatus(id, 'classified')
       });
+
+      // find distribution json file
+      var jsonIndex2 = analysis.analysisFiles.findIndex(file => file.file.endsWith('.pcap-ML-features-pie.json'))
+      var fullJSONFileName2 = analysisBaseDir + '/' + analysis.analysisFiles[jsonIndex2].file
+
+      fs.readFile(fullJSONFileName2, 'utf8', (err, data) => {
+        if (err) { console.log(`Error reading file from disk: ${err}`); }
+        else {
+          var JSONFeatures2 = JSON.parse(data);
+          JSONFeatures2.piechart.datasets[0].data = occurrences
+
+          fs.writeFile(fullJSONFileName2, JSON.stringify(JSONFeatures2), 'utf8', (err) => {
+              if (err) {
+                console.log(`Error writing file: ${err}`);
+              } else {
+                console.log(`File is written successfully!`);
+              }
+            });
+        }
+      });
+      analyses.changeClassificationStatus(id, 'classified')
     } catch (e) {
       analyses.changeClassificationStatus(id, 'failed')
     }

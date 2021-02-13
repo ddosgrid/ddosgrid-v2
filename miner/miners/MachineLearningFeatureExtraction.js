@@ -239,12 +239,9 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   async postParsingAnalysis() {
     var resultFiles = []
 
-    console.log("finished");
-    // multiple filenames for multiple file formats
+    // Output for linechart
     var fileName = `${this.baseOutPath}-ML-features.json`
-    // var fileContent = this.result
     var fileContent = {
-      // Signal and format to visualize as piechart
       linechart: {
         datasets: [{
           data: this.result.map(window => window.is_attack)
@@ -257,25 +254,71 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
       },
       hint: 'The labels of this chart have been computed using temporally sensitive data'
     }
-
     var summary = {
       fileName: fileName,
-      attackCategory: 'Time-Based',
+      attackCategory: 'Attack Type Classification',
       analysisName: 'DDoS Attack-Type over Time',
       supportedDiagrams: ['LineChart']
     }
-    // TODO: do this twice, once for csv for ml and once for json for vis
     resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
 
+    // Output for piechart
+    // build data array of attack types
+    var occurrences = [0, 0, 0, 0, 0, 0, 0]
+    this.result.map((window) => {
+      switch (window.is_attack) {
+        case 0:
+          occurrences[0] += 1
+          break
+        case 1:
+          occurrences[1] += 1
+          break
+        case 2:
+          occurrences[2] += 1
+          break
+        case 3:
+          occurrences[3] += 1
+          break
+        case 4:
+          occurrences[4] += 1
+          break
+        case 5:
+          occurrences[5] += 1
+          break
+        case 6:
+          occurrences[6] += 1
+          break
+      }
+    })
+
+    fileName = `${this.baseOutPath}-ML-features-pie.json`
+    fileContent = {
+      // Signal and format to visualize as piechart
+      piechart: {
+        datasets: [{
+          backgroundColor: ['#77BA99','#FFBA49', '#D33F49', '#23FFD9', '#392061', '#27B299', '#831A49'],
+          data: occurrences
+        }],
+        labels: ['No Attack', 'SYN Flood', 'ICMP Flood', 'UDP Flood', 'IP Sweep', 'Ping of Death', 'Port Sweep']
+      }
+    }
+    summary = {
+      fileName: fileName,
+      attackCategory: 'Attack Type Classification',
+      analysisName: 'Distribution of Attack Types',
+      supportedDiagrams: ['Piechart']
+    }
+    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
+
+    // Output for ML classification
     fileName = `${this.baseOutPath}-ML-features.csv`
     fileContent = this.result
     summary = {
       fileName: fileName,
-      attackCategory: 'Time-Based',
+      attackCategory: 'Attack Type Classification',
       analysisName: 'DDoS Attack-Type over Time',
       supportedDiagrams: ['LineChart']
     }
-
     resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
 
     return resultFiles

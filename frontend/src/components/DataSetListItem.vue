@@ -88,7 +88,7 @@
             <md-button @click="addToModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && !dataset.inmodel && extensions">Add to Model</md-button>
             <md-button @click="removeFromModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.inmodel && extensions">Remove From Model</md-button>
 
-            <md-button v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.classificationType === 'auto' && extensions">Reclassify</md-button>
+            <md-button @click="classifyManually(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.classificationType === 'auto' && extensions">Reclassify</md-button>
           </div>
 
           <md-card-expand-trigger>
