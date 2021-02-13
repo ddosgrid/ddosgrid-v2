@@ -19,27 +19,57 @@ export default {
         var vals = Object.values(parsedResponse.linechart.datasets[0].data)
         var labels = parsedResponse.linechart.labels
 
+        var opacity = vals.length > 1000 ? 0 : 0.5
+
+        vals = vals.map((value) => {
+          switch (value) {
+            case 0:
+              return 'No Attack'
+            case 1:
+              return 'SYN Flood'
+            case 2:
+              return 'ICMP Flood'
+            case 3:
+              return 'UDP Flood'
+            case 4:
+              return 'IP Sweep'
+            case 5:
+              return 'Ping of Death'
+            case 6:
+              return 'Port Sweep'
+            default:
+          }
+        })
+
         this.renderChart({
+          yLabels: ['No Attack', 'SYN Flood', 'ICMP Flood', 'UDP Flood', 'IP Sweep', 'Ping of Death', 'Port Sweep'],
           datasets: [{
-            backgroundColor: 'rgba(190, 109, 28, 0.7)',
+            backgroundColor: `rgba(190, 109, 28, ${opacity})`,
             data: vals,
-            label: '0: No Attack, 1: SYN-Flood, 2: ICMP-Flood, 3: UDP-Flood'
+            label: 'Attack Types in Time Window'
           }],
-          labels: labels
+          labels: labels.map(s => new Date(s * 1e3).toISOString().slice(-13, -5))
         }, {
           scales: {
+            xAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              }
+            }],
             yAxes: [{
+              type: 'category',
+              position: 'left',
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Attack Type'
+              },
               ticks: {
-                max: 7,
-                min: 0,
-                stepSize: 1
+                reverse: true
               }
             }]
-          },
-          legend: {
-            display: true,
-            labels: {
-            }
           }
         })
       }

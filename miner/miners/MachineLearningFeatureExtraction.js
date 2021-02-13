@@ -162,7 +162,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
 
   calculateWindowResult(currentWindowData, windowNr, attackType, emptyWindow = false) {
     var newWindowResult = {
-      windowNr: windowNr,
+      arrival_time: currentWindowData.arrival_time,
       num_packets: currentWindowData.num_packets,
       avg_packet_size: !emptyWindow ? Math.round(currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) / currentWindowData.num_packets) : 0,
       num_bytes: !emptyWindow ? currentWindowData.packet_sizes_bytes.reduce((a, b) => a + b, 0) : 0,
@@ -249,7 +249,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
         datasets: [{
           data: this.result.map(window => window.is_attack)
         }],
-        labels: this.result.map(window => window.windowNr)
+        labels: this.result.map(window => window.arrival_time)
       },
       options: {
         scaleStepWidth: 1,
