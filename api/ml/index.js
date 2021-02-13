@@ -59,10 +59,6 @@ async function getAllAttackTypes(req, res) {
   {
     name: 'Portsweep',
     id: '6'
-  },
-  {
-    name: 'Teardrop',
-    id: '7'
   }]
   return res.status(200).send(attackTypes)
 }
