@@ -16,10 +16,17 @@
             <div class="">Number of Datasets: {{ modelstats.nrdatasets }}</div>
             <div class="">Number of Records: {{ modelstats.lineCount }}</div>
             <div class="">Size of Traninig Data: {{ modelstats.size }} Bytes</div>
-            <!--
-            <div class="" v-for="(result, index) in modelstats.evalResults.split('\n')"  :key="result">{{ modelstats.evalResults.split('\n')[index] }}</div>
-            <div class="">Eval: {{ modelstats.evalResults }}</div>
-          -->
+          </div>
+        </div>
+
+        <md-card-header>
+          <div class="md-subhead">Model Evaluation</div>
+        </md-card-header>
+        <div class="card-content-container">
+          <div class="card-content-half">
+            <div class="keep-spaces" v-for="line in this.modeleval.split('\n')"  :key="line">
+              {{ line }}
+            </div>
           </div>
         </div>
 
@@ -71,6 +78,7 @@ export default {
   data: () => ({
     attackTypes: [],
     algorithms: [],
+    modeleval: 'Retrieving Evaluation...',
     modelstats: {
       distribution: {
         labels: ['placeholder'],
@@ -90,6 +98,7 @@ export default {
     this.getAttackTypes()
     this.getAlgorithms()
     this.getModelStats()
+    this.getModelEval()
   },
   methods: {
     getRandomHexColor: function () {
@@ -162,7 +171,9 @@ export default {
         }
       })
         .then(async (response) => {
-          this.modeleval = await response.json()
+          // console.log(await response.text())
+          this.modeleval = await response.text()
+          console.log(this.modeleval)
         })
     }
   }
@@ -180,4 +191,9 @@ export default {
 .distribution-wrapper {
   width: 50%;
 }
+
+.keep-spaces {
+  white-space: pre-wrap;
+  font-family: monospace
+ }
 </style>

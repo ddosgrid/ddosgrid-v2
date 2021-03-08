@@ -16,6 +16,7 @@ router.post('/:id/classify', protect, startClassification)
 router.get('/algorithms', protect, getAllAlgorithms)
 router.get('/attacktypes', protect, getAllAttackTypes)
 router.get('/modelstats', protect, getModelDataStats)
+router.get('/modeleval', protect, getModelEvaluation)
 
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
@@ -259,6 +260,21 @@ async function getModelDataStats(req, res) {
   } catch (e) {
     console.log(e);
     return res.status(400).send('Error trying to get model stats.')
+  }
+}
+
+async function getModelEvaluation(req, res) {
+  try {
+    var evalResults = ''
+    var fileLines = await classification.countFileLines()
+
+    if (fileLines > 1) {
+      evalResults = await classification.runEvaluation()
+    }
+    return res.status(200).send(evalResults)
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send('Error trying to get model evaluation.\nThis error might occurr when trying to evaluate models that have severely underrepresented classes.\nTry again by refreshing the page.')
   }
 }
 

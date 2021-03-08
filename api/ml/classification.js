@@ -161,7 +161,6 @@ async function getModelDistribution() {
       result.data = data
       result.labels = labels
 
-      console.log(result);
       resolve(result)
     });
   });
