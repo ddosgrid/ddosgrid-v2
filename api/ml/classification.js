@@ -125,6 +125,48 @@ async function countFileLines(){
   });
 };
 
+async function getModelDistribution() {
+  return new Promise((resolve, reject) => {
+    var program = path.resolve('../ml/modeldistribution.py')
+    var trainingData = path.resolve('../ml/training.csv')
+    var returnData = ""
+    const python = spawn('python', [program, trainingData]);
+    python.stdout.on('data', function (data) {
+      returnData += data.toString()
+    });
+    python.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+      reject(data.toString())
+    });
+    python.on('exit', (code) => {
+      console.log(`model distribution child process close all stdio with code ${code}`);
+      var result = {}
+      var data = []
+      var labels = []
+      var lines = returnData.split('\n')
+      lines.pop()
+      lines.pop()
+
+      for (var line of lines) {
+        values = line.split(' ')
+        var label = values[0]
+        for (var i = 1; i < values.length; i++) {
+          if (values[i] !== '') {
+            var value = values[i]
+          }
+        }
+        data.push(value)
+        labels.push(label)
+      }
+      result.data = data
+      result.labels = labels
+
+      console.log(result);
+      resolve(result)
+    });
+  });
+}
+
 async function runEvaluation () {
   return new Promise(function (resolve, reject) {
     var program = path.resolve('../ml/evaluation.py')
@@ -146,4 +188,4 @@ async function runEvaluation () {
   })
 }
 
-module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines, runEvaluation }
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines, runEvaluation, getModelDistribution }

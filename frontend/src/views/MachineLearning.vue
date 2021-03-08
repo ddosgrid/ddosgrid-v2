@@ -16,7 +16,10 @@
             <div class="">Number of Datasets: {{ modelstats.nrdatasets }}</div>
             <div class="">Number of Records: {{ modelstats.lineCount }}</div>
             <div class="">Size of Traninig Data: {{ modelstats.size }} Bytes</div>
+            <!--
+            <div class="" v-for="(result, index) in modelstats.evalResults.split('\n')"  :key="result">{{ modelstats.evalResults.split('\n')[index] }}</div>
             <div class="">Eval: {{ modelstats.evalResults }}</div>
+          -->
           </div>
         </div>
 
@@ -26,6 +29,18 @@
         <div class="card-content-container">
           <div class="card-content-half">
             <div v-for="at in attackTypes"  :key="at.id" class="">{{ at.id }}: {{ at.name }}</div>
+          </div>
+        </div>
+
+        <md-card-header>
+          <div class="md-subhead">Distribution of Attack Types in Model</div>
+        </md-card-header>
+        <div class="card-content-container">
+          <div class="card-content-half">
+            <div class="distribution-wrapper">
+              <piechart :chartData="modelstats.distribution">
+              </piechart>
+            </div>
           </div>
         </div>
 
@@ -50,39 +65,60 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import LocalPieChart from '../components/LocalPieChart'
 
 export default {
   data: () => ({
     attackTypes: [],
     algorithms: [],
-    modelstats: {}
+    modelstats: {
+      distribution: {
+        labels: ['placeholder'],
+        datasets: [
+          {
+            backgroundColor: '#f87979',
+            data: [0]
+          }
+        ]
+      }
+    }
   }),
+  components: {
+    'piechart': LocalPieChart
+  },
   mounted: function () {
-    fetch(`${apibaseurl}/ml/attacktypes`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      }
-    })
-      .then(async (response) => {
-        this.attackTypes = await response.json()
-      })
-
-    fetch(`${apibaseurl}/ml/algorithms`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      }
-    })
-      .then(async (response) => {
-        this.algorithms = await response.json()
-      })
-
+    this.getAttackTypes()
+    this.getAlgorithms()
     this.getModelStats()
   },
   methods: {
+    getRandomHexColor: function () {
+      return `#${(Math.random() * 0xFFFFFF << 0).toString(16)}`
+    },
+    getAttackTypes: function () {
+      fetch(`${apibaseurl}/ml/attacktypes`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(async (response) => {
+          this.attackTypes = await response.json()
+        })
+    },
+    getAlgorithms: function () {
+      fetch(`${apibaseurl}/ml/algorithms`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(async (response) => {
+          this.algorithms = await response.json()
+        })
+    },
     deleteModel: function () {
       fetch(`${apibaseurl}/ml/deletemodel`, {
         method: 'POST',
@@ -105,6 +141,28 @@ export default {
       })
         .then(async (response) => {
           this.modelstats = await response.json()
+
+          this.modelstats.distribution = {
+            labels: this.modelstats.distribution.labels,
+            datasets: [
+              {
+                backgroundColor: ['#4f5bd5', '#feda75', '#fa7e1e', '#d62976', '#962fbf', '#00ff83', '#00d27f', '#028900'],
+                data: this.modelstats.distribution.data
+              }
+            ]
+          }
+        })
+    },
+    getModelEval: function () {
+      fetch(`${apibaseurl}/ml/modeleval`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      })
+        .then(async (response) => {
+          this.modeleval = await response.json()
         })
     }
   }
@@ -117,5 +175,9 @@ export default {
   margin: auto;
   display: flex;
   flex-direction: column;
+}
+
+.distribution-wrapper {
+  width: 50%;
 }
 </style>

@@ -237,6 +237,7 @@ async function getModelDataStats(req, res) {
     var stats = await classification.getModelStats()
     var fileLines = await classification.countFileLines()
     var all = await analyses.getAnalysesOfUser(req.user._id)
+    var distribution = await classification.getModelDistribution()
     var inmodelcounter = 0
     for (var analysis of all) {
       if (analysis.inmodel) {
@@ -245,13 +246,14 @@ async function getModelDataStats(req, res) {
     }
 
     if (fileLines > 1) {
-      evalResults = await classification.runEvaluation()
+      // evalResults = await classification.runEvaluation()
     }
 
     finalStats.size = stats.size
     finalStats.nrdatasets = inmodelcounter
     finalStats.lineCount = fileLines - 1
-    finalStats.evalResults = evalResults
+    finalStats.distribution = distribution
+    // finalStats.evalResults = evalResults
 
     return res.status(200).send(finalStats)
   } catch (e) {
