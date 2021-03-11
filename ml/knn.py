@@ -10,19 +10,19 @@ def main():
     X = dataset.iloc[:, 2:-2].values
     y = dataset.iloc[:, -2].values
 
-    #from sklearn.preprocessing import StandardScaler
-    #sc = StandardScaler()
-    #X = sc.fit_transform(X)
+    from sklearn.preprocessing import StandardScaler
+    sc = StandardScaler()
+    X = sc.fit_transform(X)
 
     from sklearn.neighbors import KNeighborsClassifier
     classifier = KNeighborsClassifier(n_neighbors = 10, metric = 'minkowski', p = 2)
     classifier.fit(X, y)
 
+
     toPredict = pd.read_csv(sys.argv[2])
     toPredictX = toPredict.iloc[:, 2:-1].values
 
     toPredicty = classifier.predict(toPredictX)
-    # print(len(toPredicty))
 
     for value in toPredicty:
         print(value)

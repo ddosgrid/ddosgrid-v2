@@ -18,7 +18,6 @@ def main():
     toPredictX = toPredict.iloc[:, 2:-1].values
 
     toPredicty = classifier.predict(toPredictX)
-    # print(len(toPredicty))
 
     for value in toPredicty:
         print(value)
@@ -27,8 +26,3 @@ def main():
     pd.DataFrame(toPredict).to_csv(sys.argv[2], index=False)
 
 main()
-# todo write to csv
-
-# pd.DataFrame(toPredicty).to_csv("/home/luc/Documents/MA/ddosgrid/ddosgrid-v2/api/analysis/predicted.csv")
-
-# print(pd.read_csv('/home/luc/Documents/MA/ddosgrid/ddosgrid-v2/api/analysis/predicted.csv'))
