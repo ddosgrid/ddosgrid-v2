@@ -7,7 +7,7 @@ import pandas as pd
 from timeit import default_timer as timer
 
 def main():
-    print('Running Evaluation 10 Times...')
+    print('Running k-NN Evaluation 10 Times...')
     times = [0, 0, 0]
     for x in range(10):
         evaluate()
