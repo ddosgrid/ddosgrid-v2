@@ -8,59 +8,60 @@ const persistedAnalyses =  require('../analysis/persistence')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
-const trainingPath = path.resolve(__dirname, '../')
 var analyses = new persistedAnalyses(analysesDB)
+
+const algorithms = [{
+  name: 'Random Forest Classification',
+  id: 'randomforest'
+},{
+  name: 'K-Nearest Neighbor Classification',
+  id: 'knn'
+}]
+
+const attackTypes = [{
+  name: 'No Attack / Unknown',
+  id: '0'
+},{
+  name: 'TCP SYN-Flood',
+  id: '1'
+},
+{
+  name: 'ICMP-Flood',
+  id: '2'
+},
+{
+  name: 'UDP-Flood',
+  id: '3'
+},
+{
+  name: 'IP-Sweep',
+  id: '4'
+},
+{
+  name: 'Ping of Death',
+  id: '5'
+},
+{
+  name: 'Portsweep',
+  id: '6'
+}]
 
 router.post('/:id/classify', protect, startClassification)
 
 router.get('/algorithms', protect, getAllAlgorithms)
 router.get('/attacktypes', protect, getAllAttackTypes)
 router.get('/modelstats', protect, getModelDataStats)
-router.get('/modeleval', protect, getModelEvaluation)
+router.get('/modeleval/:id', protect, getModelEvaluation)
 
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
 router.post('/deletemodel', protect, deleteModel)
 
 async function getAllAlgorithms(req, res) {
-  var algorithms = [{
-    name: 'Random Forest Classification',
-    id: 'randomforest'
-  },{
-    name: 'K-Nearest Neighbor Classification',
-    id: 'knn'
-  }]
   return res.status(200).send(algorithms)
 }
 
 async function getAllAttackTypes(req, res) {
-  var attackTypes = [{
-    name: 'No Attack / Unknown',
-    id: '0'
-  },{
-    name: 'TCP SYN-Flood',
-    id: '1'
-  },
-  {
-    name: 'ICMP-Flood',
-    id: '2'
-  },
-  {
-    name: 'UDP-Flood',
-    id: '3'
-  },
-  {
-    name: 'IP-Sweep',
-    id: '4'
-  },
-  {
-    name: 'Ping of Death',
-    id: '5'
-  },
-  {
-    name: 'Portsweep',
-    id: '6'
-  }]
   return res.status(200).send(attackTypes)
 }
 
@@ -157,32 +158,9 @@ async function startClassification(req, res) {
 
       var mlResults = await classification.machineLearning(filePath, analysis.algorithm)
 
-      var occurrences = [0, 0, 0, 0, 0, 0, 0]
-      mlResults.map((type) => {
-        switch (type) {
-          case 0:
-            occurrences[0] += 1
-            break
-          case 1:
-            occurrences[1] += 1
-            break
-          case 2:
-            occurrences[2] += 1
-            break
-          case 3:
-            occurrences[3] += 1
-            break
-          case 4:
-            occurrences[4] += 1
-            break
-          case 5:
-            occurrences[5] += 1
-            break
-          case 6:
-            occurrences[6] += 1
-            break
-        }
-      })
+      var occurrences = []
+      attackTypes.map(a => occurrences.push(0))
+      mlResults.map(type => occurrences[type] += 1)
 
       // find time-based json file
       var jsonIndex = analysis.analysisFiles.findIndex(file => file.file.endsWith('.pcap-ML-features.json'))
@@ -231,6 +209,8 @@ async function startClassification(req, res) {
 }
 
 async function getModelDataStats(req, res) {
+  await classification.checkAndPrepareTrainingFile()
+
   try {
     var finalStats = {}
     var evalResults = ''
@@ -264,21 +244,32 @@ async function getModelDataStats(req, res) {
 }
 
 async function getModelEvaluation(req, res) {
+  await classification.checkAndPrepareTrainingFile()
+
+  var id = req.params.id
+  if (!id) {
+    return res.status(400).send('Algorithm ID not supplied')
+  }
+  if (algorithms.findIndex(algo => algo.id === id) === -1) {
+    return res.status(400).send('Unknown Algorithm Id supplied')
+  }
   try {
     var evalResults = ''
     var fileLines = await classification.countFileLines()
 
     if (fileLines > 1) {
-      evalResults = await classification.runEvaluation()
+      evalResults = await classification.runEvaluation(id)
     }
     return res.status(200).send(evalResults)
   } catch (e) {
     console.log(e);
-    return res.status(400).send('Error trying to get model evaluation.\nThis error might occurr when trying to evaluate models that have severely underrepresented classes.\nTry again by refreshing the page.')
+    return res.status(400).send('Error trying to get model evaluation.\nThis error might occurr when trying to evaluate models that have severely underrepresented classes.\nTry again.')
   }
 }
 
 async function deleteModel(req, res) {
+  await classification.checkAndPrepareTrainingFile()
+
   try {
     await classification.resetTrainingFile()
     var all = await analyses.getAnalysesOfUser(req.user._id)

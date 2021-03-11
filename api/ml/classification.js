@@ -166,9 +166,10 @@ async function getModelDistribution() {
   });
 }
 
-async function runEvaluation () {
+async function runEvaluation (id) {
   return new Promise(function (resolve, reject) {
-    var program = path.resolve('../ml/evaluation.py')
+    var program = path.resolve('../ml/evaluation/metrics/' + id + '_eval.py')
+    console.log('../ml/' + id + 'evaluation.py');
     var trainingData = path.resolve('../ml/training.csv')
     var returnData = ""
     const python = spawn('python', [program, trainingData]);

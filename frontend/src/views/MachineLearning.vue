@@ -9,7 +9,7 @@
       <md-card-content>
         This tab lists different statistics and metrics about your machine learning model, as well as the ML extension itself.<br>It also allows you to perform actions that manipulate the entire model-data, such as deletion of the model.
         <md-card-header>
-          <div class="md-subhead">Model Data Metrics</div>
+          <h3>Model Data Metrics</h3>
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
@@ -20,18 +20,7 @@
         </div>
 
         <md-card-header>
-          <div class="md-subhead">Model Evaluation</div>
-        </md-card-header>
-        <div class="card-content-container">
-          <div class="card-content-half">
-            <div class="keep-spaces" v-for="line in this.modeleval.split('\n')"  :key="line">
-              {{ line }}
-            </div>
-          </div>
-        </div>
-
-        <md-card-header>
-          <div class="md-subhead">Recognized Attack Types</div>
+          <h3>Recognized Attack Types of the ML Extension</h3>
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
@@ -40,19 +29,22 @@
         </div>
 
         <md-card-header>
-          <div class="md-subhead">Distribution of Attack Types in Model</div>
+          <h3>Distribution of Attack Types in Model</h3>
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div class="distribution-wrapper">
+            <div v-if="modelstats.lineCount > 0" class="distribution-wrapper">
               <piechart :chartData="modelstats.distribution">
               </piechart>
+            </div>
+            <div v-else>
+              Populate the model to get the attack type distribution.
             </div>
           </div>
         </div>
 
         <md-card-header>
-          <div class="md-subhead">Available ML Algorithms</div>
+          <h3>Available ML Algorithms</h3>
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
@@ -60,8 +52,27 @@
 
           </div>
         </div>
-      </md-card-content>
 
+        <md-card-header>
+          <h3>Model Evaluation</h3>
+        </md-card-header>
+        <div class="card-content-container">
+          <div class="card-content-half">
+            <div v-if="modelstats.lineCount > 0">
+              <div v-for="algo in algorithms"  :key="algo.id">
+                <md-button class="md-raised" @click="getModelEval(algo.id)">Evaluate {{ algo.name }}</md-button>
+              </div>
+            </div>
+            <div v-else>
+              Populate the model to evaluate it.
+            </div>
+            <div class="keep-spaces" v-for="line in this.modeleval.split('\n')"  :key="line">
+              {{ line }}
+            </div>
+          </div>
+        </div>
+
+      </md-card-content>
       <md-card-actions md-alignment="left">
         <md-button @click="deleteModel()">Delete Model</md-button>
       </md-card-actions>
@@ -78,7 +89,7 @@ export default {
   data: () => ({
     attackTypes: [],
     algorithms: [],
-    modeleval: 'Retrieving Evaluation...',
+    modeleval: '',
     modelstats: {
       distribution: {
         labels: ['placeholder'],
@@ -98,7 +109,6 @@ export default {
     this.getAttackTypes()
     this.getAlgorithms()
     this.getModelStats()
-    this.getModelEval()
   },
   methods: {
     getRandomHexColor: function () {
@@ -162,8 +172,9 @@ export default {
           }
         })
     },
-    getModelEval: function () {
-      fetch(`${apibaseurl}/ml/modeleval`, {
+    getModelEval: function (id) {
+      this.modeleval = 'Retrieving Evaluation Values...'
+      fetch(`${apibaseurl}/ml/modeleval/${id}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -171,9 +182,7 @@ export default {
         }
       })
         .then(async (response) => {
-          // console.log(await response.text())
           this.modeleval = await response.text()
-          console.log(this.modeleval)
         })
     }
   }
