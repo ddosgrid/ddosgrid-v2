@@ -10,6 +10,8 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
     this.currentAttackType = 0
     this.currentAttackTimes = {}
     this.attackTypes = []
+
+    this.recognizedAttackTypes = ['No Attack', 'SYN Flood', 'ICMP Flood', 'UDP Flood', 'IP Sweep', 'Ping of Death', 'Port Sweep']
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
@@ -264,32 +266,9 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
 
     // Output for piechart
     // build data array of attack types
-    var occurrences = [0, 0, 0, 0, 0, 0, 0]
-    this.result.map((window) => {
-      switch (window.is_attack) {
-        case 0:
-          occurrences[0] += 1
-          break
-        case 1:
-          occurrences[1] += 1
-          break
-        case 2:
-          occurrences[2] += 1
-          break
-        case 3:
-          occurrences[3] += 1
-          break
-        case 4:
-          occurrences[4] += 1
-          break
-        case 5:
-          occurrences[5] += 1
-          break
-        case 6:
-          occurrences[6] += 1
-          break
-      }
-    })
+    var occurrences = []
+    this.recognizedAttackTypes.map(a => occurrences.push(0))
+    this.result.map(window => occurrences[window.is_attack] += 1)
 
     fileName = `${this.baseOutPath}-ML-features-pie.json`
     fileContent = {
@@ -299,7 +278,7 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
           backgroundColor: ['#77BA99','#FFBA49', '#D33F49', '#23FFD9', '#392061', '#27B299', '#831A49'],
           data: occurrences
         }],
-        labels: ['No Attack', 'SYN Flood', 'ICMP Flood', 'UDP Flood', 'IP Sweep', 'Ping of Death', 'Port Sweep']
+        labels: this.recognizedAttackTypes
       }
     }
     summary = {

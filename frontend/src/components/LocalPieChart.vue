@@ -4,7 +4,9 @@ import {
   mixins
 } from 'vue-chartjs'
 
-const { reactiveProp } = mixins
+const {
+  reactiveProp
+} = mixins
 
 export default {
   extends: Doughnut,
@@ -12,7 +14,10 @@ export default {
   mixins: [reactiveProp],
   mounted: async function () {
     try {
-      this.renderChart(this.chartData)
+      this.renderChart(this.chartData, {
+        responsive: true,
+        maintainAspectRatio: false
+      })
     } catch (e) {
       console.log(e)
       this.$emit('unavailable')

@@ -10,43 +10,7 @@ const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
 var analyses = new persistedAnalyses(analysesDB)
 
-const algorithms = [{
-  name: 'Random Forest Classification',
-  id: 'randomforest'
-},{
-  name: 'K-Nearest Neighbor Classification',
-  id: 'knn'
-}]
-
-const attackTypes = [{
-  name: 'No Attack',
-  id: '0'
-},{
-  name: 'TCP SYN-Flood',
-  id: '1'
-},
-{
-  name: 'ICMP-Flood',
-  id: '2'
-},
-{
-  name: 'UDP-Flood',
-  id: '3'
-},
-{
-  name: 'IP-Sweep',
-  id: '4'
-},
-{
-  name: 'Ping of Death',
-  id: '5'
-},
-{
-  name: 'Portsweep',
-  id: '6'
-}]
-
-router.post('/:id/classify', protect, startClassification)
+const { algorithms, attackTypes } = require('./values')
 
 router.get('/algorithms', protect, getAllAlgorithms)
 router.get('/attacktypes', protect, getAllAttackTypes)
@@ -56,6 +20,7 @@ router.get('/modeleval/:id', protect, getModelEvaluation)
 router.post('/:id/addtomodel', protect, addToModel)
 router.post('/:id/removefrommodel', protect, removeFromModel)
 router.post('/deletemodel', protect, deleteModel)
+router.post('/:id/classify', protect, startClassification)
 
 async function getAllAlgorithms(req, res) {
   return res.status(200).send(algorithms)
@@ -226,15 +191,10 @@ async function getModelDataStats(req, res) {
       }
     }
 
-    if (fileLines > 1) {
-      // evalResults = await classification.runEvaluation()
-    }
-
     finalStats.size = size
     finalStats.nrdatasets = inmodelcounter
     finalStats.lineCount = fileLines - 1
     finalStats.distribution = distribution
-    // finalStats.evalResults = evalResults
 
     return res.status(200).send(finalStats)
   } catch (e) {

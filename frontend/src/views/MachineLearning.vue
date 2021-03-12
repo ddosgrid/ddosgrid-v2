@@ -20,21 +20,15 @@
         </div>
 
         <md-card-header>
-          <h3>Recognized Attack Types of the ML Extension</h3>
+          <h3>Recognized Attack Types of the ML Extension and Their Occurrence in the Model</h3>
         </md-card-header>
-        <div class="card-content-container">
-          <div class="card-content-half">
+        <div id="attack-types" class="card-content-container">
+          <div id="attack-list" class="card-content-half">
             <div v-for="at in attackTypes"  :key="at.id" class="">{{ at.id }}: {{ at.name }}</div>
           </div>
-        </div>
-
-        <md-card-header>
-          <h3>Distribution of Attack Types in Model</h3>
-        </md-card-header>
-        <div class="card-content-container">
-          <div class="card-content-half">
-            <div v-if="modelstats.lineCount > 0" class="distribution-wrapper">
-              <piechart :chartData="modelstats.distribution">
+          <div id="pie-vis" class="card-content-half hundred">
+            <div id="pie-div" v-if="modelstats.lineCount > 0" class="distribution-wrapper hundred">
+              <piechart class="hundred" :chartData="modelstats.distribution">
               </piechart>
             </div>
             <div v-else>
@@ -48,23 +42,22 @@
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div v-for="at in algorithms"  :key="at.id" class="">{{ at.name }}</div>
-
+            <div class="btn-eval-div" v-for="at in algorithms"  :key="at.id">
+              <div  class="">{{ at.name }}</div>
+              <div v-if="modelstats.lineCount > 0">
+                <md-button class="md-raised" @click="getModelEval(at.id)">Evaluate</md-button>
+              </div>
+            </div>
           </div>
         </div>
 
         <md-card-header>
-          <h3>Model Evaluation</h3>
+          <h3>Model Evaluation Results</h3>
         </md-card-header>
         <div class="card-content-container">
           <div class="card-content-half">
-            <div v-if="modelstats.lineCount > 0">
-              <div v-for="algo in algorithms"  :key="algo.id">
-                <md-button class="md-raised" @click="getModelEval(algo.id)">Evaluate {{ algo.name }}</md-button>
-              </div>
-            </div>
-            <div v-else>
-              Populate the model to evaluate it.
+            <div v-if="!modeleval">
+              Populate the model to evaluate it and choose an algorithm above and click evaluate.
             </div>
             <div class="keep-spaces" v-for="line in this.modeleval.split('\n')"  :key="line">
               {{ line }}
@@ -205,4 +198,27 @@ export default {
   white-space: pre-wrap;
   font-family: monospace
  }
+
+ .card-content-container {
+   display: flex;
+   align-items: center;
+ }
+
+#attack-types {
+  height: 300px;
+}
+
+.hundred {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+#attack-list {
+  width: 30%;
+}
+
+.btn-eval-div {
+  display: flex;
+  align-items: center;
+}
 </style>
