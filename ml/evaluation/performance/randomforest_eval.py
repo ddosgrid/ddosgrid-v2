@@ -10,7 +10,7 @@ def main():
     print('Running Random Forest Evaluation 10 Times...')
     times = [0, 0, 0]
     for x in range(10):
-        evaluate()
+        evaluate(times)
     print('Avg Total Speed')
     print(times[0] / 10)
     print('Avg Import and Model Building Speed')
@@ -18,7 +18,7 @@ def main():
     print('Avg Classification Speed')
     print(times[2] / 10)
 
-def evaluate():
+def evaluate(times):
     start = timer()
     dataset = pd.read_csv(sys.argv[1])
     X = dataset.iloc[:, 2:-2].values
@@ -43,3 +43,5 @@ def evaluate():
     times[0] += end - start
     times[1] += middle - start
     times[2] += end - middle
+
+main()
