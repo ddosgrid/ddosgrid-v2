@@ -6,8 +6,8 @@ const fs = require('fs')
 
 async function machineLearning (csvPath, algorithm, userid) {
   return new Promise(function (resolve, reject) {
-    var program = path.resolve(`../ml/${algorithm}.py`)
-    var trainingData = path.resolve('../ml/' + userid + '-training.csv')
+    var program = path.resolve(`../ml/algorithms/${algorithm}.py`)
+    var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var inputPath = path.resolve(csvPath)
 
     var resultArray = []
@@ -34,12 +34,12 @@ async function machineLearning (csvPath, algorithm, userid) {
 //check if traning.csv exists, if not, copy from trainingtemplate.csv
 async function checkAndPrepareTrainingFile(userid) {
   return new Promise(function(resolve, reject) {
-    var training = path.resolve('../ml/' + userid + '-training.csv')
+    var training = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     try {
       fs.statSync(training)
     } catch (e) {
       console.error(e);
-      fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/' + userid + '-training.csv'), function (err) {
+      fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/trainingdata/' + userid + '-training.csv'), function (err) {
         reject(err)
       })
       resolve()
@@ -50,7 +50,7 @@ async function checkAndPrepareTrainingFile(userid) {
 
 async function resetTrainingFile(userid) {
   return new Promise(function(resolve, reject) {
-    fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/' + userid + '-training.csv'), function (err) {
+    fs.copyFile(path.resolve('../ml/trainingtemplate.csv'), path.resolve('../ml/trainingdata/' + userid + '-training.csv'), function (err) {
       reject(err)
     })
     resolve()
@@ -61,7 +61,7 @@ async function getModelStats(userid) {
   await checkAndPrepareTrainingFile(userid)
 
   return new Promise(function(resolve, reject) {
-    fs.stat('../ml/' + userid + '-training.csv', function (err, stats) {
+    fs.stat('../ml/trainingdata/' + userid + '-training.csv', function (err, stats) {
       if (err) {
         reject(err)
       } else {
@@ -73,8 +73,8 @@ async function getModelStats(userid) {
 
 async function addToModel (csvPath, id, userid) {
   return new Promise(function (resolve, reject) {
-    var program = path.resolve('../ml/addtomodel.py')
-    var trainingData = path.resolve('../ml/' + userid + '-training.csv')
+    var program = path.resolve('../ml/helper/addtomodel.py')
+    var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var inputPath = path.resolve(csvPath)
 
     const python = spawn('python', [program, trainingData, csvPath, id]);
@@ -92,8 +92,8 @@ async function addToModel (csvPath, id, userid) {
 
 async function removeFromModel (id, userid) {
   return new Promise(function (resolve, reject) {
-    var program = path.resolve('../ml/removefrommodel.py')
-    var trainingData = path.resolve('../ml/' + userid + '-training.csv')
+    var program = path.resolve('../ml/helper/removefrommodel.py')
+    var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
 
     const python = spawn('python', [program, trainingData, id]);
     python.stderr.on('data', function (data) {
@@ -111,7 +111,7 @@ async function removeFromModel (id, userid) {
 async function countFileLines(userid){
   return new Promise((resolve, reject) => {
   let lineCount = 0;
-  fs.createReadStream('../ml/' + userid + '-training.csv')
+  fs.createReadStream('../ml/trainingdata/' + userid + '-training.csv')
     .on("data", (buffer) => {
       let idx = -1;
       lineCount--; // Because the loop will run once for idx=-1
@@ -127,8 +127,8 @@ async function countFileLines(userid){
 
 async function getModelDistribution(userid) {
   return new Promise((resolve, reject) => {
-    var program = path.resolve('../ml/modeldistribution.py')
-    var trainingData = path.resolve('../ml/' + userid + '-training.csv')
+    var program = path.resolve('../ml/helper/modeldistribution.py')
+    var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var returnData = ""
     const python = spawn('python', [program, trainingData]);
     python.stdout.on('data', function (data) {
@@ -169,8 +169,7 @@ async function getModelDistribution(userid) {
 async function runEvaluation (id, userid) {
   return new Promise(function (resolve, reject) {
     var program = path.resolve('../ml/evaluation/metrics/' + id + '_eval.py')
-    console.log('../ml/' + id + 'evaluation.py');
-    var trainingData = path.resolve('../ml/' + userid + '-training.csv')
+    var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var returnData = ""
     const python = spawn('python', [program, trainingData]);
     python.stdout.on('data', function (data) {
