@@ -46,7 +46,7 @@ async function deleteAnalysisById (req, res) {
       return res.status(404).send('Not found')
     }
     //needed to remove from model by id. may be done in a separate call from the frontend.
-    await classification.removeFromModel(req.params.id)
+    await classification.removeFromModel(req.params.id, req.user._id)
 
     // We need to derive the directory from the database md5 hash
     // since reading it from parameter would be dangerous
@@ -237,7 +237,7 @@ async function handleFilePost (req, res) {
   if(!req.body.hasOwnProperty('algorithm') || !req.body.algorithm || req.body.algorithm == "" ) {
     return res.status(400).send('No attack times or types were supplied')
   }
-  
+
   var uploadedFile = req.files.captureFile
   if(!uploadedFile) {
     return res.status(400).send('Please upload file with form key "captureFile"');

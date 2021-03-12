@@ -91,8 +91,8 @@ async function addToModel (req, res) {
   }
 
   try {
-    await classification.checkAndPrepareTrainingFile()
-    await classification.addToModel(filePath, id)
+    await classification.checkAndPrepareTrainingFile(req.user._id)
+    await classification.addToModel(filePath, id, req.user._id)
     // change model status
     analyses.changeModelStatus(id, true)
     return res.status(200).send({
@@ -111,8 +111,8 @@ async function removeFromModel (req, res) {
   }
 
   try {
-    await classification.checkAndPrepareTrainingFile()
-    await classification.removeFromModel(id)
+    await classification.checkAndPrepareTrainingFile(req.user._id)
+    await classification.removeFromModel(id, req.user._id)
     // change model status
     analyses.changeModelStatus(id, false)
     return res.status(200).send({
@@ -156,7 +156,7 @@ async function startClassification(req, res) {
     try {
       analyses.changeClassificationStatus(id, 'in progress')
 
-      var mlResults = await classification.machineLearning(filePath, analysis.algorithm)
+      var mlResults = await classification.machineLearning(filePath, analysis.algorithm, req.user._id)
 
       var occurrences = []
       attackTypes.map(a => occurrences.push(0))
@@ -209,16 +209,16 @@ async function startClassification(req, res) {
 }
 
 async function getModelDataStats(req, res) {
-  await classification.checkAndPrepareTrainingFile()
+  await classification.checkAndPrepareTrainingFile(req.user._id)
 
   try {
     var finalStats = {}
     var evalResults = ''
 
-    var stats = await classification.getModelStats()
-    var fileLines = await classification.countFileLines()
+    var stats = await classification.getModelStats(req.user._id)
+    var fileLines = await classification.countFileLines(req.user._id)
     var all = await analyses.getAnalysesOfUser(req.user._id)
-    var distribution = await classification.getModelDistribution()
+    var distribution = await classification.getModelDistribution(req.user._id)
     var inmodelcounter = 0
     for (var analysis of all) {
       if (analysis.inmodel) {
@@ -244,7 +244,7 @@ async function getModelDataStats(req, res) {
 }
 
 async function getModelEvaluation(req, res) {
-  await classification.checkAndPrepareTrainingFile()
+  await classification.checkAndPrepareTrainingFile(req.user._id)
 
   var id = req.params.id
   if (!id) {
@@ -255,10 +255,10 @@ async function getModelEvaluation(req, res) {
   }
   try {
     var evalResults = ''
-    var fileLines = await classification.countFileLines()
+    var fileLines = await classification.countFileLines(req.user._id)
 
     if (fileLines > 1) {
-      evalResults = await classification.runEvaluation(id)
+      evalResults = await classification.runEvaluation(id, req.user._id)
     }
     return res.status(200).send(evalResults)
   } catch (e) {
@@ -268,10 +268,10 @@ async function getModelEvaluation(req, res) {
 }
 
 async function deleteModel(req, res) {
-  await classification.checkAndPrepareTrainingFile()
+  await classification.checkAndPrepareTrainingFile(req.user._id)
 
   try {
-    await classification.resetTrainingFile()
+    await classification.resetTrainingFile(req.user._id)
     var all = await analyses.getAnalysesOfUser(req.user._id)
     for (var analysis of all) {
 
