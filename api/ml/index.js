@@ -19,7 +19,7 @@ const algorithms = [{
 }]
 
 const attackTypes = [{
-  name: 'No Attack / Unknown',
+  name: 'No Attack',
   id: '0'
 },{
   name: 'TCP SYN-Flood',

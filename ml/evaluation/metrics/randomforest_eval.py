@@ -27,9 +27,8 @@ def main():
     print('Unrounded Accuracy Score')
     print(accuracy_score(y_test, y_pred))
     print()
-    print('Metrics Evaluation')
-    target_names = ['No Attack', 'SYN Flood', 'ICMP Flood', 'UDP Flood', 'IP Sweep', 'Ping of Death', 'Port Sweep']
-    print(classification_report(y_test, y_pred, zero_division=0, target_names=target_names))
+    print('Metrics Evaluation of Individual Features and Total Values')
+    print(classification_report(y_test, y_pred, zero_division=0))
     print()
     print('Confusion Matrix of Features')
     print(cm)
