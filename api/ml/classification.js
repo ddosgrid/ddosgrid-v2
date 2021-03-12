@@ -57,7 +57,7 @@ async function resetTrainingFile(userid) {
   });
 }
 
-async function getModelStats(userid) {
+async function getModelSize(userid) {
   await checkAndPrepareTrainingFile(userid)
 
   return new Promise(function(resolve, reject) {
@@ -65,7 +65,7 @@ async function getModelStats(userid) {
       if (err) {
         reject(err)
       } else {
-        resolve(stats)
+        resolve(stats.size)
       }
     });
   });
@@ -187,4 +187,4 @@ async function runEvaluation (id, userid) {
   })
 }
 
-module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelStats, countFileLines, runEvaluation, getModelDistribution }
+module.exports = { machineLearning, addToModel, removeFromModel, checkAndPrepareTrainingFile, resetTrainingFile, getModelSize, countFileLines, runEvaluation, getModelDistribution }
