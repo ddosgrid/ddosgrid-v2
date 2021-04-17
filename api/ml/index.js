@@ -35,13 +35,13 @@ async function addToModel (req, res) {
   if (!id) {
     return res.status(404).send('ID not supplied')
   }
-  var filePath = path.resolve(analysisBaseDir, id, `${id}.pcap-ML-features.csv`)
+  var filePath = path.resolve(analysisBaseDir, req.user._id, id, `${id}.pcap-ML-features.csv`)
   try {
     fs.statSync(filePath)
   } catch (e) {
     return res.status(404).send('ID unknown')
   }
-  var analysis = await analyses.getAnalysis(id)
+  var analysis = await analyses.getAnalysis(id, req.user._id)
   if(!analysis) {
     return res.status(404).send('File was found but no corresponding database entry. Check upload?')
   }
@@ -59,7 +59,7 @@ async function addToModel (req, res) {
     await classification.checkAndPrepareTrainingFile(req.user._id)
     await classification.addToModel(filePath, id, req.user._id)
     // change model status
-    analyses.changeModelStatus(id, true)
+    analyses.changeModelStatus(id, req.user._id, true)
     return res.status(200).send({
       id: id,
       status: 'File was found, was added to Machine Learning model'
@@ -79,7 +79,7 @@ async function removeFromModel (req, res) {
     await classification.checkAndPrepareTrainingFile(req.user._id)
     await classification.removeFromModel(id, req.user._id)
     // change model status
-    analyses.changeModelStatus(id, false)
+    analyses.changeModelStatus(id, req.user._id, false)
     return res.status(200).send({
       id: id,
       status: 'Records matching the id were removed from the Machine Learning model'
@@ -94,13 +94,13 @@ async function startClassification(req, res) {
   if (!id) {
     return res.status(404).send('ID not supplied')
   }
-  var filePath = path.resolve(analysisBaseDir, id, `${id}.pcap-ML-features.csv`)
+  var filePath = path.resolve(analysisBaseDir, req.user._id, id, `${id}.pcap-ML-features.csv`)
   try {
     fs.statSync(filePath)
   } catch (e) {
     return res.status(404).send('ID unknown')
   }
-  var analysis = await analyses.getAnalysis(id)
+  var analysis = await analyses.getAnalysis(id, req.user._id)
   if(!analysis) {
     return res.status(404).send('File was found but no corresponding database entry. Check upload?')
   }
@@ -119,7 +119,7 @@ async function startClassification(req, res) {
 
   if (analysis.classificationType = 'auto') {
     try {
-      analyses.changeClassificationStatus(id, 'in progress')
+      analyses.changeClassificationStatus(id, req.user._id, 'in progress')
 
       var mlResults = await classification.machineLearning(filePath, analysis.algorithm, req.user._id)
 
@@ -166,9 +166,9 @@ async function startClassification(req, res) {
             });
         }
       });
-      analyses.changeClassificationStatus(id, 'classified')
+      analyses.changeClassificationStatus(id, req.user._id, 'classified')
     } catch (e) {
-      analyses.changeClassificationStatus(id, 'failed')
+      analyses.changeClassificationStatus(id, req.user._id, 'failed')
     }
   }
 }
@@ -235,7 +235,7 @@ async function deleteModel(req, res) {
     var all = await analyses.getAnalysesOfUser(req.user._id)
     for (var analysis of all) {
 
-      analyses.changeModelStatus(analysis.md5, false)
+      analyses.changeModelStatus(analysis.md5, req.user._id, false)
     }
     return res.status(200).send({
       status: 'Model was deleted and reset'

@@ -35,13 +35,13 @@ async function getAllAnalyses (req, res) {
 
 async function getAnalysisById (req, res) {
   // TODO: Check if user the uploader
-  var analysis = await analyses.getAnalysis(req.params.id)
+  var analysis = await analyses.getAnalysis(req.params.id, req.user._id)
   res.json(analysis)
 }
 
 async function deleteAnalysisById (req, res) {
   try {
-    var analysis = await analyses.getAnalysis(req.params.id)
+    var analysis = await analyses.getAnalysis(req.params.id, req.user._id)
     if(!analysis) {
       return res.status(404).send('Not found')
     }
@@ -50,9 +50,9 @@ async function deleteAnalysisById (req, res) {
 
     // We need to derive the directory from the database md5 hash
     // since reading it from parameter would be dangerous
-    var pathToDel = path.resolve(analysisBaseDir, analysis.md5)
+    var pathToDel = path.resolve(analysisBaseDir, req.user._id, analysis.md5)
     deleteFilesInDir(pathToDel)
-    await analyses.deleteAnalysis(req.params.id)
+    await analyses.deleteAnalysis(req.params.id, req.user._id)
     res.status(200).send(`Deleted ${analysis.md5}`)
   } catch (e) {
     console.log(e)
@@ -66,13 +66,13 @@ async function startAnalysis (req, res) {
   if (!id) {
     return res.status(404).send('ID not supplied')
   }
-  var filePath = path.resolve(analysisBaseDir, id, `${id}.pcap`)
+  var filePath = path.resolve(analysisBaseDir, req.user._id, id, `${id}.pcap`)
   try {
     fs.statSync(filePath)
   } catch (e) {
     return res.status(404).send('ID unknown')
   }
-  var analysis = await analyses.getAnalysis(id)
+  var analysis = await analyses.getAnalysis(id, req.user._id)
   if(!analysis) {
     return res.status(404).send('File was found but no corresponding database entry. Check upload?')
   }
@@ -94,37 +94,37 @@ async function startAnalysis (req, res) {
     id: id,
     status: 'File was found, analysis should start'
   })
-  var projectPath = path.resolve(analysisBaseDir, id)
+  var projectPath = path.resolve(analysisBaseDir, req.user._id, id)
   var projectPathPCAP = path.resolve(projectPath, `${id}.pcap`)
   var startTime = new Date()
   if(exportToDB) {
-    analyses.changeExportStatus(id, 'in progress')
+    analyses.changeExportStatus(id, req.user._id, 'in progress')
     try {
       var dissectorResult = await pcapDissector.dissectAndUpload(projectPathPCAP, process.env.DDOSDB_PCAPEXPORT, req.user.accesstoken)
-      analyses.changeExportStatus(id, 'exported')
+      analyses.changeExportStatus(id, req.user._id, 'exported')
 
       try {
-        analyses.changeFilterGenStatus(id, 'in progress')
+        analyses.changeFilterGenStatus(id, req.user._id, 'in progress')
         var filterGenResult = await pcapFilterGen.generateFilterAndUpload(projectPath, id, process.env.DDOSDB_FILTEREXPORT, req.user.accesstoken)
-        analyses.changeFilterGenStatus(id, 'generated')
+        analyses.changeFilterGenStatus(id, req.user._id, 'generated')
 
       } catch (e) {
-        analyses.changeFilterGenStatus(id, 'failed')
+        analyses.changeFilterGenStatus(id, req.user._id, 'failed')
         console.warn('Dissector failed!', e)
       }
 
     } catch (e) {
-      analyses.changeExportStatus(id, 'failed')
+      analyses.changeExportStatus(id, req.user._id, 'failed')
       console.warn('Dissector failed!', e)
     }
   } else {
-    analyses.changeExportStatus(id, 'opt-out')
-    analyses.changeFilterGenStatus(id, 'opt-out')
+    analyses.changeExportStatus(id, req.user._id, 'opt-out')
+    analyses.changeFilterGenStatus(id, req.user._id, 'opt-out')
   }
   try {
-    analyses.changeAnalysisStatus(id, 'in progress')
+    analyses.changeAnalysisStatus(id, req.user._id, 'in progress')
     if (analysis.classificationType !== 'no') {
-      analyses.changeClassificationStatus(id, 'planned')
+      analyses.changeClassificationStatus(id, req.user._id, 'planned')
     }
 
     var analysisResult = await pcapAnalyser.analyseFileInProjectFolder(projectPathPCAP, analysis.attackTimes)
@@ -133,12 +133,12 @@ async function startAnalysis (req, res) {
 
     var metrics = analysisResult.find(el => el.analysisName === 'Miscellaneous Metrics').metrics
 
-    analyses.changeAnalysisStatus(id, 'analysed')
-    analyses.appendMetrics(id, metrics)
-    analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
+    analyses.changeAnalysisStatus(id, req.user._id, 'analysed')
+    analyses.appendMetrics(id, req.user._id, metrics)
+    analyses.storeAnalysisDuration(id, req.user._id, analysisDurationInSeconds)
 
     if (analysis.classificationType === 'manual') {
-      analyses.changeClassificationStatus(id, 'classified')
+      analyses.changeClassificationStatus(id, req.user._id, 'classified')
     }
 
     var results = analysisResult
@@ -161,10 +161,10 @@ async function startAnalysis (req, res) {
     })
     var cleanedResults = validResults.map(keepRequiredAttributes)
     var resultsWithHash = cleanedResults.map((el) => addHash(el, id))
-    analyses.addAnalysisFiles(id, cleanedResults)
+    analyses.addAnalysisFiles(id, req.user._id, cleanedResults)
   } catch (e) {
     console.log(e);
-    analyses.changeAnalysisStatus(id, 'failed')
+    analyses.changeAnalysisStatus(id, req.user._id, 'failed')
   }
 }
 
@@ -183,10 +183,11 @@ async function handleFileImport (req, res) {
     } catch (e) {
       return res.status(400).json({ errmsg: e.message })
     }
-    var existingAnalysis = await analyses.getAnalysis(fileHash)
+    var existingAnalysis = await analyses.getAnalysis(fileHash, req.user._id)
     if (existingAnalysis && req.method === 'POST') {
+      // TODO: handle existing file case
       if(!existingAnalysis.users.includes(uploader)) {
-        analyses.addUserToDatasetClients(fileHash, uploader)
+        // analyses.addUserToDatasetClients(fileHash, uploader)
       }
       return res.status(409).json({
         id: fileHash,
@@ -195,7 +196,7 @@ async function handleFileImport (req, res) {
     } else if (existingAnalysis && req.method === 'PUT') {
       // TODO: Update the record
     }
-    var newDir = path.resolve(analysisBaseDir, fileHash)
+    var newDir = path.resolve(analysisBaseDir, req.user._id, fileHash)
     if (!fs.existsSync(newDir)){
       fs.mkdirSync(newDir, {recursive: true});
     }
@@ -249,19 +250,18 @@ async function handleFilePost (req, res) {
   var algorithm = req.body.algorithm
   var uploader = req.user._id
   var fileHash = uploadedFile.hash
-  var existsAlready = await analyses.getAnalysis(fileHash)
+
+  var existsAlready = await analyses.getAnalysis(fileHash, req.user._id)
+  console.log(existsAlready);
   if(existsAlready) {
-    if(!existsAlready.users.includes(uploader)) {
-      analyses.addUserToDatasetClients(fileHash, uploader)
-    }
     return res.status(409).json({
       id: fileHash,
-      status: `Exists already! You can now access ${fileHash}`
+      status: `Exists already! Please upload another data set.`
     })
   }
   var fileSize = uploadedFile.size / 1024 / 1024
   var fileSizeInMB = Number(Number(fileSize).toFixed(3))
-  uploadedFile.mv(path.resolve(analysisBaseDir, fileHash, `${fileHash}.pcap`), mvHandler)
+  uploadedFile.mv(path.resolve(analysisBaseDir, req.user._id, fileHash, `${fileHash}.pcap`), mvHandler)
 
   function mvHandler (err) {
     if (err) {

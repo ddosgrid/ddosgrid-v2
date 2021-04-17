@@ -11,7 +11,7 @@ class Analyses {
   }
   async getAnalysesOfUser (userid) {
     return new Promise((resolve, reject) => {
-      instance.find({ users: userid }, (err, analyses) => {
+      instance.find({ uploader: userid }, (err, analyses) => {
         if (err) {
           reject(err)
         }
@@ -19,19 +19,9 @@ class Analyses {
       })
     })
   }
-  async getAnalyses () {
-    return new Promise((resolve, reject) => {
-      instance.find({}, (err, analyses) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(analyses)
-      })
-    })
-  }
-  async deleteAnalysis (md5) {
+  async deleteAnalysis (md5, userid) {
     return new Promise ((resolve, reject) => {
-      instance.remove({ md5: md5 }, (err) => {
+      instance.remove({ md5: md5, uploader: userid }, (err) => {
         if(err) {
           reject(err)
         }
@@ -39,9 +29,9 @@ class Analyses {
       })
     })
   }
-  async getAnalysis (md5) {
+  async getAnalysis (md5, userid) {
     return new Promise((resolve, reject) => {
-      instance.findOne({md5: md5}, (err, analyses) => {
+      instance.findOne({ md5: md5, uploader: userid }, (err, analyses) => {
         if (err) {
           reject(err)
         }
@@ -62,7 +52,6 @@ class Analyses {
       analysisFiles: [ ],
       metrics: { },
       uploader: uploader,
-      users: [ uploader ],
       classificationType: classification,
       classificationStatus: classification !== 'no' ? 'planned' : 'Opt-out',
       attackTimes: attackTimes,
@@ -71,37 +60,32 @@ class Analyses {
     }
     instance.insert(newAnalysis)
   }
-  addUserToDatasetClients(id, user) {
-    instance.update({ md5: id }, { $push: { users: user }})
+  changeAnalysisStatus (md5, userid, newStatus) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { status: newStatus }})
   }
-  changeAnalysisStatus (md5, newStatus) {
-    instance.update({ md5: md5 }, { $set: { status: newStatus }})
+  changeClassificationStatus (md5, userid, newStatus) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { classificationStatus: newStatus }})
   }
-  changeClassificationStatus (md5, newStatus) {
-    instance.update({ md5: md5 }, { $set: { classificationStatus: newStatus }})
+  changeModelStatus (md5, userid, newStatus) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { inmodel: newStatus }})
   }
-  changeModelStatus (md5, newStatus) {
-    instance.update({ md5: md5 }, { $set: { inmodel: newStatus }})
+  changeExportStatus (md5, userid, newStatus) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { exportstatus: newStatus }})
   }
-  changeExportStatus (md5, newStatus) {
-    instance.update({ md5: md5 }, { $set: { exportstatus: newStatus }})
+  changeFilterGenStatus (md5, userid, newStatus) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { filterstatus: newStatus }})
   }
-  changeFilterGenStatus (md5, newStatus) {
-    instance.update({ md5: md5 }, { $set: { filterstatus: newStatus }})
+  storeAnalysisDuration(md5, userid, durationInSeconds) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { analysisDuration: durationInSeconds }})
   }
-  storeAnalysisDuration(md5, durationInSeconds) {
-    instance.update({md5: md5}, { $set: { analysisDuration: durationInSeconds }})
+  appendMetrics (md5, userid, metrics) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { metrics: metrics }})
   }
-  appendMetrics (md5, metrics) {
-    instance.update({ md5: md5 }, { $set: { metrics: metrics }})
+  addAnalysisFiles (md5, userid, files) {
+    instance.update({ md5: md5, uploader: userid }, { $set: { analysisFiles: files }})
   }
-
-  addAnalysisFiles (md5, files) {
-    instance.update({ md5: md5 }, { $set: { analysisFiles: files }})
-  }
-
-  addAnalysisFile (md5, fileName) {
-    instance.update({ md5: md5 }, { $push: { analysisFiles: fileName }})
+  addAnalysisFile (md5, userid, fileName) {
+    instance.update({ md5: md5, uploader: userid }, { $push: { analysisFiles: fileName }})
   }
 }
 

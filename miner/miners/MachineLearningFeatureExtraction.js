@@ -31,7 +31,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   handleAttackTypes(attackType) {
-    // TODO: check if simple attacktype or changing
     if (typeof attackType === 'number') {
       this.currentAttackType = attackType
     } else {
@@ -190,7 +189,6 @@ class MachineLearningFeatureExtraction extends AbstractPcapAnalyser {
   }
 
   updateAttackType(arrivalTime, attackTypes, currentAttackType) {
-    // TODO: set currentAttackType here if multiple are specified
     if (attackTypes.length > 0) {
       // check if update required
       if (arrivalTime < attackTypes[0].start) {

@@ -91,6 +91,8 @@ async function addToModel (csvPath, id, userid) {
 }
 
 async function removeFromModel (id, userid) {
+  await checkAndPrepareTrainingFile(userid)
+
   return new Promise(function (resolve, reject) {
     var program = path.resolve('../ml/helper/removefrommodel.py')
     var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
