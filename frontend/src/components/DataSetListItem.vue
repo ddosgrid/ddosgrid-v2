@@ -84,7 +84,9 @@
             <md-button class="demobtn" @click="deleteAnalysis(dataset)" v-if="demoMode" disabled>Delete</md-button>
             <md-tooltip md-direction="right" v-if="demoMode">Demo Mode: Deleting disabled</md-tooltip>
 
-            <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry</md-button>
+            <md-button @click="retryAnalysis(dataset)" v-if="dataset.status === 'failed'">Retry Analysis</md-button>
+            <md-button @click="retryClassification(dataset)" v-if="dataset.classificationStatus === 'failed'">Retry Classification</md-button>
+
             <md-button @click="addToModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && !dataset.inmodel && extensions">Add to Model</md-button>
             <md-button @click="removeFromModel(dataset)" v-if="dataset.status === 'analysed' && dataset.classificationStatus === 'classified' && dataset.inmodel && extensions">Remove From Model</md-button>
 
@@ -207,6 +209,18 @@ export default {
       var id = dataset.md5
       var app = this
       fetch(`${apibaseurl}/analysis/${id}/analyse`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+        .then((result) => {
+          app.$emit('deleted')
+          console.log(result)
+        })
+    },
+    retryClassification: function retryClassification (dataset) {
+      var id = dataset.md5
+      var app = this
+      fetch(`${apibaseurl}/ml/${id}/classify`, {
         method: 'POST',
         credentials: 'include'
       })
