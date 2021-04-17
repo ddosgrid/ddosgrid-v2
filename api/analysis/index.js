@@ -177,6 +177,11 @@ async function handleFileImport (req, res) {
   var datasetDescription = req.body.datasetdescription
   var uploader = req.user._id
   var uploaderToken = req.user.accesstoken
+
+  var classification = req.body.classification
+  var attackTimes = req.body.attackTimes
+  var algorithm = req.body.algorithm
+
   try {
     try {
       var { fileHash, fileSizeInMB, file } = await fileImport.importFileByID(datasetToImport, uploaderToken)
@@ -185,10 +190,6 @@ async function handleFileImport (req, res) {
     }
     var existingAnalysis = await analyses.getAnalysis(fileHash, req.user._id)
     if (existingAnalysis && req.method === 'POST') {
-      // TODO: handle existing file case
-      if(!existingAnalysis.users.includes(uploader)) {
-        // analyses.addUserToDatasetClients(fileHash, uploader)
-      }
       return res.status(409).json({
         id: fileHash,
         status: `Your dataset already exists with ID ${fileHash}. Please submit a PUT to overwrite`
@@ -196,13 +197,14 @@ async function handleFileImport (req, res) {
     } else if (existingAnalysis && req.method === 'PUT') {
       // TODO: Update the record
     }
+
     var newDir = path.resolve(analysisBaseDir, req.user._id, fileHash)
     if (!fs.existsSync(newDir)){
       fs.mkdirSync(newDir, {recursive: true});
     }
     fs.copyFile(file.path, path.resolve(newDir, `${fileHash}.pcap`), mvHandler)
     function mvHandler (e) {
-      analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader)
+      analyses.createAnalysis(fileHash, datasetName, datasetDescription, fileSizeInMB, uploader, classification, algorithm, attackTimes)
       return res.status(200).json({
         id: fileHash,
         status: `Your dataset was imported with ID ${fileHash}`
@@ -252,7 +254,6 @@ async function handleFilePost (req, res) {
   var fileHash = uploadedFile.hash
 
   var existsAlready = await analyses.getAnalysis(fileHash, req.user._id)
-  console.log(existsAlready);
   if(existsAlready) {
     return res.status(409).json({
       id: fileHash,

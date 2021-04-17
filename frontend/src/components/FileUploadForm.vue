@@ -200,7 +200,7 @@ export default {
       })
         .then((response) => {
           if (response.status === 409) {
-            throw new Error('This dataset already exists in the system, it was added to your account.')
+            throw new Error('This dataset already exists in the system. Please import another file.')
           }
           if (response.status >= 400 && response.status < 600) {
             throw new Error('Unable to import dataset. Please check your input or try later')
