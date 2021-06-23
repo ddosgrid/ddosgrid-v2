@@ -29,6 +29,20 @@ class PacketEmitter extends EventEmitter {
     })
   }
 
+  startLiveSession (targetInterface) {
+    this.pcap_session = pcap.createSession(targetInterface, '')
+    this.pcap_session.on('packet', (packet) => {
+      this.inspectPcapPacket(packet)
+    })
+    this.pcap_session.on('complete', () => {
+      this.emit('lastPcapPacket', this.currentPcapPacket)
+      this.emit('complete')
+    })
+  }
+  closeLiveSession () {
+    this.pcap_session.close()
+  }
+
   inspectPcapPacket (pcapPacket) {
     this.emit('rawPcapPacket', pcapPacket)
     this.pcapPacketCounter++
