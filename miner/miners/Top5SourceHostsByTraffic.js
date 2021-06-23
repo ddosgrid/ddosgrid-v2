@@ -13,7 +13,8 @@ class Top5SourceHostsAnalyser extends AbstractPcapAnalyser {
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp () {
-    this.whois = require('whois-json')
+    var IPToASN = require('ip-to-asn')
+    this.whois = new IPToASN()
     this.pcapParser.on('ipv4Packet', this.countIPv4Address.bind(this))
   }
 
@@ -67,23 +68,29 @@ class Top5SourceHostsAnalyser extends AbstractPcapAnalyser {
   async formatLabelsForPieChart (elements) {
     var addresses = elements.map(entry => entry.addr)
     var result = []
-    for (var address of addresses) {
-      try {
-        var { route, origin, country } = await this.whois(address)
+    return new Promise((res, rej) => {
+      this.whois.query(addresses, function (err, whoisResult) {
+        if(err) { rej(err) }
+        console.log(whoisResult, addresses)
+        for (var address of addresses) {
+          try {
+            var { range, ASN, countryCode } = whoisResult[address]
 
-        // Sometimes we know all three, sometimes only country and ASN and sometimes none
-        if (route && origin && country && route !== 0 && origin !== 0 && country !== 0) {
-          result.push(`${address} (${route}, ${origin}, ${country})`)
-        } else if (origin && country && origin !== 0 && country !== 0) {
-          result.push(`${address} (${origin}, ${country})`)
-        } else {
-          result.push(address)
+            // Sometimes we know all three, sometimes only country and ASN and sometimes none
+            if (range !== '' && ASN !== '' && countryCode !== '') {
+              result.push(`${address} (${range}, AS${ASN}, ${countryCode})`)
+            } else if (ASN !== '' && countryCode !== '') {
+              result.push(`${address} (${origin}, ${country})`)
+            } else {
+              result.push(address)
+            }
+          } catch (e) {
+            result.push(address)
+          }
         }
-      } catch (e) {
-        result.push(address)
-      }
-    }
-    return result.slice(0, 5)
+        res(result.slice(0, 5))
+      })
+    })
   }
   sortEntriesByCount (elements) {
     return elements.sort((a, b) => {
