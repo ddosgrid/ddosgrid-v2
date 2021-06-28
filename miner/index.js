@@ -25,7 +25,7 @@ try {
   console.log('✓ Input check completed')
   if(settings.live) {
     var { targetInterface } = settings
-    var projectPath = `${process.cwd()}/results/live-analysis-${targetInterface}-${Date.now()}`
+    var projectPath = `../api/data/public/analysis/live/live-analysis-${targetInterface}-${Date.now()}`
     analyseFromInterface(targetInterface)
   } else {
     analyseFileInProjectFolder(settings.pcapPath)
