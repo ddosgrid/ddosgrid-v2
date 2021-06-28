@@ -6,12 +6,15 @@ const fs = require('fs')
 const pcapDissector = require('./pcapDissector')
 const pcapFilterGen = require('./pcapFilterGenerator')
 const pcapAnalyser = require('./pcapAnalyser')
+const Capturer = require('./capturer')
 const persistedAnalyses =  require('./persistence')
 const fileImport = require('./pcapImporter')
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
 var analyses = new persistedAnalyses(analysesDB)
+
+var liveCapture = new Capturer()
 
 const { protect } = require('../auth/index')
 
@@ -22,6 +25,8 @@ router.post('/upload', protect, handleFilePost)
 router.post('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.put('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.post('/:id/analyse', protect, startAnalysis)
+router.post('/capture', protect, startCapture)
+router.post('/capture/:id/close', protect, closeCapture)
 
 async function getAllAnalyses (req, res) {
     try {
@@ -47,7 +52,11 @@ async function deleteAnalysisById (req, res) {
     // We need to derive the directory from the database md5 hash
     // since reading it from parameter would be dangerous
     var pathToDel = path.resolve(analysisBaseDir, analysis.md5)
-    deleteFilesInDir(pathToDel)
+    try {
+      deleteFilesInDir(pathToDel)
+    } catch (e) {
+      console.log('Unable to remove files associated with dataset ' + req.params.id)
+    }
     await analyses.deleteAnalysis(req.params.id)
     res.status(200).send(`Deleted ${analysis.md5}`)
   } catch (e) {
@@ -154,6 +163,80 @@ async function startAnalysis (req, res) {
     analyses.changeAnalysisStatus(id, 'failed')
   }
 }
+
+async function startCapture (req, res) {
+  if (!req.body.name) {
+    return res.status(400).send('Name missing to create live capture')
+  }
+  if (!req.body.description) {
+    return res.status(400).send('Description missing to create live capture')
+  }
+  if (!req.body.targetinterface) {
+    return res.status(400).send('Interface missing to create live capture')
+  }
+
+  var analysisID = `live-analysis-${req.body.targetinterface}-${Date.now()}`
+  var datasetName = req.body.name
+  var datasetDescription = req.body.description
+  var uploader = req.user._id
+  var fileSizeInMB = -1
+
+  analyses.createAnalysis(analysisID, datasetName, datasetDescription, fileSizeInMB, uploader)
+  liveCapture.startCapture(analysisID, req.body.targetinterface)
+  analyses.changeAnalysisStatus(analysisID, 'Live capturing')
+  var startTime = new Date()
+  setTimeout(async function () {
+  }, 60000)
+  return res.status(200).json({
+    id: analysisID,
+    status: `Your capture was started with ID ${analysisID}`
+  })
+}
+
+async function closeCapture (req, res) {
+  var id = req.params.id
+  try {
+    var analysis = await analyses.getAnalysis(id)
+    analyses.changeAnalysisStatus(id, 'in progress')
+    if(!analysis) {
+      res.status(404).send('Live capture not found')
+    }
+    var analysisResult = await liveCapture.stopCapture(id)
+    var endTime = new Date()
+    var analysisDurationInSeconds = (endTime - analysis.created) / 1000
+
+    var metrics = analysisResult.find(el => el.analysisName === 'Miscellaneous Metrics').metrics
+
+    analyses.changeAnalysisStatus(id, 'analysed')
+    analyses.appendMetrics(id, metrics)
+    analyses.storeAnalysisDuration(id, analysisDurationInSeconds)
+
+    var results = analysisResult
+    results.forEach(result => {
+      try {
+        result.file = path.relative(analysisBaseDir, result.fileName)
+      } catch (e) {
+        console.warn('Unable to find analysisFile from fileName:', result.fileName)
+      }
+    })
+    var validResults = results.filter(result  => {
+      try {
+        return result.analysisName.length > 0
+            && result.file.length > 0
+            && result.attackCategory.length > 0
+            && Array.isArray(result.supportedDiagrams)
+      } catch (e) {
+        return false
+      }
+    })
+    var cleanedResults = validResults.map(keepRequiredAttributes)
+    var resultsWithHash = cleanedResults.map((el) => addHash(el, id))
+    analyses.addAnalysisFiles(id, cleanedResults)
+  } catch (e) {
+    console.warn('Unable to close capture')
+  }
+}
+
 
 async function handleFileImport (req, res) {
   if (!req.params.dataset) {
@@ -267,6 +350,10 @@ function deleteFilesInDir (directory, cb) {
   fs.readdir(directory, (err, files) => {
     if (err) {
       console.log(err)
+    }
+    if(!files) {
+      console.warn('Nothing to delete in ' + directory)
+      return
     }
 
     for (const file of files) {
