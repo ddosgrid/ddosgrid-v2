@@ -46,6 +46,7 @@
               <md-icon v-if="dataset.status === 'planned'" :md-diameter="10">schedule</md-icon>
               <md-icon v-if="dataset.status === 'analysed'" :md-diameter="10" class="success-icon">check</md-icon>
               <md-progress-spinner v-if="dataset.status === 'in progress'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></md-progress-spinner>
+              <recording-animation v-if="dataset.status === 'Live capturing'" :md-diameter="18" :md-stroke="2" md-mode="indeterminate"></recording-animation>
               <md-icon v-if="dataset.status === 'failed'" :md-diameter="10" class="failure-icon">warning</md-icon>
               Feature Extraction: <span class="cap">{{ dataset.status }}</span>
             </div>
@@ -62,7 +63,7 @@
         <md-card-actions md-alignment="space-between">
           <div>
             <md-button v-if="dataset.status === 'analysed'" @click="addDataSet(dataset)">Open</md-button>
-            <md-button class="md-accent" v-else @click="notifyNotAnalysed">Open</md-button>
+            <md-button class="md-accent" @click="closeLiveCapture(dataset)" v-if="dataset.status === 'Live capturing'"><md-icon>stop_circle</md-icon>Close Capture</md-button>
             <md-button @click="deleteAnalysis(dataset)" v-if="!demoMode">Delete</md-button>
             <md-button class="demobtn" @click="deleteAnalysis(dataset)" v-if="demoMode" disabled>Delete</md-button>
             <md-tooltip md-direction="right" v-if="demoMode">Demo Mode: Deleting disabled</md-tooltip>
@@ -131,6 +132,7 @@
 
 <script>
 import { apibaseurl, ddosdbbaseurl } from '@/config/variables.js'
+import RecordingAnimation from '@/components/RecordingAnimation'
 import hashicon from 'hashicon'
 
 export default {
@@ -139,6 +141,9 @@ export default {
     demoMode () {
       return this.$store.state.demomode
     }
+  },
+  components: {
+    'recording-animation': RecordingAnimation
   },
   methods: {
     handleSnackBarShow: function handleSnackBarShow () {
@@ -157,6 +162,12 @@ export default {
     notifyNotAnalysed: function () {
       this.snackbarMsg = 'This data set has not been analysed, probably due to an error while parsing.'
       this.showSnackbar = true
+    },
+    closeLiveCapture: function closeLiveCapture (dataset) {
+      fetch(`${apibaseurl}/analysis/capture/${dataset.md5}/close`, {
+        method: 'POST',
+        credentials: 'include'
+      })
     },
     deleteAnalysis: function deleteAnalysis (dataset) {
       var app = this

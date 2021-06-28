@@ -1,8 +1,8 @@
 <template lang="html">
   <div id="form">
     <md-field>
-      <label>Upload files</label>
-      <md-input v-model="file" placeholder="ID of the dataset in DDoSDB"></md-input>
+      <label>Network Interface</label>
+      <md-input v-model="targetInterface" placeholder="Define from which interface to capture"></md-input>
     </md-field>
 
     <md-field>
@@ -12,25 +12,30 @@
 
     <md-field>
       <label>Description</label>
-      <md-textarea v-model="fileDescription" @keyup.ctrl.enter="importFile" md-autogrow></md-textarea>
+      <md-textarea v-model="fileDescription" @keyup.ctrl.enter="uploadFile" md-autogrow></md-textarea>
     </md-field>
 
-  <md-button class="md-raised md-primary md-icon-button" :disabled="!inputDefined" @click="importFile" v-if="!isLoading">
-    <md-icon>cloud_download</md-icon>
-  </md-button>
-  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
-    <span>{{ snackbarMsg}}</span>
-    <md-button class="md-primary" @click="uploadAnother">Import another file</md-button>
-  </md-snackbar>
-  <md-progress-spinner v-if="isLoading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"></md-progress-spinner>
+    <div class="upload-btn-wrapper">
+      <md-button class="md-raised md-primary" :disabled="!inputDefined" @click="uploadFile" v-if="!isLoading">
+        <md-icon>camera</md-icon>
+        Capture
+      </md-button>
+      <md-progress-bar v-if="isLoading" :md-diameter="36" :md-stroke="4" :md-value="uploadProgress" md-mode="determinate"></md-progress-bar>
+    </div>
+    <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+      <span>{{ snackbarMsg}}</span>
+      <md-button class="md-primary" @click="uploadAnother">Upload another file</md-button>
+    </md-snackbar>
   </div>
 </template>
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import axios from 'axios'
+
 export default {
   data: () => ({
-    file: '',
+    targetInterface: null,
     fileName: null,
     fileDescription: null,
     showSnackbar: false,
@@ -39,16 +44,15 @@ export default {
     isInfinity: false,
     snackbarMsg: null,
     isLoading: false,
-    closingTimeout: 0
+    closingTimeout: 0,
+    exportUploadedFile: false,
+    fileSize: 0,
+    uploadProgress: 0
   }),
   computed: {
     inputDefined: function () {
-      return this.file && this.fileName && this.fileDescription
+      return this.targetInterface && this.fileName && this.fileDescription
     }
-  },
-  mounted: function () {
-    this.file = this.$route.query.import
-    window.ga = this
   },
   methods: {
     clear () {
@@ -56,23 +60,19 @@ export default {
       this.fileName = null
       this.fileDescription = null
     },
-    uploadAnother () {
-      this.clear()
-      clearTimeout(this.closingTimeout)
-      this.showSnackbar = false
-    },
-    importFile () {
+    uploadFile () {
+      const formData = new FormData()
+
+      formData.append('name', this.fileName)
+      formData.append('description', this.fileDescription)
+      formData.append('targetinterface', this.targetInterface)
+
       this.isLoading = true
-      fetch(`${apibaseurl}/analysis/import/${this.file}`, {
+      axios.request({
+        url: `${apibaseurl}/analysis/capture`,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          datasetname: this.fileName,
-          datasetdescription: this.fileDescription
-        }),
-        credentials: 'include'
+        data: formData,
+        withCredentials: 'include'
       })
         .then((response) => {
           if (response.status === 409) {
@@ -83,31 +83,17 @@ export default {
           }
           return response
         })
-        .then((response) => response.json())
-        .then((result) => {
+        .then((response) => {
+          var result = response.data
           this.isLoading = false
-          this.snackbarMsg = 'Import was Successful, starting analysis now.'
+          // snackbar to let user know that file was uploaded and analysis has started
+          this.snackbarMsg = `Live capture started (${result.id})`
           this.showSnackbar = true
           // start analysis
-          fetch(`${apibaseurl}/analysis/${result.id}/analyse`, {
-            method: 'POST',
-            credentials: 'include'
-          })
-            .then((result) => {
-            // console.log(result)
-              this.clear()
-              this.$router.replace({ 'query': null })
-              this.showSnackbar = true
-              this.closingTimeout = setTimeout(() => { this.$emit('done') }, 5000)
-            })
-        })
-        .then((result) => {
-          // console.log(result)
         })
         .catch((error) => {
           this.isLoading = false
           console.error('Error:', error)
-          this.$router.replace({ 'query': null })
           // snackbar to let user know an error has occurred
           this.snackbarMsg = error.message
           this.showSnackbar = true
@@ -117,9 +103,20 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-  #form {
-    width: 90%;
-    margin: auto;
-  }
+<style lang="css">
+#form {
+  width: 90%;
+  margin: auto;
+}
+.md-list-item-content {
+  padding-left: 0px;
+}
+.upload-btn-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+.unavailable {
+  text-decoration: line-through;
+  cursor: help;
+}
 </style>

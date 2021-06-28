@@ -25,6 +25,18 @@
   </md-dialog>
 
   <!-- Importing datasets from DDoSDB -->
+  <md-dialog :md-active.sync="showLiveCapture">
+    <md-dialog-title>Live Capture</md-dialog-title>
+    <live-capture-form @done="closeImportForm">
+    </live-capture-form>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showLiveCapture = false">
+        <md-icon>close</md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
+  <!-- Importing  -->
   <md-dialog :md-active.sync="showFileImport">
     <md-dialog-title>Import a Data Set</md-dialog-title>
     <file-import-form @done="closeImportForm">
@@ -59,6 +71,11 @@
         <md-tooltip md-direction="top" v-else>Demo Mode: Import disabled</md-tooltip>
         <md-icon>cloud_download</md-icon>
       </md-button>
+      <md-button class="md-icon-button" @click="showLiveCapture = true" :disabled="demoMode">
+        <md-tooltip md-direction="top" v-if="!demoMode">Capture packets from interface</md-tooltip>
+        <md-tooltip md-direction="top" v-else>Demo Mode: Live capture disabled</md-tooltip>
+        <md-icon>camera</md-icon>
+      </md-button>
     </md-speed-dial-content>
   </md-speed-dial>
 
@@ -69,6 +86,7 @@
 import { apibaseurl } from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import FileImportForm from '../components/FileImportForm.vue'
+import LiveCaptureForm from '../components/LiveCaptureForm.vue'
 import DataSetListItem from '../components/DataSetListItem.vue'
 
 var intervalId = null
@@ -80,12 +98,14 @@ export default {
       datasets: [],
       showFileUpload: false,
       showFileImport: false,
+      showLiveCapture: false,
       hasLoaded: false
     }
   },
   components: {
     'file-upload-form': FileUploadForm,
     'file-import-form': FileImportForm,
+    'live-capture-form': LiveCaptureForm,
     'data-set-list-item': DataSetListItem
   },
   mounted: function () {
