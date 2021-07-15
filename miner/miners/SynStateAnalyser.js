@@ -8,6 +8,7 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
       nrOfPacketsInSynAckState: 0,
       nrOfPacketsInFinState: 0,
       nrOfPacketsInFinAckState: 0,
+      nrOfPacketsInAckState: 0,
       nrOfPacketsInRemainingStates: 0,
       nrOfTransportPackets: 0
     }
@@ -40,6 +41,8 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
         this.results.nrOfPacketsInFinState++
       } else if (fin && ack) {
         this.results.nrOfPacketsInFinAckState++
+      } else if (ack && !(fin || syn)) {
+        this.results.nrOfPacketsInAckState++
       } else {
         this.results.nrOfPacketsInRemainingStates++
       }
@@ -61,16 +64,17 @@ class SynStateAnalyser extends AbstractPCAPAnalyser {
     var fileContent = {
       piechart: {
         datasets: [{
-          backgroundColor: ['#DB0071', '#005FD0', '#b967ff', '#fffb96', '#05ffa1'],
+          backgroundColor: ['#DB0071', '#005FD0', '#b967ff', '#fffb96', '#8daa91', '#05ffa1'],
           data: [
             this.results.nrOfPacketsInSynState,
             this.results.nrOfPacketsInSynAckState,
             this.results.nrOfPacketsInFinState,
             this.results.nrOfPacketsInFinAckState,
+            this.results.nrOfPacketsInAckState,
             this.results.nrOfPacketsInRemainingStates
           ]
         }],
-        labels: ['SYN', 'SYN/ACK', 'FIN', 'FIN/ACK', 'Other']
+        labels: ['SYN', 'SYN/ACK', 'FIN', 'FIN/ACK', 'ACK', 'Other']
       }
     }
     var summary = {
