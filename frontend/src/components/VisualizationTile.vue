@@ -6,7 +6,7 @@
         </md-card-header-text>
         <md-card-media class="icon-wrap">
           <md-button class="md-icon-button enlarged-button" @click="filterEvent(analysisfile.datasetHash)">
-            <img :src="getIconForHash(analysisfile.file)" class="icon">
+            <img :src="getIconForHash(dataset.md5)" class="icon">
           </md-button>
         </md-card-media>
     </md-card-header>
