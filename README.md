@@ -37,6 +37,7 @@ Enter the `miner` subproject and install the necessary dependencies. Make sure y
 cd miner
 npm i
 ```
+### From a packet capture file (post-mortem)
 After that the miner package can be imported as an NPM module or it can be run manually through the shell. Alternatively one can use the miner as a subprocess where it will communicate over an IPC channel.
 For example to run it through a shell:
 ```bash
@@ -87,6 +88,13 @@ childProcess.on('exit', (code) => {
 })
 ```
 
+### From a network interface (continuous)
+To use live packet sniffer the miner needs to be started using root privileges to access the network interface. For example:
+```
+sudo node index.js interface=enp5s0 --live
+```
+
+
 ## api
 Setting up the api is straightforward simply fetch the dependencies and start the main javascript file. Make sure that you have previously installed the dependencies of the miner!
 ```bash
@@ -101,7 +109,7 @@ or
 ```bash
 export PORT=1234; node index.js
 ```
-:warning: To use the OAuth2 authentication system, one would need to start the API using the development script in the `scripts` folder. This script will provide additional parameters.
+:warning: To use the OAuth2 authentication system, one would need to start the API using the development script in the `scripts` folder. This script will provide additional parameters. If you want to use the packet sniffer, make sure to start the API using root privileges.
 
 :warning: If you want to invoke the DDoSDB export you will also need to clone the `converters` and `ddos_dissector` scripts into the root of the repository. Please follow the documentation of these repositories to set up the required dependencies.
 
