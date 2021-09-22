@@ -11,6 +11,11 @@ COPY ddos_dissector /usr/src/app/ddos_dissector
 WORKDIR /usr/src/app/ddos_dissector
 RUN pip3 install -r requirements.txt
 
+# Fetch dependencies of dissector subproject
+COPY ml /usr/src/app/ml
+WORKDIR /usr/src/app/ml
+RUN pip3 install -r requirements.txt
+
 # Fetch dependencies of converters subproject
 COPY converters /usr/src/app/converters
 WORKDIR /usr/src/app/converters
