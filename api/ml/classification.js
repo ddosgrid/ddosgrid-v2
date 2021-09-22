@@ -12,7 +12,7 @@ async function machineLearning (csvPath, algorithm, userid) {
 
     var resultArray = []
 
-    const python = spawn('python', [program, trainingData, csvPath]);
+    const python = spawn('python3', [program, trainingData, csvPath]);
     python.stdout.on('data', function (data) {
 
      var splitString = data.toString().split("\n")
@@ -77,7 +77,7 @@ async function addToModel (csvPath, id, userid) {
     var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var inputPath = path.resolve(csvPath)
 
-    const python = spawn('python', [program, trainingData, csvPath, id]);
+    const python = spawn('python3', [program, trainingData, csvPath, id]);
     python.stderr.on('data', function (data) {
       console.log('stderr: ' + data);
       reject(data.toString())
@@ -97,7 +97,7 @@ async function removeFromModel (id, userid) {
     var program = path.resolve('../ml/helper/removefrommodel.py')
     var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
 
-    const python = spawn('python', [program, trainingData, id]);
+    const python = spawn('python3', [program, trainingData, id]);
     python.stderr.on('data', function (data) {
       console.log('stderr: ' + data);
       reject(data.toString())
@@ -132,7 +132,7 @@ async function getModelDistribution(userid) {
     var program = path.resolve('../ml/helper/modeldistribution.py')
     var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var returnData = ""
-    const python = spawn('python', [program, trainingData]);
+    const python = spawn('python3', [program, trainingData]);
     python.stdout.on('data', function (data) {
       returnData += data.toString()
     });
@@ -173,7 +173,7 @@ async function runEvaluation (id, userid) {
     var program = path.resolve('../ml/evaluation/metrics/' + id + '_eval.py')
     var trainingData = path.resolve('../ml/trainingdata/' + userid + '-training.csv')
     var returnData = ""
-    const python = spawn('python', [program, trainingData]);
+    const python = spawn('python3', [program, trainingData]);
     python.stdout.on('data', function (data) {
       returnData += data
     });
