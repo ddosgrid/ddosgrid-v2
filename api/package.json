@@ -17,6 +17,7 @@
     "express-fileupload-sha256": "git+https://git@github.com/ddosgrid/express-fileupload-sha256.git",
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.1",
+    "node-netflowv9": "^0.2.16",
     "passport": "^0.4.1",
     "passport-oauth": "^1.0.0"
   }
