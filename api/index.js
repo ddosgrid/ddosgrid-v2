@@ -38,8 +38,7 @@ app.use(passport.session())
 app.use('/', rootRoutes)
 app.use('/analysis', analysisRoutes)
 
-// TODO: make use of websocket at this endpoint
-app.use('/liveAnalysis', liveAnalysisRoutes)
+app.use('/live-analysis', liveAnalysisRoutes)
 app.use('/', authRoutes)
 app.use('/public', express.static('data/public/analysis', staticFileOptions))
 
