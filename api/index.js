@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session')
 
 const rootRoutes = require('./routes/root')
 const analysisRoutes = require('./analysis/index')
+const liveAnalysisRoutes = require('./live-analysis/index')
 const authRoutes = require('./auth/index').router
 
 const tempDir = path.resolve(__dirname, './tmp/')
@@ -36,6 +37,9 @@ app.use(passport.session())
 
 app.use('/', rootRoutes)
 app.use('/analysis', analysisRoutes)
+
+// TODO: make use of websocket at this endpoint
+app.use('/liveAnalysis', liveAnalysisRoutes)
 app.use('/', authRoutes)
 app.use('/public', express.static('data/public/analysis', staticFileOptions))
 
