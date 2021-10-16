@@ -10,6 +10,10 @@ const analysisRoutes = require('./analysis/index')
 const liveAnalysisRoutes = require('./live-analysis/index')
 const authRoutes = require('./auth/index').router
 
+const http = require('http')
+const { Server } = require("socket.io");
+const httpServer = http.createServer(app)
+
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000
 const inDevMode = process.env.NODE_ENV === 'dev'
@@ -42,11 +46,22 @@ app.use('/live-analysis', liveAnalysisRoutes)
 app.use('/', authRoutes)
 app.use('/public', express.static('data/public/analysis', staticFileOptions))
 
-app.listen(port, logStart)
+httpServer.listen(port, logStart)
 
 function logStart () {
   console.log(`App is listening on port ${port}`)
 }
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+  }
+})
+
+io.on("connection", () => {
+  console.log('socket connected')
+})
 
 function allowCORS (req, res, next) {
   const clientAppOrigin = process.env.CLIENT_APP_ORIGIN || 'http://localhost:8081'
