@@ -3,14 +3,21 @@ class Manager {
   // TODO: API definition
   //
 
-  private cache = {}
-  private serializer = null
+  // private cache = {}
+  // private serializer = null
 
   constructor(){
-    serializer = LiveDataSerializer()
+    const serializer = new LiveDataSerializer()
   }
 
-  establishConnection(){}
+  establishConnection(port){
+    // TODO: instatiate collectorConnector and miners
+
+    this.setupCollector()
+    this.setupMiners()
+
+    console.log('manager: connection established.')
+  }
 
   setupCollector(){}
 
