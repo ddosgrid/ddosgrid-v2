@@ -11,8 +11,9 @@ const liveAnalysisRoutes = require('./live-analysis/index')
 const authRoutes = require('./auth/index').router
 
 const http = require('http')
-const { Server } = require("socket.io");
+const socketio = require("socket.io");
 const httpServer = http.createServer(app)
+const { SocketHandler } = require('./live-analysis/SocketHandler')
 
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000
@@ -52,16 +53,11 @@ function logStart () {
   console.log(`App is listening on port ${port}`)
 }
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
-  }
-})
+socket_handler = new SocketHandler()
 
-io.on("connection", () => {
-  console.log('socket connected')
-})
+const socket = socketio(httpServer)
+socket.on('connection', socket_handler.onNewSocketConnection);
+
 
 function allowCORS (req, res, next) {
   const clientAppOrigin = process.env.CLIENT_APP_ORIGIN || 'http://localhost:8081'
