@@ -25,6 +25,11 @@ const routes = [
     name: 'datasets',
     component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue'),
     beforeEnter: authRequired
+  },
+  {
+    path: '/liveanalysis',
+    name: 'liveanalysis',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LiveAnalysis.vue')
   }
 ]
 
