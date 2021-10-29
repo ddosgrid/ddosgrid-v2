@@ -12,9 +12,14 @@ export default new Vuex.Store({
     tiles: [],
     authenticated: false,
     demomode: false,
-    nrOfAnalysedDatasets: []
+    nrOfAnalysedDatasets: [],
+    isSocketConnected: false,
+    socketData: null
   },
   mutations: {
+    SOCKET_newData (state, data) {
+      state.socketData = data
+    },
     updateNrOfAnalysedSetups (state, newnr) {
       if (newnr > state.nrOfAnalysedDatasets) {
         var msg = '✓ New dataset available!'

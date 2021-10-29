@@ -28,11 +28,24 @@ export default {
     isInfinity: false,
     snackbarMsg: null,
     isLoading: false,
-    closingTimeout: 0
+    closingTimeout: 0,
+    isConnected: false,
+    socketMessage: ''
   }),
   computed: {
     inputDefined: function () {
       return this.port
+    }
+  },
+  sockets: {
+    connect () {
+      this.isConnected = true
+    },
+    disconnect () {
+      this.isConnected = false
+    },
+    newData (data) {
+      this.socketMessage = data
     }
   },
   methods: {
@@ -62,9 +75,18 @@ export default {
           return response
         })
         .then((response) => {
+          this.$socket.open()
+          this.sockets.subscribe('newData', (data) => {
+            console.log(data)
+          })
+          return response
+        })
+        .then(() => {
           this.isLoading = false
           this.snackbarMsg = 'Successfully added a new connection.'
           this.showSnackbar = true
+          this.$store.state.isSocketConnected = true
+          this.$emit('done')
         })
         .catch((error) => {
           this.isLoading = false

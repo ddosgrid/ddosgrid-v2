@@ -23,6 +23,9 @@ import {
   MdChips } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import { io } from 'socket.io-client'
+import { apibaseurl } from './config/variables'
+import VueSocketIO from 'vue-socket.io'
 
 Vue.use(MdTabs)
 Vue.use(MdCard)
@@ -41,6 +44,16 @@ Vue.use(MdChips)
 Vue.use(MdCheckbox)
 Vue.use(MdBadge)
 Vue.use(MdSwitch)
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: io(apibaseurl, { autoConnect: false }),
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
+})
+)
 
 Vue.config.productionTip = false
 
