@@ -17,9 +17,10 @@ class SocketHandler {
 
     // dataBroadcaster listens for events 'new data',
     // emits data with namespace 'new data' to all sockets
-    dataBroadcaster.on('new data', (data) => {
+    dataBroadcaster.on('newData', (data) => {
       sockets.forEach((socket) => {
-        socket.emit('new data', data)
+        console.log('emit newData')
+        socket.emit('newData', data)
       })
     })
   }

@@ -55,7 +55,12 @@ function logStart () {
 
 socket_handler = new SocketHandler()
 
-const socket = socketio(httpServer)
+const socket = socketio(httpServer, {
+  cors: {
+    origin: "http://localhost:8081",
+    methods: ["GET", "POST"]
+  }
+})
 socket.on('connection', socket_handler.onNewSocketConnection);
 
 
