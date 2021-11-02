@@ -17,6 +17,13 @@ function parseAndCheckArguments (argv) {
   var pcapFileParamPattern = /pcap_path=(.*)/
   var pcapFileParam = argv[2].match(pcapFileParamPattern)
 
+  var modeParamPattern = /mode=(.*)/
+  var modeParam = argv[3].match(modeParamPattern)[1]
+
+  if(modeParam) {
+    settings.mode = modeParam
+  }
+
   if (pcapFileParam) {
     var filePath = pcapFileParam[1]
     if (fs.existsSync(filePath)) {
