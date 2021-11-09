@@ -74,13 +74,6 @@ export default {
           }
           return response
         })
-        .then((response) => {
-          this.$socket.open()
-          this.sockets.subscribe('newData', (data) => {
-            console.log(data)
-          })
-          return response
-        })
         .then(() => {
           this.isLoading = false
           this.snackbarMsg = 'Successfully added a new connection.'
@@ -91,6 +84,8 @@ export default {
         .catch((error) => {
           this.isLoading = false
           console.error('Error:', error)
+          this.snackbarMsg = error.response.data
+          this.showSnackbar = true
         })
     }
   }

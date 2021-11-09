@@ -1,10 +1,13 @@
 <template>
   <div class="live-analysis">
+    <div class="loader" v-if="!hasLoaded">
+      <md-progress-spinner :md-diameter="60" :md-stroke="3" md-mode="indeterminate" class="centered"></md-progress-spinner>
+    </div>
 
     <md-empty-state
       md-icon="link_off"
       md-label="No Connection added"
-      class="centered" v-if="!this.$store.state.isSocketConnected">
+      class="centered" v-if="connections.length === 0 && hasLoaded">
       <md-button class="md-primary md-raised" @click="showLiveConnectionForm = true">Add a connection</md-button>
     </md-empty-state>
 
@@ -19,63 +22,71 @@
       </md-dialog-actions>
     </md-dialog>
 
-    <div class="connection-wrap" v-if="this.$store.state.isSocketConnected">
-      <md-card md-with-hover>
-        <md-card-header>
-          <md-card-header-text>
-            <div class="md-title">Port ...</div>
-          </md-card-header-text>
-          <div>
-            Connected
-            <md-icon class="success-icon">check</md-icon>
-          </div>
-
-        </md-card-header>
-        <md-divider></md-divider>
-
-        <md-card-content>
-          <div class="card-content-container">
-            <p>Data sent from websocket: </p>
-            <p>{{$store.state.socketData}}</p>
-          </div>
-        </md-card-content>
-
-        <md-card-expand>
-          <md-card-actions md-alignment="space-between">
-            <div>
-              <md-button @click="deleteConnection()">Delete</md-button>
-            </div>
-          </md-card-actions>
-        </md-card-expand>
-      </md-card>
+    <div v-for="connection in connections" :key="connection.port" class="connection">
+      <live-connection-list-item :connection="connection" @deleted="refresh"/>
     </div>
 
+    <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial" v-if="connections.length>0">
+      <md-speed-dial-target class="md-primary">
+        <md-icon class="md-morph-initial">add</md-icon>
+        <md-icon class="md-morph-final no-print">close</md-icon>
+      </md-speed-dial-target>
+
+      <md-speed-dial-content>
+        <md-button class="md-icon-button" @click="showLiveConnectionForm = true">
+          <md-tooltip md-direction="top" >Add another connection</md-tooltip>
+          <md-icon>add_link</md-icon>
+        </md-button>
+      </md-speed-dial-content>
+    </md-speed-dial>
   </div>
 </template>
 
 <script>
 
 import LiveConnectionForm from '../components/LiveConnectionForm.vue'
+import LiveConnectionListItem from '../components/LiveConnectionListItem'
+import { apibaseurl } from '@/config/variables.js'
 
 export default {
   name: 'LiveAnalysis',
   data: function () {
     return {
+      connections: [],
       showLiveConnectionForm: false,
       hasLoaded: false
     }
   },
   components: {
-    'live-connection-form': LiveConnectionForm
+    'live-connection-form': LiveConnectionForm,
+    'live-connection-list-item': LiveConnectionListItem
+  },
+  mounted: function () {
+    this.fetchConnections()
   },
   computed: {},
   methods: {
     closeConnectionForm: function () {
       this.showLiveConnectionForm = false
+      this.refresh()
     },
-    deleteConnection: function () {
-      this.$store.state.isSocketConnected = false
-      this.$socket.close()
+    refresh: function () {
+      this.fetchConnections()
+    },
+    fetchConnections: async function fetchConnections () {
+      try {
+        var res = await fetch(`${apibaseurl}/live-analysis/connection`, { credentials: 'include' })
+        var connections = await res.json()
+        this.connections = connections
+        if (connections.length === 0) {
+          this.$socket.close()
+        } else {
+          this.$socket.open()
+        }
+        this.hasLoaded = true
+      } catch (e) {
+        console.warn(e)
+      }
     }
   },
   watch: {}
