@@ -6,10 +6,13 @@
 
   <md-empty-state
     md-icon="layers_clear"
-    md-label="No datasets uploaded"
-    md-description="You can upload a dataset by clicking the + button in the bottom right corner" v-if="datasets.length === 0 && hasLoaded" class="centered">
+    md-label="No datasources added"
+    md-description="You can add a datasource by clicking the + button in the bottom right corner"
+    v-if="datasets.length === 0 && connections.length === 0 && hasLoaded"
+    class="centered">
     <md-button class="md-primary md-raised" @click="showFileUpload = true" :disabled="demoMode">Upload a dataset</md-button>
     <md-button class="md-primary md-raised" @click="showFileImport = true" :disabled="demoMode">Import a dataset</md-button>
+    <md-button class="md-primary md-raised" @click="showLiveConnectionForm = true">Add a live connection</md-button>
   </md-empty-state>
 
   <!-- Uploading datasets to DDoSDB/DDoSGrid -->
@@ -36,9 +39,25 @@
     </md-dialog-actions>
   </md-dialog>
 
+  <!-- Add a live traffic connection -->
+  <md-dialog :md-active.sync="showLiveConnectionForm">
+    <md-dialog-title>Add a live connection</md-dialog-title>
+    <live-connection-form @done="closeConnectionForm">
+    </live-connection-form>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showLiveConnectionForm = false">
+        <md-icon>close</md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
   <div v-for="dataset in datasets" :key="dataset._id" class="dataset">
     <data-set-list-item :dataset="dataset" @deleted="refresh">
     </data-set-list-item>
+  </div>
+
+  <div v-for="connection in connections" :key="connection.port" class="connection">
+    <live-connection-list-item :connection="connection" @deleted="refresh"/>
   </div>
 
   <md-speed-dial class="md-bottom-right no-print above" md-event="hover" id="dial">
@@ -59,6 +78,10 @@
         <md-tooltip md-direction="top" v-else>Demo Mode: Import disabled</md-tooltip>
         <md-icon>cloud_download</md-icon>
       </md-button>
+      <md-button class="md-icon-button" @click="showLiveConnectionForm = true">
+        <md-tooltip md-direction="top" >Add a live connection</md-tooltip>
+        <md-icon>add_link</md-icon>
+      </md-button>
     </md-speed-dial-content>
   </md-speed-dial>
 
@@ -70,6 +93,8 @@ import { apibaseurl } from '@/config/variables.js'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import FileImportForm from '../components/FileImportForm.vue'
 import DataSetListItem from '../components/DataSetListItem.vue'
+import LiveConnectionForm from '../components/LiveConnectionForm.vue'
+import LiveConnectionListItem from '../components/LiveConnectionListItem'
 
 var intervalId = null
 
@@ -78,17 +103,22 @@ export default {
   data: function () {
     return {
       datasets: [],
+      connections: [],
       showFileUpload: false,
       showFileImport: false,
+      showLiveConnectionForm: false,
       hasLoaded: false
     }
   },
   components: {
     'file-upload-form': FileUploadForm,
     'file-import-form': FileImportForm,
-    'data-set-list-item': DataSetListItem
+    'data-set-list-item': DataSetListItem,
+    'live-connection-form': LiveConnectionForm,
+    'live-connection-list-item': LiveConnectionListItem
   },
   mounted: function () {
+    this.fetchConnections()
     this.fetchDataSets()
     intervalId = setInterval(this.fetchDataSets, 3000)
     this.showFileImport = 'import' in this.$route.query && !this.demoMode
@@ -108,8 +138,13 @@ export default {
     closeImportForm: function () {
       this.showFileImport = false
     },
+    closeConnectionForm: function () {
+      this.showLiveConnectionForm = false
+      this.refresh()
+    },
     refresh: function () {
       this.fetchDataSets()
+      this.fetchConnections()
     },
     fetchDataSets: async function fetchDataSets () {
       try {
@@ -123,6 +158,21 @@ export default {
         this.$store.commit('updateNrOfAnalysedSetups', nrOfAnalysedSetups)
       } catch (e) {
         console.log(e)
+      }
+    },
+    fetchConnections: async function fetchConnections () {
+      try {
+        var res = await fetch(`${apibaseurl}/live-analysis/connection`, { credentials: 'include' })
+        var connections = await res.json()
+        this.connections = connections
+        if (connections.length === 0) {
+          this.$socket.close()
+        } else {
+          this.$socket.open()
+        }
+        this.hasLoaded = true
+      } catch (e) {
+        console.warn(e)
       }
     }
   },
