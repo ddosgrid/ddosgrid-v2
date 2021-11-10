@@ -3,7 +3,8 @@
     <md-card md-with-hover>
       <md-card-header>
         <md-card-header-text>
-          <div class="md-title">Port {{ connection.port }}</div>
+          <div class="md-title">Live Connection</div>
+          <div class="md-subhead">Port {{ connection.port }}</div>
         </md-card-header-text>
         <div>
           Connected
