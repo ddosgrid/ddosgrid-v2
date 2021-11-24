@@ -32,7 +32,7 @@ git clone git@github.com:ddosgrid/ddosgrid-v2.git
 ```
 
 ## miner
-Enter the `miner` subproject and install the necessary dependencies. Make sure you are running Node.JS version 10 and that you lave libpcap installed.
+Enter the `miner` subproject and install the necessary dependencies. Make sure you are running Node.JS version 10 and that you have libpcap installed.
 ```bash
 cd miner
 npm i
