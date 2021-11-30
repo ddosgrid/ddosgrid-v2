@@ -16,6 +16,12 @@ to monitor a port and aggregate data to flow with different pcap file replayer e
 sudo softflowd -n 0.0.0.0:3000 -i wlo1
  */
 
+/*
+NFGEN works also on mac whereas the self-compiled version of softflowd has
+problems. Here is a sample command for NFGEN:
+    nfgen -p4000
+*/
+
 let netflowCollector = require('node-netflowv9');
 const EventEmitter = require('events')
 const dataBroadcaster = new EventEmitter()
