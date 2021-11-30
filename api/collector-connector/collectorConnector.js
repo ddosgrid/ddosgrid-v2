@@ -35,23 +35,23 @@ class Collector {
 class NetflowCollector extends Collector {
     constructor(...args) {
         super(...args);
-        this.collector = netflowCollector({port: this.port})
+        this.collector = netflowCollector({ port: this.port })
     }
-    start(){
-        this.collector.on("data", function (flow){
+    start() {
+        this.collector.on("data", function (flow) {
             console.log(flow);
             dataBroadcaster.emit(flow)
         })
     }
 
-    stop(){
+    stop() {
 
     }
 }
 
 
-module.exports.init = function() {
+module.exports.init = function () {
     console.log("listening...")
-    let collector = new NetflowCollector({port: 3000})
+    let collector = new NetflowCollector({ port: 3000 })
     collector.start();
 }
