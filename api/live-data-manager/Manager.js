@@ -3,12 +3,6 @@ import NetflowCollector from '../collector-connector/collectorConnector'
 
 class Manager {
 
-  // TODO: API definition
-  //
-
-  // private cache = {}
-  // private serializer = null
-
   constructor(){
     const serializer = new LiveDataSerializer()
     let collectorConnector = null
