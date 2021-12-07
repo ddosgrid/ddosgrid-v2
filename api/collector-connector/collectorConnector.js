@@ -26,6 +26,10 @@ let netflowCollector = require('node-netflowv9');
 const EventEmitter = require('events')
 const dataBroadcaster = new EventEmitter()
 
+dataBroadcaster.on('data', (flow) => {
+    console.log(flow)
+})
+
 class Collector {
     constructor(port) {
         this.port = port;
@@ -39,8 +43,7 @@ class NetflowCollector extends Collector {
     }
     start() {
         this.collector.on("data", function (flow) {
-            console.log(flow);
-            dataBroadcaster.emit(flow)
+            dataBroadcaster.emit('data', flow)
         })
     }
 
@@ -49,9 +52,7 @@ class NetflowCollector extends Collector {
     }
 }
 
+// let coll = new NetflowCollector(4000)
+// coll.start()
 
-module.exports.init = function () {
-    console.log("listening...")
-    let collector = new NetflowCollector({ port: 3000 })
-    collector.start();
-}
+module.exports = NetflowCollector
