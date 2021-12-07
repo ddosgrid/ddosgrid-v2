@@ -18,4 +18,4 @@ class AbstractLiveMiner {
     }
 }
 
-export default AbstractLiveMiner
+module.exports = AbstractLiveMiner
