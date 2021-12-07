@@ -16,11 +16,8 @@ class Manager {
   }
 
   establishConnection(port){
-    // TODO: instatiate collectorConnector and miners
-
     this.setupCollector()
     this.setupMiners()
-
     console.log('manager: connection established.')
   }
 
