@@ -1,3 +1,4 @@
+import SampleConcreteLiveMiner from '../../miner/live-miners/SampleConcreteLiveMiner'
 class Manager {
 
   // TODO: API definition
@@ -8,6 +9,7 @@ class Manager {
 
   constructor(){
     const serializer = new LiveDataSerializer()
+    let miner = null
   }
 
   establishConnection(port){
@@ -21,7 +23,9 @@ class Manager {
 
   setupCollector(){}
 
-  setupMiners(){}
+  setupMiners(){
+    this.miner = SampleConcreteLiveMiner(this.collectorConnector)
+  }
 
   // refer to javascript event loop feature
   startStreaming(){}
