@@ -1,4 +1,6 @@
 import SampleConcreteLiveMiner from '../../miner/live-miners/SampleConcreteLiveMiner'
+import NetflowCollector from '../collector-connector/collectorConnector'
+
 class Manager {
 
   // TODO: API definition
@@ -9,6 +11,7 @@ class Manager {
 
   constructor(){
     const serializer = new LiveDataSerializer()
+    let collectorConnector = null
     let miner = null
   }
 
@@ -21,7 +24,9 @@ class Manager {
     console.log('manager: connection established.')
   }
 
-  setupCollector(){}
+  setupCollector(){
+    this.collectorConnector = new NetflowCollector(4000)
+  }
 
   setupMiners(){
     this.miner = SampleConcreteLiveMiner(this.collectorConnector)
