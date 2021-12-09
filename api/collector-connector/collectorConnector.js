@@ -22,28 +22,19 @@ problems. Here is a sample command for NFGEN:
     nfgen -p4000
 */
 
-let netflowCollector = require('node-netflowv9');
-const EventEmitter = require('events')
-const dataBroadcaster = new EventEmitter()
+let netflowCollector = require('node-netflowv9')
 
-dataBroadcaster.on('data', (flow) => {
-    console.log(flow)
-})
-
-class Collector {
-    constructor(port) {
-        this.port = port;
-    }
-}
-
-class NetflowCollector extends Collector {
-    constructor(...args) {
-        super(...args);
+class NetflowCollector {
+    constructor(port_, dataBroadcaster) {
+        this.port = port_
+        this.dataBroadcaster = dataBroadcaster
         this.collector = netflowCollector({ port: this.port })
     }
     start() {
-        this.collector.on("data", function (flow) {
-            dataBroadcaster.emit('data', flow)
+        console.log('netflowcollector: start')
+        this.collector.on("data", (data) => {
+            console.log('collector emits data')
+            this.dataBroadcaster.emit('data', data)
         })
     }
 
