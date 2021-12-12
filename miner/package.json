@@ -24,7 +24,7 @@
     "ip-to-asn": "^1.0.0",
     "pcap": "git+https://github.com/ddosgrid/node_pcap.git",
     "port-numbers": "^4.0.20",
-    "ua-parser-js": "^0.7.21",
+    "ua-parser-js": "^0.7.31",
     "whois-json": "^2.0.4"
   },
   "devDependencies": {

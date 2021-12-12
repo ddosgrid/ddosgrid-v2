@@ -16,36 +16,34 @@ to monitor a port and aggregate data to flow with different pcap file replayer e
 sudo softflowd -n 0.0.0.0:3000 -i wlo1
  */
 
-let netflowCollector = require('node-netflowv9');
-const EventEmitter = require('events')
-const dataBroadcaster = new EventEmitter()
+/*
+NFGEN works also on mac whereas the self-compiled version of softflowd has
+problems. Here is a sample command for NFGEN:
+    nfgen -p4000
+*/
 
-class Collector {
-    constructor(port) {
-        this.port = port;
-    }
-}
+let netflowCollector = require('node-netflowv9')
 
-class NetflowCollector extends Collector {
-    constructor(...args) {
-        super(...args);
-        this.collector = netflowCollector({port: this.port})
+class NetflowCollector {
+    constructor(port_, dataBroadcaster) {
+        this.port = port_
+        this.dataBroadcaster = dataBroadcaster
+        this.collector = netflowCollector({ port: this.port })
     }
-    start(){
-        this.collector.on("data", function (flow){
-            console.log(flow);
-            dataBroadcaster.emit(flow)
+    start() {
+        console.log('netflowcollector: start')
+        this.collector.on("data", (data) => {
+            console.log('collector emits data')
+            this.dataBroadcaster.emit('data', data)
         })
     }
 
-    stop(){
+    stop() {
 
     }
 }
 
+// let coll = new NetflowCollector(4000)
+// coll.start()
 
-module.exports.init = function() {
-    console.log("listening...")
-    let collector = new NetflowCollector({port: 3000})
-    collector.start();
-}
+module.exports = NetflowCollector
