@@ -1,30 +1,38 @@
+let SampleConcreteLiveMiner = require('../../miner/live-miners/SampleConcreteLiveMiner')
+let NetflowCollector = require('../collector-connector/collectorConnector')
+let EventEmitter = require('events')
+
 class Manager {
 
-  // TODO: API definition
-  //
-
-  // private cache = {}
-  // private serializer = null
-
   constructor(){
-    const serializer = new LiveDataSerializer()
+    this.collectorConnector = null
+    this.miner = null
+    this.is_data = false
+    this.dataBroadcaster = new EventEmitter()
+    /*this.dataBroadcaster.on('data', (data) => {
+      data ? this.is_data = true : this.is_data = false
+    })*/
   }
 
   establishConnection(port){
-    // TODO: instatiate collectorConnector and miners
-
-    this.setupCollector()
+    this.setupCollector(port)
     this.setupMiners()
-
     console.log('manager: connection established.')
   }
 
-  setupCollector(){}
+  setupCollector(port){
+    this.collectorConnector = new NetflowCollector(port, this.dataBroadcaster)
+  }
 
-  setupMiners(){}
+  setupMiners(){
+    this.miner = new SampleConcreteLiveMiner(this.dataBroadcaster)
+  }
 
   // refer to javascript event loop feature
-  startStreaming(){}
+  startStreaming(){
+    console.log('manager: start streaming')
+    this.collectorConnector.start()
+  }
 
   tearDown(){}
 
@@ -32,10 +40,9 @@ class Manager {
 
 }
 
-class LiveDataSerializer {
-
-
-}
+let manager = new Manager()
+manager.establishConnection(4000)
+manager.startStreaming()
 
 module.exports = Manager
 
