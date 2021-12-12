@@ -2,12 +2,13 @@ let AbstractLiveMiner = require('./AbstractLiveMiner')
 
 class SampleConcreteLiveMiner {
     constructor(dataBroadcaster) {
-        this.setUp(dataBroadcaster)
+        this.dataBroadcaster = dataBroadcaster
+        this.setUp()
     }
 
-    setUp(dataBroadcaster) {
+    setUp() {
         console.log('miner: setup')
-        dataBroadcaster.on('data', (data) => { this.miningTotalBytes(data) })
+        this.dataBroadcaster.on('data', (data) => { this.miningTotalBytes(data) })
     }
 
     startStreaming() {
@@ -22,7 +23,10 @@ class SampleConcreteLiveMiner {
             //console.log(flows[i])
             tot_in_bytes += flows[i].in_bytes
         }
-        console.log(tot_in_bytes)
+        let res = {'total_in_bytes': tot_in_bytes, 'timestamp': Date.now()}
+        console.log(res)
+        this.dataBroadcaster.emit('newData', res)
+
         }
 }
 
