@@ -127,7 +127,7 @@ class PacketEmitter extends EventEmitter {
     this.emit('ipv4Packet', ipv4Packet)
 
     var transportPacket = ipv4Packet.payload
-    this.inspectTransportPacket(transportPacket, ipv4Packet.protocol)
+    this.inspectTransportPacket(transportPacket, ipv4Packet.protocol, ipv4Packet)
   }
 
   inspectIPv6Packet (ipv6Packet) {
@@ -137,20 +137,20 @@ class PacketEmitter extends EventEmitter {
     this.inspectTransportPacket(transportPacket, ipv6Packet.protocol)
   }
 
-  inspectTransportPacket (transportPacket, ipProtocolField) {
+  inspectTransportPacket (transportPacket, ipProtocolField, ipv4pack) {
     if (ipProtocolField === 6) {
       this.emit('transportPacket', transportPacket)
       this.inspectTCPPacket(transportPacket)
       if(transportPacket.dport === 179) {
         //console.log('BGP!')
       }
-      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
-      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data)
+      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data, ipv4pack)
+      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data, ipv4pack)
     } else if (ipProtocolField === 17) {
       this.emit('transportPacket', transportPacket)
       this.inspectUDPPacket(transportPacket)
-      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data)
-      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data)
+      this.tryGuessApplicationPacket(transportPacket.dport, transportPacket.data, ipv4pack)
+      this.tryGuessApplicationPacket(transportPacket.sport, transportPacket.data, ipv4pack)
     } else if (ipProtocolField === 1) {
       this.inspectICMPPacket(transportPacket)
     }
@@ -178,11 +178,11 @@ class PacketEmitter extends EventEmitter {
     }
   }
 
-  tryGuessApplicationPacket (port, packet) {
+  tryGuessApplicationPacket (port, packet, ipv4pack) {
     try {
       var guessedServicename = portNumbers.getService(port)
       if (guessedServicename.name === 'http') {
-        this.tryNaiveHttpParse(packet)
+        this.tryNaiveHttpParse(packet, ipv4pack)
       } else if (guessedServicename.name === 'bgp') {
         this.decodeBGP(packet)
       } else if(guessedServicename.name === 'domain') {
@@ -216,7 +216,7 @@ class PacketEmitter extends EventEmitter {
     }
   }
 
-  tryNaiveHttpParse (packet) {
+  tryNaiveHttpParse (packet, ipv4pack) {
     try {
       var httpString = Buffer.from(packet).toString('utf-8')
       var lines = httpString.split('\r\n')
@@ -226,12 +226,32 @@ class PacketEmitter extends EventEmitter {
 
         // Or just trim off the start to get the raw useragent string. Might perform better.
         var userAgent = userAgentLine.match('^User-Agent: (.+)')[1]
-        var endpoint = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[2]
-        var verb = verbAndEndpoint.match('^(GET|POST) (.+) HTTP')[1]
+        var endpoint = verbAndEndpoint.match('^(GET|POST|HEAD|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH) (.+) HTTP')[2]
+        var verb = verbAndEndpoint.match('^(GET|POST|HEAD|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH) (.+) HTTP')[1]
 
         this.emit('httpVerb', verb)
         this.emit('httpEndpoint', endpoint)
         this.emit('httpUserAgent', userAgent)
+
+        // Split at the empty line - use the first part
+        var headerSection = httpString.split('\n\n')[0]
+        // Split into headers
+        var headers = headerSection.split('\r\n')
+        var headerlines = headers.map(e => e.split(': '))
+        // Remove status line
+        headerlines.shift()
+        // Add all non-empty header lines as an object property
+        var headerObjectRepr = headerlines.reduce(function (acc, curr) {
+          if(curr[0]) {
+            acc[curr[0]] = curr[1];
+          }
+        return acc
+        }, {})
+        var headerSummary = {
+          ipv4: ipv4pack,
+          headers: headerObjectRepr
+        }
+        this.emit('httpHeaders', headerSummary)
       }
     } catch (e) {
     }

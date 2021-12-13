@@ -15,6 +15,7 @@ var UDPvsTCPRatio = require('./miners/UDPvsTCP')
 var ICMPMessages = require('./miners/ICMPmessages')
 var VLANDomains = require('./miners/VLANDomains')
 var BGPMessages = require('./miners/BGPmessages')
+var HTTPHeadersLog4j = require('./miners/HTTPHeadersLog4j')
 
 module.exports = {
   PacketEmitter,
@@ -33,5 +34,6 @@ module.exports = {
   UDPvsTCPRatio,
   ICMPMessages,
   VLANDomains,
-  BGPMessages
+  BGPMessages,
+  HTTPHeadersLog4j
 }

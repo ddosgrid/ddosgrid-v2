@@ -15,7 +15,8 @@ const {
   UDPvsTCPRatio,
   ICMPMessages,
   VLANDomains,
-  BGPMessages
+  BGPMessages,
+  HTTPHeadersLog4j
 } = require('./exports')
 const colors = require('colors')
 
@@ -68,7 +69,8 @@ function createMiners (emitter, projectPath) {
     HTTPVerbs,
     HTTPEndpoints,
     BrowserAndOSAnalyzer,
-    DeviceAnalyzer
+    DeviceAnalyzer,
+    HTTPHeadersLog4j
   ]
   var activeMiners = miners.map(Miner => new Miner(emitter, projectPath))
   return activeMiners

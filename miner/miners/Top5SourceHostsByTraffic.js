@@ -71,7 +71,7 @@ class Top5SourceHostsAnalyser extends AbstractPcapAnalyser {
     return new Promise((res, rej) => {
       this.whois.query(addresses, function (err, whoisResult) {
         if(err) { rej(err) }
-        console.log(whoisResult, addresses)
+        //console.log(whoisResult, addresses)
         for (var address of addresses) {
           try {
             var { range, ASN, countryCode } = whoisResult[address]
