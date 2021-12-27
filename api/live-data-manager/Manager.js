@@ -4,45 +4,37 @@ let EventEmitter = require('events')
 
 class Manager {
 
-  constructor(){
+  constructor() {
     this.collectorConnector = null
     this.miner = null
-    this.is_data = false
     this.dataBroadcaster = new EventEmitter()
-    /*this.dataBroadcaster.on('data', (data) => {
-      data ? this.is_data = true : this.is_data = false
-    })*/
   }
 
-  establishConnection(port){
+  establishConnection(port) {
     this.setupCollector(port)
     this.setupMiners()
     console.log('manager: connection established.')
+    this.startStreaming()
   }
 
-  setupCollector(port){
+  setupCollector(port) {
     this.collectorConnector = new NetflowCollector(port, this.dataBroadcaster)
   }
 
-  setupMiners(){
+  setupMiners() {
     this.miner = new SampleConcreteLiveMiner(this.dataBroadcaster)
   }
 
   // refer to javascript event loop feature
-  startStreaming(){
+  startStreaming() {
     console.log('manager: start streaming')
     this.collectorConnector.start()
   }
 
-  tearDown(){}
-
-
+  tearDown() {}
 
 }
 
-let manager = new Manager()
-manager.establishConnection(4000)
-manager.startStreaming()
 
 module.exports = Manager
 
