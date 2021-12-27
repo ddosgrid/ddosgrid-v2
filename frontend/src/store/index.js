@@ -6,19 +6,48 @@ import router from '../router'
 
 Vue.use(Vuex)
 
+function getTime (timestamp) {
+  const date = new Date(timestamp)
+  const hours = date.getHours()
+  const min = '0' + date.getMinutes()
+  const sec = '0' + date.getSeconds()
+  return hours + ':' + min.substr(-2) + ':' + sec.substr(-2)
+}
+
 export default new Vuex.Store({
   state: {
     setups: [],
     tiles: [],
+    live_tiles: [],
     authenticated: false,
     demomode: false,
     nrOfAnalysedDatasets: [],
-    isSocketConnected: false,
-    socketData: null
+    nrOfConnections: 0,
+    socketData: {}
   },
   mutations: {
     SOCKET_newData (state, data) {
-      state.socketData = data
+      let newData = state.socketData
+      if (state.socketData.labels.length > 20) {
+        newData.labels.shift()
+        newData.datasets[0].data.shift()
+        Vue.set(this.state.socketData.datasets, newData)
+      }
+      newData.labels.push(getTime(data.timestamp))
+      newData.datasets[0].data.push(data.total_in_bytes)
+      Object.assign(state.socketData, newData)
+    },
+    clear_socketData (state) {
+      Object.assign(state.socketData, {
+        labels: [],
+        datasets: [
+          {
+            label: 'total in bytes',
+            backgroundColor: '#f87979',
+            data: []
+          }],
+        options: {}
+      })
     },
     updateNrOfAnalysedSetups (state, newnr) {
       if (newnr > state.nrOfAnalysedDatasets) {
@@ -67,6 +96,18 @@ export default new Vuex.Store({
         console.error(`Unable to load setup ${id}`)
       }
     },
+    addConnection (state) {
+      if (state.nrOfConnections <= 0) {
+        state.nrOfConnections = 0
+      }
+      state.nrOfConnections++
+    },
+    removeConnection (state) {
+      state.nrOfConnections--
+      if (state.nrOfConnections < 0) {
+        state.nrOfConnections = 0
+      }
+    },
     addTile (state, newTile) {
       if (Object.prototype.hasOwnProperty.call(newTile, 'file')) {
         var found = state.tiles.find(existingVisualisation => newTile.file === existingVisualisation.file)
@@ -103,6 +144,29 @@ export default new Vuex.Store({
     },
     setTiles (state, newTiles) {
       state.tiles = newTiles
+    },
+    addLiveTile (state, newTile) {
+      if (Object.prototype.hasOwnProperty.call(newTile, 'port')) {
+        var found = state.live_tiles.find(existingVisualisation => newTile.port === existingVisualisation.port)
+        if (!found) {
+          newTile.x = 0
+          newTile.y = 0
+          newTile.h = 1
+          newTile.w = 1
+          newTile.key = newTile.port
+          newTile.i = newTile.port
+          newTile.show = true
+          state.live_tiles.push(newTile)
+        }
+      }
+    },
+    removeLiveTile (state, toBeRemoved) {
+      if (Object.prototype.hasOwnProperty.call(toBeRemoved, 'port')) {
+        state.live_tiles = state.live_tiles.filter(visualization => visualization.port !== toBeRemoved.port)
+      }
+    },
+    setLiveTiles (state, newLiveTiles) {
+      state.live_tiles = newLiveTiles
     }
   },
   actions: {

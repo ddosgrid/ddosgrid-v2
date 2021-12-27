@@ -14,13 +14,6 @@
       </md-card-header>
       <md-divider></md-divider>
 
-      <md-card-content>
-        <div class="card-content-container">
-          <p>Data sent from websocket: </p>
-          <p>{{$store.state.socketData}}</p>
-        </div>
-      </md-card-content>
-
       <md-card-expand>
         <md-card-actions md-alignment="space-between">
           <div>
@@ -38,7 +31,7 @@
 </template>
 
 <script>
-import { apibaseurl, ddosdbbaseurl } from '@/config/variables.js'
+import { apibaseurl } from '@/config/variables.js'
 
 export default {
   props: ['connection'],
@@ -48,9 +41,10 @@ export default {
       this.showSnackbar = false
       this.$router.push('/dashboard')
     },
-    deleteConnection: function (port) {
+    deleteConnection: async function (port) {
       let app = this
-      this.$store.state.isSocketConnected = false
+      this.$store.commit('removeLiveTile', { port: port.toString() })
+      await this.$store.commit('removeConnection')
       fetch(`${apibaseurl}/live-analysis/connection?PORT=${port}`, {
         method: 'DELETE',
         credentials: 'include'
@@ -69,55 +63,28 @@ export default {
       position: 'center',
       duration: 4000,
       isInfinity: false,
-      snackbarMsg: null,
-      ddosdb: ddosdbbaseurl
+      snackbarMsg: null
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
-.demobtn {
-  color: rgba(0,0,0,0.26) !important;
-}
 .dataset-wrap {
   max-width: 800px;
   margin: auto;
-}
-.icon {
-  width: 30px;
-  height: 30px;
-  float: right;
-}
-.cap {
-  text-transform: capitalize;
-}
-.icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-content-container {
-  display: flex;
-  justify-content: space-between;
-}
-.card-content-half {
-  width: 50%;
 }
 .card-content-half > div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.md-title, .md-card-header-flex, .md-card-header-text {
+.md-title {
   text-overflow: ellipsis;
   overflow: hidden;
 }
 .md-title { width: 100%; }
 .success-icon {
   color: #30b375 !important;
-}
-.failure-icon {
-  color: #ff5252 !important;
 }
 a[target="_blank"]::before {
   margin: 0 3px 0 5px;

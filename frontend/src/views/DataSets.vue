@@ -56,7 +56,7 @@
     </data-set-list-item>
   </div>
 
-  <div v-for="connection in connections" :key="connection.port" class="connection">
+  <div v-for="connection in connections" :key="connection.port" class="dataset">
     <live-connection-list-item :connection="connection" @deleted="refresh"/>
   </div>
 
@@ -165,11 +165,6 @@ export default {
         var res = await fetch(`${apibaseurl}/live-analysis/connection`, { credentials: 'include' })
         var connections = await res.json()
         this.connections = connections
-        if (connections.length === 0) {
-          this.$socket.close()
-        } else {
-          this.$socket.open()
-        }
         this.hasLoaded = true
       } catch (e) {
         console.warn(e)
