@@ -46,7 +46,7 @@ Vue.use(MdBadge)
 Vue.use(MdSwitch)
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: io(apibaseurl, { autoConnect: false }),
+  connection: io(apibaseurl, { autoConnect: true }),
   vuex: {
     store,
     actionPrefix: 'SOCKET_',

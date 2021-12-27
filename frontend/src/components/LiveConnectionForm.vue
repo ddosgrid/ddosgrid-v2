@@ -78,7 +78,9 @@ export default {
           this.isLoading = false
           this.snackbarMsg = 'Successfully added a new connection.'
           this.showSnackbar = true
-          this.$store.state.isSocketConnected = true
+          this.$store.commit('addConnection')
+          this.$store.commit('addLiveTile', { port: this.port })
+          this.$store.commit('clear_socketData')
           this.$emit('done')
         })
         .catch((error) => {
