@@ -1,11 +1,11 @@
 const EventEmitter = require('events')
 
 const sockets = new Set()
-const dataBroadcaster = new EventEmitter()
+const socketBroadcaster = new EventEmitter()
 
 // dataBroadcaster listens for events 'new data',
 // emits data with namespace 'newData' to all sockets
-dataBroadcaster.on('newData', (data) => {
+socketBroadcaster.on('newData', (data) => {
   sockets.forEach((socket) => {
     console.log('emit newData')
     socket.emit('newData', data)
@@ -29,5 +29,5 @@ class SocketHandler {
 module.exports = {
   SocketHandler: SocketHandler,
   sockets: sockets,
-  dataBroadcaster: dataBroadcaster
+  socketBroadcaster: socketBroadcaster
 }

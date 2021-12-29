@@ -1,4 +1,5 @@
 let AbstractLiveMiner = require('./AbstractLiveMiner')
+const { socketBroadcaster } = require('../../api/live-analysis/SocketHandler')
 
 class SampleConcreteLiveMiner {
     constructor(dataBroadcaster) {
@@ -25,7 +26,7 @@ class SampleConcreteLiveMiner {
         }
         let res = {'total_in_bytes': tot_in_bytes, 'timestamp': Date.now()}
         console.log(res)
-        this.dataBroadcaster.emit('newData', res)
+        socketBroadcaster.emit('newData', res)
 
         }
 }
