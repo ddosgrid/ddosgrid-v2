@@ -1,5 +1,7 @@
-let SampleConcreteLiveMiner = require('../../miner/live-miners/SampleConcreteLiveMiner')
+let ByteCountLiveMiner = require('../../miner/live-miners/ByteCountLiveMiner')
+let PacketCountLiveMiner = require('../../miner/live-miners/PacketCountLiveMiner')
 let NetflowCollector = require('../collector-connector/collectorConnector')
+let TCPFlagCountLiveMiner = require('../../miner/live-miners/TCPFlagCountLiveMiner')
 let EventEmitter = require('events')
 
 class Manager {
@@ -22,7 +24,9 @@ class Manager {
   }
 
   setupMiners() {
-    this.miner = new SampleConcreteLiveMiner(this.dataBroadcaster)
+    this.miner = new ByteCountLiveMiner(this.dataBroadcaster)
+    //this.miner = new PacketCountLiveMiner(this.dataBroadcaster)
+    //this.miner = new TCPFlagCountLiveMiner(this.dataBroadcaster)
   }
 
   // refer to javascript event loop feature
