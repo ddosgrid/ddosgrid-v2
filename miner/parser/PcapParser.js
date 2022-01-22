@@ -29,6 +29,7 @@ class PacketEmitter extends EventEmitter {
     })
   }
 
+  // TODO: add options in UI
   startLiveSession (targetInterface) {
     this.pcap_session = pcap.createSession(targetInterface, '')
     this.pcap_session.on('packet', (packet) => {

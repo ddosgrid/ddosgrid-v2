@@ -68,4 +68,5 @@ typings/
 /converters/
 /ddos_dissector/
 
+.idea
 /*/.idea
