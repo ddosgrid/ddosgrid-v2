@@ -41,7 +41,6 @@
 <script>
 
 import VueGridLayout from 'vue-grid-layout'
-import { apibaseurl } from '@/config/variables'
 import LiveVisualizationTile from '../components/LiveVisualizationTile'
 
 export default {
@@ -70,20 +69,6 @@ export default {
     layoutUpdatedEvent: function (newLayout) {
       const toBeCommited = JSON.parse(JSON.stringify(newLayout))
       this.$store.commit('setLiveTiles', toBeCommited)
-    },
-    deleteConnection: function (port) {
-      let app = this
-      this.$store.commit('removeLiveTile', { port: port })
-      fetch(`${apibaseurl}/live-analysis/connection?PORT=${port}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      })
-        .then(() => {
-          app.$emit('deleted')
-        })
-        .catch(() => {
-          console.error('Unable to delete connection')
-        })
     }
   },
   created: function () {
