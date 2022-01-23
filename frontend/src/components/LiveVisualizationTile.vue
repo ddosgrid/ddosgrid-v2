@@ -2,7 +2,8 @@
   <md-card class="card">
     <md-card-header>
       <md-card-header-text>
-        <div class="md-title">Port {{ live_tile.port }}</div>
+        <div class="md-title">{{ live_tile.miner }}</div>
+        <p>Port {{live_tile.port}}</p>
       </md-card-header-text>
     </md-card-header>
 
@@ -29,8 +30,19 @@ export default {
       visualizationEmpty: false,
       downloadAble: false,
       port: this.live_tile.port,
-      datacollection: this.$store.state.socketData,
-      options: { animation: false }
+      datacollection: this.$store.state.socketData[this.live_tile.miner],
+      options: {
+        animation: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+        },
+        responsive: true,
+        maintainAspectRatio: false }
     }
   },
   mounted: function () {
@@ -92,12 +104,5 @@ md-card-actions{
 @-ms-keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
-}
-
-.md-card-header-text {
-  overflow-wrap: anywhere;
-}
-.vue-grid-item.cssTransforms {
-  min-width: 450px!important;
 }
 </style>

@@ -14,6 +14,9 @@ function getTime (timestamp) {
   return hours + ':' + min.substr(-2) + ':' + sec.substr(-2)
 }
 
+// time range of life analysis visualizations (i.e. number of displayed and cached data points)
+const LIVETIMERANGE = 60
+
 export default new Vuex.Store({
   state: {
     setups: [],
@@ -26,27 +29,81 @@ export default new Vuex.Store({
     socketData: {}
   },
   mutations: {
+    // handle new incoming data from websocket
     SOCKET_newData (state, data) {
-      let newData = state.socketData
-      if (state.socketData.labels.length > 20) {
-        newData.labels.shift()
-        newData.datasets[0].data.shift()
-        Vue.set(this.state.socketData.datasets, newData)
+      let newData = null
+      // populate socketData state with separate data for each miner type
+      switch (data.miner) {
+        case 'ByteCount':
+          newData = state.socketData.ByteCount
+          if (state.socketData.ByteCount.labels.length > LIVETIMERANGE) {
+            newData.labels.shift()
+            newData.datasets[0].data.shift()
+            Vue.set(this.state.socketData.ByteCount.datasets, newData)
+          }
+          newData.labels.push(getTime(data.timestamp))
+          newData.datasets[0].data.push(data.total_in_bytes)
+          Object.assign(state.socketData.ByteCount, newData)
+          break
+        case 'PacketCount':
+          newData = state.socketData.PacketCount
+          if (state.socketData.PacketCount.labels.length > LIVETIMERANGE) {
+            newData.labels.shift()
+            newData.datasets[0].data.shift()
+            Vue.set(this.state.socketData.PacketCount.datasets, newData)
+          }
+          newData.labels.push(getTime(data.timestamp))
+          newData.datasets[0].data.push(data.total_in_packets)
+          Object.assign(state.socketData.PacketCount, newData)
+          break
+        case 'TCPFlagCount':
+          newData = state.socketData.TCPFlagCount
+          if (state.socketData.TCPFlagCount.labels.length > LIVETIMERANGE) {
+            newData.labels.shift()
+            newData.datasets[0].data.shift()
+            Vue.set(this.state.socketData.TCPFlagCount.datasets, newData)
+          }
+          newData.labels.push(getTime(data.timestamp))
+          newData.datasets[0].data.push(data.total_in_packets)
+          Object.assign(state.socketData.TCPFlagCount, newData)
+          break
+        default:
+          console.error('unknown miner!')
       }
-      newData.labels.push(getTime(data.timestamp))
-      newData.datasets[0].data.push(data.total_in_bytes)
-      Object.assign(state.socketData, newData)
     },
+    // reset socketData state to initial state
     clear_socketData (state) {
       Object.assign(state.socketData, {
-        labels: [],
-        datasets: [
-          {
-            label: 'total in bytes',
-            backgroundColor: '#f87979',
-            data: []
-          }],
-        options: {}
+        ByteCount: {
+          labels: [],
+          datasets: [
+            {
+              label: 'total in bytes',
+              backgroundColor: '#f87979',
+              data: []
+            }],
+          options: {}
+        },
+        PacketCount: {
+          labels: [],
+          datasets: [
+            {
+              label: 'total in packets',
+              backgroundColor: '#13f31c',
+              data: []
+            }],
+          options: {}
+        },
+        TCPFlagCount: {
+          labels: [],
+          datasets: [
+            {
+              label: 'total in packets',
+              backgroundColor: '#1d47d7',
+              data: []
+            }],
+          options: {}
+        }
       })
     },
     updateNrOfAnalysedSetups (state, newnr) {
@@ -147,14 +204,14 @@ export default new Vuex.Store({
     },
     addLiveTile (state, newTile) {
       if (Object.prototype.hasOwnProperty.call(newTile, 'port')) {
-        var found = state.live_tiles.find(existingVisualisation => newTile.port === existingVisualisation.port)
+        let found = state.live_tiles.find(existingVisualisation => newTile.miner === existingVisualisation.miner)
         if (!found) {
           newTile.x = 0
-          newTile.y = 0
+          newTile.y = state.live_tiles.length
           newTile.h = 1
           newTile.w = 1
-          newTile.key = newTile.port
-          newTile.i = newTile.port
+          newTile.key = newTile.miner
+          newTile.i = newTile.miner
           newTile.show = true
           state.live_tiles.push(newTile)
         }

@@ -44,6 +44,7 @@ export default {
     deleteConnection: async function (port) {
       let app = this
       this.$store.commit('removeLiveTile', { port: port.toString() })
+      this.$store.commit('clear_socketData')
       await this.$store.commit('removeConnection')
       fetch(`${apibaseurl}/live-analysis/connection?PORT=${port}`, {
         method: 'DELETE',

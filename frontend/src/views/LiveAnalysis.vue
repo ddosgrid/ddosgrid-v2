@@ -11,15 +11,15 @@
     <grid-layout
       @layout-updated="layoutUpdatedEvent"
       :layout="layout"
-      :is-draggable="true"
-      :is-resizable="true"
+      :is-draggable="false"
+      :is-resizable="false"
       :is-mirrored="false"
       :vertical-compact="true"
       :margin="[10, 10]"
       :use-css-transforms="true"
-      :rowHeight="400"
+      :rowHeight="550"
       :responsive="true"
-      :cols="{ lg: 2, md: 1, sm: 1, xs: 1, xxs: 1 }">
+      :cols="{ lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 }">
 
       <grid-item  v-for="live_tile in layout"
                   :key="live_tile.i"
@@ -32,7 +32,6 @@
                   :minH="1">
                   <div>
                     <LiveVisualizationTile :live_tile="live_tile"></LiveVisualizationTile>
-                    <md-button @click="deleteConnection(live_tile.port)">Delete</md-button>
                   </div>
       </grid-item>
     </grid-layout>
@@ -88,12 +87,12 @@ export default {
     }
   },
   created: function () {
-    this.layout = JSON.parse(JSON.stringify(this.live_tiles))
+    this.layout = JSON.parse(JSON.stringify(this.$store.state.live_tiles))
   },
   watch: {
     live_tiles (val) {
       if (val) {
-        this.layout = JSON.parse(JSON.stringify(this.live_tiles))
+        this.layout = JSON.parse(JSON.stringify(this.$store.state.live_tiles))
       }
     }
   }

@@ -79,7 +79,9 @@ export default {
           this.snackbarMsg = 'Successfully added a new connection.'
           this.showSnackbar = true
           this.$store.commit('addConnection')
-          this.$store.commit('addLiveTile', { port: this.port })
+          this.$store.commit('addLiveTile', { port: this.port, miner: 'ByteCount' })
+          this.$store.commit('addLiveTile', { port: this.port, miner: 'PacketCount' })
+          this.$store.commit('addLiveTile', { port: this.port, miner: 'TCPFlagCount' })
           this.$store.commit('clear_socketData')
           this.$emit('done')
         })
@@ -98,16 +100,5 @@ export default {
 #form {
   width: 90%;
   margin: auto;
-}
-.md-list-item-content {
-  padding-left: 0px;
-}
-.upload-btn-wrapper {
-  text-align: center;
-  margin-top: 20px;
-}
-.unavailable {
-  text-decoration: line-through;
-  cursor: help;
 }
 </style>
