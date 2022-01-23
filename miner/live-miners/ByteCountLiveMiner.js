@@ -19,7 +19,7 @@ class ByteCountLiveMiner {
       // console.log(flows[i])
       totInBytes += flows[i].in_bytes
     }
-    const res = { total_in_bytes: totInBytes, timestamp: Date.now() }
+    const res = { miner: 'ByteCount', total_in_bytes: totInBytes, timestamp: Date.now() }
     console.log(res)
     socketBroadcaster.emit('newData', res)
   }

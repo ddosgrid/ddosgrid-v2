@@ -18,7 +18,7 @@ class TCPFlagCountLiveMiner {
     for (const i in flows) {
       totInPackets += flows[i].tcp_flags
     }
-    const res = { total_in_packets: totInPackets, timestamp: Date.now() }
+    const res = { miner: 'TCPFlagCount', total_in_packets: totInPackets, timestamp: Date.now() }
     console.log(res)
     socketBroadcaster.emit('newData', res)
   }

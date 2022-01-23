@@ -18,7 +18,7 @@ class PacketCountLiveMiner {
     for (const i in flows) {
       totInPackets += flows[i].in_pkts
     }
-    const res = { total_in_packets: totInPackets, timestamp: Date.now() }
+    const res = { miner: 'PacketCount', total_in_packets: totInPackets, timestamp: Date.now() }
     console.log(res)
     socketBroadcaster.emit('newData', res)
   }
