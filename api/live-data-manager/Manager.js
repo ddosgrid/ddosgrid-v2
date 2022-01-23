@@ -8,7 +8,7 @@ class Manager {
 
   constructor() {
     this.collectorConnector = null
-    this.miner = null
+    this.miners = null
     this.dataBroadcaster = new EventEmitter()
   }
 
@@ -24,9 +24,10 @@ class Manager {
   }
 
   setupMiners() {
-    this.miner = new ByteCountLiveMiner(this.dataBroadcaster)
-    //this.miner = new PacketCountLiveMiner(this.dataBroadcaster)
-    //this.miner = new TCPFlagCountLiveMiner(this.dataBroadcaster)
+    const byteMiner = new ByteCountLiveMiner(this.dataBroadcaster)
+    const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster)
+    const TCPFlagMiner = new TCPFlagCountLiveMiner(this.dataBroadcaster)
+    this.miners = [byteMiner, packetMiner, TCPFlagMiner]
   }
 
   // refer to javascript event loop feature
@@ -40,6 +41,4 @@ class Manager {
   }
 }
 
-
 module.exports = Manager
-
