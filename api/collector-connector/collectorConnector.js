@@ -39,11 +39,9 @@ class NetflowCollector {
     }
 
     stop() {
-
+        console.log('closing collector connection.')
+        this.collector.server.close()
     }
 }
-
-// let coll = new NetflowCollector(4000)
-// coll.start()
 
 module.exports = NetflowCollector

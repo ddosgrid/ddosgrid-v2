@@ -61,19 +61,19 @@ async function establishConnection(req, res) {
   }
 }
 
-function deleteConnection(req, res) {
+async function deleteConnection(req, res) {
   try {
     connections.forEach((connection) => {
       if (connection.port === parseInt(req.query.PORT)) {
         connections.delete(connection)
       }
     })
+    await manager.tearDown()
     res.status(200).send('deleted')
   } catch (e) {
     console.warn(e)
     res.send(500)
   }
 }
-
 
 module.exports = router

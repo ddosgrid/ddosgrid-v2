@@ -35,8 +35,9 @@ class Manager {
     this.collectorConnector.start()
   }
 
-  tearDown() {}
-
+  tearDown() {
+    this.collectorConnector.stop()
+  }
 }
 
 
