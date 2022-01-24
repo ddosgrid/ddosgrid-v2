@@ -25,6 +25,12 @@ const routes = [
     name: 'datasets',
     component: () => import(/* webpackChunkName: "about" */ '../views/DataSets.vue'),
     beforeEnter: authRequired
+  },
+  {
+    path: '/sinkhole',
+    name: 'sinkhole',
+    component: () => import(/* webpackChunkName: "about" */ '../views/DnsSinkhole.vue'),
+    beforeEnter: authRequired
   }
 ]
 
