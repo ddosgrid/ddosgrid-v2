@@ -38,6 +38,7 @@ build/Release
 /miner/examples/testdata/*json
 /api/tmp
 /api/data/public
+/api/data/sinkhole
 /api/**/*db
 jspm_packages/
 

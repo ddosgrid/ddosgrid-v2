@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session')
 const rootRoutes = require('./routes/root')
 const analysisRoutes = require('./analysis/index')
 const authRoutes = require('./auth/index').router
+const sinkholeRoutes = require('./sinkhole/index')
 
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000
@@ -37,6 +38,7 @@ app.use(passport.session())
 app.use('/', rootRoutes)
 app.use('/analysis', analysisRoutes)
 app.use('/', authRoutes)
+app.use('/sinkhole', sinkholeRoutes)
 app.use('/public', express.static('data/public/analysis', staticFileOptions))
 
 app.listen(port, logStart)

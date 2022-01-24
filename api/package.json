@@ -12,9 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.9.0",
     "cookie-session": "^1.4.0",
+    "dns2": "^2.0.1",
     "express": "^4.17.1",
     "express-fileupload-sha256": "git+https://git@github.com/ddosgrid/express-fileupload-sha256.git",
+    "ip-regex": "^5.0.0",
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
