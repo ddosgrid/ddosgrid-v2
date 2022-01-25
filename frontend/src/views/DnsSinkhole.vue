@@ -33,11 +33,14 @@
               <div class="status-caption">Blacklist Entries</div>
               <div class="status-content">{{status.blacklistEntries}}</div>
             </div>
+            <div class="md-subhead unapplied-text" v-if="status.configChanged">
+              The config has been changed. Please restart the sinkhole to apply the changes.
+            </div>
           </div>
         </md-card-content>
         <md-card-actions v-if="!loading">
           <md-button>
-            <div class="icon-button">
+            <div class="icon-button" @click="toggleConfigDialog">
               <md-icon style="margin-right: 0.2em">settings</md-icon>
               Edit Configuration
             </div>
@@ -51,6 +54,9 @@
         </md-card-actions>
       </md-card>
     </div>
+
+    <sinkhole-config-dialog :show.sync="showConfigDialog" v-on:submitted="loadStatus"/>
+
     <md-button v-if="!loading" class="md-fab md-fab-bottom-right" @click="toggleSinkhole">
       <md-icon v-bind:class="{'fab-icon': !status.running}"> {{ fabIcon }}</md-icon>
       <md-tooltip md-direction="top">
@@ -62,24 +68,23 @@
 
 <script>
 import { apibaseurl } from '@/config/variables.js'
+import SinkholeConfigDialog from '@/components/SinkholeConfigDialog'
 
 export default {
   name: 'DnsSinkhole',
-  components: {},
+  components: { 'sinkhole-config-dialog': SinkholeConfigDialog },
   data: () => ({
     loading: true,
-    status: { running: false }
+    status: { running: false },
+    showConfigDialog: false
   }),
   mounted: function () {
-    setTimeout(() => {
-      this.loadStatus()
-    }, 1000)
+    this.loadStatus()
   },
   methods: {
     loadStatus: async function () {
       this.loading = true
       this.status = await (await fetch(`${apibaseurl}/sinkhole`, { credentials: 'include' })).json()
-      console.log(this.status)
       this.loading = false
     },
     toggleSinkhole: async function () {
@@ -89,6 +94,9 @@ export default {
         await fetch(`${apibaseurl}/sinkhole/start`, { method: 'POST', credentials: 'include' })
       }
       await this.loadStatus()
+    },
+    toggleConfigDialog: function () {
+      this.showConfigDialog = !this.showConfigDialog
     }
   },
   computed: {
@@ -149,7 +157,6 @@ export default {
   align-items: center;
   margin: 1em 0.5em;
 }
-
 .status-caption {
   font-weight: bold;
   min-width: 10em;
@@ -161,6 +168,11 @@ export default {
   font-weight: normal;
   text-align: right;
   flex-grow: 1;
+}
+
+.unapplied-text {
+  font-style: italic;
+  margin: 1em 0.5em;
 }
 
 .active-icon {
