@@ -67,7 +67,10 @@ export default {
   }
   #main {
     flex: 1 1 auto;
-    max-width: 1900px;
+    /*max-width: 1900px;
+    TODO: does my fix break something?
+    */
+    max-width: 100vw;
     padding-right: 20px;
     padding-left: 20px;
     padding-top: 20px;

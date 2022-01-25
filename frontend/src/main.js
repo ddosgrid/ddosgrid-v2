@@ -20,7 +20,9 @@ import {
   MdSwitch,
   MdCheckbox,
   MdBadge,
-  MdChips } from 'vue-material/dist/components'
+  MdChips,
+  MdMenu
+} from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
@@ -41,6 +43,7 @@ Vue.use(MdChips)
 Vue.use(MdCheckbox)
 Vue.use(MdBadge)
 Vue.use(MdSwitch)
+Vue.use(MdMenu)
 
 Vue.config.productionTip = false
 

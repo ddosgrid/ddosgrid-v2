@@ -40,16 +40,10 @@
             </div>
           </md-card-content>
           <md-card-actions v-if="!loading">
-            <md-button>
+            <md-button class="md-primary">
               <div class="icon-button" @click="toggleConfigDialog">
                 <md-icon style="margin-right: 0.2em">settings</md-icon>
                 Edit Configuration
-              </div>
-            </md-button>
-            <md-button>
-              <div class="icon-button">
-                <md-icon style="margin-right: 0.2em">remove_circle</md-icon>
-                Update Blacklist
               </div>
             </md-button>
           </md-card-actions>
@@ -148,7 +142,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto;
+  margin: auto auto 2em;
 }
 
 .icon-wrap {

@@ -151,4 +151,7 @@ export default {
 </script>
 
 <style scoped>
+.md-tooltip {
+  height: auto;
+}
 </style>
