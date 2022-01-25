@@ -1,4 +1,4 @@
-const DataStore = require('nedb')
+import DataStore from 'nedb';
 
 class Users {
   constructor (dbPath) {
@@ -67,4 +67,4 @@ class Users {
   }
 }
 
-module.exports = Users
+export default Users;

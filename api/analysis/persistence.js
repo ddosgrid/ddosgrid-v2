@@ -1,4 +1,4 @@
-const Datastore = require('nedb')
+import Datastore from 'nedb';
 var instance = null;
 
 class Analyses {
@@ -94,4 +94,4 @@ class Analyses {
   }
 }
 
-module.exports = Analyses
+export default Analyses;

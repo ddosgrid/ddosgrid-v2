@@ -1,13 +1,12 @@
-const path = require('path')
-const express = require('express')
-const passport = require('passport')
+import path from 'path';
+import express from 'express';
+import passport from 'passport';
 const app = express()
-const fileUpload = require('express-fileupload-sha256')
-const cookieSession = require('cookie-session')
-
-const rootRoutes = require('./routes/root')
-const analysisRoutes = require('./analysis/index')
-const authRoutes = require('./auth/index').router
+import fileUpload from 'express-fileupload-sha256';
+import cookieSession from 'cookie-session';
+import rootRoutes from './routes/root.js';
+import analysisRoutes from './analysis/index.js';
+import { router as authRoutes } from './auth/index.js';
 
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000

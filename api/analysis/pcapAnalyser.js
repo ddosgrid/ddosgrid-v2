@@ -1,6 +1,6 @@
-const child_process = require('child_process')
+import child_process from 'child_process';
 const fork = child_process.fork
-const path = require('path')
+import path from 'path';
 
 async function analyseFileInProjectFolder (pcapPath) {
   return new Promise(function (resolve, reject) {
@@ -22,4 +22,4 @@ async function analyseFileInProjectFolder (pcapPath) {
   })
 }
 
-module.exports = { analyseFileInProjectFolder }
+export default { analyseFileInProjectFolder };

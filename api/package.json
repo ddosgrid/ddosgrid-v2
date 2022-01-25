@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "Web API around the ddosgrid-miner",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./scripts/start_dev_server.sh",

@@ -1,10 +1,10 @@
-const https = require('https');
-const crypto = require('crypto')
-const fs = require('fs');
+import https from 'https';
+import crypto from 'crypto';
+import fs from 'fs';
 const DDoSDBHOST = process.env.DDOSDB_HOST || 'www.csg.uzh.ch'
 const ATTACKTRACE_ENDPOINT = process.env.DDOSDB_ATTACKTRACE_PATH || '/ddosgrid/ddosdb/api/attack-trace'
 
-module.exports = { importFileByID }
+export default { importFileByID };
 
 async function importFileByID (datasetID, access_token) {
     return new Promise((resolve, reject) => {

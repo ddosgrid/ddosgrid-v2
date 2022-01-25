@@ -1,19 +1,19 @@
-const path = require('path')
-const bodyParser = require('body-parser')
-const { Router } = require('express')
+import path from 'path';
+import bodyParser from 'body-parser';
+import { Router } from 'express';
 const router = Router()
-const fs = require('fs')
-const pcapDissector = require('./pcapDissector')
-const pcapFilterGen = require('./pcapFilterGenerator')
-const pcapAnalyser = require('./pcapAnalyser')
-const persistedAnalyses =  require('./persistence')
-const fileImport = require('./pcapImporter')
+import fs from 'fs';
+import pcapDissector from './pcapDissector.js';
+import pcapFilterGen from './pcapFilterGenerator.js';
+import pcapAnalyser from './pcapAnalyser.js';
+import persistedAnalyses from './persistence.js';
+import fileImport from './pcapImporter.js';
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
 const analysesDB = path.resolve(__dirname, '../data/anyleses.db')
 var analyses = new persistedAnalyses(analysesDB)
 
-const { protect } = require('../auth/index')
+import { protect } from '../auth/index.js';
 
 router.get('', protect, getAllAnalyses)
 router.get('/:id', protect, getAnalysisById)
@@ -278,4 +278,4 @@ function deleteFilesInDir (directory, cb) {
     }
   });
 }
-module.exports = router
+export default router;
