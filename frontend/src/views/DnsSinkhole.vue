@@ -1,58 +1,63 @@
 <template>
   <div>
     <div class="sinkhole-controls">
-      <md-card>
-        <md-card-header>
-          <md-card-header-text>
-            <div class="md-title">DNS Sinkhole</div>
-            <div class="md-subhead" v-bind:class="{'active-subcaption': status.running}">
-              {{ statusText }}
+      <div class="sinkhole-item">
+        <md-card>
+          <md-card-header>
+            <md-card-header-text>
+              <div class="md-title">DNS Sinkhole</div>
+              <div class="md-subhead" v-bind:class="{'active-subcaption': status.running}">
+                {{ statusText }}
+              </div>
+            </md-card-header-text>
+            <md-card-media class="icon-wrap">
+              <md-icon class="md-size-2x" v-bind:class="statusIconClass">{{ statusIcon }}</md-icon>
+            </md-card-media>
+          </md-card-header>
+          <md-divider></md-divider>
+          <md-card-content class="sinkhole-content">
+            <md-progress-spinner v-if="loading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"/>
+            <div v-if="!loading" class="status-container">
+              <div class="status-item">
+                <div class="status-caption">DNS Port</div>
+                <div class="status-content">{{ status.dnsPort }}</div>
+              </div>
+              <div class="status-item">
+                <div class="status-caption">Sinkhole Address</div>
+                <div class="status-content">{{ status.sinkholeAddress }}</div>
+              </div>
+              <div class="status-item">
+                <div class="status-caption">Main DNS Server</div>
+                <div class="status-content">{{ status.mainDns }}</div>
+              </div>
+              <div class="status-item">
+                <div class="status-caption">Blacklist Entries</div>
+                <div class="status-content">{{ status.blacklistEntries }}</div>
+              </div>
+              <div class="md-subhead unapplied-text" v-if="status.configChanged">
+                The config has been changed. Please restart the sinkhole to apply the changes.
+              </div>
             </div>
-          </md-card-header-text>
-          <md-card-media class="icon-wrap">
-            <md-icon class="md-size-2x" v-bind:class="statusIconClass">{{ statusIcon }}</md-icon>
-          </md-card-media>
-        </md-card-header>
-        <md-divider></md-divider>
-        <md-card-content class="sinkhole-content">
-          <md-progress-spinner v-if="loading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"/>
-          <div v-if="!loading" class="status-container">
-            <div class="status-item">
-              <div class="status-caption">DNS Port</div>
-              <div class="status-content">{{status.dnsPort}}</div>
-            </div>
-            <div class="status-item">
-              <div class="status-caption">Sinkhole Address</div>
-              <div class="status-content">{{status.sinkholeAddress}}</div>
-            </div>
-            <div class="status-item">
-              <div class="status-caption">Main DNS Server</div>
-              <div class="status-content">{{status.mainDns}}</div>
-            </div>
-            <div class="status-item">
-              <div class="status-caption">Blacklist Entries</div>
-              <div class="status-content">{{status.blacklistEntries}}</div>
-            </div>
-            <div class="md-subhead unapplied-text" v-if="status.configChanged">
-              The config has been changed. Please restart the sinkhole to apply the changes.
-            </div>
-          </div>
-        </md-card-content>
-        <md-card-actions v-if="!loading">
-          <md-button>
-            <div class="icon-button" @click="toggleConfigDialog">
-              <md-icon style="margin-right: 0.2em">settings</md-icon>
-              Edit Configuration
-            </div>
-          </md-button>
-          <md-button>
-            <div class="icon-button">
-              <md-icon style="margin-right: 0.2em">remove_circle</md-icon>
-              Edit Blacklist
-            </div>
-          </md-button>
-        </md-card-actions>
-      </md-card>
+          </md-card-content>
+          <md-card-actions v-if="!loading">
+            <md-button>
+              <div class="icon-button" @click="toggleConfigDialog">
+                <md-icon style="margin-right: 0.2em">settings</md-icon>
+                Edit Configuration
+              </div>
+            </md-button>
+            <md-button>
+              <div class="icon-button">
+                <md-icon style="margin-right: 0.2em">remove_circle</md-icon>
+                Update Blacklist
+              </div>
+            </md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
+      <div class="sinkhole-item">
+        <sinkhole-blacklist-card/>
+      </div>
     </div>
 
     <sinkhole-config-dialog :show.sync="showConfigDialog" v-on:submitted="loadStatus"/>
@@ -60,7 +65,7 @@
     <md-button v-if="!loading" class="md-fab md-fab-bottom-right" @click="toggleSinkhole">
       <md-icon v-bind:class="{'fab-icon': !status.running}"> {{ fabIcon }}</md-icon>
       <md-tooltip md-direction="top">
-        {{status.running ? 'stop sinkhole' : 'start sinkhole'}}
+        {{ status.running ? 'stop sinkhole' : 'start sinkhole' }}
       </md-tooltip>
     </md-button>
   </div>
@@ -69,21 +74,29 @@
 <script>
 import { apibaseurl } from '@/config/variables.js'
 import SinkholeConfigDialog from '@/components/SinkholeConfigDialog'
+import SinkholeBlacklistCard from '@/components/SinkholeBlacklistCard'
 
 export default {
   name: 'DnsSinkhole',
-  components: { 'sinkhole-config-dialog': SinkholeConfigDialog },
+  components: { SinkholeBlacklistCard, 'sinkhole-config-dialog': SinkholeConfigDialog },
   data: () => ({
     loading: true,
     status: { running: false },
-    showConfigDialog: false
+    showConfigDialog: false,
+    refreshInterval: null
   }),
   mounted: function () {
     this.loadStatus()
+    this.refreshInterval = setInterval(() => this.loadStatus(), 5000)
+  },
+  beforeDestroy () {
+    if (this.refreshInterval !== null) {
+      clearInterval(this.refreshInterval)
+      this.refreshInterval = null
+    }
   },
   methods: {
     loadStatus: async function () {
-      this.loading = true
       this.status = await (await fetch(`${apibaseurl}/sinkhole`, { credentials: 'include' })).json()
       this.loading = false
     },
@@ -124,8 +137,14 @@ export default {
 </script>
 
 <style scoped>
+.sinkhole-item {
+  padding: 32px 24px 0 24px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
 .sinkhole-controls {
-  max-width: 960px;
+  max-width: 50em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,7 +163,7 @@ export default {
 }
 
 .sinkhole-content {
-  min-width: 50em;
+  min-width: 40em;
 }
 
 .status-container {
@@ -157,6 +176,7 @@ export default {
   align-items: center;
   margin: 1em 0.5em;
 }
+
 .status-caption {
   font-weight: bold;
   min-width: 10em;

@@ -1,5 +1,11 @@
 <template>
-  <md-dialog :md-active="show" @md-closed="close" @md-clicked-outside="close" @md-opened="loadConfig">
+  <md-dialog
+    :md-active="show"
+    @md-closed="close"
+    @md-clicked-outside="close"
+    @md-opened="loadConfig"
+    style="min-width: 30em"
+  >
     <md-dialog-title>DNS Sinkhole Configuration</md-dialog-title>
     <md-dialog-content>
       <form novalidate>
