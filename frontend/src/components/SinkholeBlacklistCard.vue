@@ -4,7 +4,14 @@
       <md-card-header-text>
         <div class="md-title">Blacklist</div>
       </md-card-header-text>
-      <md-card-actions v-if="!loading">
+      <md-card-actions>
+        <md-button
+          v-if="!loading"
+          class="md-primary md-icon-button"
+        >
+          <md-tooltip>update blacklist</md-tooltip>
+          <md-icon>upload</md-icon>
+        </md-button>
         <md-button
           class="md-icon-button"
           @click="loadBlacklist(true)"
@@ -12,16 +19,19 @@
           <md-tooltip>refresh blacklist</md-tooltip>
           <md-icon>refresh</md-icon>
         </md-button>
-        <md-button
-          class="md-primary md-icon-button"
-        >
-          <md-tooltip>update blacklist</md-tooltip>
-          <md-icon>upload</md-icon>
-          </md-button>
       </md-card-actions>
     </md-card-header>
     <md-divider/>
-    <md-card-content>
+    <md-card-content style="padding-top: 0">
+      <md-field>
+        <label>search</label>
+        <md-input v-model="searchString" @keyup.enter="filterBlacklistBySearch"/>
+<!--        <md-icon>search</md-icon>-->
+        <md-button class="md-icon-button" @click="filterBlacklistBySearch">
+          <md-tooltip>search in blacklist</md-tooltip>
+          <md-icon>search</md-icon>
+        </md-button>
+      </md-field>
       <md-progress-spinner v-if="loading" :md-diameter="36" :md-stroke="4" md-mode="indeterminate"/>
       <!--      <blacklist-table :blacklist="blacklist"/>-->
       <md-list v-if="!loading">
@@ -37,7 +47,7 @@
         rows per page:
       </div>
       <md-field class="row-select">
-        <md-select v-model="pagination.itemsPerPage" name="rows" v-on:md-selected="resetView">
+        <md-select v-model="pagination.itemsPerPage" name="rows" v-on:md-selected="resetView(false, false)">
           <md-option
             v-for="e in this.pagination.possibleItemsPerPage"
             :key="e"
@@ -78,6 +88,7 @@ export default {
   components: {},
   data: () => ({
     blacklist: [],
+    originalBlacklist: [],
     paginatedBlacklist: [],
     loading: true,
     pagination: {
@@ -85,16 +96,18 @@ export default {
       itemsPerPage: 5,
       possibleItemsPerPage: [5, 10, 20, 50, 100],
       pageItems: []
-    }
+    },
+    searchString: ''
   }),
   async mounted () {
     await this.loadBlacklist()
   },
   methods: {
     loadBlacklist: async function (delay) {
-      this.blacklist = await (await fetch(`${apibaseurl}/sinkhole/blacklist`, { credentials: 'include' })).json()
+      this.originalBlacklist = await (await fetch(`${apibaseurl}/sinkhole/blacklist`, { credentials: 'include' })).json()
+      this.blacklist = this.originalBlacklist
       this.loading = false
-      await this.resetView(delay)
+      await this.resetView(delay, true)
     },
     updatePageItems: function () {
       this.pagination.pageItems = this.getPageItems(this.pagination.currentPage)
@@ -121,8 +134,11 @@ export default {
         this.updatePageItems()
       }
     },
-    resetView: async function (delay) {
+    resetView: async function (delay, resetSearch) {
       this.loading = true
+      if (resetSearch) {
+        this.searchString = ''
+      }
       if (delay) {
         setTimeout(async () => {
           this.pagination.currentPage = 0
@@ -134,6 +150,10 @@ export default {
         await this.updatePageItems()
         this.loading = false
       }
+    },
+    filterBlacklistBySearch: function () {
+      this.blacklist = this.originalBlacklist.filter(e => e.includes(this.searchString))
+      this.updatePageItems()
     }
   },
   computed: {
