@@ -127,9 +127,11 @@ more-evil.to"
           Failed to process this list!
         </div>
       </div>
-      <span style="color: #ff1744" v-if="error">
+    </md-dialog-content>
+    <md-dialog-content v-if="error">
+      <span style="color: #ff1744">
           There has been an error submitting this blacklist!
-        </span>
+      </span>
     </md-dialog-content>
     <md-dialog-actions>
       <md-button @click="close">
