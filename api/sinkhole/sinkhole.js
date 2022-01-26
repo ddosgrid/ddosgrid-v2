@@ -82,6 +82,10 @@ class Sinkhole {
             mainDns: this.mainDns
         }
     }
+
+    updateBlacklist = (bl) => {
+        this.blacklist = BL.sortBlacklist(bl);
+    }
 };
 
 module.exports = {Sinkhole};

@@ -17,9 +17,16 @@ const configSchema = {
     additionalProperties: false
 };
 const blacklistSchema = {
-    "type": "array",
-    "items": {
-        "type": "string"
+    type: "object",
+    properties: {
+        mode: {type: "string"},
+        url: {type: ["string", "null"]},
+        data: {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
     }
 };
 
@@ -36,6 +43,11 @@ const defaultConfig = {
     dnsPort: 5333,
     sinkholeAddress: lanIP,
     mainDns: dns.getServers()[0]
+};
+const defaultBlacklist = {
+    url: null,
+    mode: 'manual',
+    data: []
 };
 
 function loadConfig() {
@@ -60,8 +72,8 @@ function saveConfig(config) {
 function loadBlacklist() {
     if (!fs.existsSync(blacklistPath)) {
         fs.mkdirSync(path.dirname(blacklistPath), {recursive: true});
-        fs.writeFileSync(blacklistPath, JSON.stringify([]));
-        return [];
+        fs.writeFileSync(blacklistPath, JSON.stringify(defaultBlacklist));
+        return defaultBlacklist;
     }
     return JSON.parse(fs.readFileSync(blacklistPath));
 }
