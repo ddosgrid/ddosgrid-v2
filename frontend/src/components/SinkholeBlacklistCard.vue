@@ -3,11 +3,15 @@
     <md-card-header>
       <md-card-header-text>
         <div class="md-title">Blacklist</div>
+        <div class="md-subhead">
+          {{ getStatusText() }}
+        </div>
       </md-card-header-text>
       <md-card-actions>
         <md-button
           v-if="!loading"
           class="md-primary md-icon-button"
+          @click="toggleUpdateDialog"
         >
           <md-tooltip>update blacklist</md-tooltip>
           <md-icon>upload</md-icon>
@@ -25,9 +29,9 @@
     <md-card-content style="padding-top: 0">
       <md-field>
         <label>search</label>
-        <md-input v-model="searchString" @keyup.enter="filterBlacklistBySearch"/>
+        <md-input v-model="searchString" @keyup.enter="filterBlacklistBySearch" :disabled="loading"/>
 <!--        <md-icon>search</md-icon>-->
-        <md-button class="md-icon-button" @click="filterBlacklistBySearch">
+        <md-button class="md-icon-button" @click="filterBlacklistBySearch" :disabled="loading">
           <md-tooltip>search in blacklist</md-tooltip>
           <md-icon>search</md-icon>
         </md-button>
@@ -77,19 +81,23 @@
         <md-icon>chevron_right</md-icon>
       </md-button>
     </md-card-actions>
+    <sinkhole-blacklist-update-dialog :show.sync="showUpdateDialog" @updated="loadBlacklist"/>
   </md-card>
 </template>
 
 <script>
 import { apibaseurl } from '@/config/variables'
+import SinkholeBlacklistUpdateDialog from '@/components/SinkholeBlacklistUpdateDialog'
 
 export default {
   name: 'SinkholeBlacklistCard',
-  components: {},
+  components: { SinkholeBlacklistUpdateDialog },
   data: () => ({
     blacklist: [],
     originalBlacklist: [],
     paginatedBlacklist: [],
+    blacklistMode: 'manual',
+    blacklistUrl: null,
     loading: true,
     pagination: {
       currentPage: 0,
@@ -97,14 +105,18 @@ export default {
       possibleItemsPerPage: [5, 10, 20, 50, 100],
       pageItems: []
     },
-    searchString: ''
+    searchString: '',
+    showUpdateDialog: false
   }),
   async mounted () {
     await this.loadBlacklist()
   },
   methods: {
     loadBlacklist: async function (delay) {
-      this.originalBlacklist = await (await fetch(`${apibaseurl}/sinkhole/blacklist`, { credentials: 'include' })).json()
+      let result = await (await fetch(`${apibaseurl}/sinkhole/blacklist`, { credentials: 'include' })).json()
+      this.originalBlacklist = result.data
+      this.blacklistMode = result.mode
+      this.blacklistUrl = result.url
       this.blacklist = this.originalBlacklist
       this.loading = false
       await this.resetView(delay, true)
@@ -154,6 +166,20 @@ export default {
     filterBlacklistBySearch: function () {
       this.blacklist = this.originalBlacklist.filter(e => e.includes(this.searchString))
       this.updatePageItems()
+    },
+    toggleUpdateDialog: function () {
+      this.showUpdateDialog = !this.showUpdateDialog
+    },
+    getStatusText: function () {
+      if (this.blacklistMode === 'manual') {
+        if (this.blacklistUrl) {
+          return `manually pulled from ${this.blacklistUrl}`
+        } else {
+          return 'manually configured'
+        }
+      } else if (this.blacklistMode === 'auto') {
+        return `automatically pulling hourly from ${this.blacklistUrl}`
+      }
     }
   },
   computed: {
