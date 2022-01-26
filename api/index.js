@@ -8,6 +8,9 @@ import rootRoutes from './routes/root.js';
 import analysisRoutes from './analysis/index.js';
 import { router as authRoutes } from './auth/index.js';
 
+import dirname from './dirname.js'
+const __dirname = dirname()
+
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000
 const inDevMode = process.env.NODE_ENV === 'dev'

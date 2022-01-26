@@ -2,9 +2,13 @@ import path from 'path';
 import passport from 'passport';
 import fetch from 'node-fetch';
 import { OAuth2Strategy } from 'passport-oauth';
-import Users from './persistence.js';
-const userDB = path.resolve(__dirname, '../data/users.db')
 import { Router } from 'express';
+import Users from './persistence.js';
+
+import dirname from '../dirname.js'
+const __dirname = dirname(import.meta.url)
+
+const userDB = path.resolve(__dirname, '../data/users.db')
 const router = Router()
 var users = new Users(userDB)
 
