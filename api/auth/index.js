@@ -5,7 +5,7 @@ import { OAuth2Strategy } from 'passport-oauth';
 import { Router } from 'express';
 import Users from './persistence.js';
 
-import dirname from '../dirname.js'
+import dirname from 'ususdirname'
 const __dirname = dirname(import.meta.url)
 
 const userDB = path.resolve(__dirname, '../data/users.db')

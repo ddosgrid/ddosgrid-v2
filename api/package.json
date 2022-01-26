@@ -16,6 +16,7 @@
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-fileupload-sha256": "git+https://git@github.com/ddosgrid/express-fileupload-sha256.git",
+    "ususdirname": "git+https://git@github.com/ddosgrid/ususdirname.git",
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",

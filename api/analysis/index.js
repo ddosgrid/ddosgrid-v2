@@ -9,7 +9,7 @@ import pcapAnalyser from './pcapAnalyser.js';
 import persistedAnalyses from './persistence.js';
 import fileImport from './pcapImporter.js';
 
-import dirname from '../dirname.js'
+import dirname from 'ususdirname'
 const __dirname = dirname(import.meta.url)
 
 const analysisBaseDir = path.resolve(__dirname, '../data/public/analysis/')
