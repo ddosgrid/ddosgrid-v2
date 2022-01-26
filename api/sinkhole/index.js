@@ -63,25 +63,22 @@ async function getSinkholeBlacklist(req, res) {
 async function setSinkholeBlacklist(req, res) {
     let candidate;
     if (req.body.data) {
+        candidate = req.body.data
         currentBlacklist.mode = 'manual'
-       candidate = req.body.data
-    }
-    else if (req.body.url) {
+        currentBlacklist.url = null
+    } else if (req.body.url) {
         try {
             candidate = await blacklist.getRawBlacklistFromUrl(req.body.url)
             currentBlacklist.url = req.body.url
             if (req.body.continuous) {
                 currentBlacklist.mode = 'auto'
-            }
-            else {
+            } else {
                 currentBlacklist.mode = 'manual'
             }
-        }
-        catch {
+        } catch {
             return res.sendStatus(500);
         }
-    }
-    else {
+    } else {
         return res.sendStatus(400);
     }
 
@@ -94,7 +91,7 @@ async function setSinkholeBlacklist(req, res) {
 
         // sending back the entire blacklist is potentially a bad idea
         return res.send("blacklist updated successfully!")
-    }catch{
+    } catch {
         return res.sendStatus(400)
     }
 }
@@ -116,7 +113,7 @@ async function startSinkhole(req, res) {
     if (!sinkhole.isRunning()) {
         sinkhole = new Sinkhole({
             ...currentConfig,
-            blacklist: currentBlacklist
+            blacklist: currentBlacklist.data
         })
         await sinkhole.start()
     }
@@ -139,8 +136,9 @@ function updateRemoteBlacklist() {
         currentBlacklist.data = candidate
         sinkhole.updateBlacklist(candidate)
         console.log("successfully updated blacklist from url!")
+    } catch {
+        console.warn("failed to update blacklist from url!")
     }
-    catch { console.warn("failed to update blacklist from url!") }
 }
 
 function updateBlacklistInterval() {
