@@ -129,9 +129,9 @@ async function stopSinkhole(req, res) {
     return await getSinkholeStatus(req, res)
 }
 
-function updateRemoteBlacklist() {
+async function updateRemoteBlacklist() {
     try {
-        let candidate = blacklist.getRawBlacklistFromUrl(currentBlacklist.url)
+        let candidate = await blacklist.getRawBlacklistFromUrl(currentBlacklist.url)
         config.saveBlacklist({...currentBlacklist, data: candidate})
         currentBlacklist.data = candidate
         sinkhole.updateBlacklist(candidate)
