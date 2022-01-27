@@ -13,7 +13,8 @@ function parseAndCheckArguments (argv) {
     pcapPath: '',
     pcapFile: '',
     targetInterface: '',
-    live: false
+    live: false,
+    filter: ''
   }
 
   var pcapFileParamPattern = /pcap_path=(.*)/
@@ -33,25 +34,32 @@ function parseAndCheckArguments (argv) {
   var isLive = argv.some(param => param.match(livePattern))
   settings.live = isLive
 
+  var liveFilterPattern = /filter="(.*)"/
+  var liveFilter = argv.find(param => param.match(liveFilterPattern))
+  if (liveFilter) {
+    settings.filter = liveFilter.match(liveFilterPattern)[1]
+  }
+
   var ifParamPattern = /interface=(.*)/
   var ifParamGiven = argv.find(param => param.match(ifParamPattern))
-  if(ifParamGiven) {
+  if (ifParamGiven) {
     var ifParam = ifParamGiven.match(ifParamPattern)[1]
     settings.targetInterface = ifParam
     var os = require('os')
     var interfaceExists = os.networkInterfaces().hasOwnProperty(ifParam)
     var nics = getNics()
     var interfaceExists = nics.includes(ifParam)
-    
-    if(!interfaceExists) {
+
+    if (!interfaceExists) {
       throw new Error(`The interface that was supplied (${ifParam}) does not exist!`)
     }
   }
 
-  if(isLive && pcapFileParam) {
+  if (isLive && pcapFileParam) {
     throw new Error('An analysis may be either from interface or PCAP file')
   }
 
+  fs.writeFileSync('settings.json', JSON.stringify(settings))
 
   return settings
 }

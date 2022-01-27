@@ -200,7 +200,7 @@ async function startCapture (req, res) {
   var fileSizeInMB = -1
 
   analyses.createAnalysis(analysisID, datasetName, datasetDescription, fileSizeInMB, uploader)
-  liveCapture.startCapture(analysisID, req.body.targetinterface)
+  liveCapture.startCapture(analysisID, req.body.targetinterface, req.body.filter)
   analyses.changeAnalysisStatus(analysisID, 'Live capturing')
   var startTime = new Date()
   setTimeout(async function () {

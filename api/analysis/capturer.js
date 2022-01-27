@@ -17,9 +17,9 @@ class Capturer {
     }
 
 
-    startCapture(id, targetInterface) {
+    startCapture(id, targetInterface, filter) {
         var program = path.resolve('../miner/index.js')
-        var args = [ `interface=${targetInterface}`, '--live' ]
+        var args = [ `interface=${targetInterface}`, `filter="${filter}"`, '--live' ]
         var options = { stdio: [ 'ipc' ] }
 
         var childProcess = fork(program, args, options)

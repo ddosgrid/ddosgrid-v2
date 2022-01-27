@@ -17,16 +17,18 @@ const {
   VLANDomains,
   BGPMessages
 } = require('./exports')
-const colors = require('colors')
+const path = require('path')
+const fs = require('fs')
 
 try {
   var settings = parseAndCheckArguments(process.argv)
   console.log('SETTINGS:', settings)
   console.log('✓ Input check completed')
-  if(settings.live) {
-    var { targetInterface } = settings
+  if (settings.live) {
+    var { targetInterface, filter } = settings
     var projectPath = `../api/data/public/analysis/live/live-analysis-${targetInterface}-${Date.now()}`
-    analyseFromInterface(targetInterface)
+    fs.mkdirSync(path.dirname(projectPath), { recursive: true })
+    analyseFromInterface(targetInterface, filter)
   } else {
     analyseFileInProjectFolder(settings.pcapPath)
   }
@@ -35,18 +37,18 @@ try {
   process.exit(1)
 }
 
-function analyseFromInterface (targetInterface) {
+function analyseFromInterface (targetInterface, filter) {
   console.log('✓ Live analysis started')
   var emitter = new PacketEmitter()
   var activeMiners = createMiners(emitter, projectPath)
 
-  setUpAndRunLive(emitter, activeMiners, targetInterface)
+  setUpAndRunLive(emitter, activeMiners, targetInterface, filter)
 }
 
 function analyseFileInProjectFolder (projectPath) {
   console.log('✓ Offline analysis started')
   var emitter = new PacketEmitter()
-  var activeMiners = createMiners(emitter, projectPath)
+  var activeMiners = createMiners(emitter, projectPath)
 
   setUpAndRun(emitter, activeMiners, projectPath)
 }
@@ -89,7 +91,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
   try {
     var decodingTimer = new Date()
     emitter.startPcapSession(target)
-    console.log(`✓ Decoding has started...`)
+    console.log('✓ Decoding has started...')
   } catch (e) {
     console.error(e)
     process.exit(1)
@@ -100,7 +102,7 @@ async function setUpAndRun (emitter, activeMiners, target) {
   })
 }
 
-async function setUpAndRunLive (emitter, activeMiners, target) {
+async function setUpAndRunLive (emitter, activeMiners, target, filter) {
   // The NodeJS version used (10) does not support Promise.map
   var setupTimer = new Date()
   for (var miner of activeMiners) {
@@ -114,8 +116,8 @@ async function setUpAndRunLive (emitter, activeMiners, target) {
 
   try {
     var decodingTimer = new Date()
-    emitter.startLiveSession(target)
-    console.log(`✓ Decoding has started...`)
+    emitter.startLiveSession(target, filter)
+    console.log('✓ Decoding has started...')
 
     process.on('SIGTERM', () => {
       emitter.closeLiveSession()
@@ -145,10 +147,10 @@ async function finalizeAnalysis (decodingTimer, activeMiners) {
   var results = []
   var postParsingStart = new Date()
   for (var miner of activeMiners) {
-    let startTimer = new Date()
+    const startTimer = new Date()
     var result = await miner.postParsingAnalysis()
     results.push(result)
-    let duration = (new Date() - startTimer) / 10000
+    const duration = (new Date() - startTimer) / 10000
     console.log(`\t- (${duration}s) \t${miner.getName()}`)
   }
   var postParsingDuration = (new Date() - postParsingStart) / 1000 + 's'

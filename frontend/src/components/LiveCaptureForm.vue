@@ -15,6 +15,11 @@
     </md-field>
 
     <md-field>
+      <label>pcap filter</label>
+      <md-input v-model="filter" placeholder="Add a pcap-filter string to limit what's captured"/>
+    </md-field>
+
+    <md-field>
       <label>Name</label>
       <md-input v-model="fileName" placeholder="Give the file a name"></md-input>
     </md-field>
@@ -48,6 +53,7 @@ export default {
     targetInterface: null,
     fileName: null,
     fileDescription: null,
+    filter: '',
     showSnackbar: false,
     position: 'center',
     duration: 4000,
@@ -74,10 +80,6 @@ export default {
       }))
       if (res.status === 200) {
         this.availableInterfaces = res.data
-        console.log(res.data)
-        for (let i in res.data) {
-          console.log(i, res.data[i])
-        }
       }
     },
     clear () {
@@ -91,6 +93,7 @@ export default {
       formData.append('name', this.fileName)
       formData.append('description', this.fileDescription)
       formData.append('targetinterface', this.targetInterface)
+      formData.append('filter', this.filter)
 
       this.isLoading = true
       axios.request({
