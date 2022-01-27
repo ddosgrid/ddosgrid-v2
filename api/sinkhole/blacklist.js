@@ -1,5 +1,5 @@
-const ipRegex = require('./ipRegex');
-const fetch = require('node-fetch')
+import ipRegex from 'ip-regex';
+import fetch from 'node-fetch';
 
 const ipv4reg = ipRegex({exact: true, includeBoundaries: true});
 
@@ -36,7 +36,7 @@ const getRawBlacklistFromUrl = async (url) => {
     return getRawBlacklistFromText(testRes)
 };
 
-module.exports = {
+export default {
     sortBlacklist,
     getRawBlacklistFromUrl
 };

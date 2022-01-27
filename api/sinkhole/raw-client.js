@@ -1,7 +1,8 @@
-const udp = require('dgram');
-const dns2 = require('dns2');
-const { equal } = require('assert');
-const { debuglog } = require('util');
+import udp from "dgram";
+import dns2 from "dns2";
+import {equal} from "assert";
+import {debuglog} from "util";
+
 
 const debug = debuglog('dns2');
 
@@ -19,6 +20,6 @@ const resolvePacket = (query, dns, socketType='udp4', port=53) => {
     });
 };
 
-module.exports = {
+export default {
     resolvePacket
 };

@@ -1,7 +1,7 @@
-const dns = require('dns');
-const dns2 = require('dns2');
-const BL = require('./blacklist');
-const RawClient = require('./raw-client');
+import dns from "dns";
+import RawClient from "./raw-client.js";
+import BL from "./blacklist.js";
+import dns2 from "dns2";
 
 const { Packet } = dns2;
 
@@ -86,6 +86,6 @@ class Sinkhole {
     updateBlacklist = (bl) => {
         this.blacklist = BL.sortBlacklist(bl);
     }
-};
+}
 
-module.exports = {Sinkhole};
+export default Sinkhole;

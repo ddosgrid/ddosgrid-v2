@@ -8,7 +8,7 @@ import pcapFilterGen from './pcapFilterGenerator.js';
 import pcapAnalyser from './pcapAnalyser.js';
 import persistedAnalyses from './persistence.js';
 import fileImport from './pcapImporter.js';
-import Capturer from './capturer.js'
+import Capturer from './capturer.js';
 
 import dirname from 'ususdirname'
 const __dirname = dirname(import.meta.url)
@@ -30,6 +30,11 @@ router.put('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.post('/:id/analyse', protect, startAnalysis)
 router.post('/capture', protect, startCapture)
 router.post('/capture/:id/close', protect, closeCapture)
+router.get('/interfaces', protect, getInterfaces)
+
+async function getInterfaces (req, res) {
+
+}
 
 async function getAllAnalyses (req, res) {
     try {

@@ -1,9 +1,11 @@
-const fs = require('fs');
-const path = require("path");
-const dns = require('dns');
-const { networkInterfaces } = require('os');
-const Ajv = require("ajv");
+import fs from "fs";
+import path from "path";
+import dns from "dns";
+import {networkInterfaces} from "os";
+import Ajv from "ajv";
+import dirname from 'ususdirname'
 
+const __dirname = dirname()
 const ajv = new Ajv();
 
 const configSchema = {
@@ -88,9 +90,9 @@ function saveBlacklist(bl) {
     fs.writeFileSync(blacklistPath, JSON.stringify(bl));
 }
 
-module.exports = {
+export default {
     loadConfig,
     saveConfig,
     loadBlacklist,
     saveBlacklist
-}
+};

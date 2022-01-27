@@ -1,9 +1,9 @@
-const {Router} = require('express')
-const bodyParser = require('body-parser')
-const {protect} = require('../auth/index')
-const {Sinkhole} = require('./sinkhole')
-const config = require('./config')
-const blacklist = require("./blacklist");
+import {Router} from "express";
+import bodyParser from "body-parser";
+import {protect} from "../auth/index.js";
+import Sinkhole from "./sinkhole.js";
+import config from "./config.js";
+import blacklist from "./blacklist.js";
 
 let blacklistInterval = null
 let currentConfig = config.loadConfig()
@@ -146,8 +146,8 @@ function updateBlacklistInterval() {
         clearInterval(blacklistInterval)
     }
     if (currentBlacklist.mode === 'auto') {
-        blacklistInterval = setInterval(() => updateRemoteBlacklist(), 1000 * 60 * 60)
+        blacklistInterval = setInterval(() => updateRemoteBlacklist(), 1000 * 15)
     }
 }
 
-module.exports = router
+export default router;

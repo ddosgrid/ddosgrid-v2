@@ -1,6 +1,6 @@
-const child_process = require('child_process')
+import child_process from "child_process";
+import path from "path";
 const fork = child_process.fork
-const path = require('path')
 
 class Capturer {
     constructor() {
@@ -46,4 +46,4 @@ class Capturer {
 
 }
 
-module.exports = Capturer
+export default Capturer;
