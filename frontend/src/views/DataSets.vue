@@ -13,7 +13,7 @@
   </md-empty-state>
 
   <!-- Uploading datasets to DDoSDB/DDoSGrid -->
-  <md-dialog :md-active.sync="showFileUpload">
+  <md-dialog :md-active.sync="showFileUpload" class="import-dialog">
     <md-dialog-title>Upload a Data Set</md-dialog-title>
     <file-upload-form @done="closeUploadForm">
     </file-upload-form>
@@ -25,7 +25,7 @@
   </md-dialog>
 
   <!-- Importing datasets from DDoSDB -->
-  <md-dialog :md-active.sync="showLiveCapture">
+  <md-dialog :md-active.sync="showLiveCapture" class="import-dialog">>
     <md-dialog-title>Live Capture</md-dialog-title>
     <live-capture-form @done="closeImportForm">
     </live-capture-form>
@@ -37,7 +37,7 @@
   </md-dialog>
 
   <!-- Importing  -->
-  <md-dialog :md-active.sync="showFileImport">
+  <md-dialog :md-active.sync="showFileImport" class="import-dialog">
     <md-dialog-title>Import a Data Set</md-dialog-title>
     <file-import-form @done="closeImportForm">
     </file-import-form>
@@ -175,11 +175,6 @@ export default {
   margin-bottom: 10px;
 }
 
-.md-dialog {
-  width: 50%;
-  max-width: 768px;
-}
-
 #fab {
   position: fixed;
 }
@@ -188,5 +183,12 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+</style>
+
+<style>
+.import-dialog > .md-dialog-container {
+  width: 50%;
+  max-width: 768px;
 }
 </style>
