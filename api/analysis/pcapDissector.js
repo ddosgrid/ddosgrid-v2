@@ -1,6 +1,6 @@
-const child_process = require('child_process')
+import child_process from 'child_process';
 const spawn = child_process.spawn
-const path = require('path')
+import path from 'path';
 
 async function dissectAndUpload (pcapPath, ddosdbHost, token) {
   console.log('dissect start!', pcapPath)
@@ -31,4 +31,4 @@ async function dissectAndUpload (pcapPath, ddosdbHost, token) {
   })
 }
 
-module.exports = { dissectAndUpload }
+export default { dissectAndUpload };

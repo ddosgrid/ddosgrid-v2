@@ -1,6 +1,6 @@
-const child_process = require('child_process')
+import child_process from 'child_process';
 const spawn = child_process.spawn
-const path = require('path')
+import path from 'path';
 
 async function generateFilterAndUpload (projectPath, id, ddosdbHost, token) {
     console.log('converter start!', projectPath)
@@ -65,4 +65,4 @@ async function generate (projectPath, id) {
 
 }
 
-module.exports = { generateFilterAndUpload }
+export default { generateFilterAndUpload };

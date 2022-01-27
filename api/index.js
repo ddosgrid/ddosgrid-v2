@@ -1,14 +1,16 @@
-const path = require('path')
-const express = require('express')
-const passport = require('passport')
+import path from 'path';
+import express from 'express';
+import passport from 'passport';
 const app = express()
-const fileUpload = require('express-fileupload-sha256')
-const cookieSession = require('cookie-session')
+import fileUpload from 'express-fileupload-sha256';
+import cookieSession from 'cookie-session';
+import rootRoutes from './routes/root.js';
+import analysisRoutes from './analysis/index.js';
+import { router as authRoutes } from './auth/index.js';
+import sinkholeRoutes from './sinkhole/index.js';
 
-const rootRoutes = require('./routes/root')
-const analysisRoutes = require('./analysis/index')
-const authRoutes = require('./auth/index').router
-const sinkholeRoutes = require('./sinkhole/index')
+import dirname from 'ususdirname'
+const __dirname = dirname()
 
 const tempDir = path.resolve(__dirname, './tmp/')
 const port = process.env.PORT || 3000

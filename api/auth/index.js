@@ -1,10 +1,14 @@
-const path = require('path')
-const passport = require('passport')
-const fetch = require('node-fetch')
-const OAuth2Strategy = require('passport-oauth').OAuth2Strategy
-const Users = require('./persistence')
+import path from 'path';
+import passport from 'passport';
+import fetch from 'node-fetch';
+import { OAuth2Strategy } from 'passport-oauth';
+import { Router } from 'express';
+import Users from './persistence.js';
+
+import dirname from 'ususdirname'
+const __dirname = dirname(import.meta.url)
+
 const userDB = path.resolve(__dirname, '../data/users.db')
-const { Router } = require('express')
 const router = Router()
 var users = new Users(userDB)
 
@@ -65,4 +69,4 @@ passport.use('provider', new OAuth2Strategy({
   }
 ));
 
-module.exports = { router, protect }
+export { router, protect };
