@@ -25,7 +25,7 @@
   </md-dialog>
 
   <!-- Importing datasets from DDoSDB -->
-  <md-dialog :md-active.sync="showLiveCapture" class="import-dialog">>
+  <md-dialog :md-active.sync="showLiveCapture" class="import-dialog">
     <md-dialog-title>Live Capture</md-dialog-title>
     <live-capture-form @done="closeImportForm">
     </live-capture-form>

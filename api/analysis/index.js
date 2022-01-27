@@ -9,6 +9,7 @@ import pcapAnalyser from './pcapAnalyser.js';
 import persistedAnalyses from './persistence.js';
 import fileImport from './pcapImporter.js';
 import Capturer from './capturer.js';
+import os from 'os';
 
 import dirname from 'ususdirname'
 const __dirname = dirname(import.meta.url)
@@ -21,6 +22,7 @@ var liveCapture = new Capturer()
 
 import { protect } from '../auth/index.js';
 
+router.get('/interfaces', protect, getInterfaces)
 router.get('', protect, getAllAnalyses)
 router.get('/:id', protect, getAnalysisById)
 router.delete('/:id', protect, deleteAnalysisById)
@@ -30,10 +32,18 @@ router.put('/import/:dataset', protect, bodyParser.json(), handleFileImport)
 router.post('/:id/analyse', protect, startAnalysis)
 router.post('/capture', protect, startCapture)
 router.post('/capture/:id/close', protect, closeCapture)
-router.get('/interfaces', protect, getInterfaces)
+
+const getInterfacesWithIPv4 = () => {
+  let res = {};
+  const interfaces = os.networkInterfaces();
+  for (let iface in interfaces) {
+    res[iface] = interfaces[iface].find(i => i.family === 'IPv4').address;
+  }
+  return res;
+}
 
 async function getInterfaces (req, res) {
-
+  return res.json(getInterfacesWithIPv4());
 }
 
 async function getAllAnalyses (req, res) {

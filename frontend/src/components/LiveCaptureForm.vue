@@ -2,7 +2,16 @@
   <div id="form">
     <md-field>
       <label>Network Interface</label>
-      <md-input v-model="targetInterface" placeholder="Define from which interface to capture"></md-input>
+<!--      <md-input v-model="targetInterface" placeholder="Define from which interface to capture"></md-input>-->
+      <md-select v-model="targetInterface" name="interface">
+        <md-option
+          v-for="i in Object.keys(this.availableInterfaces)"
+          :key="i"
+          :value="i"
+        >
+          {{`${i} (${availableInterfaces[i]})`}}
+        </md-option>
+      </md-select>
     </md-field>
 
     <md-field>
@@ -35,6 +44,7 @@ import axios from 'axios'
 
 export default {
   data: () => ({
+    availableInterfaces: {},
     targetInterface: null,
     fileName: null,
     fileDescription: null,
@@ -49,12 +59,27 @@ export default {
     fileSize: 0,
     uploadProgress: 0
   }),
+  mounted () {
+    this.loadInterfaces()
+  },
   computed: {
     inputDefined: function () {
       return this.targetInterface && this.fileName && this.fileDescription
     }
   },
   methods: {
+    async loadInterfaces () {
+      let res = (await axios.request({
+        url: `${apibaseurl}/analysis/interfaces`, withCredentials: 'include'
+      }))
+      if (res.status === 200) {
+        this.availableInterfaces = res.data
+        console.log(res.data)
+        for (let i in res.data) {
+          console.log(i, res.data[i])
+        }
+      }
+    },
     clear () {
       this.file = null
       this.fileName = null

@@ -146,7 +146,7 @@ function updateBlacklistInterval() {
         clearInterval(blacklistInterval)
     }
     if (currentBlacklist.mode === 'auto') {
-        blacklistInterval = setInterval(() => updateRemoteBlacklist(), 1000 * 15)
+        blacklistInterval = setInterval(() => updateRemoteBlacklist(), 1000 * 60 * 60)
     }
 }
 
