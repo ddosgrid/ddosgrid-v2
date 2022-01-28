@@ -59,23 +59,23 @@ class PacketEmitter extends EventEmitter {
     // Store the current packet 'globally' so that it can be used in other events, e.g. 'completed'
 
     this.currentPcapPacket = decodedPacket
-    if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET') {
+    if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET' || this.currentPcapPacket.link_type == "LINKTYPE_LINUX_SLL") {
       var ethernetPacket = decodedPacket.payload
-      this.inspectEthernetPacket(ethernetPacket)
+      this.inspectLinkPacket(ethernetPacket, decodedPacket.linktype)
     } else {
       console.warn('DDoSGrid only supports Ethernet on L1!')
-      var buf = pcapPacket.buf.slice(4)
-      var i = require('pcap/decode/ipv4')
-      var p = new i()
-      var b = p.decode(buf, 0)
       console.warn(`Dropping packet with link_type: ${this.currentPcapPacket.link_type}`)
     }
   }
 
-  inspectEthernetPacket (ethernetPacket) {
-    this.emit('ethernetPacket', ethernetPacket)
+  inspectLinkPacket (linkPacket, linkType) {
+    if (linkType === 'LINKTYPE_ETHERNET') {
+      this.emit('ethernetPacket', linkPacket)
+    } else if (linkType === 'LINKTYPE_LINUX_SLL') {
+      this.emit('sllPacket', linkPacket)
+    }
 
-    var etherType = ethernetPacket.ethertype
+    var etherType = linkPacket.ethertype
 
     var etherTypeARP = 2054
     var etherTypeIPv4 = 2048
@@ -83,10 +83,10 @@ class PacketEmitter extends EventEmitter {
     var etherTypeNoPayload = 0
 
     if (etherType === etherTypeARP) {
-      var arpPacket = ethernetPacket.payload
+      var arpPacket = linkPacket.payload
       this.inspectARPPacket(arpPacket)
     } else if (etherType === etherTypeIPv4 || etherType === etherTypeIPv6) {
-      var ipPacket = ethernetPacket.payload
+      var ipPacket = linkPacket.payload
       this.inspectIPPacket(ipPacket)
     } else if (etherType === etherTypeNoPayload) {
       // Don't emit anything more that the ethernet packet since there is not payload!
