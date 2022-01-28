@@ -105,7 +105,8 @@ async function setUpAndRun (emitter, activeMiners, target, attackType) {
       // This will then send the output of the miners over IPC to the master process
       process.send(output)
     } else {
-      console.log(output)
+      var jsonPretty = JSON.stringify(JSON.parse(output),null,2)
+      console.log(jsonPretty)
     }
   })
 }
