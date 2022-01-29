@@ -5,15 +5,15 @@ const ipv4reg = ipRegex({exact: true, includeBoundaries: true});
 
 const sortBlacklist = (bl) => {
     const result = {
-        domains: [],
-        addresses: []
+        domains: new Set(),
+        addresses: new Set()
     };
 
     for (let e of bl) {
         if (ipv4reg.test(e)) {
-            result.addresses.push(e);
+            result.addresses.add(e);
         } else {
-            result.domains.push(e);
+            result.domains.add(e);
         }
     }
 

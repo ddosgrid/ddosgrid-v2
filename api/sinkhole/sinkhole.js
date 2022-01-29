@@ -43,7 +43,7 @@ class Sinkhole {
     handleDnsRequest = async (request, send, rinfo) => {
         let response;
         // requested domain is in the blacklist
-        if (this.blacklist.domains.includes(request.questions[0].name)) {
+        if (this.blacklist.domains.has(request.questions[0].name)) {
             response = this.createSinkholeResponse(request);
         }
         else {
@@ -51,8 +51,8 @@ class Sinkhole {
             // the domain resolves to a domain that is in the blacklist (e.g. via CNAME)
             // or the resolved to IP is in the blacklist
             for (let a of response.answers) {
-                if (this.blacklist.domains.includes(a.name) ||
-                    (a.address && this.blacklist.addresses.includes(a.address))) {
+                if (this.blacklist.domains.has(a.name) ||
+                    (a.address && this.blacklist.addresses.has(a.address))) {
                     response = this.createSinkholeResponse(request, send);
                     break;
                 }
