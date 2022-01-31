@@ -1,10 +1,12 @@
 const { socketBroadcaster } = require('../../api/live-analysis/SocketHandler')
+const fs = require('fs')
 
 class ByteCountLiveMiner {
   constructor (dataBroadcaster) {
     this.dataBroadcaster = dataBroadcaster
     this.aggregatedData = null
     this.timer = null
+    this.dumpCounter = 0
     this.setUp()
     setInterval(this.emitAggregatedData.bind(this), 3000)
   }
@@ -14,7 +16,14 @@ class ByteCountLiveMiner {
     if (this.aggregatedData) {
       socketBroadcaster.emit('newData', this.aggregatedData)
       console.log(this.aggregatedData)
-      // TODO: dump data for evaluation
+      const fileName = './evaluation-data/aggregatedByteCountData_' + this.dumpCounter.toString() + '.json'
+      fs.writeFile(fileName, JSON.stringify(this.aggregatedData), (err) => {
+        if (err) {
+          throw err
+        }
+        console.log('aggregated data saved to file')
+        this.dumpCounter += 1
+      })
     } else {
       console.log('no aggregated data')
     }
