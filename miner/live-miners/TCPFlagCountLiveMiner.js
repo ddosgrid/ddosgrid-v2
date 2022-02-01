@@ -1,26 +1,22 @@
-const { socketBroadcaster } = require('../../api/live-analysis/SocketHandler')
+const AbstractLiveMiner = require('./AbstractLiveMiner')
 
-class TCPFlagCountLiveMiner {
+class TCPFlagCountLiveMiner extends AbstractLiveMiner {
+  // eslint-disable-next-line no-useless-constructor
   constructor (dataBroadcaster) {
-    this.dataBroadcaster = dataBroadcaster
-    this.setUp()
+    super(dataBroadcaster)
+    this.logFileBaseName = 'TCPFlagMiner'
   }
 
-  setUp () {
-    console.log('miner: setup')
-    this.dataBroadcaster.on('data', (data) => { this.mining(data) })
-  }
-
-  mining (data) {
+  miningNetFlowPacket (data) {
     console.log('mining total number TCP flags')
+    const timeStamp = Date.now()
     const flows = data.flows
-    let totInPackets = 0
+    let totInFlags = 0
     for (const i in flows) {
-      totInPackets += flows[i].tcp_flags
+      totInFlags += flows[i].tcp_flags
     }
-    const res = { miner: 'TCPFlagCount', total_in_packets: totInPackets, timestamp: Date.now() }
-    console.log(res)
-    socketBroadcaster.emit('newData', res)
+    const res = { miner: 'TCPFlagCount', aggData: totInFlags, timestampBeforeMiningFirstFlowPacket: timeStamp }
+    this.aggregateMinedData(res)
   }
 }
 
