@@ -16,7 +16,8 @@ const {
   ICMPMessages,
   VLANDomains,
   BGPMessages,
-  MachineLearningFeatureExtraction
+  MachineLearningFeatureExtraction,
+  MachineLearningFeatureExtractionDoH
 } = require('./exports')
 const colors = require('colors')
 
@@ -50,7 +51,8 @@ function analyseFileInProjectFolder (projectPath, attackType) {
     HTTPEndpoints,
     BrowserAndOSAnalyzer,
     DeviceAnalyzer,
-    MachineLearningFeatureExtraction
+    MachineLearningFeatureExtraction,
+    MachineLearningFeatureExtractionDoH
   ]
 
   var activeMiners = miners.map(Miner => new Miner(emitter, projectPath, attackType))
