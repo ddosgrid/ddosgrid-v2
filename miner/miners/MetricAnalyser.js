@@ -26,6 +26,7 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
       nrOfDstPorts: 0,
       nrOfUDPPackets: 0,
       nrOfTCPPackets: 0,
+      nrOfTCPFlows: 0,
       udpToTcpRatio: 0,
       nrOfHTTP: 0,
       nrOfICMP: 0
@@ -46,6 +47,8 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
     this.pcapParser.on('transportPacket', this.countPorts.bind(this))
     this.pcapParser.on('udpPacket', this.countUdpPackets.bind(this))
     this.pcapParser.on('tcpPacket', this.counttcpPackets.bind(this))
+    // Use event tcpSessionEnd to listen for end of a TCP session
+    this.pcapParser.on('tcpSessionStart', this.counttcpSessions.bind(this))
 
     this.pcapParser.on('httpPacket', this.countHTTP.bind(this))
     this.pcapParser.on('icmpPacket', this.countICMP.bind(this))
@@ -87,6 +90,10 @@ class MetricAnalyser extends AbstractPCAPAnalyser {
 
   counttcpPackets () {
     this.output.nrOfTCPPackets++
+  }
+
+  counttcpSessions () {
+    this.output.nrOfTCPFlows++
   }
 
   countPorts (transportPacket) {
