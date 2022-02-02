@@ -1,0 +1,7 @@
+softflowd
+=========
+sudo softflowd -d -i lo0 -n 127.0.0.1:4001
+
+tcpreplay
+=========
+sudo tcpreplay -i lo0 bigFlows.pcap
