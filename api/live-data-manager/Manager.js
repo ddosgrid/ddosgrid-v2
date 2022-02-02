@@ -28,6 +28,7 @@ class Manager {
     const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster)
     const TCPFlagMiner = new TCPFlagCountLiveMiner(this.dataBroadcaster)
     this.miners = [byteMiner, packetMiner, TCPFlagMiner]
+    // this.miners = [packetMiner]
   }
 
   // refer to javascript event loop feature
@@ -40,5 +41,8 @@ class Manager {
     this.collectorConnector.stop()
   }
 }
+
+// const manager = new Manager()
+// manager.establishConnection(4001)
 
 module.exports = Manager
