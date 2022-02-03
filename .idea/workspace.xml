@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/miner/exports.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/exports.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/miner/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/miner/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/miner/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/miner/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/miner/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,20 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3485">
-              <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4488">
-              <caret line="274" column="20" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="20" />
+            <state relative-caret-position="646">
+              <caret line="38" column="116" selection-start-line="38" selection-start-column="116" selection-end-line="38" selection-end-column="116" />
             </state>
           </provider>
         </entry>
@@ -41,16 +29,16 @@
         <entry file="file://$PROJECT_DIR$/miner/miners/AbstractPCAPAnalyser.js">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
+              <caret column="31" selection-start-column="31" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-238">
-              <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+            <state relative-caret-position="918">
+              <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -58,17 +46,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/exports.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="18" column="91" lean-forward="true" selection-start-line="18" selection-start-column="91" selection-end-line="18" selection-end-column="91" />
+            <state relative-caret-position="306">
+              <caret line="18" column="91" selection-start-line="18" selection-start-column="91" selection-end-line="18" selection-end-column="91" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-595" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -82,6 +68,11 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>addLast</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -90,10 +81,10 @@
       <list>
         <option value="$PROJECT_DIR$/miner/node_modules/pcap/decode/ipv4.js" />
         <option value="$PROJECT_DIR$/miner/node_modules/pcap/decode/ipv6headers/header_extension.js" />
-        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js" />
         <option value="$PROJECT_DIR$/miner/exports.js" />
-        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
         <option value="$PROJECT_DIR$/miner/index.js" />
+        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js" />
+        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
       </list>
     </option>
   </component>
@@ -104,17 +95,17 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="1913" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -143,6 +134,19 @@
               <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
               <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
               <item name="miner" type="462c0819:PsiDirectoryNode" />
+              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
+              <item name="miner" type="462c0819:PsiDirectoryNode" />
+              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+              <item name="pcap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
+              <item name="miner" type="462c0819:PsiDirectoryNode" />
               <item name="parser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -154,6 +158,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -195,7 +200,7 @@
       </EXTENSION>
       <method v="2" />
     </configuration>
-    <configuration name="asdf" type="NodeJSConfigurationType" temporary="true" application-parameters="pcap_path=/mnt/c/users/david/documents/uni/bachelorarbeit/dataset_test/doh_brw_mal2.pcap" path-to-node="wsl://UBUNTU@/usr/bin/node" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/miner">
+    <configuration name="asdf" type="NodeJSConfigurationType" temporary="true" application-parameters="pcap_path=/mnt/c/users/david/documents/uni/bachelorarbeit/dataset_test/doh_brw_mal.pcap attack_type=1" path-to-node="wsl://UBUNTU@/usr/bin/node" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/miner">
       <method v="2" />
     </configuration>
     <configuration name="index.js" type="NodeJSConfigurationType" application-parameters="pcap_path=C:\Users\David\Documents\Uni\Bachelorarbeit\Dataset\MaliciousDoH-Pcaps\MaliciousDoH-dns2tcp\001-600\dns2tcp_tunnel_1111_doh1_2020-03-31T22_39_36.692557.pcap" nameIsGenerated="true" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/miner">
@@ -239,12 +244,14 @@
       <workItem from="1643366239540" duration="14130000" />
       <workItem from="1643636352714" duration="195000" />
       <workItem from="1643711423279" duration="7717000" />
-      <workItem from="1643719232979" duration="2467000" />
+      <workItem from="1643719232979" duration="14994000" />
+      <workItem from="1643801303788" duration="3482000" />
+      <workItem from="1643898103672" duration="327000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33627000" />
+    <option name="totallyTimeSpent" value="49963000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -256,14 +263,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17228661" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11327714" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49947312" visible="true" weight="0.35005575" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.2006689" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.30769232" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -271,7 +279,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49947312" weight="0.17948718" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50052685" side_tool="true" weight="0.32887402" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5015806" side_tool="true" weight="0.36008918" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -344,50 +352,48 @@
     <entry file="file://$PROJECT_DIR$/miner/.eslintrc.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+        <state relative-caret-position="357">
+          <caret line="49" column="104" selection-start-line="49" selection-start-column="104" selection-end-line="49" selection-end-column="104" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-595" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3485">
-          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/exports.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="91" lean-forward="true" selection-start-line="18" selection-start-column="91" selection-end-line="18" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4488">
-          <caret line="274" column="20" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="20" />
+        <state relative-caret-position="646">
+          <caret line="38" column="116" selection-start-line="38" selection-start-column="116" selection-end-line="38" selection-end-column="116" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/AbstractPCAPAnalyser.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-238">
-          <caret line="54" column="39" lean-forward="true" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+        <state relative-caret-position="918">
+          <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/exports.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="91" selection-start-line="18" selection-start-column="91" selection-end-line="18" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
         </state>
       </provider>
     </entry>
