@@ -41,8 +41,8 @@ export default new Vuex.Store({
             newData.datasets[0].data.shift()
             Vue.set(this.state.socketData.ByteCount.datasets, newData)
           }
-          newData.labels.push(getTime(data.timestamp))
-          newData.datasets[0].data.push(data.total_in_bytes)
+          newData.labels.push(getTime(data.timestampBeforeMiningFirstFlowPacket))
+          newData.datasets[0].data.push(data.aggData)
           Object.assign(state.socketData.ByteCount, newData)
           break
         case 'PacketCount':
@@ -52,8 +52,8 @@ export default new Vuex.Store({
             newData.datasets[0].data.shift()
             Vue.set(this.state.socketData.PacketCount.datasets, newData)
           }
-          newData.labels.push(getTime(data.timestamp))
-          newData.datasets[0].data.push(data.total_in_packets)
+          newData.labels.push(getTime(data.timestampBeforeMiningFirstFlowPacket))
+          newData.datasets[0].data.push(data.aggData)
           Object.assign(state.socketData.PacketCount, newData)
           break
         case 'TCPFlagCount':
@@ -63,8 +63,8 @@ export default new Vuex.Store({
             newData.datasets[0].data.shift()
             Vue.set(this.state.socketData.TCPFlagCount.datasets, newData)
           }
-          newData.labels.push(getTime(data.timestamp))
-          newData.datasets[0].data.push(data.total_in_packets)
+          newData.labels.push(getTime(data.timestampBeforeMiningFirstFlowPacket))
+          newData.datasets[0].data.push(data.aggData)
           Object.assign(state.socketData.TCPFlagCount, newData)
           break
         default:
