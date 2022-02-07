@@ -4,6 +4,7 @@
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miner/parser/PcapParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/parser/PcapParser.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,58 +20,34 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="38" column="116" selection-start-line="38" selection-start-column="116" selection-end-line="38" selection-end-column="116" />
+            <state relative-caret-position="323">
+              <caret line="57" column="30" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/miners/AbstractPCAPAnalyser.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="31" selection-start-column="31" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/exports.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="91" selection-start-line="18" selection-start-column="91" selection-end-line="18" selection-end-column="91" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+            <state relative-caret-position="-720">
+              <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>addLast</find>
+      <find>tcp</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -84,6 +61,8 @@
         <option value="$PROJECT_DIR$/miner/exports.js" />
         <option value="$PROJECT_DIR$/miner/index.js" />
         <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js" />
+        <option value="$PROJECT_DIR$/miner/parser/PcapParser.js" />
+        <option value="$PROJECT_DIR$/miner/parser/TempParser.js" />
         <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
       </list>
     </option>
@@ -96,10 +75,9 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="1913" />
+    <option name="width" value="854" />
+    <option name="height" value="1017" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -129,19 +107,6 @@
               <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
               <item name="miner" type="462c0819:PsiDirectoryNode" />
               <item name="miners" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
-              <item name="miner" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
-              <item name="miner" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="pcap" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
@@ -246,12 +211,13 @@
       <workItem from="1643711423279" duration="7717000" />
       <workItem from="1643719232979" duration="14994000" />
       <workItem from="1643801303788" duration="3482000" />
-      <workItem from="1643898103672" duration="327000" />
+      <workItem from="1643898103672" duration="1161000" />
+      <workItem from="1644238444923" duration="2927000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49963000" />
+    <option name="totallyTimeSpent" value="53724000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -263,15 +229,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11327714" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15741858" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.2006689" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.21337947" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.30769232" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -352,20 +318,6 @@
     <entry file="file://$PROJECT_DIR$/miner/.eslintrc.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="49" column="104" selection-start-line="49" selection-start-column="104" selection-end-line="49" selection-end-column="104" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="116" selection-start-line="38" selection-start-column="116" selection-end-line="38" selection-end-column="116" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/AbstractPCAPAnalyser.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -373,12 +325,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/index.js">
+    <entry file="file://$PROJECT_DIR$/miner/parser/TempParser.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+        <state relative-caret-position="-2962">
+          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtraction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="49" column="104" selection-start-line="49" selection-start-column="104" selection-end-line="49" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/exports.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -387,13 +349,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/cli/CLI.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/miner/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="691">
+          <caret line="54" column="39" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="39" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+        <state relative-caret-position="-720">
+          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="57" column="30" selection-start-line="57" selection-start-column="30" selection-end-line="57" selection-end-column="30" />
         </state>
       </provider>
     </entry>

@@ -21,6 +21,7 @@ class PacketEmitter extends EventEmitter {
   }
 
   startPcapSession (pcapPath, attackType = 0) {
+    this.tcp_tracker = new pcap.TCPTracker()
     this.pcap_session = pcap.createOfflineSession(pcapPath, '')
     this.attackType = attackType
     this.pcap_session.on('packet', (packet) => {
@@ -29,6 +30,12 @@ class PacketEmitter extends EventEmitter {
     this.pcap_session.on('complete', () => {
       this.emit('lastPcapPacket', this.currentPcapPacket)
       this.emit('complete')
+    })
+    this.tcp_tracker.on('session', (session) => {
+      this.emit('tcpSessionStart', session)
+      session.on('end', (session) => {
+        this.emit('tcpSessionEnd', session)
+      })
     })
   }
 
@@ -39,6 +46,7 @@ class PacketEmitter extends EventEmitter {
 
     try {
       var decodedPacket = pcap.decode(pcapPacket)
+      this.tcp_tracker.track_packet(decodedPacket)
     } catch (e) {
       if (verbose) {
         console.log('Unable to decode packet', e.message)

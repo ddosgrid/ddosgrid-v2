@@ -7,11 +7,15 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     this.result = [];
     this.totalPacketLength = 0;
     this.counter = 0;
+    this.output = {
+      nrOfTCPFlows: 0
+    }
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
   async setUp() {
     this.pcapParser.on('pcapPacket', this.handlePcap.bind(this));
+    this.pcapParser.on('tcpSessionStart', this.counttcpSessions.bind(this));
     this.pcapParser.on('complete', this.addLastPacketData.bind(this))
   }
 
@@ -46,25 +50,30 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       packet_number: packetNumber,
       total_packet_length: totalPacketLength
 
-    }
+    };
     if (newPacketMiningData.perc_icmp_echo_reply > 0){}
     return newPacketMiningData
   }
 
+  // Checking for TCP Sessions
+  counttcpSessions () {
+    this.output.nrOfTCPFlows++
+  }
+
   async postParsingAnalysis() {
     var resultFiles = [];
-    console.log(this.totalPacketLength)
+    console.log(this.output.nrOfTCPFlows);
 
     // Output for ML classification
-    var fileName = `${this.baseOutPath}-ML-features-DoH.csv`
-    var fileContent = this.result
+    var fileName = `${this.baseOutPath}-ML-features-DoH.csv`;
+    var fileContent = this.result;
     var summary = {
       fileName: fileName,
       attackCategory: 'Malicious DoH Traffic Classification',
       analysisName: 'DoH Traffic Analysis',
       supportedDiagrams: []
-    }
-    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary))
+    };
+    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary));
 
     return resultFiles
   }
