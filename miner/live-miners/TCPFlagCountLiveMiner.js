@@ -2,8 +2,8 @@ const AbstractLiveMiner = require('./AbstractLiveMiner')
 
 class TCPFlagCountLiveMiner extends AbstractLiveMiner {
   // eslint-disable-next-line no-useless-constructor
-  constructor (dataBroadcaster) {
-    super(dataBroadcaster)
+  constructor (dataBroadcaster, type) {
+    super(dataBroadcaster, type)
     this.logFileBaseName = 'TCPFlagMiner'
   }
 

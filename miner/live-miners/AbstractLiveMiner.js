@@ -2,8 +2,9 @@ const { socketBroadcaster } = require('../../api/live-analysis/SocketHandler')
 const fs = require('fs')
 
 class AbstractLiveMiner {
-  constructor (dataBroadcaster) {
+  constructor (dataBroadcaster, type) {
     this.dataBroadcaster = dataBroadcaster
+    this.type = type
     this.aggregatedData = null
     this.timer = null
     this.dumpCounter = 0

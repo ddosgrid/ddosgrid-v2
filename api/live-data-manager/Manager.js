@@ -24,9 +24,9 @@ class Manager {
   }
 
   setupMiners() {
-    const byteMiner = new ByteCountLiveMiner(this.dataBroadcaster)
-    const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster)
-    const TCPFlagMiner = new TCPFlagCountLiveMiner(this.dataBroadcaster)
+    const byteMiner = new ByteCountLiveMiner(this.dataBroadcaster, 'ByteCount')
+    const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster, 'PacketCount')
+    const TCPFlagMiner = new TCPFlagCountLiveMiner(this.dataBroadcaster, 'TCPFlagCount')
     this.miners = [byteMiner, packetMiner, TCPFlagMiner]
     // this.miners = [packetMiner]
   }
