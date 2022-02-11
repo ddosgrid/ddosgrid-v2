@@ -10,7 +10,7 @@ class AbstractLiveMiner {
     this.dumpCounter = 0
     this.logFileBaseName = null
     this.setUp()
-    setInterval(this.emitAggregatedData.bind(this), 3000)
+    setInterval(this.emitAggregatedData.bind(this), 1000)
   }
 
   setUp () {
@@ -40,6 +40,7 @@ class AbstractLiveMiner {
       this.aggregatedData = null // reset to null if data is sent
     } else {
       console.log('no aggregated data')
+      socketBroadcaster.emit('newData', { miner: this.type, aggData: 0, timestampBeforeMiningFirstFlowPacket: Date.now() })
     }
   }
 
