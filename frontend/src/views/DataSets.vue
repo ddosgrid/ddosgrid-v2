@@ -78,6 +78,11 @@
         <md-tooltip md-direction="top" v-else>Demo Mode: Import disabled</md-tooltip>
         <md-icon>cloud_download</md-icon>
       </md-button>
+      <md-button class="md-icon-button" @click="showLiveConnectionForm = true" :disabled="demoMode" v-if="connections.length === 0">
+        <md-tooltip md-direction="top" v-if="!demoMode">Add a live connection</md-tooltip>
+        <md-tooltip md-direction="top" v-else>Demo Mode: Live connections disabled</md-tooltip>
+        <md-icon>add_link</md-icon>
+      </md-button>
     </md-speed-dial-content>
   </md-speed-dial>
 
