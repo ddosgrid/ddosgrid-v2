@@ -48,19 +48,18 @@ export default {
   mounted: function () {
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'SOCKET_newData') {
-        this.$refs.linechart.update()
+        const interval = setInterval(() => {
+          if (this.$refs.linechart) {
+            this.$refs.linechart.update()
+            clearInterval(interval)
+          }
+        }, 100)
       }
     })
   },
   computed: {
     socketData () {
       return this.$store.state.socketData
-    }
-  },
-  methods: {},
-  watch: {
-    socketData () {
-      this.$refs.linechart.update()
     }
   }
 }
