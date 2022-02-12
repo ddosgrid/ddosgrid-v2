@@ -10,7 +10,7 @@ class AbstractLiveMiner {
     this.dumpCounter = 0
     this.logFileBaseName = null
     this.setUp()
-    setInterval(this.emitAggregatedData.bind(this), 1000)
+    this.loop = setInterval(this.emitAggregatedData.bind(this), 1000)
   }
 
   setUp () {
@@ -56,6 +56,12 @@ class AbstractLiveMiner {
 
   miningNetFlowPacket (data) {
     throw Error("Method 'miner' is not implemented")
+  }
+
+  stopMining () {
+    console.log('stop mining')
+    this.dataBroadcaster.removeAllListeners()
+    clearInterval(this.loop)
   }
 }
 

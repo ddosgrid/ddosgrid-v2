@@ -39,6 +39,7 @@ class Manager {
 
   tearDown() {
     this.collectorConnector.stop()
+    this.miners.forEach(miner => miner.stopMining())
   }
 }
 
