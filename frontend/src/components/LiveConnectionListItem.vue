@@ -17,6 +17,7 @@
       <md-card-expand>
         <md-card-actions md-alignment="space-between">
           <div>
+            <md-button class="md-accent" to="/liveanalysis">Open</md-button>
             <md-button @click="deleteConnection(connection.port)">Delete</md-button>
           </div>
         </md-card-actions>
