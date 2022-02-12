@@ -5,10 +5,11 @@
       md-label="No live connections were added"
       md-description="You can add a tile for each dataset that you have uploaded on the datasets page"
       class="empty-notification"
-      v-if="live_tiles.length === 0">
+      v-if="connections.length === 0">
       <md-button class="md-primary md-raised" to="/datasets">Add a live connection</md-button>
     </md-empty-state>
     <grid-layout
+      v-if="connections.length > 0"
       @layout-updated="layoutUpdatedEvent"
       :layout="layout"
       :is-draggable="false"
@@ -42,6 +43,7 @@
 
 import VueGridLayout from 'vue-grid-layout'
 import LiveVisualizationTile from '../components/LiveVisualizationTile'
+import { apibaseurl } from '@/config/variables'
 
 export default {
   name: 'LiveAnalysis',
@@ -52,6 +54,9 @@ export default {
       hasLoaded: false,
       layout: []
     }
+  },
+  mounted: function () {
+    this.fetchConnections()
   },
   components: {
     GridLayout: VueGridLayout.GridLayout,
@@ -69,6 +74,15 @@ export default {
     layoutUpdatedEvent: function (newLayout) {
       const toBeCommited = JSON.parse(JSON.stringify(newLayout))
       this.$store.commit('setLiveTiles', toBeCommited)
+    },
+    fetchConnections: async function fetchConnections () {
+      try {
+        const res = await fetch(`${apibaseurl}/live-analysis/connection`, { credentials: 'include' })
+        this.connections = await res.json()
+        this.hasLoaded = true
+      } catch (e) {
+        console.warn(e)
+      }
     }
   },
   created: function () {
