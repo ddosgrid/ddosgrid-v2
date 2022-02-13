@@ -20,7 +20,7 @@ router.get('', protect, getSinkholeStatus)
 router.get('/config', protect, getSinkholeConfig)
 router.post('/config', protect, bodyParser.json(), setSinkholeConfig)
 router.get('/blacklist', protect, getSinkholeBlacklist)
-router.post('/blacklist', protect, bodyParser.json(), setSinkholeBlacklist)
+router.post('/blacklist', protect, bodyParser.json({limit: '500mb'}), setSinkholeBlacklist)
 // note: this could be misused for SSRF, thus it's also protected
 // (but is still vulnerable against attacks by authenticated users)
 router.post('/blacklist/test-url', protect, bodyParser.json(), testBlacklistUrl)
