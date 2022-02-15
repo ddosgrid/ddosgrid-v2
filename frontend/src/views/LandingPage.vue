@@ -72,6 +72,20 @@
           </md-card-content>
         </md-card>
       </div>
+      <div class="dashboards about-item slidefromright">
+        <md-card>
+          <md-card-header>
+            <div class="md-title">Visualize your live traffic</div>
+          </md-card-header>
+          <md-card-content>
+            <p class="section-text">
+              Live traffic can be visualized and analyzed in real time by connecting a NetFlow collector. Different Live Miners extract valuable information from the captured live traffic. The visualizations allow you to observe your network, recognize unusual patterns and take measures accordingly.
+              When adding a live connection on the data sources page, specify a port where your NetFlow Collector is exporting the collected flows. Once connected, you will be able to see your visualized data on the live analysis page.
+            </p>
+            <div style="clear: both"></div>
+          </md-card-content>
+        </md-card>
+      </div>
       <section class="dev about-item slidefromleft">
         <md-card>
             <md-card-header>
