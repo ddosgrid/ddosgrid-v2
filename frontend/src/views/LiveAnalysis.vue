@@ -2,8 +2,8 @@
   <div class="live-analysis">
     <md-empty-state
       md-icon="grid_on"
-      md-label="No live connections were added"
-      md-description="You can add a tile for each dataset that you have uploaded on the datasets page"
+      md-label="No live connection was added"
+      md-description="You can add a live connection for a specified port on the data sources page"
       class="empty-notification"
       v-if="connections.length === 0">
       <md-button class="md-primary md-raised" to="/datasets">Add a live connection</md-button>

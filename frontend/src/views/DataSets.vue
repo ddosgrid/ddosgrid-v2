@@ -6,8 +6,8 @@
 
   <md-empty-state
     md-icon="layers_clear"
-    md-label="No datasources added"
-    md-description="You can add a datasource by clicking the + button in the bottom right corner"
+    md-label="No data sources added"
+    md-description="You can add a data source by clicking the + button in the bottom right corner"
     v-if="datasets.length === 0 && connections.length === 0 && hasLoaded"
     class="centered">
     <md-button class="md-primary md-raised" @click="showFileUpload = true" :disabled="demoMode">Upload a dataset</md-button>
