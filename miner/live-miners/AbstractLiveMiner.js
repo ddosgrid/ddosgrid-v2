@@ -32,11 +32,12 @@ class AbstractLiveMiner {
       const fileName = './evaluation-data/' + this.logFileBaseName + '_' + this.dumpCounter.toString() + '.json'
       fs.writeFile(fileName, JSON.stringify(this.aggregatedData), (err) => {
         if (err) {
-          throw err
+          console.warn('could not save data to file: ', err)
         }
         console.log('aggregated data saved to file')
         this.dumpCounter += 1
       })
+
       this.aggregatedData = null // reset to null if data is sent
     } else {
       console.log('no aggregated data')
