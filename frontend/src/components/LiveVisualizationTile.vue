@@ -2,7 +2,11 @@
   <md-card class="card">
     <md-card-header>
       <md-card-header-text>
-        <div class="md-title">{{ live_tile.miner }}</div>
+        <div class="md-title">{{ live_tile.miner }}
+        <md-icon  class="icon">help
+          <md-tooltip md-direction="right">{{ helpText[live_tile.miner] }}</md-tooltip>
+        </md-icon>
+        </div>
         <p>Port {{live_tile.port}}</p>
       </md-card-header-text>
     </md-card-header>
@@ -42,7 +46,12 @@ export default {
             }]
         },
         responsive: true,
-        maintainAspectRatio: false }
+        maintainAspectRatio: false },
+      helpText: {
+        ByteCount: 'Shows the cumulative number of bytes',
+        PacketCount: 'Shows the cumulative number of collected packets',
+        TCPFlagCount: 'Shows the cumulative number of tcp flags'
+      }
     }
   },
   mounted: function () {
@@ -80,6 +89,9 @@ md-card-actions{
   -ms-animation: fadein 1s; /* Internet Explorer */
   -o-animation: fadein 1s; /* Opera < 12.1 */
   animation: fadein 1s;
+}
+.icon {
+  margin-bottom: 5px;
 }
 
 @keyframes fadein {
