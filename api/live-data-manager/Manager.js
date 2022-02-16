@@ -1,7 +1,7 @@
 let ByteCountLiveMiner = require('../../miner/live-miners/ByteCountLiveMiner')
 let PacketCountLiveMiner = require('../../miner/live-miners/PacketCountLiveMiner')
 let NetflowCollector = require('../collector-connector/collectorConnector')
-let TCPFlagCountLiveMiner = require('../../miner/live-miners/TCPFlagCountLiveMiner')
+let SYNCountLiveMiner = require('../../miner/live-miners/SYNCountLiveMiner')
 let EventEmitter = require('events')
 
 class Manager {
@@ -26,8 +26,8 @@ class Manager {
   setupMiners() {
     const byteMiner = new ByteCountLiveMiner(this.dataBroadcaster, 'ByteCount')
     const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster, 'PacketCount')
-    const TCPFlagMiner = new TCPFlagCountLiveMiner(this.dataBroadcaster, 'TCPFlagCount')
-    this.miners = [byteMiner, packetMiner, TCPFlagMiner]
+    const synCountLiveMiner = new SYNCountLiveMiner(this.dataBroadcaster, 'SYNCount')
+    this.miners = [byteMiner, packetMiner, synCountLiveMiner]
     // this.miners = [packetMiner]
   }
 
@@ -43,7 +43,7 @@ class Manager {
   }
 }
 
-// const manager = new Manager()
-// manager.establishConnection(4001)
+const manager = new Manager()
+manager.establishConnection(4001)
 
 module.exports = Manager

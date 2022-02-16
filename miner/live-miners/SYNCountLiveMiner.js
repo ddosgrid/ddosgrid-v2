@@ -1,6 +1,6 @@
 const AbstractLiveMiner = require('./AbstractLiveMiner')
 
-class TCPFlagCountLiveMiner extends AbstractLiveMiner {
+class SYNCountLiveMiner extends AbstractLiveMiner {
   // eslint-disable-next-line no-useless-constructor
   constructor (dataBroadcaster, type) {
     super(dataBroadcaster, type)
@@ -17,9 +17,9 @@ class TCPFlagCountLiveMiner extends AbstractLiveMiner {
         totInFlags++
       }
     }
-    const res = { miner: 'TCPFlagCount', aggData: totInFlags, timestampBeforeMiningFirstFlowPacket: timeStamp }
+    const res = { miner: this.type, aggData: totInFlags, timestampBeforeMiningFirstFlowPacket: timeStamp }
     this.aggregateMinedData(res)
   }
 }
 
-module.exports = TCPFlagCountLiveMiner
+module.exports = SYNCountLiveMiner
