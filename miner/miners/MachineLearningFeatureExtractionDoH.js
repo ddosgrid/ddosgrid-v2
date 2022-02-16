@@ -10,43 +10,6 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     this.counter = 0;
     this.output = {
       nrOfTCPFlows: 0,
-      sourceIP: 0,
-      destinationIP: 0,
-      sourcePort: 0,
-      destinationPort: 0,
-      duration: 0,
-      nrFlowPacketsSent: 0,
-      nrFlowPacketsReceived: 0,
-      flowBytesSent: 0,
-      flowBytesReceived: 0,
-      flowSentRate: 0,
-      flowReceivedRate: 0,
-      totalPacketLength: 0,
-      packetLengthMean: 0,
-      packetLengthMedian: 0,
-      packetLengthMode: 0,
-      packetLengthStandardDeviation: 0,
-      packetLengthVariance: 0,
-      packetLengthCoefficientOfVariance: 0,
-      packetLengthSkewFromMedian: 0,
-      packetLengthSkewFromMode: 0,
-      timeMean: 0,
-      timeMedian: 0,
-      timeMode: 0,
-      timeVariance: 0,
-      timeStandardDeviation: 0,
-      timeCoefficientOfVariance: 0,
-      timeSkewFromMedian: 0,
-      timeSkewFromMode: 0,
-      requestMean: 0,
-      requestMedian: 0,
-      requestMode: 0,
-      requestStandardDeviation: 0,
-      requestVariance: 0,
-      requestCoefficientOfVariance: 0,
-      requestSkewFromMedian: 0,
-      requestSkewFromMode: 0,
-      state: 0,
     }
   }
 
@@ -54,15 +17,16 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
   async setUp() {
     //this.pcapParser.on('pcapPacket', this.handlePcap.bind(this));
     this.pcapParser.on('tcpSessionEnd', this.handleTCPSession.bind(this));
-    this.pcapParser.on('complete', this.addLastPacketData.bind(this))
+    //this.pcapParser.on('complete', this.addLastPacketData.bind(this))
   }
 
   handleTCPSession (session) {
+    this.currentPacketData = this.createNewPacketData(session);
     this.output.nrOfTCPFlows++;
     this.totalPacketLength = session.send_bytes_payload + session.recv_bytes_payload;
     this.totalPacketNr = Object.keys(session.send_packets).length + Object.keys(session.recv_packets).length;
 
-    // computing the metrics
+    /*// computing the metrics
     this.output.sourceIP = session.src;
     this.output.destinationIP = session.dst;
     this.output.sourcePort = this.getPortNr(session.src);
@@ -76,7 +40,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     this.output.flowSentRate = this.computeRate(session.send_bytes_payload, Object.keys(session.send_packets).length)
     this.output.flowReceivedRate = this.computeRate(session.recv_bytes_payload, Object.keys(session.recv_packets).length)
     this.output.totalPacketLength = session.send_bytes_payload + session.recv_bytes_payload;
-    /*this.output.packetLengthMean = this.computeMean(packets);
+    this.output.packetLengthMean = this.computeMean(packets);
     this.output.packetLengthMedian = this.computeMedian(packets);
     this.output.packetLengthMode = this.computeMode(packets);
     this.output.packetLengthStandardDeviation = this.computeStandardDeviation(packets);
@@ -87,7 +51,8 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
      */
 
     // Push into result
-    this.result.push(this.output)
+    console.log(this.createNewPacketData(session))
+    this.result.push(this.createNewPacketData(session))
   }
 
   getPortNr(sourcePort) {
@@ -173,9 +138,46 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return 'Feature Extraction for ML-Based Malicious DoH Traffic Detection'
   }
 
-  createNewPacketData(packetLengthBytes) {
+  createNewPacketData(session) {
     var newPacketMiningData =  {
-      packet_length_bytes: packetLengthBytes
+      source_IP: session.src,
+      destination_IP: session.dst,
+      source_port: this.getPortNr(session.src),
+      destination_port: this.getPortNr(session.dst),
+      duration: this.getDuration(session.connect_time, session.close_time),
+      nr_flow_packets_sent: Object.keys(session.send_packets).length,
+      nr_flow_packets_received: Object.keys(session.recv_packets).length,
+      flow_bytes_sent: session.send_bytes_payload,
+      flow_bytes_received: session.recv_bytes_payload,
+      flow_sent_rate: this.computeRate(session.send_bytes_payload, this.getDuration(session.connect_time, session.close_time)),
+      flow_received_rate: this.computeRate(session.recv_bytes_payload, this.getDuration(session.connect_time, session.close_time)),
+      total_packet_length: session.send_bytes_payload + session.recv_bytes_payload,
+    /*packet_length_mean: this.computeMean(packets),
+      packet_length_median: this.computeMedian(packets),
+      packet_length_mode: this.computeMode(packets),
+      packet_length_standard_deviation: this.computeStandardDeviation(packets),
+      packet_Length_variance: this.computeVariance(packets),
+      packet_length_coefficient_of_variance: this.computeCoefficientOfVariance(packets),
+      packet_length_skew_from_median: this.computeSkewFromMedian(packets),
+      packet_Length_Skew_from_mode: this.computeSkewFromMode(packets),
+      time_mean: 0,
+      time_median: 0,
+      time_mode: 0,
+      time_variance: 0,
+      time_standard_deviation: 0,
+      time_coefficient_of_variance: 0,
+      time_skew_from_median: 0,
+      time_skew_from_mode: 0,
+      request_mean: 0,
+      request_median: 0,
+      request_mode: 0,
+      request_standard_deviation: 0,
+      request_variance: 0,
+      request_coefficient_of_variance: 0,
+      request_skew_from_median: 0,
+      request_skew_from_mode: 0,
+      state:session.state,
+     */
     };
 
     return newPacketMiningData
