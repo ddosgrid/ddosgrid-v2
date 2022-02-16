@@ -81,7 +81,7 @@ export default {
           this.$store.commit('addConnection')
           this.$store.commit('addLiveTile', { port: this.port, miner: 'ByteCount' })
           this.$store.commit('addLiveTile', { port: this.port, miner: 'PacketCount' })
-          this.$store.commit('addLiveTile', { port: this.port, miner: 'TCPFlagCount' })
+          this.$store.commit('addLiveTile', { port: this.port, miner: 'SYNCount' })
           this.$store.commit('clear_socketData')
           this.$emit('done')
         })

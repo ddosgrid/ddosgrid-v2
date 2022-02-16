@@ -56,16 +56,16 @@ export default new Vuex.Store({
           newData.datasets[0].data.push(data.aggData)
           Object.assign(state.socketData.PacketCount, newData)
           break
-        case 'TCPFlagCount':
-          newData = state.socketData.TCPFlagCount
-          if (state.socketData.TCPFlagCount.labels.length > LIVETIMERANGE) {
+        case 'SYNCount':
+          newData = state.socketData.SYNCount
+          if (state.socketData.SYNCount.labels.length > LIVETIMERANGE) {
             newData.labels.shift()
             newData.datasets[0].data.shift()
-            Vue.set(this.state.socketData.TCPFlagCount.datasets, newData)
+            Vue.set(this.state.socketData.SYNCount.datasets, newData)
           }
           newData.labels.push(getTime(data.timestampBeforeMiningFirstFlowPacket))
           newData.datasets[0].data.push(data.aggData)
-          Object.assign(state.socketData.TCPFlagCount, newData)
+          Object.assign(state.socketData.SYNCount, newData)
           break
         default:
           console.error('unknown miner!')
@@ -94,11 +94,11 @@ export default new Vuex.Store({
             }],
           options: {}
         },
-        TCPFlagCount: {
+        SYNCount: {
           labels: [],
           datasets: [
             {
-              label: 'total in packets',
+              label: 'total of SYN flags',
               backgroundColor: '#1d47d7',
               data: []
             }],

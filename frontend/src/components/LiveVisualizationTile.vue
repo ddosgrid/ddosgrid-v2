@@ -50,7 +50,7 @@ export default {
       helpText: {
         ByteCount: 'Shows the cumulative number of bytes',
         PacketCount: 'Shows the cumulative number of collected packets',
-        TCPFlagCount: 'Shows the cumulative number of tcp flags'
+        SYNCount: 'Shows the cumulative number of SYN tcp flags'
       }
     }
   },

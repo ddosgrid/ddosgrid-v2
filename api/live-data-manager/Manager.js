@@ -28,10 +28,8 @@ class Manager {
     const packetMiner = new PacketCountLiveMiner(this.dataBroadcaster, 'PacketCount')
     const synCountLiveMiner = new SYNCountLiveMiner(this.dataBroadcaster, 'SYNCount')
     this.miners = [byteMiner, packetMiner, synCountLiveMiner]
-    // this.miners = [packetMiner]
   }
 
-  // refer to javascript event loop feature
   startStreaming() {
     console.log('manager: start streaming')
     this.collectorConnector.start()
@@ -42,8 +40,5 @@ class Manager {
     this.miners.forEach(miner => miner.stopMining())
   }
 }
-
-const manager = new Manager()
-manager.establishConnection(4001)
 
 module.exports = Manager
