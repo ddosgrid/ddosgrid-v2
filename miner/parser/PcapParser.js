@@ -21,7 +21,9 @@ class PacketEmitter extends EventEmitter {
   }
 
   startPcapSession (pcapPath, attackType = 0) {
+    // TCP
     this.tcp_tracker = new pcap.TCPTracker()
+
     this.pcap_session = pcap.createOfflineSession(pcapPath, '')
     this.attackType = attackType
     this.pcap_session.on('packet', (packet) => {
@@ -31,9 +33,12 @@ class PacketEmitter extends EventEmitter {
       this.emit('lastPcapPacket', this.currentPcapPacket)
       this.emit('complete')
     })
+    // TCP
     this.tcp_tracker.on('session', (session) => {
-      this.emit('tcpSessionStart', session)
+      //console.log("Start of session between " + session.src_name + " and " + session.dst_name);
+      this.emit('tcpSessionStart', session);
       session.on('end', (session) => {
+        //console.log("End of TCP session between " + session.src_name + " and " + session.dst_name);
         this.emit('tcpSessionEnd', session)
       })
     })
