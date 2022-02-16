@@ -13,7 +13,9 @@ class TCPFlagCountLiveMiner extends AbstractLiveMiner {
     const flows = data.flows
     let totInFlags = 0
     for (const i in flows) {
-      totInFlags += flows[i].tcp_flags
+      if (flows[i].tcp_flags === 2) {
+        totInFlags++
+      }
     }
     const res = { miner: 'TCPFlagCount', aggData: totInFlags, timestampBeforeMiningFirstFlowPacket: timeStamp }
     this.aggregateMinedData(res)
