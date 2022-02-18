@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="140" column="24" lean-forward="true" selection-start-line="140" selection-start-column="24" selection-end-line="140" selection-end-column="24" />
+            <state relative-caret-position="53">
+              <caret line="18" column="85" selection-start-line="18" selection-start-column="85" selection-end-line="18" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -66,15 +67,17 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1913" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="x" value="2065" />
+    <option name="y" value="-8" />
+    <option name="width" value="1932" />
+    <option name="height" value="1045" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -114,7 +117,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -208,11 +210,13 @@
       <workItem from="1644315319983" duration="2336000" />
       <workItem from="1644338993154" duration="726000" />
       <workItem from="1645009811665" duration="17500000" />
+      <workItem from="1645110525293" duration="5380000" />
+      <workItem from="1645178869643" duration="8222000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82697000" />
+    <option name="totallyTimeSpent" value="96439000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -224,22 +228,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="1912" y="-8" width="1696" height="1026" extended-state="7" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.015806112" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16043426" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.32552955" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.44370124" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.24798155" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.34486735" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32998884" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3298731" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49947312" weight="0.46599776" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298731" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49947312" weight="0.53171855" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5015806" side_tool="true" weight="0.36008918" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -256,6 +259,12 @@
           <url>file://$PROJECT_DIR$/miner/node_modules/pcap/decode/ipv6headers/header_extension.js</url>
           <line>23</line>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js</url>
+          <line>18</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -364,8 +373,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="140" column="24" lean-forward="true" selection-start-line="140" selection-start-column="24" selection-end-line="140" selection-end-column="24" />
+        <state relative-caret-position="53">
+          <caret line="18" column="85" selection-start-line="18" selection-start-column="85" selection-end-line="18" selection-end-column="85" />
         </state>
       </provider>
     </entry>

@@ -1,5 +1,5 @@
 const AbstractPcapAnalyser = require('./AbstractPCAPAnalyser');
-const mathjs = require('mathjs')
+const mathjs = require('mathjs');
 
 class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
   constructor(parser, outPath) {
@@ -34,6 +34,14 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return totalTimes
   }
 
+  getTotalNumberOfPackets(session) {
+    return Object.keys(session.send_packets).length + Object.keys(session.recv_packets).length
+  }
+
+  getTotalPacketLength(session) {
+    return session.send_bytes_payload + session.recv_bytes_payload
+  }
+
   getPortNr(sourcePort) {
     return sourcePort.split(":").pop()
   }
@@ -42,8 +50,16 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return closeTime-connectTime
   }
 
-  computeRate(nrOfBytes, nrOfPackets) {
-    return nrOfBytes/nrOfPackets
+  getDurationOneSide(packets){
+    var timesOneSide = [];
+    Object.keys(packets).forEach(function (key) {
+      timesOneSide.push(packets[key])
+    });
+    return mathjs.max(timesOneSide)-mathjs.min(timesOneSide);
+  }
+
+  computeRate(nrOfBytes, duration) {
+    return nrOfBytes/duration
   }
 
   computeMean(packets) {
@@ -102,27 +118,60 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return cov
   }
 
+  getTimesOneSide(packets){
+    var timesOneSide = [];
+    Object.keys(packets).forEach(function (key) {
+      timesOneSide.push(packets[key])
+    });
+    return timesOneSide;
+  }
+
+  getRequRespDifference(timesSent, timesReceived) {
+    var requRespDifference = [];
+
+    for(let i=0; i<timesSent.length; i++) {
+      for(let j=0; j<timesReceived.length; j++) {
+        if(timesReceived[j]>timesSent[i] && timesReceived[j]<timesSent[i+1]) {
+          requRespDifference.push(timesReceived[j]-timesSent[i]);
+        }
+      }
+    }
+    return requRespDifference
+  }
+
   getName() {
     return 'Feature Extraction for ML-Based Malicious DoH Traffic Detection'
   }
 
   createNewPacketData(session, flowNr, totalTimes) {
+    var totalNrOfPackets = this.getTotalNumberOfPackets(session);
+    var totalPacketLength = this.getTotalPacketLength(session);
+    var timesSent = this.getTimesOneSide(session.send_packets);
+    var timesReceived = this.getTimesOneSide(session.recv_packets);
+    var requRecvDifference = this.getRequRespDifference(timesSent, timesReceived);
+
     var newPacketMiningData =  {
       flow_number: flowNr,
       source_IP: session.src,
       destination_IP: session.dst,
       source_port: this.getPortNr(session.src),
       destination_port: this.getPortNr(session.dst),
+      state: session.state,
       duration: this.getDuration(session.connect_time, session.close_time),
       nr_flow_packets_sent: Object.keys(session.send_packets).length,
       nr_flow_packets_received: Object.keys(session.recv_packets).length,
+      total_nr_of_packets: totalNrOfPackets,
       flow_bytes_sent: session.send_bytes_payload,
       flow_bytes_received: session.recv_bytes_payload,
-      flow_sent_rate: this.computeRate(session.send_bytes_payload, this.getDuration(session.connect_time, session.close_time)),
-      flow_received_rate: this.computeRate(session.recv_bytes_payload, this.getDuration(session.connect_time, session.close_time)),
-      total_packet_length: session.send_bytes_payload + session.recv_bytes_payload,
-    /*packet_length_mean: this.computeMean(packets),
-      packet_length_median: this.computeMedian(packets),
+      flow_sent_rate: this.computeRate(session.send_bytes_payload, this.getDurationOneSide(session.send_packets)),
+      flow_received_rate: this.computeRate(session.recv_bytes_payload, this.getDurationOneSide(session.recv_packets)),
+      nr_acks_sent: Object.keys(session.send_acks).length,
+      nr_acks_received: Object.keys(session.recv_acks).length,
+      nr_retrans_sent: Object.keys(session.send_retrans).length,
+      nr_retrans_received: Object.keys(session.recv_retrans).length,
+      total_packet_length: totalPacketLength,
+      packet_length_mean: totalPacketLength/totalNrOfPackets,
+      /*packet_length_median: this.computeMedian(packets),
       packet_length_mode: this.computeMode(packets),
       packet_length_standard_deviation: this.computeStandardDeviation(packets),
       packet_Length_variance: this.computeVariance(packets),
@@ -137,16 +186,16 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       time_coefficient_of_variance: this.computeCoefficientOfVariance(totalTimes),
       time_skew_from_median: this.computeSkewFromMedian(totalTimes),
       time_skew_from_mode: this.computeSkewFromMode(totalTimes),
-      /*request_mean: 0,
-      request_median: 0,
-      request_mode: 0,
-      request_standard_deviation: 0,
-      request_variance: 0,
-      request_coefficient_of_variance: 0,
-      request_skew_from_median: 0,
-      request_skew_from_mode: 0,
-      state:session.state,
-     */
+      response_request_mean: this.computeMean(requRecvDifference),
+      response_request_median: this.computeMedian(requRecvDifference),
+      response_request_mode: this.computeMode(requRecvDifference),
+      response_request_standard_deviation: this.computeStandardDeviation(requRecvDifference),
+      response_request_variance: this.computeVariance(requRecvDifference),
+      response_request_coefficient_of_variance: this.computeCoefficientOfVariance(requRecvDifference),
+      response_request_skew_from_median: this.computeSkewFromMedian(requRecvDifference),
+      response_request_skew_from_mode: this.computeSkewFromMode(requRecvDifference),
+      DoH: true,
+
     };
 
     return newPacketMiningData
@@ -155,7 +204,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
   async postParsingAnalysis() {
     var resultFiles = [];
 
-    console.log(this.output)
+    console.log(this.output);
 
     // Output for ML classification
     var fileName = `${this.baseOutPath}-ML-features-DoH.csv`;
