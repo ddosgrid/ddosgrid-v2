@@ -95,7 +95,6 @@ export default {
   data: () => ({
     blacklist: [],
     originalBlacklist: [],
-    paginatedBlacklist: [],
     blacklistMode: 'manual',
     blacklistUrl: null,
     loading: true,

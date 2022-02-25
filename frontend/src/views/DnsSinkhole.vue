@@ -52,6 +52,9 @@
       <div class="sinkhole-item">
         <sinkhole-blacklist-card/>
       </div>
+      <div class="sinkhole-item">
+        <sinkhole-stats-card :loading="loading" :prop-stats="this.stats"/>
+      </div>
     </div>
 
     <sinkhole-config-dialog :show.sync="showConfigDialog" v-on:submitted="loadStatus"/>
@@ -69,15 +72,21 @@
 import { apibaseurl } from '@/config/variables.js'
 import SinkholeConfigDialog from '@/components/SinkholeConfigDialog'
 import SinkholeBlacklistCard from '@/components/SinkholeBlacklistCard'
+import SinkholeStatsCard from '@/components/SinkholeStatsCard'
 
 export default {
   name: 'DnsSinkhole',
-  components: { SinkholeBlacklistCard, 'sinkhole-config-dialog': SinkholeConfigDialog },
+  components: {
+    SinkholeBlacklistCard,
+    'sinkhole-config-dialog': SinkholeConfigDialog,
+    SinkholeStatsCard
+  },
   data: () => ({
     loading: true,
     status: { running: false },
     showConfigDialog: false,
-    refreshInterval: null
+    refreshInterval: null,
+    stats: {}
   }),
   mounted: function () {
     this.loadStatus()
@@ -92,6 +101,7 @@ export default {
   methods: {
     loadStatus: async function () {
       this.status = await (await fetch(`${apibaseurl}/sinkhole`, { credentials: 'include' })).json()
+      this.stats = await (await fetch(`${apibaseurl}/sinkhole/stats`, { credentials: 'include' })).json()
       this.loading = false
     },
     toggleSinkhole: async function () {
