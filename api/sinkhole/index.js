@@ -26,6 +26,7 @@ router.post('/blacklist', protect, bodyParser.json({limit: '500mb'}), setSinkhol
 router.post('/blacklist/test-url', protect, bodyParser.json(), testBlacklistUrl)
 router.post('/start', protect, startSinkhole)
 router.post('/stop', protect, stopSinkhole)
+router.get('/stats', protect, getSinkholeStats)
 
 async function getSinkholeStatus(req, res) {
     let config = sinkhole.getConfig()
@@ -127,6 +128,10 @@ async function stopSinkhole(req, res) {
         await sinkhole.stop()
     }
     return await getSinkholeStatus(req, res)
+}
+
+async function getSinkholeStats(req, res) {
+    return res.json(sinkhole.stats)
 }
 
 async function updateRemoteBlacklist() {
