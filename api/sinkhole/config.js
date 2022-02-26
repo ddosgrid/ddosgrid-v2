@@ -5,7 +5,7 @@ import {networkInterfaces} from "os";
 import Ajv from "ajv";
 import dirname from 'ususdirname'
 
-const __dirname = dirname()
+const __dirname = dirname(import.meta.url)
 const ajv = new Ajv();
 
 const configSchema = {
