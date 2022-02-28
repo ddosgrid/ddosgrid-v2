@@ -6,7 +6,6 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     super(parser, outPath);
     this.result = [];
     this.flowNr = 0;
-    this.totalTimes = [];
   }
 
   // Setup phase, load additional databases, setup subscriptions and signal completion
@@ -16,11 +15,13 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
 
   handleTCPSession (session) {
     this.flowNr++;
-    this.totalTimes = this.getTotalTimes(session.send_packets, session.recv_packets);
 
-    // Push into result
-    console.log(this.createNewPacketData(session, this.flowNr, this.totalTimes));
-    this.result.push(this.createNewPacketData(session, this.flowNr, this.totalTimes))
+    // Presorting: Check if TCP flow is also a HTTPS flow by checking one of the ports to be 443
+    if(this.getPortNr(session.src) === "443" || this.getPortNr(session.dst) === "443") {
+      // Push into result
+      console.log(this.createNewPacketData(session, this.flowNr));
+      this.result.push(this.createNewPacketData(session, this.flowNr))
+    }
   }
 
   getTotalTimes(packets_sent, packets_received) {
@@ -151,7 +152,8 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return 'Feature Extraction for ML-Based Malicious DoH Traffic Detection'
   }
 
-  createNewPacketData(session, flowNr, totalTimes) {
+  createNewPacketData(session, flowNr) {
+    var totalTimes = this.getTotalTimes(session.send_packets, session.recv_packets);
     var totalNrOfPackets = this.getTotalNumberOfPackets(session);
     var totalPacketLength = this.getTotalPacketLength(session);
     var timesSent = this.getTimesOneSide(session.send_packets);
