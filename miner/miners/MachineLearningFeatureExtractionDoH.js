@@ -139,6 +139,14 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     return requRespDifference
   }
 
+  getState(state) {
+    if(state === "CLOSED") {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
   getName() {
     return 'Feature Extraction for ML-Based Malicious DoH Traffic Detection'
   }
@@ -156,7 +164,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       destination_IP: session.dst,
       source_port: this.getPortNr(session.src),
       destination_port: this.getPortNr(session.dst),
-      state: session.state,
+      state: this.getState(session.state),
       duration: this.getDuration(session.connect_time, session.close_time),
       nr_flow_packets_sent: Object.keys(session.send_packets).length,
       nr_flow_packets_received: Object.keys(session.recv_packets).length,
@@ -170,14 +178,14 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       nr_retrans_sent: Object.keys(session.send_retrans).length,
       nr_retrans_received: Object.keys(session.recv_retrans).length,
       total_packet_length: totalPacketLength,
-      packet_length_mean: totalPacketLength/totalNrOfPackets,
-      /*packet_length_median: this.computeMedian(packets),
-      packet_length_mode: this.computeMode(packets),
-      packet_length_standard_deviation: this.computeStandardDeviation(packets),
-      packet_Length_variance: this.computeVariance(packets),
-      packet_length_coefficient_of_variance: this.computeCoefficientOfVariance(packets),
-      packet_length_skew_from_median: this.computeSkewFromMedian(packets),
-      packet_Length_Skew_from_mode: this.computeSkewFromMode(packets),*/
+      packet_length_mean: this.computeMean(session.total_packet_length),
+      packet_length_median: this.computeMedian(session.total_packet_length),
+      packet_length_mode: this.computeMode(session.total_packet_length),
+      packet_length_standard_deviation: this.computeStandardDeviation(session.total_packet_length),
+      packet_Length_variance: this.computeVariance(session.total_packet_length),
+      packet_length_coefficient_of_variance: this.computeCoefficientOfVariance(session.total_packet_length),
+      packet_length_skew_from_median: this.computeSkewFromMedian(session.total_packet_length),
+      packet_Length_Skew_from_mode: this.computeSkewFromMode(session.total_packet_length),
       time_mean: this.computeMean(totalTimes),
       time_median: this.computeMedian(totalTimes),
       time_mode: this.computeMode(totalTimes),
@@ -194,8 +202,8 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       response_request_coefficient_of_variance: this.computeCoefficientOfVariance(requRecvDifference),
       response_request_skew_from_median: this.computeSkewFromMedian(requRecvDifference),
       response_request_skew_from_mode: this.computeSkewFromMode(requRecvDifference),
-      DoH: true,
-
+      DoH: 1,
+      //malicious: 1;
     };
 
     return newPacketMiningData
