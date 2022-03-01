@@ -204,7 +204,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       response_request_coefficient_of_variance: this.computeCoefficientOfVariance(requRecvDifference),
       response_request_skew_from_median: this.computeSkewFromMedian(requRecvDifference),
       response_request_skew_from_mode: this.computeSkewFromMode(requRecvDifference),
-      DoH: 1,
+      //DoH: 1,
       //malicious: 1;
     };
 

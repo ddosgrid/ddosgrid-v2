@@ -1,0 +1,77 @@
+{
+  "_args": [
+    [
+      "git+https://github.com/ddosgrid/node_pcap.git",
+      "/mnt/c/users/david/documents/uni/bachelorarbeit/code/ddosgrid-v2/miner"
+    ]
+  ],
+  "_from": "git+https://github.com/ddosgrid/node_pcap.git",
+  "_id": "pcap@git+https://github.com/ddosgrid/node_pcap.git#b3dab37fa151e62e5a578e88ff772ffff8ac62c2",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/pcap",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "git+https://github.com/ddosgrid/node_pcap.git",
+    "rawSpec": "git+https://github.com/ddosgrid/node_pcap.git",
+    "saveSpec": "git+https://github.com/ddosgrid/node_pcap.git",
+    "fetchSpec": "https://github.com/ddosgrid/node_pcap.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/ddosgrid/node_pcap.git#b3dab37fa151e62e5a578e88ff772ffff8ac62c2",
+  "_spec": "git+https://github.com/ddosgrid/node_pcap.git",
+  "_where": "/mnt/c/users/david/documents/uni/bachelorarbeit/code/ddosgrid-v2/miner",
+  "author": {
+    "name": "Matt Ranney",
+    "email": "mjr@ranney.com"
+  },
+  "bugs": {
+    "url": "https://github.com/node-pcap/node_pcap/issues"
+  },
+  "dependencies": {
+    "@types/node": "^10.0.0",
+    "nan": "^2.14.0"
+  },
+  "description": "raw packet capture, decoding, and analysis",
+  "devDependencies": {
+    "grunt": "^1.0.4",
+    "grunt-cli": "^1.3.2",
+    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-coveralls": "^2.0.0",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.4.5",
+    "mocha": "^7.0.1",
+    "mocha-sinon": "^1.1.4",
+    "should": "^5.0.0",
+    "sinon": "^1.14.1"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "gypfile": true,
+  "homepage": "https://github.com/node-pcap/node_pcap#readme",
+  "license": "MIT",
+  "main": "./pcap",
+  "maintainers": [
+    {
+      "name": "Ujjwal Thaakar",
+      "email": "ujjwalthaakar@gmail.com"
+    }
+  ],
+  "name": "pcap",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/node-pcap/node_pcap.git"
+  },
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "test": "grunt"
+  },
+  "types": "pcap.d.ts",
+  "version": "3.2.0"
+}

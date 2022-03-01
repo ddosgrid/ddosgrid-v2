@@ -1,5 +1,5 @@
 const EventEmitter = require('events')
-const pcap = require('pcap')
+const pcap = require('./pcap')
 const portNumbers = require('port-numbers')
 const colors = require('colors')
 const dns = require('pcap/decode/dns')
