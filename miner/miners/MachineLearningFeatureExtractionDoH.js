@@ -214,8 +214,6 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
   async postParsingAnalysis() {
     var resultFiles = [];
 
-    console.log(this.output);
-
     // Output for ML classification
     var fileName = `${this.baseOutPath}-ML-features-DoH.csv`;
     var fileContent = this.result;

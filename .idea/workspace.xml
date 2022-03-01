@@ -16,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+            <state relative-caret-position="272">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -28,17 +28,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="644">
-              <caret line="273" column="5" selection-start-line="273" selection-start-column="5" selection-end-line="273" selection-end-column="5" />
+            <state relative-caret-position="-443">
+              <caret line="248" column="2" lean-forward="true" selection-start-line="248" selection-start-column="2" selection-end-line="248" selection-end-column="2" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="37" column="8" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
+            <state relative-caret-position="918">
+              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
             </state>
           </provider>
         </entry>
@@ -60,6 +60,9 @@
       <find>recv_packets_length</find>
       <find>send_bytes_payload</find>
       <find>recv_bytes_payload</find>
+      <find>recv_next</find>
+      <find>is_new</find>
+      <find>inspectPcap</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -77,8 +80,8 @@
         <option value="$PROJECT_DIR$/miner/parser/PcapParser.js" />
         <option value="$PROJECT_DIR$/package-lock.json" />
         <option value="$PROJECT_DIR$/ml/algorithms/lgbm.py" />
-        <option value="$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js" />
         <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
+        <option value="$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js" />
       </list>
     </option>
   </component>
@@ -90,16 +93,16 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2873" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="x" value="2209" />
+    <option name="y" value="-8" />
+    <option name="width" value="1440" />
+    <option name="height" value="780" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -180,6 +183,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -279,12 +283,15 @@
       <workItem from="1645959903211" duration="1212000" />
       <workItem from="1646045848461" duration="6414000" />
       <workItem from="1646057566522" duration="5094000" />
-      <workItem from="1646062820413" duration="476000" />
+      <workItem from="1646062820413" duration="1700000" />
+      <workItem from="1646128794395" duration="1704000" />
+      <workItem from="1646130540872" duration="635000" />
+      <workItem from="1646132050324" duration="2431000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111796000" />
+    <option name="totallyTimeSpent" value="117790000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -299,13 +306,13 @@
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.062170707" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.061643835" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.2541806" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.8004459" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841937" weight="0.15686275" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.17948718" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3298731" />
@@ -351,8 +358,19 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js</url>
           <line>16</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/miner/parser/PcapParser.js</url>
+          <line>52</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/miner/parser/PcapParser.js</url>
+          <line>33</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -492,24 +510,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="37" column="8" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="273" column="5" selection-start-line="273" selection-start-column="5" selection-end-line="273" selection-end-column="5" />
+        <state relative-caret-position="-443">
+          <caret line="248" column="2" lean-forward="true" selection-start-line="248" selection-start-column="2" selection-end-line="248" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+        <state relative-caret-position="272">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
         </state>
       </provider>
     </entry>
