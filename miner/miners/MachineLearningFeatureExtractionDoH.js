@@ -114,7 +114,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     let mean = mathjs.mean(packets);
 
     if(mean !== 0) {
-      cov = mathjs.std(packets)/mean;
+      cov = mathjs.std(packets)/mean * 100;
     }
     return cov
   }

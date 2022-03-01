@@ -23,7 +23,7 @@ class PacketEmitter extends EventEmitter {
   startPcapSession (pcapPath, attackType = 0) {
     // TCP
     this.tcp_tracker = new pcap.TCPTracker()
-
+    //
     this.pcap_session = pcap.createOfflineSession(pcapPath, '')
     this.attackType = attackType
     this.pcap_session.on('packet', (packet) => {
@@ -42,6 +42,7 @@ class PacketEmitter extends EventEmitter {
         this.emit('tcpSessionEnd', session)
       })
     })
+    //
   }
 
   inspectPcapPacket (pcapPacket) {
