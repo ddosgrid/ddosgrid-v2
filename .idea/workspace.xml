@@ -2,93 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/.jshintrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/.travis.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/Gruntfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/binding.gyp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/.deps/Release/obj.target/pcap_binding.node.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/.deps/Release/obj.target/pcap_binding/pcap_binding.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/.deps/Release/obj.target/pcap_binding/pcap_session.o.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/.deps/Release/pcap_binding.node.d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/obj.target/pcap_binding.node" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/obj.target/pcap_binding/pcap_binding.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/obj.target/pcap_binding/pcap_session.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/Release/pcap_binding.node" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/binding.Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/config.gypi" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/build/pcap_binding.target.mk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/changelog.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/arp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/bgp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/dns.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ethernet_addr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ethernet_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/icmp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_beacon_frame.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_frame.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_management_frame_tag.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_probe_frame.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radio_utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ieee802.11/radiotap_fields.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/igmp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ip_protocols.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv4.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv4_addr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv6.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv6_addr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv6headers/header_extension.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/ipv6headers/no_next.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/llc_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/null_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/pcap_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/sll_addr.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/sll_packet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/tcp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/udp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/vlan.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/decode/websocket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/dns_cache.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/examples/multiple_interfaces" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/examples/network_grep.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/examples/speed_server" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/examples/tcp_metrics" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/node_ko_article.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/pcap.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/pcap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/pcap_binding.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/pcap_session.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/pcap_session.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/arp.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/decode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/dns.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ethernet_addr.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/icmp.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ieee802.11/radio_beacon_frame.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ieee802.11/radio_management_frame_tag.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ieee802.11/radio_packet.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ieee802.11/radio_probe_frame.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ieee802.11/radio_utils.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/igmp.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv4.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv4_addr.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv6.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv6_addr.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv6headers/header_extension.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/ipv6headers/no_next.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/llc_packet.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/null_packet.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/tcp.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/decode/udp.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/spec_helper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/spec/util.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/miner/parser/pcap/util.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/parser/PcapParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/parser/PcapParser.js" afterDir="false" />
@@ -107,25 +20,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="206" column="8" selection-start-line="206" selection-start-column="8" selection-end-line="206" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+            <state relative-caret-position="204">
+              <caret line="12" column="37" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2074" />
+            <state relative-caret-position="102">
+              <caret line="12" column="40" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -149,6 +64,7 @@
       <find>recv_next</find>
       <find>is_new</find>
       <find>inspectPcap</find>
+      <find>startP</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -166,8 +82,9 @@
         <option value="$PROJECT_DIR$/package-lock.json" />
         <option value="$PROJECT_DIR$/ml/algorithms/lgbm.py" />
         <option value="$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js" />
-        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
         <option value="$PROJECT_DIR$/miner/parser/tcp_tracker.js" />
+        <option value="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" />
+        <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
         <option value="$PROJECT_DIR$/miner/parser/PcapParser.js" />
       </list>
     </option>
@@ -180,10 +97,10 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2209" />
-    <option name="y" value="-8" />
-    <option name="width" value="1440" />
-    <option name="height" value="780" />
+    <option name="x" value="2502" />
+    <option name="y" value="-9" />
+    <option name="width" value="1932" />
+    <option name="height" value="1045" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -344,12 +261,13 @@
       <workItem from="1646062820413" duration="1700000" />
       <workItem from="1646128794395" duration="1704000" />
       <workItem from="1646130540872" duration="635000" />
-      <workItem from="1646132050324" duration="8718000" />
+      <workItem from="1646132050324" duration="8919000" />
+      <workItem from="1646215497602" duration="7693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124077000" />
+    <option name="totallyTimeSpent" value="131971000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -362,15 +280,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13962065" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13962065" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.33556297" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35451505" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.16053511" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28428093" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3298731" />
@@ -412,17 +329,6 @@
           <url>file://$PROJECT_DIR$/miner/node_modules/pcap/decode/ipv6headers/header_extension.js</url>
           <line>23</line>
           <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js</url>
-          <line>16</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/miner/parser/PcapParser.js</url>
-          <line>53</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -559,13 +465,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="206" column="8" selection-start-line="206" selection-start-column="8" selection-end-line="206" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -573,13 +472,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/parser/tcp_tracker.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5644">
-          <caret line="332" column="32" selection-start-line="332" selection-start-column="32" selection-end-line="332" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/tcp_tracker.js" />
     <entry file="file://$PROJECT_DIR$/ml/evaluation/metrics/knn_eval.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-156" />
@@ -588,16 +481,32 @@
     <entry file="file://$PROJECT_DIR$/miner/parser/pcap/spec/decode/decode.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/pcap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+        <state relative-caret-position="297">
+          <caret line="96" column="2" lean-forward="true" selection-start-line="96" selection-start-column="2" selection-end-line="96" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2074" />
+        <state relative-caret-position="102">
+          <caret line="12" column="40" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="37" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+        </state>
       </provider>
     </entry>
   </component>

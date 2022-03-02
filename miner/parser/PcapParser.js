@@ -17,29 +17,40 @@ class PacketEmitter extends EventEmitter {
     this.pcapPacketCounter = 0
     this.progressPrintCounter = 0
     this.dnsdecoder = new dns()
-    this.attackType = 0
+    this.attackType = 0;
+    this.startedTCPSessions = {};
+    this.complete = false;
   }
 
   startPcapSession (pcapPath, attackType = 0) {
     // TCP
-    this.tcp_tracker = new pcap.TCPTracker()
+    this.tcp_tracker = new pcap.TCPTracker();
     //
-    this.pcap_session = pcap.createOfflineSession(pcapPath, '')
-    this.attackType = attackType
+    this.pcap_session = pcap.createOfflineSession(pcapPath, '');
+    this.attackType = attackType;
     this.pcap_session.on('packet', (packet) => {
       this.inspectPcapPacket(packet)
     })
     this.pcap_session.on('complete', () => {
-      this.emit('lastPcapPacket', this.currentPcapPacket)
-      this.emit('complete')
-    })
+        this.complete = true;
+      this.emit('lastPcapPacket', this.currentPcapPacket);
+      this.emit('complete');
+        if(this.complete === true) {
+            console.log("\n\nComplete\n\n")
+        }
+    });
     // TCP
     this.tcp_tracker.on('session', (session) => {
+      this.startedTCPSessions[session.src] = session.src + "-" + session.dst;
       //console.log("Start of session between " + session.src_name + " and " + session.dst_name);
       this.emit('tcpSessionStart', session);
       session.on('end', (session) => {
         //console.log("End of TCP session between " + session.src_name + " and " + session.dst_name);
-        this.emit('tcpSessionEnd', session)
+        this.emit('tcpSessionEnd', session);
+        delete this.startedTCPSessions[session.src];
+        if(this.complete === true) {
+            console.log("\n\nComplete\n\n")
+        }
       })
     })
     //
@@ -73,7 +84,7 @@ class PacketEmitter extends EventEmitter {
     // Store the current packet 'globally' so that it can be used in other events, e.g. 'completed'
 
     this.currentPcapPacket = decodedPacket
-    if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET' || this.currentPcapPacket.link_type == "LINKTYPE_LINUX_SLL") {
+    if(this.currentPcapPacket.link_type === 'LINKTYPE_ETHERNET' || this.currentPcapPacket.link_type === "LINKTYPE_LINUX_SLL") {
       var ethernetPacket = decodedPacket.payload
       this.inspectLinkPacket(ethernetPacket, decodedPacket.linktype)
     } else {
