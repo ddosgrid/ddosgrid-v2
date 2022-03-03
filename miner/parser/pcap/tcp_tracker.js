@@ -277,6 +277,13 @@ TCPSession.prototype.CLOSING = function (packet) {
 // The states aren't quite right here.  All possible states of FIN and FIN/ACKs aren't handled.
 // So some of the bytes of the session may not be properly accounted for.
 
+// Force close
+TCPSession.prototype.forceCloseThisSession = function () {
+    this.close_time = this.current_cap_time;
+    this.state = "OPEN";
+    this.emit("forceClose", this);
+};
+
 TCPSession.prototype.CLOSED = function (/*packet*/) {
     // not sure what to do here. We are closed, so I guess bump some counters or something.
 };

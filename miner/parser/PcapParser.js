@@ -19,7 +19,6 @@ class PacketEmitter extends EventEmitter {
     this.dnsdecoder = new dns()
     this.attackType = 0;
     this.startedTCPSessions = {};
-    this.complete = false;
   }
 
   startPcapSession (pcapPath, attackType = 0) {
@@ -32,25 +31,26 @@ class PacketEmitter extends EventEmitter {
       this.inspectPcapPacket(packet)
     })
     this.pcap_session.on('complete', () => {
-        this.complete = true;
       this.emit('lastPcapPacket', this.currentPcapPacket);
       this.emit('complete');
-        if(this.complete === true) {
-            console.log("\n\nComplete\n\n")
-        }
+
+      //TCP
+      for (let key in this.startedTCPSessions) {
+        this.startedTCPSessions[key].forceCloseThisSession();
+        this.emit('tcpSessionEnd', this.startedTCPSessions[key]);
+      }
+
+      //this.startedTCPSessions.forEach(session => session.forceCloseThisSession())
     });
     // TCP
     this.tcp_tracker.on('session', (session) => {
-      this.startedTCPSessions[session.src] = session.src + "-" + session.dst;
+      this.startedTCPSessions[session.src] = session;
       //console.log("Start of session between " + session.src_name + " and " + session.dst_name);
       this.emit('tcpSessionStart', session);
       session.on('end', (session) => {
         //console.log("End of TCP session between " + session.src_name + " and " + session.dst_name);
         this.emit('tcpSessionEnd', session);
         delete this.startedTCPSessions[session.src];
-        if(this.complete === true) {
-            console.log("\n\nComplete\n\n")
-        }
       })
     })
     //

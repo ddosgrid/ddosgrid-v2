@@ -19,7 +19,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     // Presorting: Check if TCP flow is also a HTTPS flow by checking one of the ports to be 443
     if(this.getPortNr(session.src) === "443" || this.getPortNr(session.dst) === "443") {
       // Push into result
-      //console.log(this.createNewPacketData(session, this.flowNr));
+      console.log(this.createNewPacketData(session, this.flowNr));
       this.result.push(this.createNewPacketData(session, this.flowNr))
     }
   }
