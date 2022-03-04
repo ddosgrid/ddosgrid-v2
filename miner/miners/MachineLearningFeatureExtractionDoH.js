@@ -17,11 +17,12 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     this.flowNr++;
 
     // Presorting: Check if TCP flow is also a HTTPS flow by checking one of the ports to be 443
-    //if(this.getPortNr(session.src) === "443" || this.getPortNr(session.dst) === "443") {
+    if(this.getPortNr(session.src) === "443" || this.getPortNr(session.dst) === "443") {
       // Push into result
       console.log(this.createNewPacketData(session, this.flowNr));
       this.result.push(this.createNewPacketData(session, this.flowNr))
-    //}
+    }
+    console.log(session.total_packet_length)
   }
 
   getTotalTimes(packets_sent, packets_received) {
@@ -237,8 +238,10 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       response_request_skew_from_median: this.computeSkewFromMedian(requRecvDifference),
       response_request_skew_from_mode: this.computeSkewFromMode(requRecvDifference),
       extracted_packets_packet_length_handling: Object.keys(session.total_packet_length).length,
-      //DoH: 1,
-      //malicious: 1;
+      //doh: 1,
+      //doh:0,
+      //malicious: 1,
+      //malicious: 0,
     };
 
     return newPacketMiningData

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" afterDir="false" />
     </list>
@@ -20,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="651">
-              <caret line="238" column="96" selection-start-line="238" selection-start-column="96" selection-end-line="238" selection-end-column="96" />
+            <state relative-caret-position="357">
+              <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -38,17 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="190" column="82" selection-start-line="190" selection-start-column="82" selection-end-line="190" selection-end-column="82" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/tcp.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3383">
-              <caret line="199" column="25" selection-start-line="199" selection-start-column="14" selection-end-line="199" selection-end-column="25" />
+            <state relative-caret-position="61">
+              <caret line="96" column="47" selection-start-line="96" selection-start-column="47" selection-end-line="96" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -92,6 +82,8 @@
       <find>send_acks</find>
       <find>send_packets</find>
       <find>total_packet_length</find>
+      <find>ip.</find>
+      <find>length</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -124,10 +116,9 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2496" />
-    <option name="y" value="-10" />
-    <option name="width" value="1440" />
-    <option name="height" value="780" />
+    <option name="x" value="1913" />
+    <option name="width" value="854" />
+    <option name="height" value="1017" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -299,12 +290,12 @@
       <workItem from="1646132050324" duration="8919000" />
       <workItem from="1646215497602" duration="11799000" />
       <workItem from="1646301503079" duration="11813000" />
-      <workItem from="1646387776296" duration="14124000" />
+      <workItem from="1646387776296" duration="20307000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="162014000" />
+    <option name="totallyTimeSpent" value="168197000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -317,13 +308,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13932449" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.20184544" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841937" weight="0.07497116" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.1822376" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -520,15 +512,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/pcap/pcap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="96" column="2" lean-forward="true" selection-start-line="96" selection-start-column="2" selection-end-line="96" selection-end-column="2" />
+        <state relative-caret-position="238">
+          <caret line="44" column="31" selection-start-line="44" selection-start-column="25" selection-end-line="44" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/util.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/pcap_packet.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/ipv4.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="56" column="21" selection-start-line="56" selection-start-column="15" selection-end-line="56" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/tcp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3383">
-          <caret line="199" column="25" selection-start-line="199" selection-start-column="14" selection-end-line="199" selection-end-column="25" />
+        <state relative-caret-position="4386">
+          <caret line="258" column="36" selection-start-line="258" selection-start-column="30" selection-end-line="258" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -541,15 +546,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="190" column="82" selection-start-line="190" selection-start-column="82" selection-end-line="190" selection-end-column="82" />
+        <state relative-caret-position="61">
+          <caret line="96" column="47" selection-start-line="96" selection-start-column="47" selection-end-line="96" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="238" column="96" selection-start-line="238" selection-start-column="96" selection-end-line="238" selection-end-column="96" />
+        <state relative-caret-position="357">
+          <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
         </state>
       </provider>
     </entry>

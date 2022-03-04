@@ -94,7 +94,7 @@ TCPSession.prototype.track = function (packet) {
     var dst = ip.daddr + ":" + tcp.dport;
 
     this.current_cap_time = packet.pcap_header.tv_sec + (packet.pcap_header.tv_usec / 1000000);
-    this.total_packet_length.push(tcp.dataLength)
+    this.total_packet_length.push(tcp.dataLength+tcp.headerLength+ip.headerLength);
 
     if (this.state === null) {
         this.src = src; // the side the sent the first packet we saw
