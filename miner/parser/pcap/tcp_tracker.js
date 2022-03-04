@@ -94,6 +94,7 @@ TCPSession.prototype.track = function (packet) {
     var dst = ip.daddr + ":" + tcp.dport;
 
     this.current_cap_time = packet.pcap_header.tv_sec + (packet.pcap_header.tv_usec / 1000000);
+    this.total_packet_length.push(tcp.dataLength)
 
     if (this.state === null) {
         this.src = src; // the side the sent the first packet we saw
@@ -187,7 +188,6 @@ TCPSession.prototype.ESTAB = function (packet) {
                 this.emit("data send", this, tcp.data);
             }
             this.send_bytes_payload += tcp.dataLength;
-            this.total_packet_length.push(tcp.dataLength)
             this.send_packets[tcp.seqno + tcp.dataLength] = this.current_cap_time;
         }
         if (this.recv_packets[tcp.ackno]) {
@@ -212,7 +212,6 @@ TCPSession.prototype.ESTAB = function (packet) {
                 this.emit("data recv", this, tcp.data);
             }
             this.recv_bytes_payload += tcp.dataLength;
-            this.total_packet_length.push(tcp.dataLength)
             this.recv_packets[tcp.seqno + tcp.dataLength] = this.current_cap_time;
         }
         if (this.send_packets[tcp.ackno]) {

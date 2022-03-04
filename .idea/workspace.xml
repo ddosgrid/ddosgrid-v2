@@ -4,7 +4,6 @@
     <list default="true" id="35046b70-63a4-4aa3-9c58-3ad199d2b32d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/miner/parser/PcapParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/parser/PcapParser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" beforeDir="false" afterPath="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -21,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2078">
-              <caret line="37" column="2" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
+            <state relative-caret-position="651">
+              <caret line="238" column="96" selection-start-line="238" selection-start-column="96" selection-end-line="238" selection-end-column="96" />
             </state>
           </provider>
         </entry>
@@ -30,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="39" column="63" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+            <state relative-caret-position="-2887">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -39,8 +38,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
-              <caret line="279" column="14" lean-forward="true" selection-start-line="279" selection-start-column="14" selection-end-line="279" selection-end-column="14" />
+            <state relative-caret-position="1462">
+              <caret line="190" column="82" selection-start-line="190" selection-start-column="82" selection-end-line="190" selection-end-column="82" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/tcp.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3383">
+              <caret line="199" column="25" selection-start-line="199" selection-start-column="14" selection-end-line="199" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -57,7 +65,6 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>addLast</find>
-      <find>tcp</find>
       <find>pcap</find>
       <find>recv_packets_length</find>
       <find>send_bytes_payload</find>
@@ -67,6 +74,24 @@
       <find>inspectPcap</find>
       <find>startP</find>
       <find>forE</find>
+      <find>tcp</find>
+      <find>total_</find>
+      <find>total_pac</find>
+      <find>decoderName</find>
+      <find>TRACKER</find>
+      <find>send_pac</find>
+      <find>getTota</find>
+      <find>getDura</find>
+      <find>getTotalPacketLength</find>
+      <find>getTimesOne</find>
+      <find>getTimesOneSide</find>
+      <find>req</find>
+      <find>requRecv</find>
+      <find>getTotalPacketL</find>
+      <find>total_packet_len</find>
+      <find>send_acks</find>
+      <find>send_packets</find>
+      <find>total_packet_length</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -85,8 +110,8 @@
         <option value="$PROJECT_DIR$/ml/algorithms/lgbm.py" />
         <option value="$PROJECT_DIR$/miner/node_modules/pcap/tcp_tracker.js" />
         <option value="$PROJECT_DIR$/miner/parser/tcp_tracker.js" />
-        <option value="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" />
         <option value="$PROJECT_DIR$/miner/parser/PcapParser.js" />
+        <option value="$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js" />
         <option value="$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js" />
       </list>
     </option>
@@ -99,10 +124,10 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1864" />
-    <option name="y" value="-6" />
-    <option name="width" value="1932" />
-    <option name="height" value="1045" />
+    <option name="x" value="2496" />
+    <option name="y" value="-10" />
+    <option name="width" value="1440" />
+    <option name="height" value="780" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -112,7 +137,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -130,6 +154,21 @@
               <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
               <item name="miner" type="462c0819:PsiDirectoryNode" />
               <item name="parser" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
+              <item name="miner" type="462c0819:PsiDirectoryNode" />
+              <item name="parser" type="462c0819:PsiDirectoryNode" />
+              <item name="pcap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ddosgrid-v2" type="462c0819:PsiDirectoryNode" />
+              <item name="miner" type="462c0819:PsiDirectoryNode" />
+              <item name="parser" type="462c0819:PsiDirectoryNode" />
+              <item name="pcap" type="462c0819:PsiDirectoryNode" />
+              <item name="decode" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ddosgrid-v2" type="b2602c69:ProjectViewProjectNode" />
@@ -153,6 +192,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -258,12 +298,13 @@
       <workItem from="1646130540872" duration="635000" />
       <workItem from="1646132050324" duration="8919000" />
       <workItem from="1646215497602" duration="11799000" />
-      <workItem from="1646301503079" duration="4637000" />
+      <workItem from="1646301503079" duration="11813000" />
+      <workItem from="1646387776296" duration="14124000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140714000" />
+    <option name="totallyTimeSpent" value="162014000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -275,22 +316,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="1912" y="-8" width="1696" height="1026" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12170706" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13932449" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.16722408" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29208472" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49841937" visible="true" weight="0.20184544" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.1822376" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3298731" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298731" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49947312" weight="0.53171855" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49947312" weight="0.22073579" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5015806" side_tool="true" weight="0.36008918" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -485,24 +525,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/decode/tcp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="279" column="14" lean-forward="true" selection-start-line="279" selection-start-column="14" selection-end-line="279" selection-end-column="14" />
+        <state relative-caret-position="3383">
+          <caret line="199" column="25" selection-start-line="199" selection-start-column="14" selection-end-line="199" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/parser/PcapParser.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="39" column="63" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+        <state relative-caret-position="-2887">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/parser/pcap/tcp_tracker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="190" column="82" selection-start-line="190" selection-start-column="82" selection-end-line="190" selection-end-column="82" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/miners/MachineLearningFeatureExtractionDoH.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2078">
-          <caret line="37" column="2" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
+        <state relative-caret-position="651">
+          <caret line="238" column="96" selection-start-line="238" selection-start-column="96" selection-end-line="238" selection-end-column="96" />
         </state>
       </provider>
     </entry>
