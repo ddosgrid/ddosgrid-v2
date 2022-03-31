@@ -25,7 +25,7 @@ class AbstractPCAPAnalyser {
   }
 
   async storeAndReturnResult (fileName, fileContent, resultSummary) {
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
       const fs = require('fs')
       if (fileName.endsWith('.csv')) {
         const jsonexport = require('jsonexport');
@@ -48,7 +48,7 @@ class AbstractPCAPAnalyser {
           resolve(resultSummary)
         })
       }
-    })
+    })*/
   }
 }
 

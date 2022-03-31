@@ -39,8 +39,6 @@ class PacketEmitter extends EventEmitter {
         this.startedTCPSessions[key].forceCloseThisSession();
         this.emit('tcpSessionEnd', this.startedTCPSessions[key]);
       }
-
-      //this.startedTCPSessions.forEach(session => session.forceCloseThisSession())
     });
     // TCP
     this.tcp_tracker.on('session', (session) => {
