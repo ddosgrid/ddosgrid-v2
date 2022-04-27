@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/jvdassen/ddos-pcap-decoder-POC#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "colors": "^1.4.0",
     "http_trace": "^0.5.0",
     "icmp-code-resolution": "^1.0.0",
     "ip-to-asn": "^1.0.0",
     "jsonexport": "^3.0.1",
+    "mathjs": "^10.4.3",
     "pcap": "git+https://github.com/ddosgrid/node_pcap.git",
     "port-numbers": "^4.0.20",
     "ua-parser-js": "^0.7.21",

@@ -7,13 +7,9 @@ DEFS_Debug := \
 	'-DUSING_UV_SHARED=1' \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
-	'-DV8_DEPRECATION_WARNINGS' \
-	'-DV8_IMMINENT_DEPRECATION_WARNINGS' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
-	'-D__STDC_FORMAT_MACROS' \
 	'-DOPENSSL_NO_PINSHARED' \
-	'-DOPENSSL_THREADS' \
 	'-DBUILDING_NODE_EXTENSION' \
 	'-DDEBUG' \
 	'-D_DEBUG' \
@@ -40,27 +36,23 @@ CFLAGS_CC_Debug := \
 	-std=gnu++1y
 
 INCS_Debug := \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/include/node \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/src \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/openssl/config \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/openssl/openssl/include \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/uv/include \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/zlib \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/v8/include \
-	-I$(srcdir)/../nan
+	-I/home/dastal/.cache/node-gyp/10.24.1/include/node \
+	-I/home/dastal/.cache/node-gyp/10.24.1/src \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/openssl/config \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/openssl/openssl/include \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/uv/include \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/zlib \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/v8/include \
+	-I$(srcdir)/../../node_modules/nan
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=pcap_binding' \
 	'-DUSING_UV_SHARED=1' \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
-	'-DV8_DEPRECATION_WARNINGS' \
-	'-DV8_IMMINENT_DEPRECATION_WARNINGS' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
-	'-D__STDC_FORMAT_MACROS' \
 	'-DOPENSSL_NO_PINSHARED' \
-	'-DOPENSSL_THREADS' \
 	'-DBUILDING_NODE_EXTENSION'
 
 # Flags passed to all source files.
@@ -84,14 +76,14 @@ CFLAGS_CC_Release := \
 	-std=gnu++1y
 
 INCS_Release := \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/include/node \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/src \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/openssl/config \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/openssl/openssl/include \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/uv/include \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/zlib \
-	-I/home/dstalder/.cache/node-gyp/14.18.3/deps/v8/include \
-	-I$(srcdir)/../nan
+	-I/home/dastal/.cache/node-gyp/10.24.1/include/node \
+	-I/home/dastal/.cache/node-gyp/10.24.1/src \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/openssl/config \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/openssl/openssl/include \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/uv/include \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/zlib \
+	-I/home/dastal/.cache/node-gyp/10.24.1/deps/v8/include \
+	-I$(srcdir)/../../node_modules/nan
 
 OBJS := \
 	$(obj).target/$(TARGET)/pcap_binding.o \

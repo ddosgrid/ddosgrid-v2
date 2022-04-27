@@ -32,14 +32,14 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
         "104.16.248.249",
         "104.16.249.249"
     ];
-    if(dohIPs.includes(this.getIP(session.dst))){
+    //if(dohIPs.includes(this.getIP(session.dst))){
       // Presorting: Check if TCP flow is also a HTTPS flow by checking one of the ports to be 443
       if(this.getPortNr(session.src) === "443" || this.getPortNr(session.dst) === "443") {
         // Push into result
-        //console.log(this.createNewFlowData(session));
+        console.log(this.createNewFlowData(session));
         this.result.push(this.createNewFlowData(session));
       }
-    }
+    //}
   }
 
   getTotalTimes(session) {
@@ -273,11 +273,11 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
 
     let newFlowMiningData =  {
       // Trianing Data Layer 1
-      doh: 1,
+      //doh: 1,
       //doh:0,
       // Training Data Layer 2
       //malicious: 1,
-      malicious: 0,
+      //malicious: 0,
       // Header Features
       source_IP: this.getIP(session.src),
       destination_IP: this.getIP(session.dst),
@@ -337,8 +337,7 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
     var resultFiles = [];
 
     // Output for ML classification
-    //var fileName = `${this.baseOutPath}-ML-features-DoH.csv`;                 // Actual SecGrid Analysis
-    var fileName = "Benign-DoH-Firefox-AdGuard.csv";                      // Test Data Analysis
+    var fileName = `${this.baseOutPath}-ML-features-DoH.csv`;                 // Actual SecGrid Analysis
     var fileContent = this.result;
     var summary = {
       fileName: fileName,
@@ -346,31 +345,32 @@ class MachineLearningFeatureExtractionDoH extends AbstractPcapAnalyser {
       analysisName: 'DoH Traffic Analysis',
       supportedDiagrams: []
     };
-    //resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary));
+    resultFiles.push(await this.storeAndReturnResult(fileName, fileContent, summary));
 
-    // Test Data Analysis
-    const fs = require('fs');
-    const path = "./Benign-DoH-Firefox-AdGuard.csv";
-    const jsonexport = require('jsonexport');
-    jsonexport(fileContent, function(err, csv) {
-      if (err) return(err);
-
-      if(!fs.existsSync(path)) {
-        fs.writeFile(fileName, csv, 'utf8', function (err) {
-          if (err) {
-            console.err(`Error writing file ${fileName}.`);
-            reject(err)
-          }
-        })
-      } else if (fs.existsSync(path)) {
-        fs.appendFile(fileName, csv, function (err) {
-          if (err) {
-            console.err(`Error writing file ${fileName}.`);
-            reject(err)
-          }
-        })
-      }
-    });
+    // // Test Data Analysis
+    // const fs = require('fs');
+    // var fileName = "Benign-DoH-Firefox-AdGuard.csv";
+    // const path = "./Benign-DoH-Firefox-AdGuard.csv";
+    // const jsonexport = require('jsonexport');
+    // jsonexport(fileContent, function(err, csv) {
+    //   if (err) return(err);
+    //
+    //   if(!fs.existsSync(path)) {
+    //     fs.writeFile(fileName, csv, 'utf8', function (err) {
+    //       if (err) {
+    //         console.err(`Error writing file ${fileName}.`);
+    //         reject(err)
+    //       }
+    //     })
+    //   } else if (fs.existsSync(path)) {
+    //     fs.appendFile(fileName, csv, function (err) {
+    //       if (err) {
+    //         console.err(`Error writing file ${fileName}.`);
+    //         reject(err)
+    //       }
+    //     })
+    //   }
+    // });
 
     return resultFiles
   }
